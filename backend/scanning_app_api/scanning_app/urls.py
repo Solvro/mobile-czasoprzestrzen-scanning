@@ -3,7 +3,7 @@ from rest_framework import routers
 from django.urls import include, path
 
 router = routers.DefaultRouter()
-router.register('equipment', views.DetailsView)
+router.register('equipment', views.EquipmentView)
 router.register('client', views.ClientView)
 router.register('rental-info', views.RentalInfoView)
 

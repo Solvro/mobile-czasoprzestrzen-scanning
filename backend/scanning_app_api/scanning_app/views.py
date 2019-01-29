@@ -6,7 +6,7 @@ from rest_framework import viewsets
 # Create your views here.
 
 
-class DetailsView(viewsets.ModelViewSet):
+class EquipmentView(viewsets.ModelViewSet):
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
 
