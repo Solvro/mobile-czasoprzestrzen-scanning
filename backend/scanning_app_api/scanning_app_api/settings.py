@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'scanning_app',
     'phonenumber_field',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

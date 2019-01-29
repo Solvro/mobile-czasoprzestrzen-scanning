@@ -25,6 +25,9 @@ class Equipment(models.Model):
     type = models.CharField(choices=TYPE, max_length=64)
     max_rent_time = models.DurationField()
 
+    def __str__(self):
+        return "{}".format(self.name)
+
 
 class RentalInfo(models.Model):
     rental_date = models.DateField(auto_now=True)
