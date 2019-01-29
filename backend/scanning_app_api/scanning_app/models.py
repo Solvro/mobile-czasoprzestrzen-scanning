@@ -17,6 +17,9 @@ class Client(models.Model):
     address = models.CharField(null=True, max_length=255)
     business_data = models.CharField(null=True, max_length=255)
 
+    def __str__(self):
+        return "{}".format(self.first_name)
+
 
 class Equipment(models.Model):
     name = models.CharField(max_length=64)
@@ -35,3 +38,6 @@ class RentalInfo(models.Model):
     actual_return = models.DateField(null=True)
     equipment_data_id = models.ForeignKey(Equipment, on_delete=models.DO_NOTHING)
     client_data_id = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return "{}".format(self.rental_date)
