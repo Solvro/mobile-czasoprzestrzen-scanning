@@ -24,7 +24,7 @@ class Client(models.Model):
 class Equipment(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=400)
-    status = models.BooleanField()
+    availability = models.BooleanField()
     type = models.CharField(choices=TYPE, max_length=64)
     max_rent_time = models.DurationField()
 

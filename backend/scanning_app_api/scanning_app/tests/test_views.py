@@ -43,7 +43,7 @@ class ViewTestCase(TestCase):
         response = self.user.post(
             reverse('equipment-list'), {'name': 'Some Name',
                                         'description': 'Some Description',
-                                        'status': False,
+                                        'availability': False,
                                         'type': 'Gui',
                                         'max_rent_time': datetime.timedelta(days=20, hours=5)},
             format="json")
