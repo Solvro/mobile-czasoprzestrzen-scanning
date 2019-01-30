@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'scanning_app',
     'phonenumber_field',
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
