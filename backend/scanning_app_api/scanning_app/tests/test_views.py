@@ -82,7 +82,7 @@ class ViewTestCase(TestCase):
     def test_api_can_post_rentalInfo(self):
         equipment = {'name': 'Some Name',
                      'description': 'Some Description',
-                     'status': False,
+                     'availability': False,
                      'type': 'Gui',
                      'max_rent_time': datetime.timedelta(days=20, hours=5)}
         client = {'first_name': 'Some Name',

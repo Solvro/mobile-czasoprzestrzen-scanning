@@ -9,7 +9,7 @@ class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
                   'url',
                   'name',
                   'description',
-                  'status',
+                  'availability',
                   'type',
                   'max_rent_time')
 
