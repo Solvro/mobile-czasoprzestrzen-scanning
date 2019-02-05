@@ -4,7 +4,6 @@ from rest_framework import status
 from django.urls import reverse
 from scanning_app.models import Equipment, RentalInfo, Client
 import datetime
-from django.core import serializers
 
 class ViewTestCase(TestCase):
     def setUp(self):
