@@ -1,0 +1,7 @@
+# editors
+*.idea
+
+#backend
+backend/venv
+*db.sqlite3
+*__pycache__
