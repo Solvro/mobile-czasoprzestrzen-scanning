@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const loginPanelStyles = StyleSheet.create({
+const loginRegisterStyles = StyleSheet.create({
     title: {
         paddingTop: 10,
         fontSize: 30,
@@ -8,4 +8,4 @@ const loginPanelStyles = StyleSheet.create({
     },
 });
 
-module.exports = loginPanelStyles;
+module.exports = loginRegisterStyles;

@@ -4,14 +4,16 @@ import LoginPanel from './login_panel/LoginPanel.js';
 
 export const SignedOutNavigator = createStackNavigator(
     {
-        SignUp: LoginPanel,
+        SignUp: {
+            screen: LoginPanel,
+        },
     }, 
     {
         headerMode: 'none',
         defaultNavigationOptions: {
             headerVisible: false,
         }
-    }
+    } 
 );
 
 
