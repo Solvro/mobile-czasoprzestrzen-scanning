@@ -1,21 +1,23 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { SignedOutNavigator } from './src/router.js';
+import { createAppContainer } from 'react-navigation';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    );
+/*export default class App extends React.Component {
+  
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isReady: false,
+      isLoggedIn: false,
+    }
   }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  render() {
+      return <AppContainer />
+  }
+}*/
+
+const App = createAppContainer(SignedOutNavigator);
+export default App;
