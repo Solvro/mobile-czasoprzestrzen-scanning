@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, StatusBar} from 'react-native';
 import {Container, Text} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
@@ -9,7 +9,7 @@ import logo from '../assets/logo.jpg';
 
 export default class RegistrationPanel extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
