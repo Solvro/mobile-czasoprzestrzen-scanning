@@ -1,0 +1,11 @@
+button {
+    background-color: #ec202c;
+
+    border-bottom: 4px solid transparent;
+}
+
+.AddButtonPosition {
+    position: absolute;
+    bottom: 15em;
+    right: 10em;
+}
