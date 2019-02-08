@@ -11,24 +11,15 @@ class SearchContainer extends Component {
 
     render () {
         return (
-                
-                <Grid container spacing={24}>
-                <Grid item xs={6}>
-                </Grid>
-                <Grid item xs={6}>
-                <div className='SearchContent'>
-                <Grid container spacing={24}>
-                    <Grid item xs={6}>
-                    {/* /*Here would be search field */}
-                        {/* <SearchField /> */}
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Select />
-                    </Grid></Grid>
-                </div>
-                    
-                </Grid>
-                </Grid>
+                    <div className='SearchContent'>
+                    <Grid container spacing={24}>
+                        <Grid item xs={6}>
+                            <SearchField />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Select />
+                        </Grid></Grid>
+                    </div>
         )
     }
 }

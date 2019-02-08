@@ -31,7 +31,6 @@
     height: 100%;
 }
 .NavigationItem {
-    margin: 10px 0;
     box-sizing: border-box;
     display: block;
     width: 100%;
@@ -54,7 +53,7 @@
 
 @media (min-width: 500px) {
     .NavigationItem {
-        margin: 1em;
+        padding: 0 1em;
         display: flex;
         height: 100%;
         width: auto;
@@ -65,10 +64,12 @@
         color: white;
         height: 100%;
         padding: 1em;
-        padding-top: 1.7em;
+        padding-top: 2em;
         border-bottom: 4px solid transparent;
     }
-    
+    .NavigationItem:hover{
+        background-color: #163550;
+    }
     .NavigationItem a:hover,
     .NavigationItem a:active,
     .NavigationItem a.active {

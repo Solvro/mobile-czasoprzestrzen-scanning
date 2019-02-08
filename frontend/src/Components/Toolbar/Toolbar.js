@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-    Link
-  } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import './Toolbar.css';
 import classes from './Toolbar.css';
 import Icon from '@material-ui/core/Icon';
@@ -20,12 +18,12 @@ const toolbar = ( props ) => (
                 <Link className={props.active ? classes.active : null} to="/">Sprzęt</Link>
             </li>
             <li className='NavigationItem'>
-                <Link className={props.active ? classes.active : null} to="/rents">Wypożycznia</Link>
+                <Link className={props.active ? classes.active : null} to="/rents">Wypożyczenia</Link>
             </li>
             <li className='NavigationItem'>
                 <Link className={props.active ? classes.active : null} to="/clients">Klienci</Link>
             </li>
-            <li className='NavigationItem'>
+            <li className='NavigationItem' style={{paddingBottom: '1.8em'}}>
                 <Link className={props.active ? classes.active : null} to="/account"><Icon>account_box</Icon></Link>
             </li>
             </ul>

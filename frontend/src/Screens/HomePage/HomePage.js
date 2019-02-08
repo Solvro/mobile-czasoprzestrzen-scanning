@@ -15,9 +15,9 @@ class HomePage extends Component {
                 <SearchContainer />
                 <Table />
             </Grid>
-            <Grid item xs={2}></Grid>
+            <Grid item xs={2}><AddButton /></Grid>
         </Grid>
-        <AddButton />
+        
         </div>
     );
   }

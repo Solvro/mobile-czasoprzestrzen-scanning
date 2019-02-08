@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -29,11 +30,19 @@ const styles = theme => ({
     table: {
       minWidth: 700,
     },
-    row: {
-        '&:nth-of-type(odd)': {
-          backgroundColor: theme.palette.primary.light,
-        },
-      },
+    row:{
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.primary.light,
+    },
+    },
+    button: {
+      '&:hover': {
+         background: 'transparent',
+      }
+    },
+    input: {
+      display: 'none',
+    },
   });
 
 let id = 0;
@@ -80,8 +89,16 @@ const table = ( props ) => {
               <TableCell hover={true} align="center">{row.email}</TableCell>
               <TableCell hover={true} align="center">{row.phoneNumebr}</TableCell>
               <TableCell hover={true} align="center">{row.company}</TableCell>
-              <TableCell hover={true} align="center"><Icon>message</Icon></TableCell>
-              <TableCell hover={true} align="center"><DeleteIcon /></TableCell>
+              <TableCell hover={true} align="center">
+                  <IconButton className={classes.button} aria-label="Delete">
+                    <Icon>message</Icon>
+                  </IconButton>
+              </TableCell>
+              <TableCell hover={true} align="center">
+                  <IconButton className={classes.button} aria-label="Delete">
+                    <DeleteIcon />
+                  </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

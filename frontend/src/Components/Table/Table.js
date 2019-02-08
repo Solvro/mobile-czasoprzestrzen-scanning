@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -33,6 +34,14 @@ const styles = theme => ({
       '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.primary.light,
       },
+    },
+    button: {
+      '&:hover': {
+        background: 'transparent',
+      }
+    },
+    input: {
+      display: 'none',
     },
   });
 
@@ -78,8 +87,16 @@ const table = ( props ) => {
               <TableCell align="center">{row.name}</TableCell>
               <TableCell align="center">{row.type}</TableCell>
               <TableCell align="center">{row.availibility}</TableCell>
-              <TableCell align="center"><Icon>create</Icon></TableCell>
-              <TableCell align="center"><DeleteIcon /></TableCell>
+              <TableCell align="center">
+                  <IconButton className={classes.button} aria-label="Delete">
+                  <Icon>create</Icon>
+                  </IconButton>
+              </TableCell>
+              <TableCell align="center">
+                  <IconButton className={classes.button} aria-label="Delete">
+                  <DeleteIcon />
+                  </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
