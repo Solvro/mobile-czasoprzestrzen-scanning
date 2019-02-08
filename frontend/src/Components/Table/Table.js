@@ -1,5 +1,4 @@
 import React from 'react';
-import Aux from '../../hoc/Aux';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -54,7 +53,6 @@ const table = ( props ) => {
     const { classes } = props;
 
     return (
-        <Aux>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
@@ -81,7 +79,6 @@ const table = ( props ) => {
           ))}
         </TableBody>
       </Table>
-        </Aux>
     );
 };
 

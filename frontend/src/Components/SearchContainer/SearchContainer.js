@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Aux from '../../hoc/Aux';
 import './Search.css';
 import Grid from '@material-ui/core/Grid';
 
@@ -12,7 +11,6 @@ class SearchContainer extends Component {
 
     render () {
         return (
-            <Aux>
                 
                 <Grid container spacing={24}>
                 <Grid item xs={6}>
@@ -31,7 +29,6 @@ class SearchContainer extends Component {
                     
                 </Grid>
                 </Grid>
-            </Aux>
         )
     }
 }
