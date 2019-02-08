@@ -4,7 +4,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #3882c4;
+    background-color: #224f77;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,7 +18,7 @@
 }
 
 .Logo {
-    height: 80%;
+    height: 70px;
 }
 
 .NavigationItems {
@@ -49,7 +49,7 @@
 .NavigationItem a:hover,
 .NavigationItem a:active,
 .NavigationItem a.active {
-    color: #1c4263;
+    color: #163550;
 }
 
 @media (min-width: 500px) {
@@ -72,8 +72,8 @@
     .NavigationItem a:hover,
     .NavigationItem a:active,
     .NavigationItem a.active {
-        background-color: #224f77;
-        border-bottom: 4px solid #1c4263;
+        background-color: #163550;
+        border-bottom: 4px solid #163550;
         color: white;
     }
 }
@@ -86,4 +86,3 @@
         flex-flow: row;
     }
 }
-

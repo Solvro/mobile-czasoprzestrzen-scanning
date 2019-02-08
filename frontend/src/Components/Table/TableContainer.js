@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Table from './Table';
 
-class Layout extends Component {
+class TableContainer extends Component {
 
     render () {
         return (
@@ -12,4 +12,4 @@ class Layout extends Component {
     }
 }
 
-export default Layout;
+export default TableContainer;

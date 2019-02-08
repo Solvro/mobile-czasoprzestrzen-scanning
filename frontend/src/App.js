@@ -8,11 +8,29 @@ import HomePage from './Screens/HomePage/HomePage';
 import Clients from './Screens/Clients/Clients';
 import Rents from './Screens/Rents/Rents';
 import Account from './Screens/Account/Account';
-import Toolbar from './Components/Toolbar/Toolbar'
+import Toolbar from './Components/Toolbar/Toolbar';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { green, red } from '@material-ui/core/colors';
+
+const blueTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#224f77',
+      light: '#ebf3f9',
+    },
+    secondary: {
+      main: '#00ff00',
+    },
+    action: {
+      main: '#ff0000'
+    }
+  },
+});
 
 class App extends Component {
   render() {
     return (
+      <MuiThemeProvider theme={blueTheme}>
       <Router>
       <div className="container">
         <Toolbar />
@@ -23,6 +41,7 @@ class App extends Component {
         <Route path="/account" component={Account} />
       </div>
     </Router>
+    </MuiThemeProvider>
     );
   }
 }

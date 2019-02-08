@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import SearchContainer from '../../Components/SearchContainer/SearchContainer';
-import Table from '../../Components/Table/TableContainer';
+import Table from '../../Components/Table/Table';
 import Grid from '@material-ui/core/Grid';
 import AddButton from '../../Components/AddButton/AddButton';
 

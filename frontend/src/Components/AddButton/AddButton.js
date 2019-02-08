@@ -3,13 +3,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import './AddButton.css';
-
-const blueTheme = createMuiTheme({ palette: { primary: {
-    main: '#1c4263',
-  },} })
 
 const styles = theme => ({
     fab: {
@@ -26,12 +21,11 @@ function addButton(props) {
     return (
 
         <div className='AddButtonPosition'>
-        <MuiThemeProvider theme={blueTheme}>
+        
         <Fab color="primary" aria-label="Add" variant="extended" onClick={() => console.log("Add button clicked!")} >
             Dodaj
           <AddIcon />
         </Fab>
-        </MuiThemeProvider>
         </div>
     );
 }

@@ -1,19 +1,18 @@
 import React from 'react';
 import {
-    BrowserRouter as Router,
-    Route,
     Link
   } from 'react-router-dom';
 import './Toolbar.css';
 import classes from './Toolbar.css';
 import Icon from '@material-ui/core/Icon';
+import logo from '../../assests/czasoprzestrzen_logoW.png';
 
 
 
 const toolbar = ( props ) => (
     <header className='Toolbar'>
         <div>
-           LOGO
+            <img src={logo} className='Logo' alt="Logo" />
         </div>
         <nav className='DesktopOnly'>
             <ul className='NavigationItems'>

@@ -12,7 +12,7 @@ import Icon from '@material-ui/core/Icon';
 
 const CustomTableCell = withStyles(theme => ({
     head: {
-      backgroundColor: '#3882c4',
+      backgroundColor: theme.palette.primary.main,
       color: theme.palette.common.white,
     },
     body: {
@@ -29,6 +29,11 @@ const styles = theme => ({
     table: {
       minWidth: 700,
     },
+    row: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.primary.light,
+      },
+    },
   });
 
 let id = 0;
@@ -38,7 +43,7 @@ function createData(name, type, availibility, delete1, edit) {
 }
 
 const rows = [
-  createData('Mikrofon XYZ', 'mikrofon',<Icon>done</Icon>, 24, 4.0,2),
+  createData('Mikrofon XYZ', 'mikrofon',<Icon >done</Icon>, 24, 4.0,2),
   createData('Głośnik bardzo głośny', 'głośnik', <Icon>clear</Icon>, 37, 4.3,2),
   createData('Przedłużacz czerwony', 'przedłużacz', <Icon>clear</Icon>, 24, 6.0,2),
   createData('Przedłużacz czerwony', 'przedłużacz', <Icon>clear</Icon>, 24, 6.0,2),
@@ -66,15 +71,15 @@ const table = ( props ) => {
         </TableHead>
         <TableBody>
           {rows.map(row => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} className={classes.row} >
               <TableCell component="th" scope="row">
                 {row.id}
               </TableCell>
-              <TableCell hover={true} align="center">{row.name}</TableCell>
-              <TableCell hover={true} align="center">{row.type}</TableCell>
-              <TableCell hover={true} align="center">{row.availibility}</TableCell>
-              <TableCell hover={true} align="center"><Icon>create</Icon></TableCell>
-              <TableCell hover={true} align="center"><DeleteIcon /></TableCell>
+              <TableCell align="center">{row.name}</TableCell>
+              <TableCell align="center">{row.type}</TableCell>
+              <TableCell align="center">{row.availibility}</TableCell>
+              <TableCell align="center"><Icon>create</Icon></TableCell>
+              <TableCell align="center"><DeleteIcon /></TableCell>
             </TableRow>
           ))}
         </TableBody>
