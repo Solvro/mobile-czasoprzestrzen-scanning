@@ -10,7 +10,7 @@ const loginRegisterStyles = StyleSheet.create({
 
     //Background color in register and login panels
     background: {
-        flex: 1,    
+        flex: 1,
     },
 
     //Container with logo
@@ -33,7 +33,7 @@ const loginRegisterStyles = StyleSheet.create({
         marginBottom: 12,
         borderColor: '#3b82c4',
         borderBottomWidth: 2,
-    },  
+    },
 
     inputField: {
         padding: 2,
@@ -64,7 +64,6 @@ const loginRegisterStyles = StyleSheet.create({
     linkText: {
         fontSize: 16,
     }
-
 });
 
 module.exports = loginRegisterStyles;
