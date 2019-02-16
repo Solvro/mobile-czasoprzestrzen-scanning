@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { View, Text} from 'react-native';
 
-export default class HomeScreen extends React.Component {
+
+export default class ProfileView extends React.Component {
 
     constructor(props) {
         super(props);

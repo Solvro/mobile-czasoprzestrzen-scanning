@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 
-export default class HomeScreen extends React.Component {
 
+export default class EquipmentList extends React.Component {
+    
     constructor(props) {
         super(props);
     }
