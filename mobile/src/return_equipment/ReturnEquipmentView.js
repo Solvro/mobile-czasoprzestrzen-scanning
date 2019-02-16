@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, } from 'react-native';
+import {View, Text} from 'react-native';
 
-export default class SingleItem extends React.Component {
+export default class ReturnEquipmentView extends React.Component {
 
     constructor(props) {
         super(props);

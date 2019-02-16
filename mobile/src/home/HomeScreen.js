@@ -10,9 +10,8 @@ export default class HomeScreen extends React.Component {
     render() {
         return(
             <View>
-                <Text>It's home screen!</Text>
+                <Text>It's another screen of app!</Text>
             </View>
         )
     }
-
 }

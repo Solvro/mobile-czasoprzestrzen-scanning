@@ -8,6 +8,8 @@ import ProfileView from './profile/ProfileView';
 import EquipmentList from './equipment/EquipmentList';
 import SingleItem from './equipment/SingleItem';
 import HistoryView from './history/HistoryView';
+import RentEquipmentView from './rent_equipment/RentEquipmentView';
+import ReturnEquipmentView from './return_equipment/ReturnEquipmentView';
 
 export const SignedOutNavigator = createStackNavigator(
     {
@@ -33,6 +35,8 @@ export const MainNavigator = createStackNavigator(
         Home: HomeScreen,
         Equipment:  EquipmentList,
         Item: SingleItem,
+        Rent: RentEquipmentView,
+        Return: ReturnEquipmentView,
     }, 
     {
         headerMode: 'none',

@@ -7,4 +7,12 @@ export default class HistoryView extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    render() {
+        return(
+            <View>
+                <Text>It's another screen of app!</Text>
+            </View>
+        )
+    }
 }
