@@ -40,6 +40,19 @@ const loginRegisterStyles = StyleSheet.create({
         fontSize: 20,
     },
 
+    //CheckBox
+
+      checkBoxContainer: {
+        marginRight: 30,
+        marginLeft: 30,
+        marginBottom: 12,
+        borderBottomWidth: 0,
+    },
+
+    checkBoxText: {
+        marginLeft: 10,
+    },
+
     //Container with action button and link
 
     buttonAndLinkContainer: {

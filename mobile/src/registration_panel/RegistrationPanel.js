@@ -152,6 +152,16 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
+                      <List>
+                        <ListItem style={loginRegisterStyles.checkBoxContainer} onPress={() => this.setState({ isPerson: !this.state.isPerson })} >
+                            <CheckBox 
+                                color='#3b82c4'
+                                style={loginRegisterStyles.CheckBox}
+                                checked={this.state.isPerson} 
+                                onPress={() => this.setState({ isPerson: !this.state.isPerson })} />
+                            <Text style={loginRegisterStyles.checkBoxText}>Osoba fizyczna</Text>
+                        </ListItem>
+                      </List>
                       <View style ={loginRegisterStyles.buttonAndLinkContainer}>
                         <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressRegister()}>
                             <Text style={loginRegisterStyles.buttonText}> Zarejestruj się</Text>
