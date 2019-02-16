@@ -1,6 +1,6 @@
 import React from 'react';
 import {Alert, View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, StatusBar} from 'react-native';
-import {Container, Text} from 'native-base';
+import {Container, Text, CheckBox, Body, ListItem, List} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import validator from 'validator';
 import Checkbox from 'react-native-checkbox';
@@ -24,7 +24,7 @@ export default class RegistrationPanel extends React.Component {
             password2: null,
             email: null,
             phoneNumber: null,
-            isPerson: null,
+            isPerson: false,
         }
     }
 
@@ -152,15 +152,15 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-              
-                      <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressRegister()}>
-                              <Text style={loginRegisterStyles.buttonText}> Zarejestruj się</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={loginRegisterStyles.linkContainer}
-                      onPress={() => this.props.navigation.navigate("SignIn")}>
-                          <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>
-                      </TouchableOpacity>
-
+                      <View style ={loginRegisterStyles.buttonAndLinkContainer}>
+                        <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressRegister()}>
+                            <Text style={loginRegisterStyles.buttonText}> Zarejestruj się</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={loginRegisterStyles.linkContainer}
+                            onPress={() => this.props.navigation.navigate("SignIn")}>
+                            <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>
+                        </TouchableOpacity> 
+                      </View>
                   </Animated.View>
               </TouchableWithoutFeedback>
           </Container>

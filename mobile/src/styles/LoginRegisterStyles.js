@@ -36,8 +36,16 @@ const loginRegisterStyles = StyleSheet.create({
     },
 
     inputField: {
-        padding: 2,
+        padding: 4,
         fontSize: 20,
+    },
+
+    //Container with action button and link
+
+    buttonAndLinkContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginBottom: 40
     },
 
     //Button for login and register
