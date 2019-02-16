@@ -1,23 +1,53 @@
 import React from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import LoginPanel from './login_panel/LoginPanel.js';
-import RegistrationPanel from './registration_panel/RegistrationPanel.js';
+import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator, 
+            createDrawerNavigator, createAppContainer } from 'react-navigation';
+import LoginPanel from './login_panel/LoginPanel';
+import RegistrationPanel from './registration_panel/RegistrationPanel';
+import HomeScreen from './home/HomeScreen';
+import ProfileView from './profile/ProfileView';
+import EquipmentList from './equipment/EquipmentList';
+import SingleItem from './equipment/SingleItem';
+import HistoryView from './history/HistoryView';
 
 export const SignedOutNavigator = createStackNavigator(
     {
-        SignIn: {
-            screen: LoginPanel,
-        },
-        SignUp: {
-            screen: RegistrationPanel
-        }
+        SignIn: LoginPanel,
+        SignUp: RegistrationPanel,
     }, 
     {
         headerMode: 'none',
-        defaultNavigationOptions: {
-            headerVisible: false,
-        }
-    } 
+    }
 );
 
+export const DrawerNavigator = createDrawerNavigator(
+    {
+        Home: HomeScreen,
+        Profile: ProfileView,
+        History: HistoryView,
+    }
+);
 
+export const MainNavigator = createStackNavigator(
+    {
+        Menu: DrawerNavigator,
+        Home: HomeScreen,
+        Equipment:  EquipmentList,
+        Item: SingleItem,
+    }, 
+    {
+        headerMode: 'none',
+    }
+);
+
+export const SwitchNavigator = createSwitchNavigator(
+    {
+        SignedOut: SignedOutNavigator,
+        SignedIn: MainNavigator,
+    }, 
+    {
+        initialRouteName: 'SignedOut',
+    }
+);
+
+const AppContainer = createAppContainer(SwitchNavigator);
+export default AppContainer; 

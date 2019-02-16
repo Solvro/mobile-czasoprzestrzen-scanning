@@ -75,7 +75,7 @@ export default class LoginPanel extends React.Component {
      * Handles login button press action.
      */
     handlePressLogin() {
-
+        this.props.navigation.navigate('SignedIn',);
     }
 
     render() {
