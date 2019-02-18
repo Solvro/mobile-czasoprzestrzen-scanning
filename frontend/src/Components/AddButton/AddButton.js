@@ -10,6 +10,7 @@ import './AddButton.css';
 const styles = theme => ({
     fab: {
       margin: theme.spacing.unit,
+
     },
     extendedIcon: {
       marginRight: theme.spacing.unit,
@@ -22,7 +23,7 @@ function addButton(props) {
 
         <div className='AddButtonPosition'>
         <Link to="/adds">
-        <Fab color="primary" aria-label="Add" variant="extended" onClick={() => console.log("Add button clicked!")} >
+        <Fab color="primary" aria-label="Add" style={{height: 60, width: 150}}  variant="extended" onClick={() => console.log("Add button clicked!")} >
             Dodaj
           <AddIcon />
         </Fab>
