@@ -6,6 +6,23 @@ export default class EquipmentList extends React.Component {
     
     constructor(props) {
         super(props);
+        this.state = {
+            categories: [],
+            equipment: []
+        };
+    }
+
+    componentWillMount() {
+
+    }
+
+    generateEquipmentList() {
+        // Temporary solution
+        categoriesTemp = ['mikrofony', 'głośniki', 'przedłużacze', 'kable'];
+        this.setState({categories: categoriesTemp});
+
+
+
     }
 
     render() {
