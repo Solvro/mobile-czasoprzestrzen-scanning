@@ -1,0 +1,23 @@
+.FormField{
+    border: 2px solid #224f77;
+    padding: 2em;
+    margin-top: 10em;
+    align-content: center;
+}
+
+#headText{
+    font-size: 1.5em;
+    text-align: center;
+}
+#normalText{
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+.wrapper{
+    margin: 1.5em;
+}
+
+.buttonPosition {
+    text-align: center;
+}
