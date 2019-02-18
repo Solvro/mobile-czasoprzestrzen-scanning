@@ -114,14 +114,15 @@ export default class LoginPanel extends React.Component {
                                 underlineColorAndroid = 'transparent'
                             />
                         </View>
-                        <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressLogin()}>
+                        <View style ={loginRegisterStyles.buttonAndLinkContainer}>
+                            <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressLogin()}>
                                 <Text style={loginRegisterStyles.buttonText}> Zaloguj się </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={loginRegisterStyles.linkContainer} 
-                        onPress={() => this.props.navigation.navigate("SignUp")}>
-                            <Text style={loginRegisterStyles.linkText}>Nie masz jeszcze konta? Zarejestruj się!</Text>
-                        </TouchableOpacity>
-
+                            </TouchableOpacity>
+                            <TouchableOpacity style={loginRegisterStyles.linkContainer} 
+                                onPress={() => this.props.navigation.navigate("SignUp")}>
+                                <Text style={loginRegisterStyles.linkText}>Nie masz jeszcze konta? Zarejestruj się!</Text>
+                            </TouchableOpacity>
+                      </View>
                     </Animated.View>
                 </TouchableWithoutFeedback>
             </Container>
