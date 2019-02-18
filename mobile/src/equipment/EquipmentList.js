@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Container, Text, Card, CardItem } from 'native-base';
 
 
 export default class EquipmentList extends React.Component {
@@ -8,7 +9,7 @@ export default class EquipmentList extends React.Component {
         super(props);
         this.state = {
             categories: [],
-            equipment: []
+            equipment: [],
         };
     }
 
@@ -21,15 +22,29 @@ export default class EquipmentList extends React.Component {
         categoriesTemp = ['mikrofony', 'głośniki', 'przedłużacze', 'kable'];
         this.setState({categories: categoriesTemp});
 
+        equipmentTemp = [];
 
+    }
 
+    onRefresh() {
+        console.log('refreshing');
     }
 
     render() {
         return(
-            <View>
-                <Text>It's another screen of app!</Text>
-            </View>
+            <Container>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={false}
+                            onRefresh={() => this.onRefresh()}
+                        />
+                    }
+                >
+
+
+                </ScrollView>
+            </Container>
         )
     }
 }
