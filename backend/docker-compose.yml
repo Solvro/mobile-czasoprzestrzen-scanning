@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: scanning_app_db
+      MYSQL_ROOT_PASSWORD: pass
+
+  web:
+    build: .
+    restart: always # docker-compose starts db first, but its not ready quick enough, we need to restart until it is
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    container_name: scanning_app
+    volumes:
+      - .:/scanning_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
