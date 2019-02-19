@@ -19,6 +19,8 @@ const homeStyles = StyleSheet.create({
         marginRight: 50,
         marginLeft: 50,
         padding: 10,
+        overflow: 'hidden',
+        borderRadius: 10,
     },
 
     buttonText: {
