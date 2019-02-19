@@ -94,17 +94,19 @@ export default class EquipmentList extends React.Component {
         return(
             <Card style={equipmentListStyles.card} key={key}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}>
+                    <CardItem style={equipmentListStyles.itemInfo}>
+                        <Text style={equipmentListStyles.description}>
+                            {category}
+                        </Text>
+                    </CardItem> 
+                    
                     <CardItem header style={equipmentListStyles.cardItem}>
                         <Text style={equipmentListStyles.title}>
                             {name}
                         </Text>
                         {this.putAvailabilityStatus(isAvaiable)}
                     </CardItem>
-                    <CardItem style={equipmentListStyles.itemInfo}>
-                        <Text style={equipmentListStyles.description}>
-                            {category}
-                        </Text>
-                    </CardItem> 
+                    
                 </TouchableOpacity>
             </Card>
         );
@@ -142,12 +144,13 @@ export default class EquipmentList extends React.Component {
                     <View style={equipmentListStyles.input}>
                         <Icon name='md-search' style={equipmentListStyles.searchIcon} color={'#3b82c4'}/>
                         <TextInput style={equipmentListStyles.inputField}
-                                            onChangeText = {(text) => this.search(text)}
+                                             onChangeText = {(text) => this.search(text)}
                                             placeholder = {'Wyszukaj'}
                                             placeholderTextColor = '#a2aabc'
                                             underlineColorAndroid = 'transparent'
                                         />
                     </View>
+
                     <ScrollView
                         refreshControl={
                             <RefreshControl

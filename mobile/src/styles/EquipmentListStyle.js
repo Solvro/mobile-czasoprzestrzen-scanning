@@ -16,7 +16,7 @@ const equipmentListStyles = StyleSheet.create({
     },
 
     cardItem: {
-        borderBottomWidth: 1,
+        borderTopWidth: 1,
         borderColor: '#8b8e93',
         padding: 2,
         margin: 0,
@@ -67,7 +67,6 @@ const equipmentListStyles = StyleSheet.create({
         marginRight: 30,
         marginLeft: 30,
         marginBottom: 12,
-        marginTop: 10,
         borderColor: '#3b82c4',
         borderBottomWidth: 2,
         flexDirection: 'row',
@@ -85,7 +84,24 @@ const equipmentListStyles = StyleSheet.create({
 
     logoContainer: {
         alignItems: 'center',
-    }
+    },
+
+    filtersContainer: {
+        paddingTop: 10,
+        flexDirection: 'row',
+        alignItems: 'stretch',
+    },
+
+    optionsButton: {
+        position: 'absolute',
+        right: 0,
+    },  
+
+    optionsIcon: {
+        fontSize: 35,
+        marginRight: 20,
+        marginBottom: 0,
+    },
 
 });
 
