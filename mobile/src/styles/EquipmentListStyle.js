@@ -78,6 +78,15 @@ const equipmentListStyles = StyleSheet.create({
         fontSize: 20,
     },
 
+    logo: {
+        width: 75,
+        height: 55,
+    }, 
+
+    logoContainer: {
+        alignItems: 'center',
+    }
+
 });
 
 module.exports = equipmentListStyles;

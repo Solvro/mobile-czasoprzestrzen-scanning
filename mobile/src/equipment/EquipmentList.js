@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, ScrollView, RefreshControl, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, ScrollView, RefreshControl, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
 import { Container, Text, Card, CardItem, Content } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
+import logo from '../assets/logo.jpg';
 
 export default class EquipmentList extends React.Component {
     
@@ -20,7 +21,7 @@ export default class EquipmentList extends React.Component {
     }
 
     async componentWillMount() {
-        this.getEquipmentList();
+        await this.getEquipmentList();
         this.generateEquipmentList();
         this.setState({searchedPhrase: ''});
         this.setState({refreshing: false});
@@ -135,6 +136,9 @@ export default class EquipmentList extends React.Component {
         } else {
             return(
                 <Container style={equipmentListStyles.container}>
+                    <View style={equipmentListStyles.logoContainer}>
+                        <Image source={logo} style={equipmentListStyles.logo}/>
+                    </View>
                     <View style={equipmentListStyles.input}>
                         <Icon name='md-search' style={equipmentListStyles.searchIcon} color={'#3b82c4'}/>
                         <TextInput style={equipmentListStyles.inputField}
