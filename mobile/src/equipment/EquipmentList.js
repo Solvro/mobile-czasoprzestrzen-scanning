@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, RefreshControl, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, ScrollView, RefreshControl, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { Container, Text, Card, CardItem, Content } from 'native-base';
 
 
@@ -24,7 +24,9 @@ export default class EquipmentList extends React.Component {
         this.setState({categories: categoriesTemp});
 
         equipmentTemp = [];
+        for(let i = 0; i <= 10; i++) {
 
+        }
 
 
     }
