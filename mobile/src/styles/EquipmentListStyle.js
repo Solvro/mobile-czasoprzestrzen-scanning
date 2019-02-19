@@ -4,8 +4,8 @@ const equipmentListStyles = StyleSheet.create({
     card: {
         //borderColor: '#3b82c4',
         //borderWidth: 3,
-        marginRight: 2,
-        marginLeft: 2,
+        marginRight: 10,
+        marginLeft: 10,
         fontFamily: 'Roboto_medium',
     },
 
