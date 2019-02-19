@@ -26,6 +26,10 @@ const styles = theme => ({
   selectEmpty: {
       marginTop: 0,
       width: '100%'
+  },
+  fabStyle:{
+      width: '250px',
+      height: '50px'
   }
 });
 
@@ -52,11 +56,11 @@ class AddForm extends React.Component {
 
     return (
       <form autoComplete="off" className='FormField'>
-      <div id='headText'>Dodaj nową rzecz do magazynu</div>
+      <div class='headText'>Dodaj nową rzecz do magazynu</div>
         <FormControl className={classes.formControl}>
 
         <div class='wrapper'>
-        <div id='normalText'>Nazwa urządzenia: </div>
+        <div class='normalText'>Nazwa urządzenia: </div>
         <TextField
           id="standard-full-width"
           className={classes.selectEmpty}
@@ -84,7 +88,7 @@ class AddForm extends React.Component {
           </NativeSelect>
           </div>
           <div class='wrapper'>
-          <div id='normalText'>Maksymalny czas wypożyczenia: </div>
+          <div class='normalText'>Maksymalny czas wypożyczenia: </div>
             <TextField
             id="standard-full-width"
             className={classes.selectEmpty}
@@ -103,7 +107,7 @@ class AddForm extends React.Component {
 
         <div className='buttonPosition'>
         <Link to="/">
-        <Fab color="primary" aria-label="Add" style={{height: 50, width: 150}}  variant="extended" onClick={() => console.log("Add button clicked!")} >
+        <Fab color="primary" aria-label="Add" style={styles.fabStyle}  variant="extended" onClick={() => console.log("Add button clicked!")} >
             Dodaj
         </Fab>
         </Link>

@@ -5,11 +5,11 @@
     align-content: center;
 }
 
-#headText{
+.headText{
     font-size: 1.5em;
     text-align: center;
 }
-#normalText{
+.normalText{
     font-size: 1em;
     margin-bottom: 0.5em;
 }
@@ -20,4 +20,8 @@
 
 .buttonPosition {
     text-align: center;
+}
+
+.buttonStyle{
+    height: 50; width: 350;
 }
