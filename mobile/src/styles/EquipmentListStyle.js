@@ -2,8 +2,11 @@ import { StyleSheet } from 'react-native';
 
 const equipmentListStyles = StyleSheet.create({
     card: {
-        borderColor: '#3b82c4',
-        borderWidth: 3,
+        //borderColor: '#3b82c4',
+        //borderWidth: 3,
+        marginRight: 2,
+        marginLeft: 2,
+        fontFamily: 'Roboto_medium',
     },
 
     title: {
@@ -13,24 +16,46 @@ const equipmentListStyles = StyleSheet.create({
     },
 
     cardItem: {
-        borderBottomColor: '#3b82c4',
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
+        borderColor: '#8b8e93',
         padding: 2,
+        margin: 0,
+        marginRight: 10,
+        marginLeft: 10,
+        flexDirection: 'row',
     },
 
     itemInfo: {
         fontSize: 13,
-        marginBottom: 0,
+        marginTop: 5,
+        marginBottom: 5,
+        flexDirection: 'row',
     },
 
     titleText: {
         fontSize: 15,
         marginRight: 5,
-        fontWeight: 'bold',
+        fontWeight: '100',
     },
 
+    description: {
+        position: 'absolute',
+        right: 0,
+        marginTop: 5,
+        marginBottom: 5,
+        marginRight: 10,
+    },
     icon: {
-        fontSize: 25, 
+        fontSize: 40, 
+        marginRight: 20,
+        position: 'absolute',
+        right: 0,
+    },
+
+    searchIcon: {
+        fontSize: 35,
+        marginRight: 20,
+        marginBottom: 0,
     },
 
     container: {
@@ -45,6 +70,7 @@ const equipmentListStyles = StyleSheet.create({
         marginTop: 10,
         borderColor: '#3b82c4',
         borderBottomWidth: 2,
+        flexDirection: 'row',
     },
 
     inputField: {
