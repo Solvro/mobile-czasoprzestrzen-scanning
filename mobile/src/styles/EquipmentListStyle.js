@@ -2,26 +2,22 @@ import { StyleSheet } from 'react-native';
 
 const equipmentListStyles = StyleSheet.create({
     card: {
-        //borderColor: '#3b82c4',
-        //borderWidth: 3,
         marginRight: 10,
         marginLeft: 10,
         fontFamily: 'Roboto_medium',
     },
 
     title: {
-        fontSize: 18,
+        fontSize: 25,
         fontWeight: 'bold',
-
+        color: '#82868c',
     },
 
     cardItem: {
-        borderTopWidth: 1,
-        borderColor: '#8b8e93',
-        padding: 2,
+        padding: 0,
         margin: 0,
-        marginRight: 10,
-        marginLeft: 10,
+        /*marginRight: 10,
+        marginLeft: 10,*/
         flexDirection: 'row',
     },
 
@@ -39,11 +35,16 @@ const equipmentListStyles = StyleSheet.create({
     },
 
     description: {
-        position: 'absolute',
-        right: 0,
+        //position: 'absolute',
+        fontSize: 13,
+        color: '#fff',
+        //right: 0,
         marginTop: 5,
         marginBottom: 5,
         marginRight: 10,
+        backgroundColor: '#3b82c4', 
+        borderRadius: 5,
+        padding: 3,
     },
     icon: {
         fontSize: 40, 

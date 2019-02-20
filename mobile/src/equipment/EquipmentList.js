@@ -100,7 +100,7 @@ export default class EquipmentList extends React.Component {
                         </Text>
                     </CardItem> 
                     
-                    <CardItem header style={equipmentListStyles.cardItem}>
+                    <CardItem style={equipmentListStyles.cardItem}>
                         <Text style={equipmentListStyles.title}>
                             {name}
                         </Text>
