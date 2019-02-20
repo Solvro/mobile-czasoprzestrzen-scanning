@@ -20,6 +20,12 @@ const loginRegisterStyles = StyleSheet.create({
         marginBottom: 30,
     },
 
+    registerLogoContainer: {
+        alignItems: 'center',
+        marginTop: 30,
+        marginBottom: 5,
+    },
+
     //Logo style in login and register panel
     logoStyle: {
         width: 190,
@@ -59,6 +65,12 @@ const loginRegisterStyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 40
+    },
+
+    registerButtonAndLinkContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginBottom: 20
     },
 
     //Button for login and register

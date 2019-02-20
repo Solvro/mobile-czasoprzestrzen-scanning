@@ -28,7 +28,50 @@ export default class RegistrationPanel extends React.Component {
         }
     }
 
+    componentWillMount() {
+      
+        this.keyboardWDidShowSub = Keyboard.addListener(
+            "keyboardDidShow",
+            this.keyboardDidShow
+        );
+        this.keyboardWDidHideSub = Keyboard.addListener(
+            "keyboardDidHide",
+            this.keyboardDidHide
+        );
+    }
 
+    componentWillUnmount() {
+        this.keyboardWDidShowSub.remove();
+        this.keyboardWDidHideSub.remove();
+    }
+
+    /**
+     * Handles keyboard showing when screen is taped.
+     */
+    keyboardDidShow = () => {
+        Animated.timing(this.imageHeight, {
+            duration: 200, 
+            toValue: 50,
+        }).start();
+        Animated.timing(this.keyboardHeight, {
+            duration: 200, 
+            toValue: 0,
+        }).start();
+    }
+
+    /**
+     * Handles keyboard hiding when screen is taped and keyboard is visible. 
+     */
+    keyboardDidHide = () => {
+        Animated.timing(this.imageHeight, {
+            duration: 200,
+            toValue: 100,
+        }).start();
+        Animated.timing(this.keyboardHeight, {
+            duration: 200,
+            toValue: 30,
+        }).start();
+    }
     /**
      * Handles login button press action.
      */
@@ -94,7 +137,7 @@ export default class RegistrationPanel extends React.Component {
                       DismissKeyboard();
                   }}>
                   <Animated.View style={loginRegisterStyles.background}>
-                      <View style={loginRegisterStyles.logoContainer}>
+                      <View style={loginRegisterStyles.registerLogoContainer}>
                           <Animated.Image source={logo} resizeMode='contain'
                               style={[loginRegisterStyles.logoStyle,
                                       {height: this.imageHeight}]} />
@@ -162,7 +205,7 @@ export default class RegistrationPanel extends React.Component {
                             <Text style={loginRegisterStyles.checkBoxText}>Osoba fizyczna</Text>
                         </ListItem>
                       </List>
-                      <View style ={loginRegisterStyles.buttonAndLinkContainer}>
+                      <View style ={loginRegisterStyles.registerButtonAndLinkContainer}>
                         <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressRegister()}>
                             <Text style={loginRegisterStyles.buttonText}> Zarejestruj się</Text>
                         </TouchableOpacity>
