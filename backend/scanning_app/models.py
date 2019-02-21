@@ -36,8 +36,8 @@ class RentalInfo(models.Model):
     rental_date = models.DateField(auto_now=True)
     expected_return = models.DateField()
     actual_return = models.DateField(null=True)
-    equipment_data_id = models.ForeignKey(Equipment, on_delete=models.DO_NOTHING)
-    client_data_id = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+    equipment_data = models.ForeignKey(Equipment, on_delete=models.DO_NOTHING)
+    client_data = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return "{}".format(self.rental_date)

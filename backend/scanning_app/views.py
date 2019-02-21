@@ -1,4 +1,4 @@
-from .permissions import PostPermissions
+from .permissions import PostPermissions, RentalInfoPermissions
 from .serializers import EquipmentSerializer, ClientSerializer, RentalInfoSerializer
 from .models import Equipment, Client, RentalInfo
 from rest_framework import viewsets
@@ -22,4 +22,4 @@ class ClientView(viewsets.ModelViewSet):
 class RentalInfoView(viewsets.ModelViewSet):
     queryset = RentalInfo.objects.all()
     serializer_class = RentalInfoSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (RentalInfoPermissions,)
