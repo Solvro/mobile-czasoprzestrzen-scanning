@@ -126,3 +126,5 @@ REST_FRAMEWORK = {
                                    'scanning_app.permissions.RentalInfoPermissions',),
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',)
 }
+
+AUTH_USER_MODEL = 'scanning_app.Client'

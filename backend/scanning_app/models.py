@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import AbstractUser
 
 TYPE = (
     ("Mic", "Microphone"),
@@ -9,7 +10,7 @@ TYPE = (
 )
 
 
-class Client(models.Model):
+class Client(AbstractUser):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
     email = models.EmailField()
