@@ -1,6 +1,6 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractUser
+from phonenumber_field.modelfields import PhoneNumberField
 
 TYPE = (
     ("Mic", "Microphone"),
@@ -11,15 +11,12 @@ TYPE = (
 
 
 class Client(AbstractUser):
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
-    email = models.EmailField()
     phone = PhoneNumberField()
     address = models.CharField(null=True, max_length=255)
     business_data = models.CharField(null=True, max_length=255)
 
     def __str__(self):
-        return "{}".format(self.first_name)
+        return "{} {}".format(self.first_name, self.last_name)
 
 
 class Equipment(models.Model):

@@ -14,10 +14,28 @@ class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
                   'max_rent_time')
 
 
+class SignUpClientSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        return Client.objects.create_user(**validated_data)
+
+    class Meta:
+        model = Client
+        fields = ('username',
+                  'password',
+                  'first_name',
+                  'last_name',
+                  'email',
+                  'phone',
+                  'address',
+                  'business_data')
+
+
 class ClientSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Client
         fields = ('id',
+                  'username',
                   'url',
                   'first_name',
                   'last_name',
