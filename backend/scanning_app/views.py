@@ -1,4 +1,5 @@
 from rest_framework import viewsets, status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
@@ -40,3 +41,12 @@ class RentalInfoView(viewsets.ModelViewSet):
     queryset = RentalInfo.objects.all()
     serializer_class = RentalInfoSerializer
     permission_classes = (RentalInfoPermissions,)
+
+    def create(self, request, *args, **kwargs):
+        equipment_to_rent = Equipment.objects\
+            .get(id=request.data['equipment_data'])
+        if not equipment_to_rent.availability:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return super().create(request, *args, **kwargs)
+
+

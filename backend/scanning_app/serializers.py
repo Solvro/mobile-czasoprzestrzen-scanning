@@ -1,5 +1,9 @@
 from rest_framework import serializers
+
 from .models import Equipment, Client, RentalInfo
+
+# TODO: reconsider using HyperlinkedModelSerializer,
+#  passing objects with them in json is weird
 
 
 class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
@@ -45,7 +49,25 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
                   'business_data')
 
 
-class RentalInfoSerializer(serializers.HyperlinkedModelSerializer):
+# TODO: we assume that whenever actual_return date is specified,
+#  it's in the past, meaning equipment is available.
+#  Which does not necessarily have to be True
+class RentalInfoSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        if 'actual_return' not in validated_data:
+            equipment = validated_data['equipment_data']
+            equipment.availability = False
+            equipment.save()
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if instance.actual_return is None and 'actual_return' in validated_data:
+            equipment = instance.equipment_data
+            equipment.availability = True
+            equipment.save()
+        return super().update(instance, validated_data)
+
     class Meta:
         model = RentalInfo
         fields = ('id',
@@ -53,5 +75,5 @@ class RentalInfoSerializer(serializers.HyperlinkedModelSerializer):
                   'rental_date',
                   'expected_return',
                   'actual_return',
-                  'equipment_data_id',
-                  'client_data_id')
+                  'equipment_data',
+                  'client_data')
