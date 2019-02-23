@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from os import environ
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -77,13 +79,24 @@ WSGI_APPLICATION = 'scanning_app_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'lokalnaMaria',
+        'USER': 'root',
+        'PASSWORD': 'czaspass',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    },
+    'production': {
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'scanning_app_db',
         'USER': 'root',
         'PASSWORD': 'pass',
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
         'PORT': '3306',
     }
 }
+
+default_database = environ.get('DJANGO_DATABASE', 'production')
+DATABASES['default'] = DATABASES[default_database]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
