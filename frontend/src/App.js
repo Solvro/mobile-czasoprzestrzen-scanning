@@ -8,6 +8,7 @@ import Clients from './Screens/Clients/Clients';
 import Rents from './Screens/Rents/Rents';
 import Account from './Screens/Account/Account';
 import Adds from './Screens/Adds/Adds';
+import LoginPage from './Screens/LoginPage/LoginPage';
 import Toolbar from './Components/Toolbar/Toolbar';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
