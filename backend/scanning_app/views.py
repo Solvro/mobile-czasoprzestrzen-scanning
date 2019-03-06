@@ -43,8 +43,8 @@ class RentalInfoView(viewsets.ModelViewSet):
     permission_classes = (RentalInfoPermissions,)
 
     def create(self, request, *args, **kwargs):
-        equipment_to_rent = Equipment.objects\
-            .get(id=request.data['equipment_data'])
+        equipment_to_rent = \
+            Equipment.objects.get(id=request.data['equipment_data'])
         if not equipment_to_rent.availability:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
