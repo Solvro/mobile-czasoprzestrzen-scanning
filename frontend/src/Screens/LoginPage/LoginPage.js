@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import logo from '../../assests/czasoprzestrzen_logo.png';
 
+import axios from 'axios';
+
 import "./LoginPanel.css"
 
 const styles = theme => ({
@@ -31,6 +33,40 @@ const styles = theme => ({
 });
 
 class LoginPage extends React.Component {
+  state = {
+    name: '',
+    password: '',
+  }
+
+  handleChangeUser = event => {
+    console.log( event.target.value);
+
+    this.setState({ name: event.target.value });
+  }
+
+  handleChangePassword = event => {
+    this.setState({ password: event.target.value });
+  }
+
+  handleSubmit = event => {
+    // console.log("SUBMIT");
+    // event.preventDefault();
+
+    // const user = {
+    //   name: this.state.name,
+    //   password: this.state.password
+    // };
+
+    // console.log(user);
+    // axios.post(`http://localhost:1337/login`, { user })
+    //   .then(res => {
+    //     console.log(res);
+    //     console.log(res.data);
+    //   })
+    axios.get('http://localhost:1337/ping')
+      .then(response => console.log(response))
+  }
+
 
   render() {
     const { classes } = this.props;
@@ -40,11 +76,11 @@ class LoginPage extends React.Component {
         <Grid container spacing={24}>
             <Grid item xs={3}></Grid>
             <Grid item xs={6}>
-                <form autoComplete="off" className='FormField'>
+                <form autoComplete="off" className='FormField' >
                 <img src={logo} className='LogoStart' alt="Logo" />
                 <FormControl className={classes.formControl}>
 
-                    <div class='wrapper-login'>
+                    <div className='wrapper-login'>
                         {/* <div class='normalText'>LOGIN: </div> */}
                         <TextField
                         id="standard-full-width"
@@ -52,12 +88,13 @@ class LoginPage extends React.Component {
                         placeholder="Login"
                         margin="normal"
                         fullWidth
+                        onChange={this.handleChangeUser}
                         InputLabelProps={{
                             shrink: true,
                         }}/>
                         </div>
 
-                    <div class='wrapper-login'>
+                    <div className='wrapper-login'>
                         {/* <div class='normalText'>HASŁO: </div> */}
                         <TextField
                         id="standard-full-width"
@@ -65,6 +102,7 @@ class LoginPage extends React.Component {
                         placeholder="Hasło"
                         margin="normal"
                         fullWidth
+                        onChange={this.handleChangePassword}
                         InputLabelProps={{
                             shrink: true,
                         }}/>
@@ -73,7 +111,7 @@ class LoginPage extends React.Component {
 
             <div className='buttonPosition'>
             <Link to="/">
-                <Fab color="primary" aria-label="Add" style={styles.fabStyle}  variant="extended" onClick={() => console.log("Add button clicked!")} >
+                <Fab color="primary" aria-label="Add" style={styles.fabStyle}  variant="extended" onClick={this.handleSubmit} >
                     Zaloguj
                 </Fab>
             </Link>

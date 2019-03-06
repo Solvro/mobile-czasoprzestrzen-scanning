@@ -33,9 +33,9 @@ class App extends Component {
       <MuiThemeProvider theme={blueTheme}>
       <Router>
       <div className="container">
-        <Toolbar />
+        {/* <Toolbar /> */}
 
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={LoginPage} />
         <Route path="/rents" component={Rents} />
         <Route path="/clients" component={Clients} />
         <Route path="/account" component={Account} />
