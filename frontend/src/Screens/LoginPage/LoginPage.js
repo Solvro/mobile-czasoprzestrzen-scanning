@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
 
+import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import logo from '../../assests/czasoprzestrzen_logo.png';
 
@@ -28,7 +29,7 @@ const styles = theme => ({
   fabStyle:{
       marginTop: '1em',
       width: '250px',
-      height: '50px'
+      height: '100px'
   }
 });
 
@@ -76,7 +77,8 @@ class LoginPage extends React.Component {
         <Grid container spacing={24}>
             <Grid item xs={3}></Grid>
             <Grid item xs={6}>
-                <form autoComplete="off" className='FormField' >
+            <Paper>
+                <form autoComplete="off" className='LoginField' >
                 <img src={logo} className='LogoStart' alt="Logo" />
                 <FormControl className={classes.formControl}>
 
@@ -118,6 +120,7 @@ class LoginPage extends React.Component {
             </div>
 
             </form>
+        </Paper>
         </Grid>
         <Grid item xs={3}></Grid>
     </Grid>
