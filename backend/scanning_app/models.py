@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 
 TYPE = (
@@ -9,16 +10,13 @@ TYPE = (
 )
 
 
-class Client(models.Model):
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
-    email = models.EmailField()
+class Client(AbstractUser):
     phone = PhoneNumberField()
     address = models.CharField(null=True, max_length=255)
     business_data = models.CharField(null=True, max_length=255)
 
     def __str__(self):
-        return "{}".format(self.first_name)
+        return "{} {}".format(self.first_name, self.last_name)
 
 
 class Equipment(models.Model):
@@ -36,8 +34,8 @@ class RentalInfo(models.Model):
     rental_date = models.DateField(auto_now=True)
     expected_return = models.DateField()
     actual_return = models.DateField(null=True)
-    equipment_data_id = models.ForeignKey(Equipment, on_delete=models.DO_NOTHING)
-    client_data_id = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+    equipment_data = models.ForeignKey(Equipment, on_delete=models.DO_NOTHING)
+    client_data = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return "{}".format(self.rental_date)
