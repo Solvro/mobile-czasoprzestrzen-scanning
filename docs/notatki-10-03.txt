@@ -1,0 +1,4 @@
+Endpoints:
+- rejestracja,
+- wynajmowanie konkretnego sprzętu,
+- zwracanie sprzętu,

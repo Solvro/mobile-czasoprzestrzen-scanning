@@ -1,0 +1,28 @@
+Admin:
+- logowanie,
+- widok listy całego sprzętu,
+- widok sprzetu wypożyczonego (kto, kiedy, do kiedy),
+- widok wszystkich klientów,
+- lista niezatwierdzonych klientów,
+- dodawanie/usuwanie/edycja sprzętu (QR),
+- zarządzanie użytkownikami: usuwanie, edycja, zatwierdzanie, dodawanie nowych administratorów (?!) - tylko dla roota,
+- historia wypożyczeń sprzetu,
+- zwracanie sprzetu poprzez wpisanie identyfikatora danego przedmiotu,
+
+Klient:
+- logowanie i rejestracja,
+- lista całego sprzętu,
+- lista sprzetu wypożyczonego przez klienta,
+- edycja swojego profilu,
+- usunięcie konta klienta - nie można usunąć konta, jeżeli klient ma wypożyczony sprzęt; 
+- historia swoich wypożyczeń,
+- wypożyczanie i zwracanie sprzętu,
+
+
+WAŻNE:
+
+- Spytać o zwracanie po lokalizacji!!!!!!!!!!!!!!!!!!!
+
+
+- Rozwiązanie kwestii adminów w Django
+

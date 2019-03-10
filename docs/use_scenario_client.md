@@ -1,0 +1,1 @@
+# Scrnariusze użycia - klient

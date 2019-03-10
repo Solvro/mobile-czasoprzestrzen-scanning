@@ -1,0 +1,2 @@
+# Scenariusze użycia - administrator
+
