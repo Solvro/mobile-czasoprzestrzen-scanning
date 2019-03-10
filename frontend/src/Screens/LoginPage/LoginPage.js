@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import logo from '../../assests/czasoprzestrzen_logo.png';
 
-import axios from 'axios';
+// import axios from 'axios';
 
 import "./LoginPanel.css"
 
@@ -64,8 +64,8 @@ class LoginPage extends React.Component {
     //     console.log(res);
     //     console.log(res.data);
     //   })
-    axios.get('http://localhost:1337/ping')
-      .then(response => console.log(response))
+    // axios.get('http://localhost:1337/ping')
+    //   .then(response => console.log(response))
   }
 
 
@@ -112,8 +112,8 @@ class LoginPage extends React.Component {
             </FormControl>
 
             <div className='buttonPosition'>
-            <Link to="/">
-                <Fab color="primary" aria-label="Add" style={styles.fabStyle}  variant="extended" onClick={this.handleSubmit} >
+            <Link to="/home">
+                <Fab color="primary" aria-label="Add" style={styles.fabStyle}  variant="extended" onClick={this.props.login} >
                     Zaloguj
                 </Fab>
             </Link>
