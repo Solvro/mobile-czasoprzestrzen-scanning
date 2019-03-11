@@ -4,7 +4,7 @@
 Administrator loguje się do swojego panelu za pomocą nadanego loginu i hasła, zalogowanie się (jest warunkiem koniecznym do wykonania jakiegokolwiek działania). Istnieje możliwość zresetowania hasła.
 
 ## Lista dostępnego sprzętu
-Po zalogowaniu się administrator zostaje przekierowany na stronę z listą całego sprzętu znajdującego się w magazynie. Zakładka sprzęt.
+Po zalogowaniu się administrator zostaje przekierowany na stronę z listą całego sprzętu znajdującego się w magazynie. Zakładka sprzęt. Po kliknięciu wybranego wiersza widzimy szczegółowe informacje o danej rzeczy.
 W liście widzimy informacje o:
 1. nazwa sprzętu
 2. typ
