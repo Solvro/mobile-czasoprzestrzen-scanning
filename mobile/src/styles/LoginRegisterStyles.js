@@ -48,7 +48,7 @@ const loginRegisterStyles = StyleSheet.create({
 
     //CheckBox
 
-      checkBoxContainer: {
+    checkBoxContainer: {
         marginRight: 30,
         marginLeft: 30,
         marginBottom: 12,

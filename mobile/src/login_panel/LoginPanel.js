@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, StatusBar} from 'react-native';
 import {Container, Text} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
