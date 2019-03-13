@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 import buttonStyles from '../styles/ButtonStyles.js';   
+import inputFieldsStyles from '../styles/InputFieldsStyles.js';
 
 import logo from '../assets/logo.jpg';
 
@@ -148,8 +149,8 @@ export default class RegistrationPanel extends React.Component {
                               Czasoprzestrzeń
                           </Animated.Text>
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({username: text})}
                               keyboardType = 'default'
                               returnKeyType = 'next'
@@ -158,8 +159,8 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({email: text})}
                               keyboardType = 'email-address'
                               returnKeyType = 'next'
@@ -168,8 +169,8 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({password1: text})}
                               secureTextEntry = {true}
                               returnKeyType = 'next'
@@ -178,8 +179,8 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({password2: text})}
                               secureTextEntry = {true}
                               returnKeyType = 'next'
@@ -188,8 +189,8 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({phoneNumber: text})}
                               keyboardType = 'phone-pad'
                               returnKeyType = 'next'

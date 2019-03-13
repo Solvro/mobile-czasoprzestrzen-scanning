@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const inputFieldsStyles = StyleSheet.create({
+const inputFieldsStyles = StyleSheet.create({
     //Style of input field for login and registration panels
     input: {
         marginRight: 30,
@@ -15,3 +15,5 @@ export const inputFieldsStyles = StyleSheet.create({
         fontSize: 20,
     },
 });
+
+module.exports = inputFieldsStyles;
