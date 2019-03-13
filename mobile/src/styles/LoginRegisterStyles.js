@@ -32,19 +32,6 @@ const loginRegisterStyles = StyleSheet.create({
         height: 80,
     },
 
-    //Style of input field for login and registration panels
-    input: {
-        marginRight: 30,
-        marginLeft: 30,
-        marginBottom: 12,
-        borderColor: '#3b82c4',
-        borderBottomWidth: 2,
-    },
-
-    inputField: {
-        padding: 4,
-        fontSize: 20,
-    },
 
     //CheckBox
 
@@ -74,22 +61,7 @@ const loginRegisterStyles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20,
     },
-
-    //Button for login and register
-    actionButton: {
-        alignItems: 'center',
-        marginTop: 20,
-        backgroundColor: '#3b82c4',
-        marginRight: 35,
-        marginLeft: 35,
-        padding: 10,
-    },
-
-    buttonText: {
-        color: '#fff',
-        fontSize: 20,
-    },
-
+    
     //Link to another screen
     linkContainer: {
         marginTop: 30,

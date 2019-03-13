@@ -87,7 +87,7 @@ export default class ProfileView extends React.Component {
                         <View style={buttonStyles.buttonContainer}>
                             <TouchableOpacity onPress={() => this.deleteAccount()}>
                                 <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
-                                    <Icon name="md-trash" style={profileStyles.buttonIcons}/>
+                                    <Icon name="md-trash" style={buttonStyles.icons}/>
                                     <View style={buttonStyles.textContainer}>
                                         <Text style={buttonStyles.buttonText}> Usuń konto</Text>
                                     </View >
