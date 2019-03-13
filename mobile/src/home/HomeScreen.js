@@ -3,9 +3,9 @@ import {Container, Text} from 'native-base';
 import {View, Animated, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 
 import homeStyles from '../styles/HomeStyles.js';
+import buttonStyles from '../styles/ButtonStyles.js';
 import logo from '../assets/logo.jpg';
-
-import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {LinearGradient} from 'expo';
 
 export default class HomeScreen extends React.Component {
@@ -28,32 +28,32 @@ export default class HomeScreen extends React.Component {
                               Czasoprzestrzeń
                             </Animated.Text>
                       </View>
-                      <View style={homeStyles.buttonContainer}>
+                      <View style={buttonStyles.buttonContainer}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('Rent')}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={homeStyles.actionButton}>
-                                    <Ionicons name="md-add-circle-outline" style={homeStyles.icons}/>
-                                    <View style={homeStyles.textContainer}>
-                                        <Text style={homeStyles.buttonText}> Wypożycz</Text>
+                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                                    <Icon name="md-add-circle-outline" style={buttonStyles.icons}/>
+                                    <View style={buttonStyles.textContainer}>
+                                        <Text style={buttonStyles.buttonText}> Wypożycz</Text>
                                     </View >
                                 </LinearGradient>  
                             </TouchableOpacity>
                         </View>
-                        <View style={homeStyles.buttonContainer}>
+                        <View style={buttonStyles.buttonContainer}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('Return')}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={homeStyles.actionButton}>
-                                    <Ionicons name="md-remove-circle-outline" style={homeStyles.icons}/>
-                                    <View style={homeStyles.textContainer}>
-                                        <Text style={homeStyles.buttonText}> Zwróć</Text>
+                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                                    <Icon name="md-remove-circle-outline" style={buttonStyles.icons}/>
+                                    <View style={buttonStyles.textContainer}>
+                                        <Text style={buttonStyles.buttonText}> Zwróć</Text>
                                     </View >
                                 </LinearGradient>  
                             </TouchableOpacity>
                         </View>
-                        <View style={homeStyles.buttonContainer}>
+                        <View style={buttonStyles.buttonContainer}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('Equipment')}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={homeStyles.actionButton}>
-                                    <Ionicons name="md-list" style={homeStyles.icons}/>
-                                    <View style={homeStyles.textContainer}>
-                                        <Text style={homeStyles.buttonText}> Lista sprzętu</Text>
+                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                                    <Icon name="md-list" style={buttonStyles.icons}/>
+                                    <View style={buttonStyles.textContainer}>
+                                        <Text style={buttonStyles.buttonText}> Lista sprzętu</Text>
                                     </View >
                                 </LinearGradient>  
                             </TouchableOpacity>
