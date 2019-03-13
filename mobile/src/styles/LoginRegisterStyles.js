@@ -64,13 +64,15 @@ const loginRegisterStyles = StyleSheet.create({
     buttonAndLinkContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-        marginBottom: 40
+        alignItems: 'center',
+        marginBottom: 40,
     },
 
     registerButtonAndLinkContainer: {
         flex: 1,
         justifyContent: 'flex-end',
-        marginBottom: 20
+        alignItems: 'center',
+        marginBottom: 20,
     },
 
     //Button for login and register

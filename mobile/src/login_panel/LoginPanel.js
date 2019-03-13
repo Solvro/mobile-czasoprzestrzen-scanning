@@ -1,9 +1,12 @@
 import React from 'react';
 import {View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, StatusBar} from 'react-native';
 import {Container, Text} from 'native-base';
+import {LinearGradient} from 'expo';
 import DismissKeyboard from 'dismissKeyboard';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
+import buttonStyles from '../styles/ButtonStyles.js';   
 
 import logo from '../assets/logo.jpg';
 
@@ -115,8 +118,13 @@ export default class LoginPanel extends React.Component {
                             />
                         </View>
                         <View style ={loginRegisterStyles.buttonAndLinkContainer}>
-                            <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressLogin()}>
-                                <Text style={loginRegisterStyles.buttonText}> Zaloguj się </Text>
+                            <TouchableOpacity onPress={() => this.handlePressLogin()}>
+                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                                    <Icon name="md-key" style={buttonStyles.icons}/>
+                                    <View style={buttonStyles.textContainer}>
+                                        <Text style={buttonStyles.buttonText}>Zaloguj się</Text>
+                                    </View >
+                                </LinearGradient>  
                             </TouchableOpacity>
                             <TouchableOpacity style={loginRegisterStyles.linkContainer} 
                                 onPress={() => this.props.navigation.navigate("SignUp")}>

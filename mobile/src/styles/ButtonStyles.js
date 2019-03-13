@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const ButtonStyles = StyleSheet.create({
+const buttonStyles = StyleSheet.create({
     // Button styles
     actionButton: {
         alignItems: 'center',
@@ -26,4 +26,22 @@ export const ButtonStyles = StyleSheet.create({
         padding: 20,
     },
 
+    textContainer: {
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        width: 190,
+    },
+
+    buttonText: {
+        color: '#fff',
+        fontSize: 27,
+    },
+
+    icons: {
+        fontSize: 27,
+        color: '#d9e1e8',
+    },
+
 });
+
+module.exports = buttonStyles;
