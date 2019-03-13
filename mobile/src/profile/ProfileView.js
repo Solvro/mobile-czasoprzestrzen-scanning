@@ -3,10 +3,11 @@ import {Container, Text} from 'native-base';
 import {Image, View, Animated, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 
 import profileStyles from '../styles/ProfileStyles.js';
+import buttonStyles from '../styles/ButtonStyles.js';
 import image from '../assets/user-in-a-square.png';
 
 
-import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {LinearGradient} from 'expo';
 
 
@@ -35,7 +36,7 @@ export default class ProfileView extends React.Component {
                         <View style={profileStyles.userDataContainer1}>
                             <View style={profileStyles.userDataContainer}>
                                 <View>
-                                    <Ionicons name="md-contact" style={profileStyles.icons}/>
+                                    <Icon name="md-contact" style={profileStyles.icons}/>
                                 </View>
                                 <View>
                                     <Text style={profileStyles.typeText}>
@@ -48,7 +49,7 @@ export default class ProfileView extends React.Component {
                             </View>
                             <View style={profileStyles.userDataContainer}>
                                 <View>
-                                    <Ionicons name="md-mail" style={profileStyles.icons}/>
+                                    <Icon name="md-mail" style={profileStyles.icons}/>
                                 </View>
                                 <View>
                                     <Text style={profileStyles.typeText}>
@@ -61,7 +62,7 @@ export default class ProfileView extends React.Component {
                             </View>
                             <View style={profileStyles.userDataContainer}>
                                 <View>
-                                    <Ionicons name="md-call" style={profileStyles.icons}/>
+                                    <Icon name="md-call" style={profileStyles.icons}/>
                                 </View>
                                 <View>
                                     <Text style={profileStyles.typeText}>
@@ -73,22 +74,22 @@ export default class ProfileView extends React.Component {
                                 </View>
                             </View>
                         </View>
-                        <View style={profileStyles.buttonContainer}>
+                        <View style={buttonStyles.buttonContainer}>
                             <TouchableOpacity onPress={() => this.editData()}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={profileStyles.actionButton}>
-                                    <Ionicons name="md-create" style={profileStyles.buttonIcons}/>
-                                    <View style={profileStyles.textContainer}>
-                                        <Text style={profileStyles.buttonText}> Aktualizuj dane</Text>
+                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                                    <Icon name="md-create" style={buttonStyles.icons}/>
+                                    <View style={buttonStyles.textContainer}>
+                                        <Text style={buttonStyles.buttonText}> Zmień dane</Text>
                                     </View >
                                 </LinearGradient>  
                             </TouchableOpacity>
                         </View>
-                        <View style={profileStyles.buttonContainer}>
+                        <View style={buttonStyles.buttonContainer}>
                             <TouchableOpacity onPress={() => this.deleteAccount()}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={profileStyles.actionButton}>
-                                    <Ionicons name="md-trash" style={profileStyles.buttonIcons}/>
-                                    <View style={profileStyles.textContainer}>
-                                        <Text style={profileStyles.buttonText}> Usuń konto</Text>
+                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                                    <Icon name="md-trash" style={profileStyles.buttonIcons}/>
+                                    <View style={buttonStyles.textContainer}>
+                                        <Text style={buttonStyles.buttonText}> Usuń konto</Text>
                                     </View >
                                 </LinearGradient>  
                             </TouchableOpacity>
