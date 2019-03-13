@@ -120,7 +120,7 @@ export default class LoginPanel extends React.Component {
                         <View style ={loginRegisterStyles.buttonAndLinkContainer}>
                             <TouchableOpacity onPress={() => this.handlePressLogin()}>
                                 <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
-                                    <Icon name="md-key" style={buttonStyles.icons}/>
+                                    <Icon name="md-log-in" style={buttonStyles.icons}/>
                                     <View style={buttonStyles.textContainer}>
                                         <Text style={buttonStyles.buttonText}>Zaloguj się</Text>
                                     </View >

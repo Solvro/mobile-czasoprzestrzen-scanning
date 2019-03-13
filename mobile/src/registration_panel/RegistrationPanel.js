@@ -211,7 +211,7 @@ export default class RegistrationPanel extends React.Component {
                       <View style ={loginRegisterStyles.registerButtonAndLinkContainer}>
                       <TouchableOpacity onPress={() => this.handlePressRegister()}>
                                 <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
-                                    <Icon name="md-add" style={buttonStyles.icons}/>
+                                    <Icon name="md-person-add" style={buttonStyles.icons}/>
                                     <View style={buttonStyles.textContainer}>
                                         <Text style={buttonStyles.buttonText}>Zarejestruj się</Text>
                                     </View >
