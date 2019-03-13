@@ -10,7 +10,6 @@ import './AddButton.css';
 const styles = theme => ({
     fab: {
       margin: theme.spacing.unit,
-
     },
     extendedIcon: {
       marginRight: theme.spacing.unit,
@@ -18,22 +17,19 @@ const styles = theme => ({
     },
   });
 
-function addButton(props) {
-    return (
-
-        <div className='AddButtonPosition'>
-        <Link to="/adds">
-        <Fab color="primary" aria-label="Add" style={{height: 60, width: 150}}  variant="extended" onClick={() => console.log("Add button clicked!")} >
-            Dodaj
-          <AddIcon />
-        </Fab>
-        </Link>
-        </div>
+function Button(props) {
+    return (  
+      <Link to={props.link}>
+      <Fab color="primary" aria-label="Add" variant="extended" style={{width: '150px' , height: '70px'}} onClick={() => console.log("Add button clicked!")} >
+          {props.text}
+        <AddIcon />
+      </Fab>
+      </Link>
     );
 }
 
-addButton.propTypes = {
+Button.propTypes = {
     classes: PropTypes.object.isRequired,
   };
 
-export default withStyles(styles)(addButton);
+export default withStyles(styles)(Button);

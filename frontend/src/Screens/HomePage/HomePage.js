@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import SearchContainer from '../../Components/SearchContainer/SearchContainer';
 import Table from '../../Components/Table/Table';
 import Grid from '@material-ui/core/Grid';
-import AddButton from '../../Components/AddButton/AddButton';
+import Button from '../../Components/Button/Button';
 
 class HomePage extends Component {
   render() {
@@ -15,7 +15,7 @@ class HomePage extends Component {
                 <SearchContainer />
                 <Table />
             </Grid>
-            <Grid item xs={2}><AddButton /></Grid>
+            <Grid item xs={2}><div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div></Grid>
         </Grid>
         
         </div>
