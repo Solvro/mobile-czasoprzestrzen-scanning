@@ -22,7 +22,7 @@ class Client(AbstractUser):
 class Equipment(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=400)
-    availability = models.BooleanField()
+    available = models.BooleanField(default=False)
     type = models.CharField(choices=TYPE, max_length=64)
     max_rent_time = models.DurationField()
 

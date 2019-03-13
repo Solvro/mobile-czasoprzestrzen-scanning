@@ -2,20 +2,11 @@ from rest_framework import serializers
 
 from .models import Equipment, Client, RentalInfo
 
-# TODO: reconsider using HyperlinkedModelSerializer,
-#  passing objects with them in json is weird
 
-
-class EquipmentSerializer(serializers.HyperlinkedModelSerializer):
+class EquipmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipment
-        fields = ('id',
-                  'url',
-                  'name',
-                  'description',
-                  'availability',
-                  'type',
-                  'max_rent_time')
+        fields = '__all__'
 
 
 class SignUpClientSerializer(serializers.ModelSerializer):
@@ -25,55 +16,40 @@ class SignUpClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ('username',
-                  'password',
-                  'first_name',
-                  'last_name',
-                  'email',
-                  'phone',
-                  'address',
-                  'business_data')
+        fields = '__all__'
 
 
-class ClientSerializer(serializers.HyperlinkedModelSerializer):
+class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ('id',
-                  'username',
-                  'url',
-                  'first_name',
-                  'last_name',
-                  'email',
-                  'phone',
-                  'address',
-                  'business_data')
+        fields = ('id', 'username', 'first_name', 'last_name',
+                  'email', 'phone', 'address', 'business_data')
 
 
-# TODO: we assume that whenever actual_return date is specified,
-#  it's in the past, meaning equipment is available.
-#  Which does not necessarily have to be True
+# It's assumed that whenever actual_return date is specified,
+# it's in the past, meaning equipment is still available.
 class RentalInfoSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if 'actual_return' not in validated_data:
             equipment = validated_data['equipment_data']
-            equipment.availability = False
+            equipment.available = False
             equipment.save()
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
         if instance.actual_return is None and 'actual_return' in validated_data:
             equipment = instance.equipment_data
-            equipment.availability = True
+            equipment.available = True
             equipment.save()
         return super().update(instance, validated_data)
 
     class Meta:
         model = RentalInfo
-        fields = ('id',
-                  'url',
-                  'rental_date',
-                  'expected_return',
-                  'actual_return',
-                  'equipment_data',
-                  'client_data')
+        exclude = ('rental_date',)
+
+
+class RentalInfoGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RentalInfo
+        fields = '__all__'

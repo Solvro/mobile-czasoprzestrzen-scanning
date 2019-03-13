@@ -45,7 +45,7 @@ class RentalInfoView(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         equipment_to_rent = \
             Equipment.objects.get(id=request.data['equipment_data'])
-        if not equipment_to_rent.availability:
+        if not equipment_to_rent.available:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
 
