@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import SearchContainer from '../../Components/SearchContainer/SearchContainerRents';
 import Grid from '@material-ui/core/Grid';
 
 class Account extends Component {
@@ -10,7 +9,6 @@ class Account extends Component {
         <Grid container spacing={24}>
             <Grid item xs={2}></Grid>
             <Grid item xs={8}>
-                <SearchContainer />
                 Tutaj będzie można zmienić hasło wylogować się i akceptować nowych klientów.
             </Grid>
             <Grid item xs={2}></Grid>

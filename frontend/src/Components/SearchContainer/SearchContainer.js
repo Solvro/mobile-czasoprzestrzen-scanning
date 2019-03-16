@@ -7,21 +7,22 @@ import SearchField from './Selects/SearchField';
 import Select from './Selects/Select';
 
 
-class SearchContainer extends Component {
+function SearchContainer(props) {
 
-    render () {
         return (
                     <div className='SearchContent'>
                     <Grid container spacing={24}>
                         <Grid item xs={6}>
-                            <SearchField />
+                            <div className='SearchField'> 
+                                <SearchField placeholder={props.placeholder} />
+                            </div>
                         </Grid>
                         <Grid item xs={6}>
                             <Select />
                         </Grid></Grid>
                     </div>
-        )
-    }
+        );
+    
 }
 
 export default SearchContainer;

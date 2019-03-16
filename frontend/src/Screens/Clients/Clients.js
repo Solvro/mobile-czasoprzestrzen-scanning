@@ -11,7 +11,7 @@ class Clients extends Component {
         <Grid container spacing={24}>
             <Grid item xs={2}></Grid>
             <Grid item xs={8}>
-                <SearchContainer />
+                <SearchContainer placeholder={"Wyszukaj po nazwie ..."}/>
                 <Table />
             </Grid>
             <Grid item xs={2}></Grid>

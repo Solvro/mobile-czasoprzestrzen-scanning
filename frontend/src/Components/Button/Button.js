@@ -18,6 +18,7 @@ const styles = theme => ({
   });
 
 function Button(props) {
+  console.log(props.link);
     return (  
       <Link to={props.link}>
       <Fab color="primary" aria-label="Add" variant="extended" style={{width: '150px' , height: '70px'}} onClick={() => console.log("Add button clicked!")} >

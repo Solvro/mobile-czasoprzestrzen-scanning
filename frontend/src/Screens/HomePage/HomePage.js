@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import SearchContainer from '../../Components/SearchContainer/SearchContainer';
-import Table from '../../Components/Table/Table';
+import Table from '../../Components/Table/HomeTable';
 import Grid from '@material-ui/core/Grid';
 import Button from '../../Components/Button/Button';
 
@@ -12,7 +12,7 @@ class HomePage extends Component {
         <Grid container spacing={24}>
             <Grid item xs={2}></Grid>
             <Grid item xs={8}>
-                <SearchContainer />
+                <SearchContainer placeholder={"Wyszukaj po nazwie ..."} />
                 <Table />
             </Grid>
             <Grid item xs={2}><div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div></Grid>

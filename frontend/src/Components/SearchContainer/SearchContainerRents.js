@@ -5,20 +5,21 @@ import Grid from '@material-ui/core/Grid';
 import SearchField from './Selects/SearchField';
 
 
-class SearchContainerRents extends Component {
+function SearchContainerRents (props) {
 
-    render () {
-        return (
-            <div className='SearchContent'>
-            <Grid container spacing={24}>
-                <Grid item xs={6}></Grid>
-                <Grid item xs={6}>
-                    <SearchField />
-                </Grid>
-            </Grid>
+return (
+    <div className='SearchContent'>
+    <Grid container spacing={24}>
+        <Grid item xs={6}>
+            <div className='SearchField'> 
+            <SearchField placeholder={props.placeholder} />
             </div>
-        )
-    }
+        </Grid>
+        <Grid item xs={6}>
+            {/* <Select /> */}
+        </Grid></Grid>
+    </div>
+);
 }
 
 export default SearchContainerRents;
