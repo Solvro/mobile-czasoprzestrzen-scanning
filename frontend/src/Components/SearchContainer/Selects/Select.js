@@ -16,7 +16,7 @@ const styles = theme => ({
 
 class ControlledOpenSelect extends React.Component {
   state = {
-    age: '',
+    item: '',
     open: false,
   };
 
@@ -40,9 +40,9 @@ class ControlledOpenSelect extends React.Component {
         <FormControl className={classes.formControl}>
           <NativeSelect
             className={classes.selectEmpty}
-            value={this.state.age}
-            chosenItem="age"
-            onChange={this.handleChange('age')}
+            value={this.state.item}
+            chosenItem="item"
+            onChange={this.handleChange('item')}
           >
             <option value="" disabled>
             Wybierz typ

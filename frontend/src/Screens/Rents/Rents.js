@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import SearchContainer from '../../Components/SearchContainer/SearchContainerRents';
+import SearchContainer from '../../Components/SearchContainer/SearchContainer';
 import Table from '../../Components/Table/RentsTable';
 import Grid from '@material-ui/core/Grid';
 
