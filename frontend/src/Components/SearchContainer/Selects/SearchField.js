@@ -11,6 +11,7 @@ function SearchField(props) {
             placeholder={props.placeholder}
             fullWidth
             onChange={()=> console.log("Changed!")}
+            InputProps={props.inputprops}
             InputLabelProps={{
             shrink: true,
         }}/>

@@ -4,6 +4,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+// import styles from  '../Styles/materialStyles';
 
 import './AddButton.css';
 
@@ -15,13 +16,17 @@ const styles = theme => ({
       marginRight: theme.spacing.unit,
       marginLeft: theme.spacing.unit,
     },
+    sizeButton: {
+      width: '15em',
+      height: '5em'
+    }
   });
 
 function Button(props) {
-  console.log(props.link);
+  const { classes } = props;
     return (  
       <Link to={props.link}>
-      <Fab color="primary" aria-label="Add" variant="extended" style={{width: '150px' , height: '70px'}} onClick={() => console.log("Add button clicked!")} >
+      <Fab color="primary" aria-label="Add" variant="extended" className={classes.sizeButton} onClick={() => console.log("Add button clicked!")} >
           {props.text}
         <AddIcon />
       </Fab>

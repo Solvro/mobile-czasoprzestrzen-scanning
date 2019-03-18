@@ -51,7 +51,7 @@ function table ( props ) {
 
     let header = [];
     let body = [];
-    console.log(props.header);
+    
     for (var i = 0; i < props.header.length ; i++){
       header.push(<CustomTableCell align='center'> {props.header[i]} </CustomTableCell>);
     }

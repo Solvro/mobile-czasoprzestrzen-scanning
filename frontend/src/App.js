@@ -10,6 +10,7 @@ import Account from './Screens/Account/Account';
 import Adds from './Screens/Adds/Adds';
 import Toolbar from './Components/Toolbar/Toolbar';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const blueTheme = createMuiTheme({
   palette: {
@@ -46,5 +47,9 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
 
 export default App;
