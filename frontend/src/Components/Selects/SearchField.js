@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
-import '../Search.css';
+import './Search.css';
 
 
 function SearchField(props) {

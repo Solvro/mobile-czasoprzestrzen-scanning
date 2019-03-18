@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import TypeSelect from '../SearchContainer/Selects/Select';
+import TypeSelect from '../Selects/Select';
 import Button from '../Button/Button';
-import InputField from '../SearchContainer/Selects/SearchField';
+import InputField from '../Selects/SearchField';
 import './AddForm.css';
 
 const styles = theme => ({

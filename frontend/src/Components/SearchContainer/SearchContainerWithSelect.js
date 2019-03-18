@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import './Search.css';
 import Grid from '@material-ui/core/Grid';
 
-import SearchField from './Selects/SearchField';
-import Select from './Selects/Select';
+import SearchField from '../Selects/SearchField';
+import Select from '../Selects/Select';
 
 
 function SearchContainerWithSelect(props) {
