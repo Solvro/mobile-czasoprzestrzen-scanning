@@ -5,9 +5,10 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import {Link} from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+
 import './AddForm.css';
 
 const styles = theme => ({
@@ -55,6 +56,7 @@ class AddForm extends React.Component {
     const { classes } = this.props;
 
     return (
+      <Paper>
       <form autoComplete="off" className='FormField'>
       <div class='headText'>Dodaj nową rzecz do magazynu</div>
         <FormControl className={classes.formControl}>
@@ -113,6 +115,7 @@ class AddForm extends React.Component {
         </Link>
         </div>
       </form>
+      </Paper>
     );
   }
 }
