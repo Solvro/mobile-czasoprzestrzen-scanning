@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import './Search.css';
 import Grid from '@material-ui/core/Grid';
-import SearchField from '../Selects/SearchField';
+import SearchField from '../Inputs/InputField';
 
 
 function SearchContainer (props) {

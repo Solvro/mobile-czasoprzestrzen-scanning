@@ -5,7 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TypeSelect from '../Selects/Select';
 import Button from '../Button/Button';
-import InputField from '../Selects/SearchField';
+import InputField from '../Inputs/InputField';
 import './AddForm.css';
 
 const styles = theme => ({
@@ -27,7 +27,7 @@ class AddForm extends React.Component {
 
         <div class='wrapper'>
           <div class='normalText'>Nazwa urządzenia: </div>
-          <InputField placeholder={"Nazwa"}></InputField>
+          <InputField placeholder={"Nazwa"} rows={"1"}></InputField>
         </div>
 
         <div class='wrapper'>
@@ -35,9 +35,14 @@ class AddForm extends React.Component {
         </div>
 
         <div class='wrapper'>
+          <div class='normalText'>Opis </div>
+          <InputField placeholder={"Opis"} rows={"4"}></InputField>
+        </div>
+
+        <div class='wrapper'>
           <div class='normalText'>Maksymalny czas wypożyczenia: </div>
           <InputField placeholder={"Czas wypożyczenia"} inputprops={{
-                endAdornment: <InputAdornment position="end">dni</InputAdornment>}}>
+                endAdornment: <InputAdornment position="end" rows={"1"}>dni</InputAdornment>}}>
           </InputField>
         </div>
       </FormControl>

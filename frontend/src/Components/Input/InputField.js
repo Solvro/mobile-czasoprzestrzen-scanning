@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
-import './Search.css';
 
 
 function SearchField(props) {
@@ -13,8 +12,10 @@ function SearchField(props) {
             onChange={()=> console.log("Changed!")}
             InputProps={props.inputprops}
             InputLabelProps={{
-            shrink: true,
-        }}/>
+            shrink: true}}
+            multiline
+            rowsMax={props.rows}
+            />
         
     );
 }

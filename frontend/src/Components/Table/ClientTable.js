@@ -20,8 +20,7 @@ function ClientTable (props) {
         <DeleteIcon />
       </IconButton>]);
   }
-   console.log("HEad "+header);
-   console.log("rows "+rows);
+   
   return (
       <Table header={header} row={rows}/>
   );
