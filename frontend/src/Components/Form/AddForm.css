@@ -25,3 +25,8 @@
 .buttonStyle{
     height: 50; width: 350;
 }
+
+.formControl {
+    width: 100%;
+    min-width: 120;
+  }

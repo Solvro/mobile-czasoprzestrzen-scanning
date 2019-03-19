@@ -57,7 +57,7 @@ function table ( props ) {
     }
     for (var j = 1; j < props.row.length ; j++){
       let children = [];
-      for (var i = 0; i < props.header.length ; i++){
+      for (i = 0; i < props.header.length ; i++){
           children.push(<CustomTableCell align='center'> {props.row[j][i]} </CustomTableCell>);
         }
       body.push(<TableRow key={props.row[j].id} className={classes.row} >{children}</TableRow>);

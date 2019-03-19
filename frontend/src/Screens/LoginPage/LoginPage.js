@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import {Link} from 'react-router-dom';
-import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
-
+import InputField from '../../Components/Input/InputField';
+import Button from '../../Components/Button/Button'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import logo from '../../assests/czasoprzestrzen_logo.png';
@@ -15,22 +13,10 @@ import logo from '../../assests/czasoprzestrzen_logo.png';
 import "./LoginPanel.css"
 
 const styles = theme => ({
-  button: {
-    display: 'block',
-  },
   formControl: {
     width: '100%',
     minWidth: 120,
   },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  fabStyle:{
-      marginTop: '1em',
-      width: '250px',
-      height: '100px'
-  }
 });
 
 class LoginPage extends React.Component {
@@ -49,26 +35,6 @@ class LoginPage extends React.Component {
     this.setState({ password: event.target.value });
   }
 
-  handleSubmit = event => {
-    // console.log("SUBMIT");
-    // event.preventDefault();
-
-    // const user = {
-    //   name: this.state.name,
-    //   password: this.state.password
-    // };
-
-    // console.log(user);
-    // axios.post(`http://localhost:1337/login`, { user })
-    //   .then(res => {
-    //     console.log(res);
-    //     console.log(res.data);
-    //   })
-    // axios.get('http://localhost:1337/ping')
-    //   .then(response => console.log(response))
-  }
-
-
   render() {
     const { classes } = this.props;
 
@@ -77,46 +43,21 @@ class LoginPage extends React.Component {
         <Grid container spacing={24}>
             <Grid item xs={3}></Grid>
             <Grid item xs={6}>
+
             <Paper>
-                <form autoComplete="off" className='LoginField' >
+            <form autoComplete="off" className='LoginField' >
                 <img src={logo} className='LogoStart' alt="Logo" />
-                <FormControl className={classes.formControl}>
-
-                    <div className='wrapper-login'>
-                        {/* <div class='normalText'>LOGIN: </div> */}
-                        <TextField
-                        id="standard-full-width"
-                        className={classes.selectEmpty}
-                        placeholder="Login"
-                        margin="normal"
-                        fullWidth
-                        onChange={this.handleChangeUser}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}/>
-                        </div>
-
-                    <div className='wrapper-login'>
-                        {/* <div class='normalText'>HASŁO: </div> */}
-                        <TextField
-                        id="standard-full-width"
-                        className={classes.selectEmpty}
-                        placeholder="Hasło"
-                        margin="normal"
-                        fullWidth
-                        onChange={this.handleChangePassword}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}/>
-                    </div>
-            </FormControl>
+              <FormControl className={classes.formControl}>
+              <div class='wrapper'>
+                    <InputField placeholder={"Login"} rows={"1"} onChange={this.handleChangeUser}></InputField>
+              </div>
+              <div class='wrapper'>
+                    <InputField placeholder={"Hasło"} rows={"1"} onChange={this.handleChangePassword}></InputField>
+              </div>
+              </FormControl>
 
             <div className='buttonPosition'>
-            <Link to="/home">
-                <Fab color="primary" aria-label="Add" style={styles.fabStyle}  variant="extended" onClick={this.props.login} >
-                    Zaloguj
-                </Fab>
-            </Link>
+              <Button onClick={this.props.login} text={"Zaloguj"} link={"/home"}></Button>
             </div>
 
             </form>

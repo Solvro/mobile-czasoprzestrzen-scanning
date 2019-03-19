@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 
 
@@ -9,7 +9,7 @@ function SearchField(props) {
             style={{ }}
             placeholder={props.placeholder}
             fullWidth
-            onChange={()=> console.log("Changed!")}
+            onChange={props.onChange}
             InputProps={props.inputprops}
             InputLabelProps={{
             shrink: true}}

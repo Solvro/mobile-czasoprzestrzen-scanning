@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
-import Button from '../Button/Button';
+import Button from '../Button/AddButton';
 import TypeSelect from '../Selects/Select';
 import InputField from '../Input/InputField';
 
@@ -17,10 +17,13 @@ const styles = theme => ({
   },
 });
 
-class AddForm extends React.Component {
+class Form extends React.Component {
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes
+    } = this.props;
+
 
     return (
       <Paper>
@@ -59,8 +62,8 @@ class AddForm extends React.Component {
   }
 }
 
-AddForm.propTypes = {
+Form.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AddForm);
+export default withStyles(styles)(Form);
