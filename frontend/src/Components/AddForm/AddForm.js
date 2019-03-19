@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import TypeSelect from '../Selects/Select';
+import Paper from '@material-ui/core/Paper';
 import Button from '../Button/Button';
-import InputField from '../Inputs/InputField';
+import TypeSelect from '../Selects/Select';
+import InputField from '../Input/InputField';
+
 import './AddForm.css';
 
 const styles = theme => ({
@@ -21,6 +23,7 @@ class AddForm extends React.Component {
     const { classes } = this.props;
 
     return (
+      <Paper>
       <form autoComplete="off" className='FormField'>
       <div class='headText'>Dodaj nową rzecz do magazynu</div>
       <FormControl className={classes.formControl}>
@@ -51,6 +54,7 @@ class AddForm extends React.Component {
           <Button link={'/'} text={"Dodaj"}></Button>
         </div>
       </form>
+      </Paper>
     );
   }
 }

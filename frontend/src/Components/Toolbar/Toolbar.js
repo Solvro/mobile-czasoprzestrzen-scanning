@@ -15,7 +15,7 @@ const toolbar = ( props ) => (
         <nav className='DesktopOnly'>
             <ul className='NavigationItems'>
             <li className='NavigationItem'>
-                <Link className={props.active ? classes.active : null} to="/">Sprzęt</Link>
+                <Link className={props.active ? classes.active : null} to="/home">Sprzęt</Link>
             </li>
             <li className='NavigationItem'>
                 <Link className={props.active ? classes.active : null} to="/rents">Wypożyczenia</Link>

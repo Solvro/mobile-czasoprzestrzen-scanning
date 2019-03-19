@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './Search.css';
 import Grid from '@material-ui/core/Grid';
 
-import SearchField from '../Inputs/InputField';
+import SearchField from '../Input/InputField';
 import Select from '../Selects/Select';
 
 
