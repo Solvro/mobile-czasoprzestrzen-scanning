@@ -6,7 +6,7 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 from .models import Equipment, Client, RentalInfo
 from .serializers import EquipmentSerializer, ClientSerializer, \
-    RentalInfoSerializer, SignUpClientSerializer
+    RentalInfoSerializer, SignUpClientSerializer, RentalInfoGetSerializer
 from .permissions import PostPermissions, RentalInfoPermissions
 
 
@@ -42,10 +42,15 @@ class RentalInfoView(viewsets.ModelViewSet):
     serializer_class = RentalInfoSerializer
     permission_classes = (RentalInfoPermissions,)
 
+    def get_serializer_class(self):
+        if self.action in ['retrieve', 'list']:
+            return RentalInfoGetSerializer
+        return RentalInfoSerializer
+
     def create(self, request, *args, **kwargs):
         equipment_to_rent = \
             Equipment.objects.get(id=request.data['equipment_data'])
-        if not equipment_to_rent.availability:
+        if not equipment_to_rent.available:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
 
