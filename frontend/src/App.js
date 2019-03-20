@@ -30,8 +30,13 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
       <Router>
       <div className="container">
-        <Switch>
-        <Route
+      {/* <Switch>
+          <PrivateRoute path={'/home'} component={HomePage}/>
+          <PrivateRoute path={'/clients'} component={Clients}/>
+          <Route path={'/login'} component={LoginPage}/>
+      </Switch> */}
+      <Switch>
+         <Route
               path="/login"
               component={() => (
                 <LoginPage login={this.login} isLogged={this.state.isLoggedIn} />

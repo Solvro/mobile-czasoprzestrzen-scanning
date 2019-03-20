@@ -7,7 +7,7 @@ import Button from '../../Components/Button/Button'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import logo from '../../assests/czasoprzestrzen_logo.png';
-
+import theme, {spacing} from '../../theme';
 // import axios from 'axios';
 
 import "./LoginPanel.css"
@@ -40,7 +40,7 @@ class LoginPage extends React.Component {
 
     return (
         <div>
-        <Grid container spacing={24}>
+        <Grid container spacing={spacing}>
             <Grid item xs={3}></Grid>
             <Grid item xs={6}>
 
@@ -55,7 +55,6 @@ class LoginPage extends React.Component {
                     <InputField placeholder={"Hasło"} rows={"1"} onChange={this.handleChangePassword}></InputField>
               </div>
               </FormControl>
-
             <div className='buttonPosition'>
               <Button onClick={this.props.login} text={"Zaloguj"} link={"/home"}></Button>
             </div>
