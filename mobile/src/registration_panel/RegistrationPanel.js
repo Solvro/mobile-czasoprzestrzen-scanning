@@ -1,15 +1,11 @@
 import React from 'react';
-import {Alert, View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, StatusBar} from 'react-native';
-import {Container, Text, CheckBox, Body, ListItem, List} from 'native-base';
+import {Alert, View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {Container, Text, CheckBox, ListItem, List} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import validator from 'validator';
-import {LinearGradient} from 'expo';
-import Checkbox from 'react-native-checkbox';
-import Icon from 'react-native-vector-icons/Ionicons';
 import SubmitButton from '../components/SubmitButton';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
-import buttonStyles from '../styles/ButtonStyles.js';   
 import inputFieldsStyles from '../styles/InputFieldsStyles.js';
 
 import logo from '../assets/logo.jpg';

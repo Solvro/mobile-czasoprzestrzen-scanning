@@ -15,12 +15,12 @@ export default class SubmitButton extends React.Component {
     render () {
         return(
             <TouchableOpacity onPress={() => this.props.handlePress()}>
-                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                <View style={buttonStyles.actionButton}>
                     <Icon name="md-log-in" style={buttonStyles.icons}/>
                     <View style={buttonStyles.textContainer}>
                         <Text style={buttonStyles.buttonText}>{this.props.buttonText}</Text>
                     </View >
-                </LinearGradient>  
+                </View>  
             </TouchableOpacity>
         );
     }
