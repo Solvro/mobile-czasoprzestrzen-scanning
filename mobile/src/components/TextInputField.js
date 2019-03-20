@@ -25,7 +25,7 @@ export default class TextInputField extends React.Component {
         return(
             <View style={inputFieldsStyles.input}>
                 <TextInput style={inputFieldsStyles.inputField}
-                    onChangeText = {(text) => this.props.setStateHandler(text)}
+                    onChangeText = {(text) => this.props.setStateHandler(this.props.state, text)}
                     keyboardType = {this.props.keyboardType}
                     returnKeyType = {this.props.returnKeyType}
                     placeholder = {this.props.placeholder}

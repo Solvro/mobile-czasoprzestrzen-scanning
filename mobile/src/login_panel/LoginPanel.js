@@ -80,14 +80,12 @@ export default class LoginPanel extends React.Component {
     handlePressLogin = () => {
         this.props.navigation.navigate('SignedIn',);
     }
-    
-    setUsernameStateHandler = (text) => {
-        this.setState({username: text});
+
+    setStateHandler = (state, text) => {
+        this.setState({state, text});
+        console.log(text);
     }
 
-    setPasswordStateHandler = (text) => {
-        this.setState({password: text});
-    }
 
     render() {
         return(
@@ -106,14 +104,16 @@ export default class LoginPanel extends React.Component {
                             </Animated.Text>
                         </View>
                         <TextInputField 
-                            setStateHandler={this.setUsernameStateHandler} 
+                            state={'username'}
+                            setStateHandler={this.setStateHandler} 
                             keyboardType = 'email-address'
                             returnKeyType = 'next'
                             placeholder = {'Użytkownik'}
                             secureTextEntry = {false}
                         />
                         <TextInputField 
-                            setStateHandler={this.setUsernameStateHandler} 
+                            setStateHandler={this.setStateHandler} 
+                            state={'password'}
                             keyboardType = 'default'
                             returnKeyType = 'next'
                             placeholder = {'Hasło'}
