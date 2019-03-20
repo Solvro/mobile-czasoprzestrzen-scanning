@@ -4,6 +4,7 @@ import {Container, Text} from 'native-base';
 import {LinearGradient} from 'expo';
 import DismissKeyboard from 'dismissKeyboard';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SubmitButton from '../components/SubmitButton';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 import buttonStyles from '../styles/ButtonStyles.js';   
@@ -78,7 +79,7 @@ export default class LoginPanel extends React.Component {
     /**
      * Handles login button press action.
      */
-    handlePressLogin() {
+    handlePressLogin = () => {
         this.props.navigation.navigate('SignedIn',);
     }
 
@@ -119,14 +120,7 @@ export default class LoginPanel extends React.Component {
                             />
                         </View>
                         <View style ={loginRegisterStyles.buttonAndLinkContainer}>
-                            <TouchableOpacity onPress={() => this.handlePressLogin()}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
-                                    <Icon name="md-log-in" style={buttonStyles.icons}/>
-                                    <View style={buttonStyles.textContainer}>
-                                        <Text style={buttonStyles.buttonText}>Zaloguj się</Text>
-                                    </View >
-                                </LinearGradient>  
-                            </TouchableOpacity>
+                            <SubmitButton handlePress={this.handlePressLogin} buttonText={"Zaloguj się"} />
                             <TouchableOpacity style={loginRegisterStyles.linkContainer} 
                                 onPress={() => this.props.navigation.navigate("SignUp")}>
                                 <Text style={loginRegisterStyles.linkText}>Nie masz jeszcze konta? Zarejestruj się!</Text>

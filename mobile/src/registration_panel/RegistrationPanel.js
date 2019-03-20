@@ -6,6 +6,7 @@ import validator from 'validator';
 import {LinearGradient} from 'expo';
 import Checkbox from 'react-native-checkbox';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SubmitButton from '../components/SubmitButton';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 import buttonStyles from '../styles/ButtonStyles.js';   
@@ -79,7 +80,7 @@ export default class RegistrationPanel extends React.Component {
     /**
      * Handles login button press action.
      */
-    handlePressRegister() {
+    handlePressRegister = () => {
       //if sth is null
       if (!(this.state.username && this.state.password1
         && this.state.password2 && this.state.email
@@ -210,14 +211,7 @@ export default class RegistrationPanel extends React.Component {
                         </ListItem>
                       </List>
                       <View style ={loginRegisterStyles.registerButtonAndLinkContainer}>
-                      <TouchableOpacity onPress={() => this.handlePressRegister()}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
-                                    <Icon name="md-person-add" style={buttonStyles.icons}/>
-                                    <View style={buttonStyles.textContainer}>
-                                        <Text style={buttonStyles.buttonText}>Zarejestruj się</Text>
-                                    </View >
-                                </LinearGradient>  
-                            </TouchableOpacity>
+                        <SubmitButton handlePress={this.handlePressRegister} buttonText={"Zarejestruj się"}/>
                         <TouchableOpacity style={loginRegisterStyles.linkContainer}
                             onPress={() => this.props.navigation.navigate("SignIn")}>
                             <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>
