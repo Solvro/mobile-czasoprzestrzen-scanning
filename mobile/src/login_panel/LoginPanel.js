@@ -14,7 +14,6 @@ import TextInputField from '../components/TextInputField';
  * Renders login panel.
  */
 export default class LoginPanel extends React.Component {
-    
     constructor(props){
         super(props);
 
@@ -73,7 +72,6 @@ export default class LoginPanel extends React.Component {
         }).start();
     }
 
-
     /**
      * Handles login button press action.
      */
@@ -85,7 +83,6 @@ export default class LoginPanel extends React.Component {
         this.setState({state, text});
         console.log(text);
     }
-
 
     render() {
         return(

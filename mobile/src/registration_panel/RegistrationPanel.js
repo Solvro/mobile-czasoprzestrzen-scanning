@@ -4,6 +4,7 @@ import {Container, Text, CheckBox, ListItem, List} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import validator from 'validator';
 import SubmitButton from '../components/SubmitButton';
+import TextInputField from '../components/TextInputField';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 import inputFieldsStyles from '../styles/InputFieldsStyles.js';
@@ -130,6 +131,10 @@ export default class RegistrationPanel extends React.Component {
       );
     }
 
+    setStateHandler = (state, text) => {
+        this.setState({state, text});
+    }
+
     render() {
         return(
           <Container>
@@ -146,56 +151,46 @@ export default class RegistrationPanel extends React.Component {
                               Czasoprzestrzeń
                           </Animated.Text>
                       </View>
-                      <View style={inputFieldsStyles.input}>
-                          <TextInput style={inputFieldsStyles.inputField}
-                              onChangeText = {(text) => this.setState({username: text})}
-                              keyboardType = 'default'
-                              returnKeyType = 'next'
-                              placeholder = {'Nazwa użytkownika'}
-                              placeholderTextColor = '#a2aabc'
-                              underlineColorAndroid = 'transparent'
-                          />
-                      </View>
-                      <View style={inputFieldsStyles.input}>
-                          <TextInput style={inputFieldsStyles.inputField}
-                              onChangeText = {(text) => this.setState({email: text})}
-                              keyboardType = 'email-address'
-                              returnKeyType = 'next'
-                              placeholder = {'Adres e-mail'}
-                              placeholderTextColor = '#a2aabc'
-                              underlineColorAndroid = 'transparent'
-                          />
-                      </View>
-                      <View style={inputFieldsStyles.input}>
-                          <TextInput style={inputFieldsStyles.inputField}
-                              onChangeText = {(text) => this.setState({password1: text})}
-                              secureTextEntry = {true}
-                              returnKeyType = 'next'
-                              placeholder = {'Hasło'}
-                              placeholderTextColor = '#a2aabc'
-                              underlineColorAndroid = 'transparent'
-                          />
-                      </View>
-                      <View style={inputFieldsStyles.input}>
-                          <TextInput style={inputFieldsStyles.inputField}
-                              onChangeText = {(text) => this.setState({password2: text})}
-                              secureTextEntry = {true}
-                              returnKeyType = 'next'
-                              placeholder = {'Powtórz hasło'}
-                              placeholderTextColor = '#a2aabc'
-                              underlineColorAndroid = 'transparent'
-                          />
-                      </View>
-                      <View style={inputFieldsStyles.input}>
-                          <TextInput style={inputFieldsStyles.inputField}
-                              onChangeText = {(text) => this.setState({phoneNumber: text})}
-                              keyboardType = 'phone-pad'
-                              returnKeyType = 'next'
-                              placeholder = {'Numer telefonu'}
-                              placeholderTextColor = '#a2aabc'
-                              underlineColorAndroid = 'transparent'
-                          />
-                      </View>
+                    <TextInputField
+                        state = {'username'}
+                        setStateHandler={this.setStateHandler}
+                        keyboardType = 'default'
+                        returnKeyType = 'next'
+                        placeholder = {'Nazwa użytkownika'}
+                        secureTextEntry = {false}
+                    />
+                    <TextInputField
+                        state = {'email'}
+                        setStateHandler={this.setStateHandler}
+                        keyboardType = 'email-address'
+                        returnKeyType = 'next'
+                        placeholder = {'Adres e-mail'}
+                        secureTextEntry = {false}
+                    />
+                    <TextInputField
+                        state = {'password1'}
+                        setStateHandler={this.setStateHandler}
+                        keyboardType = 'default'
+                        returnKeyType = 'next'
+                        placeholder = {'Hasło'}
+                        secureTextEntry = {true}
+                    />
+                    <TextInputField
+                        state = {'password2'}
+                        setStateHandler={this.setStateHandler}
+                        keyboardType = 'default'
+                        returnKeyType = 'next'
+                        placeholder = {'Powtórz hasło'}
+                        secureTextEntry = {true}
+                    />
+                    <TextInputField
+                        state = {'phoneNumber'}
+                        setStateHandler={this.setStateHandler}
+                        keyboardType = 'phone-pad'
+                        returnKeyType = 'next'
+                        placeholder = {'Numer telefonu'}
+                        secureTextEntry = {true}
+                    />
                       <List>
                         <ListItem style={loginRegisterStyles.checkBoxContainer} onPress={() => this.setState({ isPerson: !this.state.isPerson })} >
                             <CheckBox 
