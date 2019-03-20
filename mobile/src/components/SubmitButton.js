@@ -7,6 +7,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import buttonStyles from '../styles/ButtonStyles.js';   
 
+
+/**
+ * Props:
+ * handlePress - defining behaviour on button click
+ * buttonText - text on button
+ */
 export default class SubmitButton extends React.Component {
     constructor (props) {
         super(props);

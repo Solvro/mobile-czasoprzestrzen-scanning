@@ -1,16 +1,14 @@
 import React from 'react';
-import {View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, StatusBar} from 'react-native';
+import {View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {Container, Text} from 'native-base';
-import {LinearGradient} from 'expo';
 import DismissKeyboard from 'dismissKeyboard';
-import Icon from 'react-native-vector-icons/Ionicons';
 import SubmitButton from '../components/SubmitButton';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
-import buttonStyles from '../styles/ButtonStyles.js';   
 import inputFieldsStyles from '../styles/InputFieldsStyles.js';
 
 import logo from '../assets/logo.jpg';
+import TextInputField from '../components/TextInputField';
 
 /**
  * Renders login panel.
@@ -82,6 +80,14 @@ export default class LoginPanel extends React.Component {
     handlePressLogin = () => {
         this.props.navigation.navigate('SignedIn',);
     }
+    
+    setUsernameStateHandler = (text) => {
+        this.setState({username: text});
+    }
+
+    setPasswordStateHandler = (text) => {
+        this.setState({password: text});
+    }
 
     render() {
         return(
@@ -99,26 +105,20 @@ export default class LoginPanel extends React.Component {
                                 Czasoprzestrzeń
                             </Animated.Text>
                         </View>
-                        <View style={inputFieldsStyles.input}>
-                            <TextInput style={inputFieldsStyles.inputField}
-                                onChangeText = {(text) => this.setState({username: text})}
-                                keyboardType = 'email-address'
-                                returnKeyType = 'next'
-                                placeholder = {'Użytkownik'}
-                                placeholderTextColor = '#a2aabc'
-                                underlineColorAndroid = 'transparent'
-                            />
-                        </View>
-                        <View style={inputFieldsStyles.input}>
-                            <TextInput style={inputFieldsStyles.inputField}
-                                onChangeText = {(text) => this.setState({password: text})}
-                                secureTextEntry = {true}
-                                returnKeyType = 'next'
-                                placeholder = {'Hasło'}
-                                placeholderTextColor = '#a2aabc'
-                                underlineColorAndroid = 'transparent'
-                            />
-                        </View>
+                        <TextInputField 
+                            setStateHandler={this.setUsernameStateHandler} 
+                            keyboardType = 'email-address'
+                            returnKeyType = 'next'
+                            placeholder = {'Użytkownik'}
+                            secureTextEntry = {false}
+                        />
+                        <TextInputField 
+                            setStateHandler={this.setUsernameStateHandler} 
+                            keyboardType = 'default'
+                            returnKeyType = 'next'
+                            placeholder = {'Hasło'}
+                            secureTextEntry = {true}
+                        />
                         <View style ={loginRegisterStyles.buttonAndLinkContainer}>
                             <SubmitButton handlePress={this.handlePressLogin} buttonText={"Zaloguj się"} />
                             <TouchableOpacity style={loginRegisterStyles.linkContainer} 
