@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
 import {View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, StatusBar} from 'react-native';
 import {Container, Text} from 'native-base';
+import {LinearGradient} from 'expo';
 import DismissKeyboard from 'dismissKeyboard';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
+import buttonStyles from '../styles/ButtonStyles.js';   
+import inputFieldsStyles from '../styles/InputFieldsStyles.js';
 
 import logo from '../assets/logo.jpg';
 
@@ -94,8 +98,8 @@ export default class LoginPanel extends React.Component {
                                 Czasoprzestrzeń
                             </Animated.Text>
                         </View>
-                        <View style={loginRegisterStyles.input}>
-                            <TextInput style={loginRegisterStyles.inputField}
+                        <View style={inputFieldsStyles.input}>
+                            <TextInput style={inputFieldsStyles.inputField}
                                 onChangeText = {(text) => this.setState({username: text})}
                                 keyboardType = 'email-address'
                                 returnKeyType = 'next'
@@ -104,8 +108,8 @@ export default class LoginPanel extends React.Component {
                                 underlineColorAndroid = 'transparent'
                             />
                         </View>
-                        <View style={loginRegisterStyles.input}>
-                            <TextInput style={loginRegisterStyles.inputField}
+                        <View style={inputFieldsStyles.input}>
+                            <TextInput style={inputFieldsStyles.inputField}
                                 onChangeText = {(text) => this.setState({password: text})}
                                 secureTextEntry = {true}
                                 returnKeyType = 'next'
@@ -115,8 +119,13 @@ export default class LoginPanel extends React.Component {
                             />
                         </View>
                         <View style ={loginRegisterStyles.buttonAndLinkContainer}>
-                            <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressLogin()}>
-                                <Text style={loginRegisterStyles.buttonText}> Zaloguj się </Text>
+                            <TouchableOpacity onPress={() => this.handlePressLogin()}>
+                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                                    <Icon name="md-log-in" style={buttonStyles.icons}/>
+                                    <View style={buttonStyles.textContainer}>
+                                        <Text style={buttonStyles.buttonText}>Zaloguj się</Text>
+                                    </View >
+                                </LinearGradient>  
                             </TouchableOpacity>
                             <TouchableOpacity style={loginRegisterStyles.linkContainer} 
                                 onPress={() => this.props.navigation.navigate("SignUp")}>

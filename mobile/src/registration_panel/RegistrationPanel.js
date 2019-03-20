@@ -3,9 +3,13 @@ import {Alert, View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableW
 import {Container, Text, CheckBox, Body, ListItem, List} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import validator from 'validator';
+import {LinearGradient} from 'expo';
 import Checkbox from 'react-native-checkbox';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
+import buttonStyles from '../styles/ButtonStyles.js';   
+import inputFieldsStyles from '../styles/InputFieldsStyles.js';
 
 import logo from '../assets/logo.jpg';
 
@@ -145,8 +149,8 @@ export default class RegistrationPanel extends React.Component {
                               Czasoprzestrzeń
                           </Animated.Text>
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({username: text})}
                               keyboardType = 'default'
                               returnKeyType = 'next'
@@ -155,8 +159,8 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({email: text})}
                               keyboardType = 'email-address'
                               returnKeyType = 'next'
@@ -165,8 +169,8 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({password1: text})}
                               secureTextEntry = {true}
                               returnKeyType = 'next'
@@ -175,8 +179,8 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({password2: text})}
                               secureTextEntry = {true}
                               returnKeyType = 'next'
@@ -185,8 +189,8 @@ export default class RegistrationPanel extends React.Component {
                               underlineColorAndroid = 'transparent'
                           />
                       </View>
-                      <View style={loginRegisterStyles.input}>
-                          <TextInput style={loginRegisterStyles.inputField}
+                      <View style={inputFieldsStyles.input}>
+                          <TextInput style={inputFieldsStyles.inputField}
                               onChangeText = {(text) => this.setState({phoneNumber: text})}
                               keyboardType = 'phone-pad'
                               returnKeyType = 'next'
@@ -206,9 +210,14 @@ export default class RegistrationPanel extends React.Component {
                         </ListItem>
                       </List>
                       <View style ={loginRegisterStyles.registerButtonAndLinkContainer}>
-                        <TouchableOpacity style={loginRegisterStyles.actionButton} onPress={() => this.handlePressRegister()}>
-                            <Text style={loginRegisterStyles.buttonText}> Zarejestruj się</Text>
-                        </TouchableOpacity>
+                      <TouchableOpacity onPress={() => this.handlePressRegister()}>
+                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
+                                    <Icon name="md-person-add" style={buttonStyles.icons}/>
+                                    <View style={buttonStyles.textContainer}>
+                                        <Text style={buttonStyles.buttonText}>Zarejestruj się</Text>
+                                    </View >
+                                </LinearGradient>  
+                            </TouchableOpacity>
                         <TouchableOpacity style={loginRegisterStyles.linkContainer}
                             onPress={() => this.props.navigation.navigate("SignIn")}>
                             <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>
