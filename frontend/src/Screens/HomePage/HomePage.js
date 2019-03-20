@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
-import theme, {spacing} from '../../theme';
 import SearchContainer from '../../Components/SearchContainer/SearchContainerWithSelect';
 import Table from '../../Components/Table/HomeTable';
-import Grid from '@material-ui/core/Grid';
+import Layout from '../../Components/Layout/Layout';
+
 import Button from '../../Components/Button/AddButton';
 
 class HomePage extends Component {
   render() {
     return (
-        <div>
-        <Grid container spacing={spacing}>
-            <Grid item xs={2}></Grid>
-            <Grid item xs={8}>
+      <Layout layoutDivide={"282"}>
                 <SearchContainer placeholder={"Wyszukaj po nazwie ..."} />
                 <Table />
-            </Grid>
-            <Grid item xs={2}><div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div></Grid>
-        </Grid>
-        
-        </div>
+                <div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div>
+      </Layout>
     );
   }
 }

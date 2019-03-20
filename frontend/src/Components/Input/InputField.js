@@ -4,7 +4,8 @@ import TextField from '@material-ui/core/TextField';
 
 function SearchField(props) {
     return (  
-        
+        <div>
+        <div class='normalText'>{props.label} </div>
         <TextField
             style={{ }}
             placeholder={props.placeholder}
@@ -16,7 +17,7 @@ function SearchField(props) {
             multiline
             rowsMax={props.rows}
             />
-        
+        </div>
     );
 }
 

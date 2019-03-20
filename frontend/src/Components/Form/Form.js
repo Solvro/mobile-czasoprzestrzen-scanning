@@ -2,11 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
-import Button from '../Button/AddButton';
-import TypeSelect from '../Selects/Select';
-import InputField from '../Input/InputField';
 
 import './AddForm.css';
 
@@ -17,51 +13,32 @@ const styles = theme => ({
   },
 });
 
-class Form extends React.Component {
+function Form(props) {
 
-  render() {
-    const {
-      classes
-    } = this.props;
+    const {classes} = props;
 
 
     return (
       <Paper>
       <form autoComplete="off" className='FormField'>
-      <div class='headText'>Dodaj nową rzecz do magazynu</div>
-      <FormControl className={classes.formControl}>
+        {props.header}
+        <FormControl className={classes.formControl}>
 
-        <div class='wrapper'>
-          <div class='normalText'>Nazwa urządzenia: </div>
-          <InputField placeholder={"Nazwa"} rows={"1"}></InputField>
-        </div>
+          {React.Children.map(props.children, child =>
+            <div class='wrapper'>{child}</div>
+          )}
 
-        <div class='wrapper'>
-          <TypeSelect ></TypeSelect>
-        </div>
-
-        <div class='wrapper'>
-          <div class='normalText'>Opis </div>
-          <InputField placeholder={"Opis"} rows={"4"}></InputField>
-        </div>
-
-        <div class='wrapper'>
-          <div class='normalText'>Maksymalny czas wypożyczenia: </div>
-          <InputField placeholder={"Czas wypożyczenia"} inputprops={{
-                endAdornment: <InputAdornment position="end" rows={"1"}>dni</InputAdornment>}}>
-          </InputField>
-        </div>
-      </FormControl>
+        </FormControl>
 
         <div className='buttonPosition'>
-          <Button link={'/'} text={"Dodaj"}></Button>
+          {props.button}
         </div>
+
       </form>
       </Paper>
     );
-  }
-}
 
+}
 Form.propTypes = {
   classes: PropTypes.object.isRequired,
 };

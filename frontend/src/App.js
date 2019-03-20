@@ -13,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false
+      isLoggedIn: true
     };
     this.isLoggedIn = this.isLoggedIn.bind(this);
     this.login = this.login.bind(this);
