@@ -1,4 +1,4 @@
-import React from 'react';
+    import React from 'react';
 import {Alert, View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {Container, Text, CheckBox, ListItem, List} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
@@ -7,7 +7,9 @@ import SubmitButton from '../components/SubmitButton';
 import TextInputField from '../components/TextInputField';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
-import inputFieldsStyles from '../styles/InputFieldsStyles.js';
+
+import alertStrings from '../assets/strings/AlertStrings.js';
+import buttonStrings from '../assets/strings/ButtonStrings.js';
 
 import logo from '../assets/logo.jpg';
 
@@ -82,26 +84,26 @@ export default class RegistrationPanel extends React.Component {
       if (!(this.state.username && this.state.password1
         && this.state.password2 && this.state.email
         && this.state.phoneNumber)) {
-          this.showWarningAlert('Pola nie mogą być puste.');
+          this.showWarningAlert(alertStrings.emptyField);
       }
       //validate username
       else if(this.state.username.length<5) {
-          this.showWarningAlert('Nazwa użytkownika powinna zawierać min 5 znaków.');
+          this.showWarningAlert(alertStrings.usernameToShort);
       }
       //validate e-mail
       else if (!validator.isEmail(this.state.email)){
-          this.showWarningAlert('Wprowadzono błędny adres e-mail.');
+          this.showWarningAlert(alertStrings.invalidEmail);
       }
       //validate passwords
       else if (this.state.password1.length<5) {
-          this.showWarningAlert('Hasło powinno zawierać min 5 znaków.');
+          this.showWarningAlert(alertStrings.passwordToShort);
       }
       else if (this.state.password1.localeCompare(this.state.password2)!=0) {
-          this.showWarningAlert('Wprowadzone hasła różnią się.');
+          this.showWarningAlert(alertStrings.differentPasswords);
       }
       //validate phone number
       else if (!validator.isMobilePhone(this.state.phoneNumber,'pl-PL')) {
-          this.showWarningAlert('Wprowadzono błędny numer telefonu');
+          this.showWarningAlert(alertStrings.invalidPhoneNumber);
       } else {
         this.showRegisterAlert();
         this.props.navigation.navigate("SignIn");
@@ -202,7 +204,10 @@ export default class RegistrationPanel extends React.Component {
                         </ListItem>
                       </List>
                       <View style ={loginRegisterStyles.registerButtonAndLinkContainer}>
-                        <SubmitButton handlePress={this.handlePressRegister} buttonText={"Zarejestruj się"}/>
+                        <SubmitButton 
+                            handlePress={this.handlePressRegister} 
+                            buttonText={buttonStrings.registrationButton}
+                            icon = 'md-add-circle-outline'/>
                         <TouchableOpacity style={loginRegisterStyles.linkContainer}
                             onPress={() => this.props.navigation.navigate("SignIn")}>
                             <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>
