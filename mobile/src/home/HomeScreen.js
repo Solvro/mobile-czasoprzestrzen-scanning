@@ -1,10 +1,12 @@
 import React from 'react';
 import {Container, Text} from 'native-base';
 import {View, Animated, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import SubmitButton from '../components/SubmitButton';
 
 import homeStyles from '../styles/HomeStyles.js';
 import buttonStyles from '../styles/ButtonStyles.js';
 import logo from '../assets/logo.jpg';
+import buttonStrings from '../assets/strings/ButtonStrings.js';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {LinearGradient} from 'expo';
 
@@ -29,34 +31,23 @@ export default class HomeScreen extends React.Component {
                             </Animated.Text>
                       </View>
                       <View style={buttonStyles.buttonContainer}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Rent')}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
-                                    <Icon name="md-add-circle-outline" style={buttonStyles.icons}/>
-                                    <View style={buttonStyles.textContainer}>
-                                        <Text style={buttonStyles.buttonText}> Wypożycz</Text>
-                                    </View >
-                                </LinearGradient>  
-                            </TouchableOpacity>
+                        <SubmitButton 
+                            handlePress={() => this.props.navigation.navigate('Rent')} 
+                            buttonText={buttonStrings.rentButton} 
+                            icon='md-add-circle-outline'/>
+                        </View>
+                        
+                        <View style={buttonStyles.buttonContainer}>
+                        <SubmitButton 
+                            handlePress={() => this.props.navigation.navigate('Return')} 
+                            buttonText={buttonStrings.returnButton}
+                            icon='md-remove-circle-outline' />
                         </View>
                         <View style={buttonStyles.buttonContainer}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Return')}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
-                                    <Icon name="md-remove-circle-outline" style={buttonStyles.icons}/>
-                                    <View style={buttonStyles.textContainer}>
-                                        <Text style={buttonStyles.buttonText}> Zwróć</Text>
-                                    </View >
-                                </LinearGradient>  
-                            </TouchableOpacity>
-                        </View>
-                        <View style={buttonStyles.buttonContainer}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Equipment')}>
-                                <LinearGradient colors={['#3b82c4', '#2B69A3', '#1C5182']} style={buttonStyles.actionButton}>
-                                    <Icon name="md-list" style={buttonStyles.icons}/>
-                                    <View style={buttonStyles.textContainer}>
-                                        <Text style={buttonStyles.buttonText}> Lista sprzętu</Text>
-                                    </View >
-                                </LinearGradient>  
-                            </TouchableOpacity>
+                            <SubmitButton 
+                            handlePress={() => this.props.navigation.navigate('Equipment')} 
+                            buttonText={buttonStrings.equipmentListButton}
+                            icon='md-list' />
                         </View>
                   </Animated.View>
               </TouchableWithoutFeedback>
