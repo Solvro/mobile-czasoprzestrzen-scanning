@@ -5,7 +5,7 @@ import DismissKeyboard from 'dismissKeyboard';
 import SubmitButton from '../components/SubmitButton';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
-import inputFieldsStyles from '../styles/InputFieldsStyles.js';
+import buttonStrings from '../assets/strings/ButtonStrings.js';
 
 import logo from '../assets/logo.jpg';
 import TextInputField from '../components/TextInputField';
@@ -117,7 +117,10 @@ export default class LoginPanel extends React.Component {
                             secureTextEntry = {true}
                         />
                         <View style ={loginRegisterStyles.buttonAndLinkContainer}>
-                            <SubmitButton handlePress={this.handlePressLogin} buttonText={"Zaloguj się"} />
+                            <SubmitButton 
+                                handlePress={this.handlePressLogin} 
+                                buttonText={buttonStrings.loginButton} 
+                                icon = 'md-log-in'/>
                             <TouchableOpacity style={loginRegisterStyles.linkContainer} 
                                 onPress={() => this.props.navigation.navigate("SignUp")}>
                                 <Text style={loginRegisterStyles.linkText}>Nie masz jeszcze konta? Zarejestruj się!</Text>

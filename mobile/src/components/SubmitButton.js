@@ -12,6 +12,7 @@ import buttonStyles from '../styles/ButtonStyles.js';
  * Props:
  * handlePress - defining behaviour on button click
  * buttonText - text on button
+ * icon - icon name
  */
 export default class SubmitButton extends React.Component {
     constructor (props) {
@@ -22,7 +23,7 @@ export default class SubmitButton extends React.Component {
         return(
             <TouchableOpacity onPress={() => this.props.handlePress()}>
                 <View style={buttonStyles.actionButton}>
-                    <Icon name="md-log-in" style={buttonStyles.icons}/>
+                    <Icon name={this.props.icon} style={buttonStyles.icons}/>
                     <View style={buttonStyles.textContainer}>
                         <Text style={buttonStyles.buttonText}>{this.props.buttonText}</Text>
                     </View >
