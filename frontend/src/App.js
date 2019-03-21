@@ -3,29 +3,17 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "react-private-route";
 import LoggedIn from './Screens/LoggedIn/LoggedIn';
 import LoginPage from './Screens/LoginPage/LoginPage';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider} from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import theme from './theme';
 
-const blueTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#224f77',
-      light: '#ebf3f9',
-    },
-    secondary: {
-      main: '#00ff00',
-    },
-    action: {
-      main: '#ff0000'
-    }
-  },
-});
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false
+      isLoggedIn: true
     };
     this.isLoggedIn = this.isLoggedIn.bind(this);
     this.login = this.login.bind(this);
@@ -39,11 +27,16 @@ class App extends Component {
 
   render() {
     return (
-      <MuiThemeProvider theme={blueTheme}>
+      <MuiThemeProvider theme={theme}>
       <Router>
       <div className="container">
-        <Switch>
-        <Route
+      {/* <Switch>
+          <PrivateRoute path={'/home'} component={HomePage}/>
+          <PrivateRoute path={'/clients'} component={Clients}/>
+          <Route path={'/login'} component={LoginPage}/>
+      </Switch> */}
+      <Switch>
+         <Route
               path="/login"
               component={() => (
                 <LoginPage login={this.login} isLogged={this.state.isLoggedIn} />
@@ -70,5 +63,9 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
 
 export default App;

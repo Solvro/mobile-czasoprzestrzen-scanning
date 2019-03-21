@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import itemTypes from './itemTypes';
 
 const styles = theme => ({
   button: {
@@ -16,7 +17,7 @@ const styles = theme => ({
 
 class ControlledOpenSelect extends React.Component {
   state = {
-    age: '',
+    item: '',
     open: false,
   };
 
@@ -40,16 +41,14 @@ class ControlledOpenSelect extends React.Component {
         <FormControl className={classes.formControl}>
           <NativeSelect
             className={classes.selectEmpty}
-            value={this.state.age}
-            chosenItem="age"
-            onChange={this.handleChange('age')}
-          >
+            value={this.state.item}
+            chosenItem="item"
+            onChange={this.handleChange('item')}>
+
             <option value="" disabled>
-            Wybierz typ
+              Wybierz typ
             </option>
-            <option value={10}>Mikrofony</option>
-            <option value={20}>Przedłużacze</option>
-            <option value={30}>Głośniki</option>
+            {itemTypes.map((itemType,i) => <option value={i}>{itemType}</option>)}
           </NativeSelect>
         </FormControl>
       </form>
