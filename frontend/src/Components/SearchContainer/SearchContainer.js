@@ -1,27 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './Search.css';
-import Grid from '@material-ui/core/Grid';
+import SearchField from '../Input/InputField';
+import Layout from '../Layout/Layout';
 
-import SearchField from './Selects/SearchField';
-import Select from './Selects/Select';
+function SearchContainer (props) {
 
+const left = <div className='SearchField'> 
+            <SearchField placeholder={props.placeholder} /></div>;
 
-class SearchContainer extends Component {
-
-    render () {
-        return (
-                    <div className='SearchContent'>
-                    <Grid container spacing={24}>
-                        <Grid item xs={6}>
-                            <SearchField />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Select />
-                        </Grid></Grid>
-                    </div>
-        )
-    }
+return (
+    <div className='SearchContent'>
+        <Layout layoutDivide={"66"} leftChildren={left}></Layout>
+    </div>
+);
 }
 
 export default SearchContainer;
