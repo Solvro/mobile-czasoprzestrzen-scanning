@@ -66,7 +66,7 @@ Filrowanie po:
 1. Imię i nazwisko klienta
 
 ## Panel - konto administartora
-W tym miejscu dostępna jest lista klientów oczekujących na zaakceptowanie przez administratora (lista analogiczna do listy klientów). Administrator może zmienić w tym miejscu swoje hasło, stworzyć nowy profil administratora o niższych prawach (nadanie loginu i hasła, podanie adresu e-mail) tj. brak możliwości usuwania i klientów oraz wylogować się.
+W tym miejscu dostępna jest lista klientów oczekujących na zaakceptowanie przez administratora (lista analogiczna do listy klientów). Administrator może zmienić w tym miejscu swoje hasło, stworzyć nowy profil administratora o niższych prawach tj. brak możliwości usuwania i klientów (nadanie loginu i hasła, podanie adresu e-mail)  oraz wylogować się.
 
 ![adminPage](./img/AdminPage-1.png)
 
