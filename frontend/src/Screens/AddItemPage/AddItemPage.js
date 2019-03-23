@@ -8,12 +8,12 @@ import InputField from '../../Components/Input/InputField';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 
 
-class Account extends Component {
+class AddItem extends Component {
 
    
   render() {
 
-    const button = <Button link={'/'} text={"Dodaj"}></Button>;
+    const button = <Button link={'/home'} text={"Dodaj"}></Button>;
     const header = <div class='headText'>Dodaj nową rzecz do magazynu</div>;
 
     return (
@@ -41,4 +41,4 @@ class Account extends Component {
   }
 }
 
-export default Account;
+export default AddItem;

@@ -7,6 +7,7 @@ import Form from '../../Components/Form/Form';
 import Layout from '../../Components/Layout/Layout';
 import logo from '../../assests/czasoprzestrzen_logo.png';
 import fakeAuth from '../../services/userService';
+import {authorizeUser} from '../../services/userService';
 import {
   BrowserRouter as Router,
   Redirect,
@@ -29,23 +30,24 @@ class LoginPage extends React.Component {
     redirectToReferrer: false
   }
 
-  login = () => {
-    fakeAuth.authenticate(() => {
-      this.setState(() => ({
-        redirectToReferrer: true,
-      }))
-    })
-  }
-  // tryToAuthorize = async e => {
-  //   const {username, password} = this.state;
-  //   const token = await authorizeUser(username, password);
-  //   if (token) {
-  //       //await localStorage.setItem('token', token);
-  //       this.props.history.push('/');
-  //   } else {
-  //       this.setState({loginError: true})
-  //   }
+  // login = () => {
+  //   fakeAuth.authenticate(() => {
+  //     this.setState(() => ({
+  //       redirectToReferrer: true,
+  //     }))
+  //   })
   // }
+
+  tryToAuthorize = async e => {
+    const {username, password} = this.state;
+    const token = await authorizeUser(username, password);
+    if (token) {
+        await localStorage.setItem('token', token);
+        console.log("Succes???");
+    } else {
+        this.setState({loginError: true})
+    }
+  }
 
   handleChangeUser = event => {
     this.setState({ name: event.target.value });
@@ -57,14 +59,13 @@ class LoginPage extends React.Component {
 
   
   render() {
-    const { from } =  { from: { pathname: '/home' } }
-    const { redirectToReferrer } = this.state
+    // const { from } =  { from: { pathname: '/home' } }
 
-    if (redirectToReferrer === true) {
-      return <Redirect to={from} />
-    }
+    // if (this.state.redirectToReferrer === true) {
+    //   return <Redirect to={'home'} />
+    // }
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <Button link={'/home'} text={"Zaloguj"} onClick={this.login}></Button>;    
+    const button = <Button link={'/home'} text={"Zaloguj"} onClick={this.tryToAuthorize}></Button>;    
 
     return (
       <Layout layoutDivide={"363"}>
