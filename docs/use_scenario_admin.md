@@ -53,7 +53,7 @@ W liście widzimy informacje o:
 Filrowanie po:
 1. Imię i nazwisko klienta
 
-## Lista klientów upoważnionych do wypożyczeń
+## Lista historii wszystkich wypożyczeń
 Lista z historią wszystkich wypożyczeń "archiwalnych". Zakładka historia.
 W liście widzimy informacje o:
 1. nazwa sprzętu
@@ -67,5 +67,7 @@ Filrowanie po:
 
 ## Panel - konto administartora
 W tym miejscu dostępna jest lista klientów oczekujących na zaakceptowanie przez administratora (lista analogiczna do listy klientów). Administrator może zmienić w tym miejscu swoje hasło, stworzyć nowy profil administratora o niższych prawach (nadanie loginu i hasła, podanie adresu e-mail) tj. brak możliwości usuwania i klientów oraz wylogować się.
+
+![adminPage](./img/AdminPage-1.png)
 
 
