@@ -15,10 +15,11 @@ import PropTypes from 'prop-types';
 import theme from './theme';
 
 
-class App extends Component {
+// class App extends Component {
 
-  render() {
-    return (
+//   render() {
+//     return (
+  const App = ({ classes }) => (
       <MuiThemeProvider theme={theme}>
       <Router>
       <div>
@@ -32,13 +33,13 @@ class App extends Component {
       </Router> 
     </MuiThemeProvider>
     );
-  }
-}
+//   }
+// }
 
-App.propTypes = {
-    classes: PropTypes.object.isRequired,
-  };
+// App.propTypes = {
+//     classes: PropTypes.object.isRequired,
+//   };
 
-export default App;
+  export default App;
 
 

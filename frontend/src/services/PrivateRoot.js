@@ -9,8 +9,9 @@ import {
 
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
+  
     <Route {...rest} render={(props) => (
-      fakeAuth.isAuthenticated === true
+      localStorage.getItem('token')
         ? <Component {...props} />
         : <Redirect to={{
             pathname: '/login',
