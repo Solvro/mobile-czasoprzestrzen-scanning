@@ -22,6 +22,15 @@ class AppUser(AbstractUser):
     business_data = models.CharField(null=True, max_length=255)
     type = models.CharField(max_length=2, choices=USER_TYPE, default="Cl")
 
+    def is_client(self):
+        return self.type == "Cl"
+
+    def is_admin(self):
+        return self.type == "Ra"
+
+    def is_super_admin(self):
+        return self.type == "Sa"
+
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
 

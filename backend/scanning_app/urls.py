@@ -11,6 +11,7 @@ router.register('rental-info', views.RentalInfoView)
 
 urlpatterns = [
     path('signup/', views.ClientSignUpView.as_view(), name="signup"),
+    path('admin/', views.AdminCreationView.as_view(), name="admin-list"),
     path('', include(router.urls))
 ]
 
