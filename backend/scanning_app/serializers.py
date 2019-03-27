@@ -16,7 +16,12 @@ class SignUpClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AppUser
-        fields = '__all__'
+        fields = ('id', 'username', 'first_name', 'last_name', 'password',
+                  'email', 'phone', 'address', 'business_data')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email': {'required': True}
+        }
 
 
 class ClientSerializer(serializers.ModelSerializer):

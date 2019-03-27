@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -14,6 +14,11 @@ class EquipmentView(viewsets.ModelViewSet):
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
     permission_classes = (IsAuthenticated,)
+
+
+class ClientSignUpView(generics.CreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = SignUpClientSerializer
 
 
 class ClientView(viewsets.ModelViewSet):
@@ -53,5 +58,3 @@ class RentalInfoView(viewsets.ModelViewSet):
         if not equipment_to_rent.available:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
-
-

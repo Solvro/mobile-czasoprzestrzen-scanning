@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('swagger/', SwaggerSchemaView.as_view()),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/token/', token_obtain_pair, name='token-obtain'),
-    path('api/token/refresh/', token_refresh, name='token-refresh'),
-    path('', include('scanning_app.urls')),
+    path('api-v1/login/', token_obtain_pair, name='token-obtain'),
+    path('api-v1/refresh/', token_refresh, name='token-refresh'),
+    path('api-v1/', include('scanning_app.urls')),
 ]
