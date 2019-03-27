@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from ..models import Client, Equipment, RentalInfo
+from ..models import AppUser, Equipment, RentalInfo
 
 CLIENT_USERNAME = 'juras'
 CLIENT_PASSWORD = 'pass'
@@ -26,17 +26,17 @@ class ClientViewsTests(TestCase):
     def test_valid_client_data_passed_token_returned_and_saved(self):
         data = USER_DATA
         response = self.apiClient\
-            .post(reverse('client-list'), data, format='json')
+            .post(reverse('appuser-list'), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue('access' in response.data)
-        self.assertEqual(Client.objects.count(), 1)
+        self.assertEqual(AppUser.objects.count(), 1)
 
     def test_invalid_client_data_passed_bad_request_returned(self):
         data = USER_DATA.copy()
         del data['password']
-        res = self.apiClient.post(reverse('client-list'), data, format='json')
+        res = self.apiClient.post(reverse('appuser-list'), data, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertFalse(Client.objects.exists())
+        self.assertFalse(AppUser.objects.exists())
         self.assertFalse('access' in res.data)
 
 
@@ -44,7 +44,7 @@ class TokenTests(TestCase):
 
     def setUp(self):
         self.apiClient = APIClient()
-        Client.objects.create_user(**USER_DATA)
+        AppUser.objects.create_user(**USER_DATA)
 
     def test_valid_user_data_passed_token_returned(self):
         data = {
@@ -67,7 +67,7 @@ class TokenTests(TestCase):
 
 class RentalInfoViewsTests(TestCase):
     def setUp(self):
-        self.client = Client.objects.create_user(**USER_DATA)
+        self.client = AppUser.objects.create_user(**USER_DATA)
         self.equipment = Equipment.objects.create(
             name='Electric Guitar',
             description='Playable XD',

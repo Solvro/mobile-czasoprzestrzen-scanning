@@ -1,7 +1,7 @@
 import datetime
 from django.test import TestCase
 
-from scanning_app.models import Equipment, Client, RentalInfo
+from scanning_app.models import Equipment, AppUser, RentalInfo
 from scanning_app.serializers import RentalInfoSerializer, \
     EquipmentSerializer, SignUpClientSerializer, ClientSerializer
 
@@ -40,8 +40,8 @@ class SignUpClientSerializerTests(TestCase):
         ser = SignUpClientSerializer(data=client_data)
         self.assertTrue(ser.is_valid())
         ser.save()
-        self.assertEqual(Client.objects.count(), 1)
-        saved = Client.objects.get()
+        self.assertEqual(AppUser.objects.count(), 1)
+        saved = AppUser.objects.get()
         self.assertEqual(saved.username, CLIENT_USERNAME)
         self.assertIsNotNone(saved.password)
         self.assertEqual(saved.first_name, CLIENT_FIRST_NAME)
@@ -80,7 +80,7 @@ class SignUpClientSerializerTests(TestCase):
 class ClientSerializerTests(TestCase):
 
     def test_client_obj_passed_proper_dict_returned(self):
-        client = Client.objects.create(**CLIENT_DATA)
+        client = AppUser.objects.create(**CLIENT_DATA)
         ser = ClientSerializer(client)
         expected_data = CLIENT_DATA.copy()
         del expected_data['password']
@@ -139,8 +139,8 @@ def create_equip_client_and_return_rental_info_data(testcase):
         .create(name="Equip", description="yes",
                 type="Mic", available=True,
                 max_rent_time=datetime.timedelta(days=20, hours=5))
-    testcase.client = Client.objects.create(username="username",
-                                            password="pass")
+    testcase.client = AppUser.objects.create(username="username",
+                                             password="pass")
     testcase.rental_info_data = {
         "expected_return": "2018-10-13",
         'equipment_data': testcase.equip.id,

@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
-from .models import Equipment, Client, RentalInfo
+from .models import Equipment, AppUser, RentalInfo
 from .serializers import EquipmentSerializer, ClientSerializer, \
     RentalInfoSerializer, SignUpClientSerializer, RentalInfoGetSerializer
 from .permissions import PostPermissions, RentalInfoPermissions
@@ -17,7 +17,7 @@ class EquipmentView(viewsets.ModelViewSet):
 
 
 class ClientView(viewsets.ModelViewSet):
-    queryset = Client.objects.all()
+    queryset = AppUser.objects.all()
     permission_classes = (PostPermissions,)
 
     def create(self, request, *args, **kwargs):

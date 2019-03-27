@@ -9,11 +9,18 @@ TYPE = (
 
 )
 
+USER_TYPE = (
+    ("Cl", "Client"),
+    ("Ra", "Regular Administrator"),
+    ("Sa", "Super Administrator"),
+)
 
-class Client(AbstractUser):
+
+class AppUser(AbstractUser):
     phone = PhoneNumberField()
     address = models.CharField(null=True, max_length=255)
     business_data = models.CharField(null=True, max_length=255)
+    type = models.CharField(max_length=2, choices=USER_TYPE, default="Cl")
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
@@ -35,7 +42,7 @@ class RentalInfo(models.Model):
     expected_return = models.DateField()
     actual_return = models.DateField(null=True)
     equipment_data = models.ForeignKey(Equipment, on_delete=models.DO_NOTHING)
-    client_data = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+    client_data = models.ForeignKey(AppUser, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return "{}".format(self.rental_date)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Equipment, Client, RentalInfo
+from .models import Equipment, AppUser, RentalInfo
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
@@ -12,16 +12,16 @@ class EquipmentSerializer(serializers.ModelSerializer):
 class SignUpClientSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
-        return Client.objects.create_user(**validated_data)
+        return AppUser.objects.create_user(**validated_data)
 
     class Meta:
-        model = Client
+        model = AppUser
         fields = '__all__'
 
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Client
+        model = AppUser
         fields = ('id', 'username', 'first_name', 'last_name',
                   'email', 'phone', 'address', 'business_data')
 
