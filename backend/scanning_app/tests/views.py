@@ -72,7 +72,7 @@ class AdminCreationViewTests(TestCase):
         credentials = {'username': "admin",
                        'password': "admin"}
         token = self.apiClient \
-            .post(reverse('token-obtain'), credentials, format='json') \
+            .post(reverse('login'), credentials, format='json') \
             .data['access']
         self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
 
@@ -127,7 +127,7 @@ class AdminCreationViewTests(TestCase):
         credentials = {'username': "username",
                        'password': "pass"}
         token = self.apiClient \
-            .post(reverse('token-obtain'), credentials, format='json') \
+            .post(reverse('login'), credentials, format='json') \
             .data['access']
         self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
         data = USER_DATA
@@ -168,7 +168,7 @@ class TokenTests(TestCase):
             "username": CLIENT_USERNAME,
             "password": CLIENT_PASSWORD
         }
-        res = self.apiClient.post(reverse('token-obtain'), data, format='json')
+        res = self.apiClient.post(reverse('login'), data, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertTrue('refresh' in res.data)
         self.assertTrue('access' in res.data)
@@ -178,7 +178,7 @@ class TokenTests(TestCase):
             "username": "boniek",
             "password": "pass"
         }
-        res = self.apiClient.post(reverse('token-obtain'), data, format='json')
+        res = self.apiClient.post(reverse('login'), data, format='json')
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
 
@@ -196,7 +196,7 @@ class RentalInfoViewsTests(TestCase):
         self.apiClient = APIClient()
         token_data = {'username': 'juras', 'password': 'pass'}
         token = self.apiClient \
-            .post(reverse('token-obtain'), token_data, format='json') \
+            .post(reverse('login'), token_data, format='json') \
             .data['access']
         self.apiClient \
             .credentials(HTTP_AUTHORIZATION='Bearer ' + token)
