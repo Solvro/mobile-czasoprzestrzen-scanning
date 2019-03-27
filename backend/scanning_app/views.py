@@ -7,9 +7,9 @@ from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from .models import Equipment, AppUser, RentalInfo
 from .serializers import EquipmentSerializer, ClientSerializer, \
     RentalInfoSerializer, SignUpClientSerializer, RentalInfoGetSerializer, \
-    AdminCreationSerializer
+    AdminCreationSerializer, SuperAdminCreationSerializer
 from .permissions import PostPermissions, RentalInfoPermissions, \
-    IsAdminOrSuperAdmin
+    IsSuperAdmin
 
 
 class EquipmentView(viewsets.ModelViewSet):
@@ -26,7 +26,13 @@ class ClientSignUpView(generics.CreateAPIView):
 class AdminCreationView(generics.CreateAPIView):
     queryset = AppUser.objects.all()
     serializer_class = AdminCreationSerializer
-    permission_classes = (IsAdminOrSuperAdmin,)
+    permission_classes = (IsSuperAdmin,)
+
+
+class SuperAdminCreationView(generics.CreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = SuperAdminCreationSerializer
+    permission_classes = (IsSuperAdmin,)
 
 
 class ClientView(viewsets.ModelViewSet):

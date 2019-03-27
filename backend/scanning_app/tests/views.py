@@ -67,7 +67,7 @@ class AdminCreationViewTests(TestCase):
     def setUp(self):
         AppUser.objects.create_user(username="admin", password="admin",
                                     phone=USER_DATA['phone'],
-                                    type="Ra")
+                                    type="Sa")
         self.apiClient = APIClient()
         credentials = {'username': "admin",
                        'password': "admin"}
@@ -133,6 +133,107 @@ class AdminCreationViewTests(TestCase):
         data = USER_DATA
         response = self.apiClient \
             .post(reverse('admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_client_admin_403_returned(self):
+        AppUser.objects.create_user(username="username", password="pass",
+                                    phone=USER_DATA['phone'], type="Ra")
+        credentials = {'username': "username",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        data = USER_DATA
+        response = self.apiClient \
+            .post(reverse('admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class SuperAdminCreationViewTests(TestCase):
+    def setUp(self):
+        AppUser.objects.create_user(username="admin", password="admin",
+                                    phone=USER_DATA['phone'],
+                                    type="Sa")
+        self.apiClient = APIClient()
+        credentials = {'username': "admin",
+                       'password': "admin"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+
+    def test_valid_client_data_passed_saved_201_returned(self):
+        data = USER_DATA
+        response = self.apiClient \
+            .post(reverse('super-admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        admin = AppUser.objects.get(id=response.data['id'])
+        self.assertFalse(admin.is_client())
+        self.assertFalse(admin.is_admin())
+        self.assertTrue(admin.is_super_admin())
+
+    def test_no_username_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['username']
+        response = self.apiClient \
+            .post(reverse('super-admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_no_password_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['password']
+        response = self.apiClient \
+            .post(reverse('super-admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_no_email_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['email']
+        response = self.apiClient \
+            .post(reverse('super-admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_no_phone_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['phone']
+        response = self.apiClient \
+            .post(reverse('super-admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_no_token_401_returned(self):
+        data = USER_DATA
+        self.apiClient.credentials()
+        response = self.apiClient \
+            .post(reverse('super-admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_user_403_returned(self):
+        AppUser.objects.create_user(username="username", password="pass",
+                                    phone=USER_DATA['phone'])
+        credentials = {'username': "username",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        data = USER_DATA
+        response = self.apiClient \
+            .post(reverse('super-admin-list'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_user_403_returned(self):
+        AppUser.objects.create_user(username="username", password="pass",
+                                    phone=USER_DATA['phone'], type="Ra")
+        credentials = {'username': "username",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        data = USER_DATA
+        response = self.apiClient \
+            .post(reverse('super-admin-list'), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
