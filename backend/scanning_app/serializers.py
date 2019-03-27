@@ -9,14 +9,13 @@ class EquipmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SignUpClientSerializer(serializers.ModelSerializer):
-
+class AppUserCreationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return AppUser.objects.create_user(**validated_data)
 
     class Meta:
         model = AppUser
-        fields = ('id', 'username', 'first_name', 'last_name', 'password',
+        fields = ('id', 'username', 'password', 'first_name', 'last_name',
                   'email', 'phone', 'address', 'business_data')
         extra_kwargs = {
             'password': {'write_only': True},
@@ -24,34 +23,20 @@ class SignUpClientSerializer(serializers.ModelSerializer):
         }
 
 
-class AdminCreationSerializer(serializers.ModelSerializer):
+class SignUpClientSerializer(AppUserCreationSerializer):
+    pass
+
+
+class AdminCreationSerializer(AppUserCreationSerializer):
     def create(self, validated_data):
         validated_data['type'] = 'Ra'  # set user type to admin
-        return AppUser.objects.create_user(**validated_data)
-
-    class Meta:
-        model = AppUser
-        fields = ('id', 'username', 'first_name', 'last_name', 'password',
-                  'email', 'phone', 'address', 'business_data')
-        extra_kwargs = {
-            'password': {'write_only': True},
-            'email': {'required': True}
-        }
+        return super(AppUserCreationSerializer, self).create(validated_data)
 
 
-class SuperAdminCreationSerializer(serializers.ModelSerializer):
+class SuperAdminCreationSerializer(AppUserCreationSerializer):
     def create(self, validated_data):
-        validated_data['type'] = 'Sa' # set user type to admin
-        return AppUser.objects.create_user(**validated_data)
-
-    class Meta:
-        model = AppUser
-        fields = ('id', 'username', 'first_name', 'last_name', 'password',
-                  'email', 'phone', 'address', 'business_data')
-        extra_kwargs = {
-            'password': {'write_only': True},
-            'email': {'required': True}
-        }
+        validated_data['type'] = 'Sa'  # set user type to super-admin
+        return super(AppUserCreationSerializer, self).create(validated_data)
 
 
 class ClientSerializer(serializers.ModelSerializer):
