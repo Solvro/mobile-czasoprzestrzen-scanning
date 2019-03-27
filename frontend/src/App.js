@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
-  Route
+  Route,
+  Switch
 } from 'react-router-dom'
 import PrivateRoute from './services/PrivateRoot';
 import HomePage from './Screens/HomePage/HomePage';
@@ -11,34 +12,22 @@ import ClientTablePage from './Screens/ClientsTablePage/ClientsTablePage';
 import AddItemPage from './Screens/AddItemPage/AddItemPage';
 import LoginPage from './Screens/LoginPage/LoginPage';
 import { MuiThemeProvider} from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import theme from './theme';
 
-
-// class App extends Component {
-
-//   render() {
-//     return (
-  const App = ({ classes }) => (
+  const App = () => (
       <MuiThemeProvider theme={theme}>
-      <Router>
-      <div>
-        <Route path="/login" component={LoginPage}/>
-        <PrivateRoute path='/home' component={HomePage} />
-        <PrivateRoute path='/rents' component={RentPage} />
-        <PrivateRoute path='/clients' component={ClientTablePage} />
-        <PrivateRoute path='/account' component={AdminPage} />
-        <PrivateRoute path='/adds' component={AddItemPage} />
-      </div>
-      </Router> 
+        <Router>
+          <Switch>
+            <Route path="/login" component={LoginPage}/>
+            <PrivateRoute path='/home' component={HomePage} />
+            <PrivateRoute path='/rents' component={RentPage} />
+            <PrivateRoute path='/clients' component={ClientTablePage} />
+            <PrivateRoute path='/account' component={AdminPage} />
+            <PrivateRoute path='/adds' component={AddItemPage} />
+        </Switch> 
+      </Router>      
     </MuiThemeProvider>
     );
-//   }
-// }
-
-// App.propTypes = {
-//     classes: PropTypes.object.isRequired,
-//   };
 
   export default App;
 

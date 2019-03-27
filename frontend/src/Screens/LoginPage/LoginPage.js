@@ -1,14 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '../../Components/Button/Button';
-import InputField from '../../Components/Input/InputField';
-import Form from '../../Components/Form/Form';
-import Layout from '../../Components/Layout/Layout';
-import logo from '../../assests/czasoprzestrzen_logo.png';
 import { authorizeUser, verifyUser } from '../../services/userService';
-
-
+import InputField from '../../Components/Input/InputField';
+import logo from '../../assests/czasoprzestrzen_logo.png';
+import { withStyles } from '@material-ui/core/styles';
+import Layout from '../../Components/Layout/Layout';
+import Button from '../../Components/Button/Button';
+import Form from '../../Components/Form/Form';
+import PropTypes from 'prop-types';
+import React from 'react';
 import "./LoginPanel.css"
 
 const styles = theme => ({
@@ -26,21 +24,23 @@ class LoginPage extends React.Component {
   }
 
   componentWillMount() {
-    // this.validateIsLogged()
-    //   .then(isLogged => {
-    //     if (isLogged)
+    // verifyUser(localStorage.getItem('token')).then(
+    //   res => {
+    //     if (res.data.status === 'success')
     //       this.props.history.push('/home')
-    //   });
+    //   }
+    // );
   }
 
   tryAuthorize = async e => {
-    e.preventDefault();
     const { username, password } = this.state;
     await authorizeUser(username, password).then(res => {
-      localStorage.setItem('token', res.data.token);
-      console.log(this.validateIsLogged)
-      this.validateIsLogged()
-    });
+      if (res.status === 200) {
+        localStorage.setItem('token', res.data.token);  
+      }
+    }).then(() => {
+      this.props.history.push('/home')
+    })
   }
 
   onInputPasswordChange = e => {
@@ -51,22 +51,8 @@ class LoginPage extends React.Component {
     this.setState({ username: e.target.value })
   }
 
-  validateIsLogged = async () => {
-    const token = await localStorage.getItem('token');
-    if (await verifyUser(token)) {
-    // console.log(await verifyUser(token))
-      
-      this.props.history.push('/home')
-    }
-  }
-
 
   render() {
-    // const { from } =  { from: { pathname: '/home' } }
-
-    // if (this.state.redirectToReferrer === true) {
-    //   return <Redirect to={'home'} />
-    // }
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
     const button = <Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button>;
 

@@ -12,9 +12,7 @@ class PrivateRoute extends React.Component {
 
   validateIsLogged = async () => {
     const token = await localStorage.getItem('token');
-    const verifyResult = token && await verifyUser(token);
-    const isLogged = token && verifyResult;
-    return  isLogged;
+    return verifyUser(token);
   }
 
   componentWillMount(){
@@ -34,7 +32,7 @@ class PrivateRoute extends React.Component {
     const renderComponent = (props) => (
       this.state.loggedIn
         ? <Component {...props} />
-        : <Redirect to='/login' />
+        : (<Redirect to='/login' />)
     
      );
 
@@ -42,7 +40,6 @@ class PrivateRoute extends React.Component {
         this.state.authorized ?
         <Route {...rest} render={renderComponent} />
         : <div></div>
-
     );
   }
 }
