@@ -18,7 +18,7 @@ export async function authorizeUser(username, password) {
       'Content-Type': 'application/json'
     }
   };
-  return axios.post('http://localhost:1337/login', data, config)
+  return axios.post('http://localhost:8000/login', data, config)
 }
 
 export async function verifyUser(token) {

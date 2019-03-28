@@ -1,12 +1,12 @@
-import { authorizeUser, verifyUser } from '../../services/userService';
-import InputField from '../../Components/Input/InputField';
-import logo from '../../assests/czasoprzestrzen_logo.png';
-import { withStyles } from '@material-ui/core/styles';
-import Layout from '../../Components/Layout/Layout';
-import Button from '../../Components/Button/Button';
-import Form from '../../Components/Form/Form';
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '../../Components/Button/Button';
+import InputField from '../../Components/Input/InputField';
+import Form from '../../Components/Form/Form';
+import Layout from '../../Components/Layout/Layout';
+import logo from '../../assests/czasoprzestrzen_logo.png';
+
 import "./LoginPanel.css"
 
 const styles = theme => ({
@@ -15,56 +15,35 @@ const styles = theme => ({
     minWidth: 120,
   },
 });
-
+// sudo docker-compose up --remove-orphans
 class LoginPage extends React.Component {
   state = {
-    username: '',
+    name: '',
     password: '',
-    loginError: false
   }
 
-  componentWillMount() {
-    // verifyUser(localStorage.getItem('token')).then(
-    //   res => {
-    //     if (res.data.status === 'success')
-    //       this.props.history.push('/home')
-    //   }
-    // );
+  handleChangeUser = event => {
+    this.setState({ name: event.target.value });
   }
 
-  tryAuthorize = async e => {
-    const { username, password } = this.state;
-    await authorizeUser(username, password).then(res => {
-      if (res.status === 200) {
-        localStorage.setItem('token', res.data.token);  
-      }
-    }).then(() => {
-      this.props.history.push('/home')
-    })
+  handleChangePassword = event => {
+    this.setState({ password: event.target.value });
   }
 
-  onInputPasswordChange = e => {
-    this.setState({ password: e.target.value })
-  }
-
-  onInputLoginChange = e => {
-    this.setState({ username: e.target.value })
-  }
-
-
+  
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button>;
+    const button = <Button link={'/home'} text={"Zaloguj"}></Button>;    
 
     return (
       <Layout layoutDivide={"363"}>
         <Form header={header} button={button} >
 
-          <InputField placeholder={"Login"} rows={"1"} onChange={this.onInputLoginChange}>
-          </InputField>
+        <InputField placeholder={"Login"} rows={"1"} onChange={this.handleChangeUser}>
+        </InputField>
 
-          <InputField placeholder={"Hasło"} rows={"1"} onChange={this.onInputPasswordChange}>
-          </InputField>
+        <InputField placeholder={"Hasło"} rows={"1"} onChange={this.handleChangePassword}>
+        </InputField>
 
         </Form>
       </Layout>
