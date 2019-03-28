@@ -23,17 +23,23 @@ class AppUserCreationSerializer(serializers.ModelSerializer):
         }
 
 
+class AppAdminsCreationsSerializer(AppUserCreationSerializer):
+    class Meta:
+        fields = ('id', 'username', 'password', 'first_name', 'last_name',
+                  'email', 'phone')
+
+
 class SignUpClientSerializer(AppUserCreationSerializer):
     pass
 
 
-class AdminCreationSerializer(AppUserCreationSerializer):
+class AdminCreationSerializer(AppAdminsCreationsSerializer):
     def create(self, validated_data):
         validated_data['type'] = 'Ra'  # set user type to admin
         return super(AppUserCreationSerializer, self).create(validated_data)
 
 
-class SuperAdminCreationSerializer(AppUserCreationSerializer):
+class SuperAdminCreationSerializer(AppAdminsCreationsSerializer):
     def create(self, validated_data):
         validated_data['type'] = 'Sa'  # set user type to super-admin
         return super(AppUserCreationSerializer, self).create(validated_data)
