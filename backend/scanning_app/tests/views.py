@@ -152,6 +152,17 @@ class TokenTests(TestCase):
         self.assertTrue('refresh' in res.data)
         self.assertTrue('access' in res.data)
 
+    def test_valid_token_passes_verification(self):
+        data = {
+            "username": CLIENT_USERNAME,
+            "password": CLIENT_PASSWORD
+        }
+        res = self.apiClient.post(reverse('login'), data, format='json')
+        res = self.apiClient.post(reverse('token-verify'),
+                                  {'token': res.data['access']},
+                                  format='json')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
     def test_invalid_user_data_passed_bad_request_returned(self):
         data = {
             "username": "boniek",
