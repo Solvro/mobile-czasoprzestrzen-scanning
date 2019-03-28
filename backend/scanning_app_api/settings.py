@@ -138,7 +138,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',)
 }
 
-AUTH_USER_MODEL = 'scanning_app.Client'
+AUTH_USER_MODEL = 'scanning_app.AppUser'
 
 SWAGGER_SETTINGS = {
     "exclude_namespaces": [],  # List URL namespaces to ignore

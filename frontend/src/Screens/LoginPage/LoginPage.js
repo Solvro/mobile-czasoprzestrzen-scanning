@@ -5,6 +5,7 @@ import Button from '../../Components/Button/Button';
 import InputField from '../../Components/Input/InputField';
 import Form from '../../Components/Form/Form';
 import Layout from '../../Components/Layout/Layout';
+import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import logo from '../../assests/czasoprzestrzen_logo.png';
 
 import "./LoginPanel.css"
@@ -18,9 +19,10 @@ const styles = theme => ({
 // sudo docker-compose up --remove-orphans
 class LoginPage extends React.Component {
   state = {
-    name: '',
+    username: '',
     password: '',
-  }
+    loginError: false
+}
 
   handleChangeUser = event => {
     this.setState({ name: event.target.value });
@@ -36,6 +38,7 @@ class LoginPage extends React.Component {
     const button = <Button link={'/home'} text={"Zaloguj"}></Button>;    
 
     return (
+      <div>
       <Layout layoutDivide={"363"}>
         <Form header={header} button={button} >
 
@@ -44,9 +47,15 @@ class LoginPage extends React.Component {
 
         <InputField placeholder={"Hasło"} rows={"1"} onChange={this.handleChangePassword}>
         </InputField>
-
+        
         </Form>
       </Layout>
+      {this.state.loginError &&
+                <ErrorDisplay
+                    removeError={id => {this.setState({loginError: false})}}
+                    errors={[{message: 'Błędny login lub hasło', id: 100}]}
+                    />}
+      </div>
     );
   }
 }

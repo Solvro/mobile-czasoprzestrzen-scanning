@@ -1,13 +1,15 @@
-from rest_framework import viewsets, status
+from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
-from .models import Equipment, Client, RentalInfo
+from .models import Equipment, AppUser, RentalInfo
 from .serializers import EquipmentSerializer, ClientSerializer, \
-    RentalInfoSerializer, SignUpClientSerializer, RentalInfoGetSerializer
-from .permissions import PostPermissions, RentalInfoPermissions
+    RentalInfoSerializer, SignUpClientSerializer, RentalInfoGetSerializer, \
+    AdminCreationSerializer, SuperAdminCreationSerializer
+from .permissions import PostPermissions, RentalInfoPermissions, \
+    IsSuperAdmin
 
 
 class EquipmentView(viewsets.ModelViewSet):
@@ -16,8 +18,25 @@ class EquipmentView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
 
+class ClientSignUpView(generics.CreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = SignUpClientSerializer
+
+
+class AdminCreationView(generics.CreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = AdminCreationSerializer
+    permission_classes = (IsSuperAdmin,)
+
+
+class SuperAdminCreationView(generics.CreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = SuperAdminCreationSerializer
+    permission_classes = (IsSuperAdmin,)
+
+
 class ClientView(viewsets.ModelViewSet):
-    queryset = Client.objects.all()
+    queryset = AppUser.objects.all()
     permission_classes = (PostPermissions,)
 
     def create(self, request, *args, **kwargs):
@@ -53,5 +72,3 @@ class RentalInfoView(viewsets.ModelViewSet):
         if not equipment_to_rent.available:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
-
-
