@@ -29,6 +29,19 @@ function Layout(props) {
                             <Grid item xs={6}>{props.rightChildren}</Grid>
                         </Grid>
     }
+    if(props.layoutDivide === "16131"){
+        layout = <Grid container spacing={spacing}>
+                            <Grid item xs={1}></Grid>
+                            <Grid item xs={6}>
+                                {props.leftChildren}
+                            </Grid>
+                            <Grid item xs={1}></Grid>
+                            <Grid item xs={3}>
+                                {props.rightChildren}
+                            </Grid>
+                            <Grid item xs={1}></Grid>
+                        </Grid>
+    }
     return (layout);
 }
 export default Layout

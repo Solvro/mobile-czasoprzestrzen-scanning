@@ -12,12 +12,12 @@ class Account extends Component {
    
   render() {
 
-    const button = <Button link={'/'} text={"Dodaj"}></Button>;
+    const button = <Button link={'/home'} text={"Dodaj"}></Button>;
     const header = <div class='headText'>Dodaj nową rzecz do magazynu</div>;
 
     return (
       <Layout layoutDivide={"363"}>
-        <Form header={header} button={button} >
+        <Form header={header} button={button}>
 
           <InputField placeholder={"Nazwa"} rows={"1"} label={"Nazwa urządzenia"}>
           </InputField>
