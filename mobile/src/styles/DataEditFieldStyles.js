@@ -33,7 +33,7 @@ const dataEditFieldStyles = StyleSheet.create({
     },
 
     editIcon: {
-        fontSize: 40,
+        fontSize: 35,
         color: '#0d4579',
         marginLeft: 20,
     },
