@@ -8,7 +8,7 @@ Django==2.1.5
 django-phonenumber-field==2.2.0
 django-stubs==0.10.2
 djangorestframework==3.9.1
-djangorestframework-simplejwt==4.1.1
+djangorestframework-simplejwt==3.3
 drf-yasg==1.14.0
 idna==2.8
 inflection==0.3.1
