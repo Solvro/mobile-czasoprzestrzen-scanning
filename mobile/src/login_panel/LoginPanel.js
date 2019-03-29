@@ -93,11 +93,12 @@ export default class LoginPanel extends React.Component {
         fetch(apiConfig.url + '/api-v1/login/', data)
         .then((response) => {this.setState({status: response.status}); return response.json()})
         .then((response) => {
-            console.log(response);  
-            if(this.state.status === 201) {
-                console.log(response);
+            console.log(this.state.status);  
+            if(this.state.status === 200) {
+                apiConfig.clientId = response.access;
+                this.props.navigation.navigate('SignedIn');
             } else {
-                Alert.alert('XD');
+                Alert.alert('Invalid username or password!');
             }
         })
         .catch(() => {
@@ -106,13 +107,12 @@ export default class LoginPanel extends React.Component {
 
     }
 
-    handleChangeUsername = event => {
-        this.setState({username: event.target.value});
-        console.log(this.state.username);
+    handleUsernameChange = (event) => {
+        this.setState({username: event});
     }
 
-    handleChangePassword = event => {
-        this.setState({password : event.target.value});
+    handlePasswordChange = (event) => {
+        this.setState({password : event});
     }
 
     render() {
@@ -133,14 +133,14 @@ export default class LoginPanel extends React.Component {
                         </View>
                         <TextInputField 
                             state={'username'}
-                            setStateHandler={this.handleChangeUsername} 
+                            setStateHandler={this.handleUsernameChange} 
                             keyboardType = 'email-address'
                             returnKeyType = 'next'
                             placeholder = {'Użytkownik'}
                             secureTextEntry = {false}
                         />
                         <TextInputField 
-                            setStateHandler={this.setStateHandler} 
+                            setStateHandler={this.handlePasswordChange} 
                             state={'password'}
                             keyboardType = 'default'
                             returnKeyType = 'next'

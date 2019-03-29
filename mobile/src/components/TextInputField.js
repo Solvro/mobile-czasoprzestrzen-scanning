@@ -22,7 +22,7 @@ export default class TextInputField extends React.Component {
         return(
             <View style={inputFieldsStyles.input}>
                 <TextInput style={inputFieldsStyles.inputField}
-                    onChangeText = {(e) => this.props.setStateHandler(e)}
+                    onChangeText = {(event) => this.props.setStateHandler(event)}
                     keyboardType = {this.props.keyboardType}
                     returnKeyType = {this.props.returnKeyType}
                     placeholder = {this.props.placeholder}
