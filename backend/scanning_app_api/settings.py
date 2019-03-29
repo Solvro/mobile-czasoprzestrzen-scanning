@@ -28,8 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application definition
+if DEBUG:
+    ALLOWED_HOSTS.append('*')
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -90,7 +92,7 @@ DATABASES = {
         'NAME': 'scanning_app_db',
         'USER': 'root',
         'PASSWORD': 'pass',
-        'HOST': 'db',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -139,6 +141,9 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'scanning_app.AppUser'
+
+#CORS settings
+CORS_ORIGIN_ALLOW_ALL = DEBUG
 
 SWAGGER_SETTINGS = {
     "api_version": '0.1',  # Specify your API's version
