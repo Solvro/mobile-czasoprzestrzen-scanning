@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Equipment, Client, RentalInfo
+from .models import Equipment, AppUser, RentalInfo
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
@@ -9,19 +9,47 @@ class EquipmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SignUpClientSerializer(serializers.ModelSerializer):
-
+class AppUserCreationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
-        return Client.objects.create_user(**validated_data)
+        return AppUser.objects.create_user(**validated_data)
 
     class Meta:
-        model = Client
-        fields = '__all__'
+        model = AppUser
+        fields = ('id', 'username', 'password', 'first_name', 'last_name',
+                  'email', 'phone', 'address', 'business_data')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email': {'required': True}
+        }
+
+
+class SignUpClientSerializer(AppUserCreationSerializer):
+    pass
+
+
+class AdminCreationSerializer(AppUserCreationSerializer):
+    def create(self, validated_data):
+        validated_data['type'] = 'Ra'  # set user type to admin
+        return super(AppUserCreationSerializer, self).create(validated_data)
+
+    class Meta(AppUserCreationSerializer.Meta):
+        fields = ('id', 'username', 'password', 'first_name', 'last_name',
+                  'email', 'phone')
+
+
+class SuperAdminCreationSerializer(AppUserCreationSerializer):
+    def create(self, validated_data):
+        validated_data['type'] = 'Sa'  # set user type to super-admin
+        return super(AppUserCreationSerializer, self).create(validated_data)
+
+    class Meta(AppUserCreationSerializer.Meta):
+        fields = ('id', 'username', 'password', 'first_name', 'last_name',
+                  'email', 'phone')
 
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Client
+        model = AppUser
         fields = ('id', 'username', 'first_name', 'last_name',
                   'email', 'phone', 'address', 'business_data')
 
