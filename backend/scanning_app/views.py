@@ -10,12 +10,15 @@ from .serializers import EquipmentSerializer, ClientSerializer, \
     AdminCreationSerializer, SuperAdminCreationSerializer
 from .permissions import PostPermissions, RentalInfoPermissions, \
     IsSuperAdmin
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class EquipmentView(viewsets.ModelViewSet):
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer
     permission_classes = (IsAuthenticated,)
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('name', 'available', 'type')
 
 
 class ClientSignUpView(generics.CreateAPIView):
@@ -38,6 +41,8 @@ class SuperAdminCreationView(generics.CreateAPIView):
 class ClientView(viewsets.ModelViewSet):
     queryset = AppUser.objects.all()
     permission_classes = (PostPermissions,)
+    filter_backends = (DjangoFilterBackend, )
+    filter_fields = ('first_name', 'last_name')
 
     def create(self, request, *args, **kwargs):
         created = super().create(request, *args, **kwargs)
