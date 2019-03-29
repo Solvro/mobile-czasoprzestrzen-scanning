@@ -9,8 +9,8 @@ const instance = axios.create({
 
 export async function authorizeUser(username, password) {
   const data = {
-    "password": "test",
-    "email": "test@test.com"
+    "password": "pass",
+    "email": "root"
   }
 
   const config = {
@@ -18,7 +18,9 @@ export async function authorizeUser(username, password) {
       'Content-Type': 'application/json'
     }
   };
-  return axios.post('http://localhost:8000/login', data, config)
+  return axios.post(`http://localhost:8000/api-v1/login/`, {
+    crossDomain: true
+}, data, config)
 }
 
 export async function verifyUser(token) {

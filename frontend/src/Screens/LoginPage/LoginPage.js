@@ -1,3 +1,4 @@
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -7,6 +8,8 @@ import Form from '../../Components/Form/Form';
 import Layout from '../../Components/Layout/Layout';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import logo from '../../assests/czasoprzestrzen_logo.png';
+import { authorizeUser, verifyUser } from '../../services/userService';
+
 
 import "./LoginPanel.css"
 
@@ -16,7 +19,7 @@ const styles = theme => ({
     minWidth: 120,
   },
 });
-// sudo docker-compose up --remove-orphans
+
 class LoginPage extends React.Component {
   state = {
     username: '',
@@ -24,18 +27,47 @@ class LoginPage extends React.Component {
     loginError: false
 }
 
-  handleChangeUser = event => {
-    this.setState({ name: event.target.value });
-  }
 
-  handleChangePassword = event => {
-    this.setState({ password: event.target.value });
-  }
+componentWillMount() {
+
+}
+
+
+
+tryAuthorize = async e => {
+
+  e.preventDefault();
+
+  const { username, password } = this.state;
+  console.log("Auth");
+  await authorizeUser(username, password).then(res => {
+    console.log("RESPONSE"+res);
+    if (res.status === 200) {
+
+      localStorage.setItem('token', res.data.token);  
+
+    }
+
+  }).then(() => {
+
+    this.props.history.push('/home')
+
+  })
+
+}
+
+handleChangeUser = event => {
+  this.setState({ name: event.target.value });
+}
+
+handleChangePassword = event => {
+  this.setState({ password: event.target.value });
+}
 
   
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <Button link={'/home'} text={"Zaloguj"}></Button>;    
+    const button = <Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button>;    
 
     return (
       <div>
