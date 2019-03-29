@@ -38,6 +38,23 @@ class SuperAdminCreationView(generics.CreateAPIView):
     permission_classes = (IsSuperAdmin,)
 
 
+class ClientSignUpView(generics.CreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = SignUpClientSerializer
+
+
+class AdminCreationView(generics.CreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = AdminCreationSerializer
+    permission_classes = (IsSuperAdmin,)
+
+
+class SuperAdminCreationView(generics.CreateAPIView):
+    queryset = AppUser.objects.all()
+    serializer_class = SuperAdminCreationSerializer
+    permission_classes = (IsSuperAdmin,)
+
+
 class ClientView(viewsets.ModelViewSet):
     queryset = AppUser.objects.all()
     permission_classes = (PostPermissions,)
