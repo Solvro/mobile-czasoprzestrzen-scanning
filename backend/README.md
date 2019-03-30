@@ -1,4 +1,4 @@
-**Backend Start**
+#**Backend Start** :zap:
 
 To start docker you should be in path `scanning_app/backend` \
 Then write `docker-compose up`, you should see that images are downloading\
@@ -27,7 +27,14 @@ Firstly make sure your containers are down by typing `docker-compose down`\
 Then You have to delete images by typing `docker image rm backend_web` and then `docker image rm mariadb:latest`\
 After seeing twice these messages\
 ![](.README_images/docker_image_delete.png)\
-You can easily type `docker-compose up` and it should start over downloading\
+You can easily type `docker-compose up` and it should start over downloading  :sunglasses: :sunglasses:
+
+#**Swagger** :fire:
+
+
+Firstly to connect to swagger you have to run backend by doing steps above\
+Then you can type in your browser [http://localhost:8000/swagger/]() 
+
 
 
 
