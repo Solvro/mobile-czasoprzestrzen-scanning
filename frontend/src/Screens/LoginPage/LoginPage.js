@@ -9,7 +9,7 @@ import Layout from '../../Components/Layout/Layout';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import logo from '../../assests/czasoprzestrzen_logo.png';
 import { authorizeUser, verifyUser } from '../../services/userService';
-
+import TextButton from '../../Components/Button/TextButton';
 
 import "./LoginPanel.css"
 
@@ -67,7 +67,7 @@ validateIsLogged = async () => {
 
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button>;    
+    const button = <div><Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button><TextButton text={"Zapomniałeś hasła?"}></TextButton></div>;    
 
     return (
       <div>
@@ -82,8 +82,9 @@ validateIsLogged = async () => {
         <InputField placeholder={"Login"} rows={"1"} onChange={this.handleChangeUser}>
         </InputField>
 
-        <InputField placeholder={"Hasło"} rows={"1"} onChange={this.handleChangePassword}>
+        <InputField placeholder={"Hasło"} type={"password"}  onChange={this.handleChangePassword}>
         </InputField>
+          
         
         </Form>
       </Layout>
