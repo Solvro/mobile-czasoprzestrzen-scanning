@@ -3,8 +3,11 @@
 const axios = require('axios');
 
 const instance = axios.create({
-  baseURL: 'http://localhost:5000/auth/',
+  baseURL: 'http://localhost:8000/api-v1/',
   timeout: 1000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 const config = {
@@ -18,27 +21,13 @@ export async function authorizeUser(username, password) {
     "password": password,
     "username": username
   }
-  
-  // return axios.post(`http://localhost:8000/api-v1/login/`, data, config)
   try {
-    const token = await axios.post(`http://localhost:8000/api-v1/login/`, data1, config);
+    const token = await instance.post(`login/`, data1);
     return token.data.access;
-} catch (error) {
+  } catch (error) {
     console.log(`Error: ${error}`);
+  }
 }
-}
-
-// export async function verifyUser(token) {
-
-//   // const config = {
-//   //   headers: {
-//   //     'Authorization': 'Token ' + token
-//   //   }
-//   // };
-
-//   // return axios.get('http://localhost:1337/status', config);
-//   return token !== '';
-// }
 
 export async function verifyUser(token) {
 
@@ -46,9 +35,7 @@ export async function verifyUser(token) {
     "token": token
   }
   try {
-    console.log("HERE");
-      const verification = await axios.post(`http://localhost:8000/api-v1/verify/`, data1, config);
-      console.log("VERIFY",verification);
+      const verification = await instance.post(`verify/`, data1);
       const isVerify = verification && verification.status === 200;
       return isVerify;
   } catch (error) {

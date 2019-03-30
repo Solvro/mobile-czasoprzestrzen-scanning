@@ -40,20 +40,6 @@ tryAuthorize = async e => {
 
   e.preventDefault();
   const { username, password } = this.state;
-  console.log(username);
-  // await authorizeUser(username, password).then(res => {
-    
-  //   if (res.status === 200) {
-  //     console.log("RESPONSE"+res.data.access);
-  //     localStorage.setItem('token', res.data.access);  
-  //     this.props.history.push('/home')
-  //   }
-  //   else{
-  //     console.log("ERRORR")
-  //     this.setState({ loginError: true });
-  //   }
-  //   })
-
   const token = await authorizeUser(username, password);
         if (token) {
             await localStorage.setItem('token', token);
@@ -101,11 +87,6 @@ validateIsLogged = async () => {
         
         </Form>
       </Layout>
-      {this.state.loginError &&
-                <ErrorDisplay
-                    removeError={id => {this.setState({loginError: false})}}
-                    errors={[{message: 'Błędny login lub hasło', id: 100}]}
-                    />}
       </div>
     );
   }
