@@ -43,8 +43,8 @@ For example [localhost:8000/api-v1/equipment/]()
 
 **If you do not have account or you do not want to use basics accounts**
 
-You can go to [http://localhost:8000/api-v1/signup]() with POST method (choose option to post on signup option) and create your own user\
-Afterwards you have to go to [http://localhost:8000/api-v1/login]() to authorize yourself and copy `access code`\
+You can go to [http://localhost:8000/api-v1/signup/]() with POST method (choose option to post on signup option) and create your own user\
+Afterwards you have to go to [http://localhost:8000/api-v1/login/]() to authorize yourself and copy `access code`\
 Then you have to click button "Authorize" ![](.README_images/Authorize.png) 
 
 There you have to paste the access code with prefix `Bearer` as a value            
@@ -54,7 +54,7 @@ Then you can easily work with Swagger   :smiley:
 
 **If you have account or you want to use basics accounts**
 
-You can directly go to the [http://localhost:8000/api-v1/login]() and follow steps from above
+You can directly go to the [http://localhost:8000/api-v1/login/]() and follow steps from above
 
 
 
