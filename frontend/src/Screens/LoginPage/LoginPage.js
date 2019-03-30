@@ -41,10 +41,10 @@ tryAuthorize = async e => {
   const { username, password } = this.state;
   console.log("Auth");
   await authorizeUser(username, password).then(res => {
-    console.log("RESPONSE"+res);
+    
     if (res.status === 200) {
-
-      localStorage.setItem('token', res.data.token);  
+      console.log("RESPONSE"+res.data.access);
+      localStorage.setItem('token', res.data.access);  
 
     }
 
