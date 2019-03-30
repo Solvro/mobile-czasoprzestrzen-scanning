@@ -6,6 +6,9 @@ const alertStrings = {
     passwordToShort: 'Hasło powinno zawierać min 5 znaków.',
     differentPasswords: 'Wprowadzone hasła różnią się.',
     invalidPhoneNumber: 'Wprowadzono błędny numer telefonu',
+    invalidData: 'Nieprawidłowe dane!',
+    correctRegistration: 'Poprawna rejestracja!', 
+    possibleSignIn: 'Teraz możesz się zalogować.'
 };
 
 module.exports = alertStrings;
