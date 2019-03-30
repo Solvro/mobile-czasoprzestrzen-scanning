@@ -28,49 +28,68 @@ class LoginPage extends React.Component {
 }
 
 
-componentWillMount() {
-
+componentWillMount(){
+  this.validateIsLogged()
+      .then(isLogged => {
+          if (isLogged)
+              this.props.history.push('/home');
+      });
 }
-
-
 
 tryAuthorize = async e => {
 
   e.preventDefault();
-
   const { username, password } = this.state;
-  console.log("Auth");
-  await authorizeUser(username, password).then(res => {
+  console.log(username);
+  // await authorizeUser(username, password).then(res => {
     
-    if (res.status === 200) {
-      console.log("RESPONSE"+res.data.access);
-      localStorage.setItem('token', res.data.access);  
+  //   if (res.status === 200) {
+  //     console.log("RESPONSE"+res.data.access);
+  //     localStorage.setItem('token', res.data.access);  
+  //     this.props.history.push('/home')
+  //   }
+  //   else{
+  //     console.log("ERRORR")
+  //     this.setState({ loginError: true });
+  //   }
+  //   })
 
-    }
-
-  }).then(() => {
-
-    this.props.history.push('/home')
-
-  })
-
+  const token = await authorizeUser(username, password);
+        if (token) {
+            await localStorage.setItem('token', token);
+            this.props.history.push('/home')
+        } else {
+            this.setState({loginError: true})
+        }
+    
 }
 
 handleChangeUser = event => {
-  this.setState({ name: event.target.value });
+  this.setState({ username: event.target.value });
 }
 
 handleChangePassword = event => {
   this.setState({ password: event.target.value });
 }
 
-  
+validateIsLogged = async () => {
+  const token = await localStorage.getItem('token');
+  const isLogged = token && await verifyUser(token);
+  console.log(isLogged);
+  return isLogged;
+}
+
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
     const button = <Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button>;    
 
     return (
       <div>
+        {this.state.loginError &&
+                <ErrorDisplay
+                    removeError={id => {this.setState({loginError: false})}}
+                    errors={[{message: 'Błędny login lub hasło.', id: 100}]}
+                    />}
       <Layout layoutDivide={"363"}>
         <Form header={header} button={button} >
 
