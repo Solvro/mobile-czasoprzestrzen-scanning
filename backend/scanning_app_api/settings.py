@@ -28,8 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application definition
+if DEBUG:
+    ALLOWED_HOSTS.append('*')
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,22 +39,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'scanning_app',
     'phonenumber_field',
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework_swagger',
     'django_filters',
+    'drf_yasg',
+    'corsheaders',
+    'scanning_app',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'scanning_app_api.urls'
@@ -141,10 +144,12 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'scanning_app.AppUser'
 
+#CORS settings
+CORS_ORIGIN_ALLOW_ALL = DEBUG
+
 SWAGGER_SETTINGS = {
-    "exclude_namespaces": [],  # List URL namespaces to ignore
     "api_version": '0.1',  # Specify your API's version
-    "api_path": "/",  # Specify the path to your API not a root level
+    "api_path": "/api-v1/",  # Specify the path to your API not a root level
     "enabled_methods": [  # Specify which methods to enable in Swagger UI
         'get',
         'post',
@@ -152,7 +157,12 @@ SWAGGER_SETTINGS = {
         'patch',
         'delete'
     ],
-    "api_key": '',  # An API key
-    "is_authenticated": False,  # Set to True to enforce user authentication,
-    "is_superuser": False,  # Set to True to enforce admin only access
+    'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+    },
+    "USE_SESSION_AUTH": False,
 }
