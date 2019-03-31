@@ -29,6 +29,11 @@ After seeing twice these messages\
 ![](.README_images/docker_image_delete.png)\
 You can easily type `docker-compose up` and it should start over downloading  :sunglasses: :sunglasses:
 
+## **Local database (develop)**
+Firstly you have to build your own container with mariadb and set name to `lokalnaMaria` and password to `czaspass`\
+After starting docker you have to type `DJANGO_DATABASE='default' python3 manage.py runserver` in terminal\
+Then you can start developing on your local server :muscle:
+
 # **Swagger** :fire:
 
 
