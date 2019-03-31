@@ -3,7 +3,6 @@ import {Alert, View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableW
 import {Container, Text, CheckBox, ListItem, Radio, Left, Right} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import validator from 'validator';
-import {nip, regon} from './NumberValidator.js';
 import SubmitButton from '../components/SubmitButton';
 import TextInputField from '../components/TextInputField';
 
@@ -11,7 +10,6 @@ import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 
 import alertStrings from '../assets/strings/AlertStrings.js';
 import buttonStrings from '../assets/strings/ButtonStrings.js';
-import registrationStrings from '../assets/strings/RegistrationStrings.js';
 
 import logo from '../assets/logo_with_name.png';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -31,12 +29,8 @@ export default class RegistrationPanel extends React.Component {
             password2: null,
             email: null,
             phoneNumber: null,
-            street: null,
-            postalCode: null,
-            city: null,
-            nip: null,
-            regon: null,
             isPerson: true,
+            form: this.generateBasicForm(),
         }
     }
 
@@ -93,10 +87,7 @@ export default class RegistrationPanel extends React.Component {
         && this.state.password2 && this.state.email
         && this.state.phoneNumber)) {
           this.showWarningAlert(alertStrings.emptyField);
-        } else if (!(this.state.isPerson) && !(this.state.street && this.state.postalCode
-        && this.state.city && this.state.nip && this.state.regon)) {
-            this.showWarningAlert(alertStrings.emptyField);
-        }
+      }
       //validate username
       else if(this.state.username.length<5) {
           this.showWarningAlert(alertStrings.usernameToShort);
@@ -113,22 +104,9 @@ export default class RegistrationPanel extends React.Component {
           this.showWarningAlert(alertStrings.differentPasswords);
       }
       //validate phone number
-      else if (!validator.isMobilePhone('+48'+this.state.phoneNumber,'pl-PL')) {
+      else if (!validator.isMobilePhone(this.state.phoneNumber,'pl-PL')) {
           this.showWarningAlert(alertStrings.invalidPhoneNumber);
-      } 
-      //validate postal code
-      else if (!(this.state.isPerson) && !validator.isPostalCode(this.state.postalCode, 'PL')) {
-            this.showWarningAlert(alertStrings.invalidPostalCode);
-      }
-      //validate nip 
-      else if (!(this.state.isPerson) && !nip(this.state.nip)) {
-        this.showWarningAlert(alertStrings.invalidNIP);
-      }
-      //validate regon 
-      else if (!(this.state.isPerson) && !regon(this.state.regon)) {
-        this.showWarningAlert(alertStrings.invalidRegon);
-      }
-      else {
+      } else {
         this.showRegisterAlert();
         this.props.navigation.navigate("SignIn");
       }
@@ -137,7 +115,7 @@ export default class RegistrationPanel extends React.Component {
 
     showWarningAlert(text) {
       Alert.alert(
-        alertStrings.invalidData,
+        'Nieprawidłowe dane!',
         text,
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -148,8 +126,8 @@ export default class RegistrationPanel extends React.Component {
 
     showRegisterAlert() {
       Alert.alert(
-        alertStrings.correctRegistration,
-        alertStrings.possibleSignIn,
+        'Poprawna rejestracja!',
+        'Teraz możesz się zalogować.',
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ],
@@ -157,48 +135,43 @@ export default class RegistrationPanel extends React.Component {
       );
     }
 
-    handleUsernameChange = (event) => {
-        this.setState({username: event});
+    setStateHandler = (state, text) => {
+        this.setState({state, text});
     }
 
-    handlePassword1Change = (event) => {
-        this.setState({password1: event});
+    showForm = () => {
+       if(this.isPerson) this.setState({form: this.generateBasicForm()})
+       else this.setState({form: this.generateBusinessForm()}) 
+       this.refresh()
     }
 
-    handlePassword2Change = (event) => {
-        this.setState({password2: event});
+    generateBasicForm = () => {
+        return(
+            <View>
+                
+            </View>
+        );
     }
 
-    handleEmailChange = (event) => {
-        this.setState({email: event});
+    showBasic = () => {
+        this.setState({isPerson: true})
+        this.showForm()
     }
-
-    handlePhoneNumberChange = (event) => {
-        this.setState({phoneNumber: event});
-    }
-
-    handleStreetChange = (event) => {
-        this.setState({street: event});
-    }
-
-    handlePostalCodeChange = (event) => {
-        this.setState({postalCode: event});
-    }
-
-    handleCityChange = (event) => {
-        this.setState({city: event});
-    }
-
-    handleNipChange = (event) => {
-        this.setState({nip: event});
-    }
-    
-    handleRegonChange = (event) => {
-        this.setState({regon: event});
+    showBusiness = () => {
+        this.setState({isPerson: false})
+        this.showForm()
     }
 
 
-
+    generateBusinessForm = () => {
+        return(
+            <View>
+                {this.generateBasicForm()}
+                
+                       
+            </View>
+        );
+    }
 
     render() {
         return(
@@ -217,61 +190,61 @@ export default class RegistrationPanel extends React.Component {
                         <View style={loginRegisterStyles.radioButtonContainer} >
                             <ListItem style={loginRegisterStyles.radioButton} onPress={() =>  this.setState({isPerson: true})} >
                                 <Left>
-                                    <Text>{registrationStrings.person}</Text>
+                                    <Text>Osoba fizyczna</Text>
                                 </Left>
                                 <Right>
-                                    <Radio onPress={() =>  this.setState({isPerson: true})} selected={this.state.isPerson}/>
+                                    <Radio selected={this.state.isPerson}/>
                                 </Right>
                             </ListItem>
                             <ListItem style={loginRegisterStyles.radioButton} onPress={() => this.setState({isPerson: false})} >
                                 <Left>
-                                    <Text>{registrationStrings.company}</Text>
+                                    <Text>Firma</Text>
                                 </Left>
                                 <Right>
-                                    <Radio onPress={() => this.setState({isPerson: false})} selected={!(this.state.isPerson)}/>
+                                    <Radio selected={!(this.state.isPerson)}/>
                                 </Right>
                             </ListItem>
                         </View>
                         <View style={loginRegisterStyles.inputFieldsContainer}>
                             <TextInputField
                                 state = {'username'}
-                                setStateHandler={this.handleUsernameChange}
+                                setStateHandler={this.setStateHandler}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
-                                placeholder = {registrationStrings.username}
+                                placeholder = {'Nazwa użytkownika'}
                                 secureTextEntry = {false}
                             />
                             <TextInputField
                                 state = {'email'}
-                                setStateHandler={this.handleEmailChange}
+                                setStateHandler={this.setStateHandler}
                                 keyboardType = 'email-address'
                                 returnKeyType = 'next'
-                                placeholder = {registrationStrings.email}
+                                placeholder = {'Adres e-mail'}
                                 secureTextEntry = {false}
                             />
                             <TextInputField
                                 state = {'password1'}
-                                setStateHandler={this.handlePassword1Change}
+                                setStateHandler={this.setStateHandler}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
-                                placeholder = {registrationStrings.password}
+                                placeholder = {'Hasło'}
                                 secureTextEntry = {true}
                             />
                             <TextInputField
                                 state = {'password2'}
-                                setStateHandler={this.handlePassword2Change}
+                                setStateHandler={this.setStateHandler}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
-                                placeholder = {registrationStrings.repeatPassword}
+                                placeholder = {'Powtórz hasło'}
                                 secureTextEntry = {true}
                             />
                             <TextInputField
                                 state = {'phoneNumber'}
-                                setStateHandler={this.handlePhoneNumberChange}
-                                keyboardType = 'number-pad'
+                                setStateHandler={this.setStateHandler}
+                                keyboardType = 'phone-pad'
                                 returnKeyType = 'next'
-                                placeholder = {registrationStrings.phoneNumber}
-                                secureTextEntry = {false}
+                                placeholder = {'Numer telefonu'}
+                                secureTextEntry = {true}
                             />
 
                         </View>
@@ -281,45 +254,45 @@ export default class RegistrationPanel extends React.Component {
                                     <View style={loginRegisterStyles.inputFieldsContainer}>
                                         <TextInputField
                                             state = {'street'}
-                                            setStateHandler={this.handleStreetChange}
+                                            setStateHandler={this.setStateHandler}
                                             keyboardType = 'default'
                                             returnKeyType = 'next'
-                                            placeholder = {registrationStrings.street}
+                                            placeholder = {'Ulica i numer'}
                                             secureTextEntry = {false}
                                         />
                                         <TextInputField
-                                            state = {'postalCode'}
-                                            setStateHandler={this.handlePostalCodeChange}
+                                            state = {'postal-code'}
+                                            setStateHandler={this.setStateHandler}
                                             keyboardType = 'default'
                                             returnKeyType = 'next'
-                                            placeholder = {registrationStrings.postalCode}
+                                            placeholder = {'Kod pocztowy'}
                                             secureTextEntry = {false}
                                         />
                                         <TextInputField
                                             state = {'city'}
-                                            setStateHandler={this.handleCityChange}
+                                            setStateHandler={this.setStateHandler}
                                             keyboardType = 'default'
                                             returnKeyType = 'next'
-                                            placeholder = {registrationStrings.city}
+                                            placeholder = {'Miejscowość'}
                                             secureTextEntry = {false}
                                         />
                                     </View>
                                    <View style={loginRegisterStyles.inputFieldsContainer}>
                                         <TextInputField
                                             state = {'nip'}
-                                            setStateHandler={this.handleNipChange}
-                                            keyboardType = 'number-pad'
+                                            setStateHandler={this.setStateHandler}
+                                            keyboardType = 'default'
                                             returnKeyType = 'next'
-                                            placeholder = {registrationStrings.nip}
-                                            secureTextEntry = {false}
+                                            placeholder = {'NIP'}
+                                            secureTextEntry = {true}
                                         />
                                         <TextInputField
                                             state = {'regon'}
-                                            setStateHandler={this.handleRegonChange}
-                                            keyboardType = 'number-pad'
+                                            setStateHandler={this.setStateHandler}
+                                            keyboardType = 'default'
                                             returnKeyType = 'next'
-                                            placeholder = {registrationStrings.regon}
-                                            secureTextEntry = {false}
+                                            placeholder = {'REGON'}
+                                            secureTextEntry = {true}
                                         />
                                     </View>
                                 </View>
@@ -334,7 +307,7 @@ export default class RegistrationPanel extends React.Component {
                             icon = 'md-add-circle-outline'/>
                         <TouchableOpacity style={loginRegisterStyles.linkContainer}
                             onPress={() => this.props.navigation.navigate("SignIn")}>
-                            <Text style={loginRegisterStyles.linkText}>{registrationStrings.returnToSignIn}</Text>
+                            <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>
                         </TouchableOpacity> 
                     </View>
                   </Animated.View>
