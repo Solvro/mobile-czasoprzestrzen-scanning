@@ -42,15 +42,11 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'rest_framework',
     'rest_framework_simplejwt',
-<<<<<<< HEAD
-    'rest_framework_swagger',
-    'django_filters',
-=======
+
     'django_filters',
     'drf_yasg',
     'corsheaders',
     'scanning_app',
->>>>>>> 420fbf8fac502847a2e2bd18546cac06b3407da8
 ]
 
 MIDDLEWARE = [
