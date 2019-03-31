@@ -8,10 +8,7 @@ const alertStrings = {
     invalidPhoneNumber: 'Wprowadzono błędny numer telefonu',
     invalidData: 'Nieprawidłowe dane!',
     correctRegistration: 'Poprawna rejestracja!', 
-    possibleSignIn: 'Logowanie będzie możliwe po zatwierdzeniu Twojego konta.',
-    invalidNIP: 'Nieprawidłowy numer NIP.',
-    invalidPostalCode: 'Nieprawidłowy kod pocztowy.',
-    invalidRegon: 'Nieprawidłowy numer REGON',
+    possibleSignIn: 'Teraz możesz się zalogować.'
 };
 
 module.exports = alertStrings;
