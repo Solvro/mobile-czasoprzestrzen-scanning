@@ -1,71 +1,34 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import PrivateRoute from "react-private-route";
-import LoggedIn from './Screens/LoggedIn/LoggedIn';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom'
+import PrivateRoute from './services/PrivateRoot';
+import HomePage from './Screens/HomePage/HomePage';
+import RentPage from './Screens/RentTablePage/RentTablePage';
+import AdminPage from './Screens/AdminPage/AdminPage';
+import ClientTablePage from './Screens/ClientsTablePage/ClientsTablePage';
+import AddItemPage from './Screens/AddItemPage/AddItemPage';
 import LoginPage from './Screens/LoginPage/LoginPage';
 import { MuiThemeProvider} from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import theme from './theme';
 
-
-class App extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggedIn: true
-    };
-    this.isLoggedIn = this.isLoggedIn.bind(this);
-    this.login = this.login.bind(this);
-  }
-  isLoggedIn() {
-    return this.state.isLoggedIn;
-  }
-  login() {
-    this.setState({ isLoggedIn: !this.state.isLoggedIn });
-  }
-
-  render() {
-    return (
+  const App = () => (
       <MuiThemeProvider theme={theme}>
-      <Router>
-      <div className="container">
-      {/* <Switch>
-          <PrivateRoute path={'/home'} component={HomePage}/>
-          <PrivateRoute path={'/clients'} component={Clients}/>
-          <Route path={'/login'} component={LoginPage}/>
-      </Switch> */}
-      <Switch>
-         <Route
-              path="/login"
-              component={() => (
-                <LoginPage login={this.login} isLogged={this.state.isLoggedIn} />
-              )}
-        />
-        <PrivateRoute
-              exact
-              path="/home"
-              component={LoggedIn}
-              isAuthenticated={!!this.isLoggedIn()}
-              redirect="/login"
-            />
-        {/* <Toolbar />
-
-        <Route exact path="/" component={HomePage} />
-        <Route path="/rents" component={Rents} />
-        <Route path="/clients" component={Clients} />
-        <Route path="/account" component={Account} />
-        <Route path="/adds" component={Adds} /> */}
-        </Switch>
-      </div>
-    </Router>
+        <Router>
+          <Switch>
+            <Route path="/login" component={LoginPage}/>
+            <PrivateRoute path='/home' component={HomePage} />
+            <PrivateRoute path='/rents' component={RentPage} />
+            <PrivateRoute path='/clients' component={ClientTablePage} />
+            <PrivateRoute path='/account' component={AdminPage} />
+            <PrivateRoute path='/adds' component={AddItemPage} />
+        </Switch> 
+      </Router>      
     </MuiThemeProvider>
     );
-  }
-}
 
-App.propTypes = {
-    classes: PropTypes.object.isRequired,
-  };
+  export default App;
 
-export default App;
+
