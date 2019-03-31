@@ -106,5 +106,5 @@ class VerifyTokenView(TokenVerifyView):
         token = request.data['token']
         validated_token = JWTAuthentication.get_validated_token(JWTAuthentication(), raw_token=token)
         user = JWTAuthentication.get_user(JWTAuthentication(), validated_token=validated_token)
-        response.data['type'] = user.type
+        response.data['username'] = user.username
         return response
