@@ -1,11 +1,12 @@
 import React from 'react';
-import {View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {View, Alert, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {Container, Text} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import SubmitButton from '../components/SubmitButton';
 
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 import buttonStrings from '../assets/strings/ButtonStrings.js';
+import apiConfig from '../services/api/config';
 
 import logo from '../assets/logo.jpg';
 import TextInputField from '../components/TextInputField';
@@ -75,13 +76,43 @@ export default class LoginPanel extends React.Component {
     /**
      * Handles login button press action.
      */
-    handlePressLogin = () => {
-        this.props.navigation.navigate('SignedIn',);
+    handlePressLogin = async () => {
+        const { username, password } = this.state;
+        console.log(this.state['username']);
+        data = {
+            method: 'POST',
+            body: JSON.stringify({
+                'username': username,
+                'password': password,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        fetch(apiConfig.url + '/api-v1/login/', data)
+        .then((response) => {this.setState({status: response.status}); return response.json()})
+        .then((response) => {
+            console.log(this.state.status);  
+            if(this.state.status === 200) {
+                apiConfig.clientId = response.access;
+                this.props.navigation.navigate('SignedIn');
+            } else {
+                Alert.alert('Invalid username or password!');
+            }
+        })
+        .catch(() => {
+            Alert.alert('No connection with server!');
+        });
+
     }
 
-    setStateHandler = (state, text) => {
-        this.setState({state, text});
-        console.log(text);
+    handleUsernameChange = (event) => {
+        this.setState({username: event});
+    }
+
+    handlePasswordChange = (event) => {
+        this.setState({password : event});
     }
 
     render() {
@@ -102,14 +133,14 @@ export default class LoginPanel extends React.Component {
                         </View>
                         <TextInputField 
                             state={'username'}
-                            setStateHandler={this.setStateHandler} 
+                            setStateHandler={this.handleUsernameChange} 
                             keyboardType = 'email-address'
                             returnKeyType = 'next'
                             placeholder = {'Użytkownik'}
                             secureTextEntry = {false}
                         />
                         <TextInputField 
-                            setStateHandler={this.setStateHandler} 
+                            setStateHandler={this.handlePasswordChange} 
                             state={'password'}
                             keyboardType = 'default'
                             returnKeyType = 'next'

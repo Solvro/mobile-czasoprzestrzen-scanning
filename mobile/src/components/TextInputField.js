@@ -12,9 +12,6 @@ import inputFieldsStyles from '../styles/InputFieldsStyles.js';
 
 import logo from '../assets/logo.jpg';
 
-/**
- * 
- */
 export default class TextInputField extends React.Component {
 
     constructor(props) {
@@ -25,7 +22,7 @@ export default class TextInputField extends React.Component {
         return(
             <View style={inputFieldsStyles.input}>
                 <TextInput style={inputFieldsStyles.inputField}
-                    onChangeText = {(text) => this.props.setStateHandler(this.props.state, text)}
+                    onChangeText = {(event) => this.props.setStateHandler(event)}
                     keyboardType = {this.props.keyboardType}
                     returnKeyType = {this.props.returnKeyType}
                     placeholder = {this.props.placeholder}

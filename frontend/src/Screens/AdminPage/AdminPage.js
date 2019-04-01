@@ -3,8 +3,8 @@ import Layout from '../../Components/Layout/Layout';
 import Button from '../../Components/Button/AdminButton';
 import SearchContainer from '../../Components/SearchContainer/SearchContainer';
 import Table from '../../Components/Table/ClientsWaitingForApprovalTable';
-
 import './AdminPage.css';
+import Toolbar from '../../Components/Toolbar/Toolbar';
 
 class AdminPage extends Component {
   render() {
@@ -22,10 +22,12 @@ class AdminPage extends Component {
 
     return (
 
+
       <Layout layoutDivide={"84"} leftChildren={left} rightChildren={right}>
        
       </Layout>
       
+
     );
   }
 }

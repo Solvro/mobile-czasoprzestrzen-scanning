@@ -6,7 +6,7 @@ class ChangePasswordPage extends Component {
   render() {
 
     return(
-        <Layout layoutDivide={"282"} >
+      <Layout layoutDivide={"282"} >
        
       </Layout>
     ) ;

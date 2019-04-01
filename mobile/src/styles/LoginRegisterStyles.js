@@ -23,7 +23,7 @@ const loginRegisterStyles = StyleSheet.create({
     registerLogoContainer: {
         alignItems: 'center',
         marginTop: 30,
-        marginBottom: 5,
+        marginBottom: 15,
     },
 
     //Logo style in login and register panel
@@ -33,17 +33,16 @@ const loginRegisterStyles = StyleSheet.create({
     },
 
 
-    //CheckBox
+    //RadioButton
 
-    checkBoxContainer: {
-        marginRight: 30,
-        marginLeft: 30,
-        marginBottom: 12,
-        borderBottomWidth: 0,
+    radioButtonContainer: {
+        marginBottom: 15,
     },
 
-    checkBoxText: {
-        marginLeft: 10,
+    radioButton: {
+        marginRight: 30,
+        marginLeft: 30,
+        borderBottomWidth: 0,
     },
 
     //Container with action button and link
@@ -70,7 +69,17 @@ const loginRegisterStyles = StyleSheet.create({
 
     linkText: {
         fontSize: 16,
+    },
+
+    //ScrollView
+    scrollView: {
+        maxHeight: 380,
+    },
+
+    inputFieldsContainer: {
+        marginBottom: 20,
     }
+
 });
 
 module.exports = loginRegisterStyles;
