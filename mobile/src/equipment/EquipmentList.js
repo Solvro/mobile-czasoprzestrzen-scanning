@@ -1,10 +1,8 @@
 import React from 'react';
-import { Container, Text, Card, CardItem, Content } from 'native-base';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Container } from 'native-base';
 import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
-import logo from '../assets/logo.jpg';
 import alertStrings from '../assets/strings/AlertStrings';
 
 import apiConfig from '../services/api/config';

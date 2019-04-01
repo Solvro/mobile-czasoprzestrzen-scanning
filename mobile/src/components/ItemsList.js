@@ -1,10 +1,8 @@
 import React from 'react';
 
-import { Container, Button, Header, Content, List, Left, Body, Right, Thumbnail, Text } from 'native-base';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Content, List } from 'native-base';
 import SingleListItem from './SingleListItem';
 
-import itemsListStyles from '../styles/ItemsListStyles';
 
 export default class ItemsList extends React.Component {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Button, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
+import { ListItem, Body, Right, Text } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import singleListItemStyles from '../styles/SingleListItemStyles';
