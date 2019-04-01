@@ -23,10 +23,9 @@ export default class ItemsList extends React.Component {
     addItems = () => {
         itemsList = []
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 1; i <= 5; i++) {
             itemsList.push(
                 <ListItem key={i}>
-
                     <Body>
                         <Text style={itemsListStyles.name}>Super mikrofon</Text>
                         <Text note style={itemsListStyles.noteText}>mikrofony</Text>
@@ -36,13 +35,10 @@ export default class ItemsList extends React.Component {
                     </Right>
                 </ListItem>
             );
-        }
-
-        for (let i = 5; i < 10; i++) {
             itemsList.push(
-                <ListItem key={i}>
+                <ListItem key={10*i}>
                     <Body>
-                        <Text>Super mikrofon</Text>
+                        <Text style={itemsListStyles.name}>Super mikrofon</Text>
                         <Text note style={itemsListStyles.noteText}>mikrofony</Text>
                     </Body>
                     <Right>
@@ -51,7 +47,6 @@ export default class ItemsList extends React.Component {
                 </ListItem>
             );
         }
-
         this.setState({ items: itemsList });
     }
 
