@@ -6,6 +6,8 @@ import Rents from '../RentTablePage/RentTablePage';
 import Account from '../AdminPage/AdminPage';
 import Adds from '../AddItemPage/AddItemPage';
 import Toolbar from '../../Components/Toolbar/Toolbar';
+import NewAccountPage from '../NewAccountPage/NewAccountPage';
+import ChangePasswordPage from '../ChangePasswordPage/ChangePasswordPage';
 
 class LoggedIn extends Component {
 
@@ -23,6 +25,8 @@ class LoggedIn extends Component {
         <Route path="/clients" component={Clients} />
         <Route path="/account" component={Account} />
         <Route path="/adds" component={Adds} />
+        <Route path="/createNewAccount" component={NewAccountPage} />
+        <Route path="/createNewAccount" component={ChangePasswordPage} />
       </div>
     </Router>
     );

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Layout from '../../Components/Layout/Layout';
 
 
-class NewAccountPage extends Component {
+class ChangePasswordPage extends Component {
   render() {
 
     return(
@@ -13,4 +13,4 @@ class NewAccountPage extends Component {
   }
 }
 
-export default NewAccountPage;
+export default ChangePasswordPage;

@@ -15,7 +15,7 @@ class AdminPage extends Component {
           </div>;
 
     const right = <div className='ButtonGroup'>
-            <Button link={'/home'} text={"Zmień hasło"}></Button>
+            <Button link={'/changePassword'} text={"Zmień hasło"}></Button>
             <Button link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
             <Button link={'/login'} text={"Wyloguj"}></Button> 
           </div>;
