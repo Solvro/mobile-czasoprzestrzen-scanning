@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
 import Layout from '../../Components/Layout/Layout';
-import Button from '../../Components/Button/AddButton';
+import Button from '../../Components/Button/AdminButton';
 import SearchContainer from '../../Components/SearchContainer/SearchContainer';
 import Table from '../../Components/Table/ClientsWaitingForApprovalTable';
-import Form from '../../Components/Form/Form';
 
-class Account extends Component {
+import './AdminPage.css';
+
+class AdminPage extends Component {
   render() {
 
-    const button = <Button link={'/home'} text={"Zmień hasło"}></Button>;
-
     const left = <div className='Table'> 
-          <SearchContainer placeholder={"Wyszukaj po nazwie ..."}/>
-          <Table /></div>;
+            <SearchContainer placeholder={"Wyszukaj po nazwie ..."} />
+            <Table />
+          </div>;
 
-    const right = <div className='Form'>
-          {/* <Form button={button}>
-          </Form> */}
-    </div>
+    const right = <div className='ButtonGroup'>
+            <Button link={'/home'} text={"Zmień hasło"}></Button>
+            <Button link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
+            <Button link={'/login'} text={"Wyloguj"}></Button> 
+          </div>;
 
     return (
 
-      <Layout layoutDivide={"16131"} leftChildren={left} rightChildren={right}>
+      <Layout layoutDivide={"84"} leftChildren={left} rightChildren={right}>
        
       </Layout>
       
@@ -29,4 +30,4 @@ class Account extends Component {
   }
 }
 
-export default Account;
+export default AdminPage;
