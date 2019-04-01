@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../../Components/Layout/Layout';
-import Button from '../../Components/Button/AdminButton';
+import Button from '../../Components/Button/Button';
 import SearchContainer from '../../Components/SearchContainer/SearchContainer';
 import Table from '../../Components/Table/ClientsWaitingForApprovalTable';
 import './AdminPage.css';
@@ -10,14 +10,17 @@ class AdminPage extends Component {
   render() {
 
     const left = <div className='Table'> 
+            <Toolbar/>
             <SearchContainer placeholder={"Wyszukaj po nazwie ..."} />
             <Table />
           </div>;
 
     const right = <div className='ButtonGroup'>
-            <Button link={'/changePassword'} text={"Zmień hasło"}></Button>
-            <Button link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
-            <Button link={'/login'} text={"Wyloguj"}></Button> 
+            <div className='inner'>
+            <Button button={"verticalButton"} link={'/changePassword'} text={"Zmień hasło"}></Button>
+            <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
+            <Button button={"verticalButton"} link={'/login'} text={"Wyloguj"}></Button> 
+            </div>
           </div>;
 
     return (
