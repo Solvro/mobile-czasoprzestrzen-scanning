@@ -7,7 +7,6 @@ import Account from '../AdminPage/AdminPage';
 import Adds from '../AddItemPage/AddItemPage';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 
-
 class LoggedIn extends Component {
 
 
