@@ -5,6 +5,7 @@ import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
 import logo from '../assets/logo.jpg';
+import alertStrings from '../assets/strings/AlertStrings';
 
 import apiConfig from '../services/api/config';
 
@@ -40,11 +41,11 @@ export default class EquipmentList extends React.Component {
             if(this.state.status === 200) {
                 fetchedItems = response;
             } else {
-                Alert.alert('You are not authorized!');
+                Alert.alert(alertStrings.noAuthoriatzion);
             }
         })
         .catch(() => {
-            Alert.alert('No connection with server!');
+            Alert.alert(alertStrings.noConnectionWithServer);
         });
 
         return fetchedItems;
