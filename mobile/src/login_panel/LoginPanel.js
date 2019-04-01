@@ -92,8 +92,7 @@ export default class LoginPanel extends React.Component {
 
         fetch(apiConfig.url + '/api-v1/login/', data)
         .then((response) => {this.setState({status: response.status}); return response.json()})
-        .then((response) => {
-            console.log(this.state.status);  
+        .then((response) => { 
             if(this.state.status === 200) {
                 apiConfig.clientId = response.access;
                 this.props.navigation.navigate('SignedIn');

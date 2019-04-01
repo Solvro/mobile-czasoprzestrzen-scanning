@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Container, Button, Header, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
+import { Container, Button, Header, Content, List, Left, Body, Right, Thumbnail, Text } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SingleListItem from './SingleListItem';
 
 import itemsListStyles from '../styles/ItemsListStyles';
 
@@ -15,48 +16,32 @@ export default class ItemsList extends React.Component {
         }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
+        await this.addItems();
         this.setState({ isReady: true });
-        this.addItems();
     }
 
-    addItems = () => {
+    addItems = async () => {
         itemsList = []
 
-        for (let i = 1; i <= 5; i++) {
-            itemsList.push(
-                <ListItem key={i}>
-                    <Body>
-                        <Text style={itemsListStyles.name}>Super mikrofon</Text>
-                        <Text note style={itemsListStyles.noteText}>mikrofony</Text>
-                    </Body>
-                    <Right>
-                        <Icon name='md-close' style={[itemsListStyles.icon, itemsListStyles.inaccessibleIcon]} />
-                    </Right>
-                </ListItem>
-            );
-            itemsList.push(
-                <ListItem key={10*i}>
-                    <Body>
-                        <Text style={itemsListStyles.name}>Super mikrofon</Text>
-                        <Text note style={itemsListStyles.noteText}>mikrofony</Text>
-                    </Body>
-                    <Right>
-                        <Icon name='md-checkmark' style={[itemsListStyles.icon, itemsListStyles.availableIcon]} />
-                    </Right>
-                </ListItem>
-            );
+        for(let i = 0; i < this.props.items.length; i++) {
+            itemsList.push(<SingleListItem key={i} item={this.props.items[i]}/>);
         }
+
         this.setState({ items: itemsList });
     }
 
     render() {
-        return (
-            <Content>
-                <List>
-                    {this.state.items}
-                </List>
-            </Content>
-        );
+        if(!this.state.isReady) {
+            return <Expo.AppLoading/>
+        } else {
+            return (
+                <Content>
+                    <List>
+                        {this.state.items}
+                    </List>
+                </Content>
+            );
+        }
     }
 }
