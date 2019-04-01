@@ -1,13 +1,15 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { verifyUser } from './userService';
+import InfoDisplay from '../Components/Displays/InfoDisplay';
 
 
 class PrivateRoute extends React.Component {
 
   state = {
     loggedIn: false,
-    authorized: false
+    authorized: false,
+    loginInfo: true,
   }
 
   validateIsLogged = async () => {
@@ -31,7 +33,7 @@ class PrivateRoute extends React.Component {
     const {component: Component, ...rest} = this.props;
     const renderComponent = (props) => (
       this.state.loggedIn
-        ? <Component {...props} />
+        ? <div><Component {...props} /></div>
         : (<Redirect to='/login' />)
     
      );

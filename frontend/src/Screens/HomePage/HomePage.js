@@ -7,6 +7,15 @@ import Button from '../../Components/Button/AddButton';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
 
 class HomePage extends Component {
+
+  state = {
+    loginInfo: false,
+  }
+
+  componentWillMount(){
+    this.setState({loginInfo: true})
+  }
+
   render() {
     return (
       <div className="container">
@@ -16,6 +25,10 @@ class HomePage extends Component {
                 <Table />
                 <div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div>
       </Layout>
+      {this.state.loginInfo && <InfoDisplay
+        removeInfo={id => {this.setState({loginInfo: false})}}
+        info={[{message: 'Zalogowałeś się poprawnie', id: 100}]}
+        />}
       </div>
     );
   }
