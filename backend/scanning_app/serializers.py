@@ -16,6 +16,12 @@ class SignUpUnacceptedClientSerializer(serializers.ModelSerializer):
         return super(SignUpUnacceptedClientSerializer, self)\
             .create(validated_data)
 
+    def validate(self, attrs):
+        if AppUser.objects.filter(username__exact=attrs['username']).exists():
+            raise serializers.ValidationError(
+                "A user with that username already exists.")
+        return super().validate(attrs)
+
     class Meta:
         model = UnacceptedClient
         fields = ('id', 'username', 'password', 'first_name', 'last_name',

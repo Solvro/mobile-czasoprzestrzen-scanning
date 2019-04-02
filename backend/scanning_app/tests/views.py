@@ -70,6 +70,10 @@ class AbstractAppUserCreationTests:
         del data['phone']
         self.bad_request_with_data(data)
 
+    def test_username_duplicate_400_returned(self):
+        self.send_request_with_data_expect_status(status.HTTP_201_CREATED)
+        self.send_request_with_data_expect_status(status.HTTP_400_BAD_REQUEST)
+
 
 class AbstractAdminsCreationTests(AbstractAppUserCreationTests):
     def setUp(self):
@@ -141,6 +145,10 @@ class UnacceptedClientSignUpTests(TestCase):
         data = USER_DATA.copy()
         del data['phone']
         self.bad_request_with_data(data)
+
+    def test_username_duplicate_400_returned(self):
+        AppUser.objects.create_user(**USER_DATA)
+        self.send_request_with_data_expect_status(status.HTTP_400_BAD_REQUEST)
 
 
 class AdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
