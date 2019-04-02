@@ -1,5 +1,5 @@
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, viewsets, status, views
+from rest_framework import generics, viewsets, status, views, mixins
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -28,25 +28,24 @@ class EquipmentView(viewsets.ModelViewSet):
     filter_fields = ('name', 'available', 'type')
 
 
-class UnacceptedClientSignUpView(generics.CreateAPIView):
+class UnacceptedClientListCreateDestroyViewSet(mixins.CreateModelMixin,
+                                               mixins.ListModelMixin,
+                                               mixins.DestroyModelMixin,
+                                               viewsets.GenericViewSet):
     queryset = UnacceptedClient.objects.all()
-    serializer_class = SignUpUnacceptedClientSerializer
 
-    @swagger_auto_schema(
-        operation_description="POST /api-v1/signup/\n"
-                              "Create new unaccepted client",
-        responses={
-            400: 'Obligatory field not provided or username duplicate'
-        }
-    )
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ListUnacceptedClientSerializer
+        else:
+            return SignUpUnacceptedClientSerializer
 
-
-class UnacceptedClientListView(generics.ListAPIView):
-    queryset = UnacceptedClient.objects.all()
-    serializer_class = ListUnacceptedClientSerializer
-    permission_classes = (IsAdminOrSuperAdmin,)
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            permission_classes = []
+        else:
+            permission_classes = [IsAdminOrSuperAdmin]
+        return [permission() for permission in permission_classes]
 
     @swagger_auto_schema(
         operation_description="GET /api-v1/unaccepted-client/\n"
@@ -57,8 +56,31 @@ class UnacceptedClientListView(generics.ListAPIView):
                  'list unaccepted clients (Not admin or super admin)'
         }
     )
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="POST /api-v1/signup/\n"
+                              "Create new unaccepted client",
+        responses={
+            400: 'Obligatory field not provided or username duplicate'
+        }
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/unaccepted-client/{pk}/\n"
+                              "Delete unaccepted client with given id",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'delete unaccepted client (Not admin or super admin)',
+            404: 'No unaccepted client with given id found'
+        }
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
 
 
 class AcceptUnacceptedClientView(views.APIView):
@@ -81,25 +103,6 @@ class AcceptUnacceptedClientView(views.APIView):
         accepted_user = user.accept()
         ser = ClientSerializer(accepted_user)
         return Response(data=ser.data, status=status.HTTP_200_OK)
-
-
-class UnacceptedClientDestroyView(generics.DestroyAPIView):
-    queryset = UnacceptedClient.objects.all()
-    serializer_class = SignUpUnacceptedClientSerializer
-    permission_classes = (IsAdminOrSuperAdmin,)
-
-    @swagger_auto_schema(
-        operation_description="DELETE /api-v1/unaccepted-client/{pk}/\n"
-                              "Delete unaccepted client with given id",
-        responses={
-            401: 'No token provided',
-            403: 'User in token doesn\'t have permissions to '
-                 'delete unaccepted client (Not admin or super admin)',
-            404: 'No unaccepted client with given id found'
-        }
-    )
-    def delete(self, request, *args, **kwargs):
-        return super().delete(request, *args, **kwargs)
 
 
 class AdminCreationView(generics.CreateAPIView):
