@@ -4,7 +4,7 @@ from django.test import TestCase
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
     UnacceptedClient
 from scanning_app.serializers import RentalInfoSerializer, \
-    EquipmentSerializer, SignUpClientSerializer, ClientSerializer
+    EquipmentSerializer, SignUpUnacceptedClientSerializer, ClientSerializer
 
 CLIENT_USERNAME = "username"
 CLIENT_PASSWORD = "pass"
@@ -38,7 +38,7 @@ EQUIPMENT_DATA = {
 class SignUpClientSerializerTests(TestCase):
 
     def create_and_check_basic_client(self, client_data):
-        ser = SignUpClientSerializer(data=client_data)
+        ser = SignUpUnacceptedClientSerializer(data=client_data)
         self.assertTrue(ser.is_valid())
         ser.save()
         self.assertEqual(UnacceptedClient.objects.count(), 1)
@@ -66,14 +66,14 @@ class SignUpClientSerializerTests(TestCase):
     def test_client_data_without_password_passed_is_invalid(self):
         data = CLIENT_DATA.copy()
         del data['password']
-        ser = SignUpClientSerializer(data=data)
+        ser = SignUpUnacceptedClientSerializer(data=data)
 
         self.assertFalse(ser.is_valid())
 
     def test_client_data_without_username_passed_is_invalid(self):
         data = CLIENT_DATA.copy()
         del data['username']
-        ser = SignUpClientSerializer(data=data)
+        ser = SignUpUnacceptedClientSerializer(data=data)
 
         self.assertFalse(ser.is_valid())
 

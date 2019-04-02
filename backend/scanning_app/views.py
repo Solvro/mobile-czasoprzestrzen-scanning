@@ -10,10 +10,12 @@ from rest_framework_simplejwt.views import TokenVerifyView
 
 from .models import Equipment, AppUser, RentalInfo, UnacceptedClient
 from .serializers import EquipmentSerializer, ClientSerializer, \
-    RentalInfoSerializer, SignUpClientSerializer, RentalInfoGetSerializer, \
-    AdminCreationSerializer, SuperAdminCreationSerializer
+    RentalInfoSerializer, SignUpUnacceptedClientSerializer, \
+    RentalInfoGetSerializer, \
+    AdminCreationSerializer, SuperAdminCreationSerializer, \
+    ListUnacceptedClientSerializer
 from .permissions import PostPermissions, RentalInfoPermissions, \
-    IsSuperAdmin
+    IsSuperAdmin, IsAdminOrSuperAdmin
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -25,9 +27,9 @@ class EquipmentView(viewsets.ModelViewSet):
     filter_fields = ('name', 'available', 'type')
 
 
-class ClientSignUpView(generics.CreateAPIView):
+class UnacceptedClientSignUpView(generics.CreateAPIView):
     queryset = UnacceptedClient.objects.all()
-    serializer_class = SignUpClientSerializer
+    serializer_class = SignUpUnacceptedClientSerializer
 
     @swagger_auto_schema(
         operation_description="POST /api-v1/signup/\n"
@@ -38,6 +40,23 @@ class ClientSignUpView(generics.CreateAPIView):
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
+
+class UnacceptedClientListView(generics.ListAPIView):
+    queryset = UnacceptedClient.objects.all()
+    serializer_class = ListUnacceptedClientSerializer
+    permission_classes = (IsAdminOrSuperAdmin,)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/unaccepted-client/\n"
+                              "Get list of unaccepted clients",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to list unaccepted client (Not admin or super admin)'
+        }
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 class AdminCreationView(generics.CreateAPIView):
@@ -95,7 +114,7 @@ class ClientView(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'create':
-            return SignUpClientSerializer
+            return SignUpUnacceptedClientSerializer
         return ClientSerializer
 
 

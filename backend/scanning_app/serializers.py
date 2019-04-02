@@ -10,10 +10,11 @@ class EquipmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SignUpClientSerializer(serializers.ModelSerializer):
+class SignUpUnacceptedClientSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
-        return super(SignUpClientSerializer, self).create(validated_data)
+        return super(SignUpUnacceptedClientSerializer, self)\
+            .create(validated_data)
 
     class Meta:
         model = UnacceptedClient
@@ -23,6 +24,17 @@ class SignUpClientSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
             'email': {'required': True}
         }
+
+
+class ListUnacceptedClientSerializer(serializers.ModelSerializer):
+    is_business = serializers.SerializerMethodField()
+
+    class Meta:
+        model = UnacceptedClient
+        fields = ('id', 'first_name', 'last_name', 'email', 'is_business')
+
+    def get_is_business(self, obj):
+        return bool(not (obj.business_data is None or obj.business_data == ''))
 
 
 class AppAdminCreationSerializer(serializers.ModelSerializer):
