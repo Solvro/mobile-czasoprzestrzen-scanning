@@ -100,7 +100,7 @@ class AbstractAdminsCreationTests(AbstractAppUserCreationTests):
         self.send_request_with_data_expect_status(status.HTTP_403_FORBIDDEN)
 
 
-class ClientSignUpTests(TestCase):
+class UnacceptedClientSignUpTests(TestCase):
     def setUp(self):
         self.apiClient = APIClient()
 
@@ -151,6 +151,54 @@ class AdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
 class SuperAdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
     endpoint = "super-admin-list"
     type = "Sa"
+
+
+class UnacceptedClientListViewTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    def test_list_contains_all_and_only_unaccepted_users(self):
+        UnacceptedClient.objects.create(
+            username="username",
+            email="sample@email.com",
+            password="pass",
+            phone="+48793255012"
+        )
+        AppUser.objects.create_user(
+            username="admin",
+            password="pass",
+            phone="+48793255012",
+            type="Ra"
+        )
+        credentials = {'username': "admin",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient.get(reverse('unaccepted-client-list'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['email'], 'sample@email.com')
+
+    def test_list_no_token_401_returned(self):
+        res = self.apiClient.get(reverse('unaccepted-client-list'))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_list_client_token_403_returned(self):
+        AppUser.objects.create_user(
+            username="client",
+            password="pass",
+            phone="+48793255012"
+        )
+        credentials = {'username': "client",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient.get(reverse('unaccepted-client-list'))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class ClientViewsTests(TestCase):
