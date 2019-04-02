@@ -6,7 +6,8 @@ import Toolbar from '../Toolbar/Toolbar';
 function Layout(props) {
 
     var layout;
-    var style;
+    var styleLeft;
+    var styleRight;
     if(props.layoutDivide === "363"){
         layout = <Grid container spacing={spacing}>
                             <Grid item xs={3}></Grid>
@@ -45,15 +46,19 @@ function Layout(props) {
                         </Grid>
     }
     if(props.layoutDivide === "84"){
-        style={
+        styleLeft={
+            'padding-left': "120px",
+            'padding-right': "40px",
+        };
+        styleRight={
             'padding-left': "40px",
             'padding-right': "40px",
         };
         layout = <Grid container spacing={spacing}>
-                            <Grid item xs={8} style={style}>
+                            <Grid item xs={8} style={styleLeft}>
                                 {props.leftChildren}
                             </Grid>
-                            <Grid item xs={4} style={style}>
+                            <Grid item xs={4} style={styleRight}>
                                 {props.rightChildren}
                             </Grid>
                         </Grid>
