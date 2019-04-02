@@ -181,11 +181,11 @@ class UnacceptedClientListViewTests(TestCase):
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['email'], 'sample@email.com')
 
-    def test_list_no_token_401_returned(self):
+    def test_no_token_401_returned(self):
         res = self.apiClient.get(reverse('unaccepted-client-list'))
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_list_client_token_403_returned(self):
+    def test_client_token_403_returned(self):
         AppUser.objects.create_user(
             username="client",
             password="pass",
@@ -199,6 +199,85 @@ class UnacceptedClientListViewTests(TestCase):
         self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
         res = self.apiClient.get(reverse('unaccepted-client-list'))
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class AcceptUnacceptedClientViewTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    @classmethod
+    def create_unaccepted_user(cls):
+        return UnacceptedClient.objects.create(
+            username="username",
+            email="sample@email.com",
+            password="pass",
+            phone="+48793255012"
+        )
+
+    def test_once_accepted_client_moves_from_unaccepted_to_user_table(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="admin",
+            password="pass",
+            phone="+48793255012",
+            type="Ra"
+        )
+        credentials = {'username': "admin",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient\
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], unaccepted.username)
+        self.assertEqual(res.data['email'], unaccepted.email)
+        self.assertNotIn('password', res.data)
+        self.assertEqual(res.data['phone'], unaccepted.phone)
+        self.assertFalse(UnacceptedClient.objects.exists())
+        self.assertEqual(AppUser.objects.count(), 2)
+
+    def test_no_token_401_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        res = self.apiClient\
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="client",
+            password="pass",
+            phone="+48793255012"
+        )
+        credentials = {'username': "client",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient \
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_no_unaccepted_client_with_such_id_404_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="admin",
+            password="pass",
+            phone="+48793255012",
+            type="Ra"
+        )
+        credentials = {'username': "admin",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient \
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id+1,)))
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class ClientViewsTests(TestCase):
