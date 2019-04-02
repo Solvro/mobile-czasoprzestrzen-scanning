@@ -1,6 +1,7 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from scanning_app.models import AppUser
+from scanning_app.models import AppUser, UnacceptedClient
 
 
 class ModelTestCase(TestCase):
@@ -19,3 +20,27 @@ class ModelTestCase(TestCase):
             initial_number_of_clients + 1,
             after_saving_number_of_clients
         )
+
+
+USERNAME = "username"
+
+
+class UnacceptedClientTests(TestCase):
+
+    def test_unique_username_passed_obj_created(self):
+        AppUser.objects.create_user(username=USERNAME, password="pass",
+                                    phone="+48732288410")
+        self.assertEqual(AppUser.objects.count(), 1)
+        UnacceptedClient.objects.create(username="diff username",
+                                        password="other pass",
+                                        phone="+48732450112")
+        self.assertEqual(UnacceptedClient.objects.count(), 1)
+
+    def test_username_in_appuser_passed_validation_error_raised(self):
+        AppUser.objects.create_user(username=USERNAME, password="pass",
+                                    phone="+48732288410")
+        self.assertEqual(AppUser.objects.count(), 1)
+        self.assertRaises(ValidationError, UnacceptedClient.objects.create,
+                          username=USERNAME, password="other pass",
+                          phone="+48732450112")
+        self.assertEqual(UnacceptedClient.objects.count(), 0)

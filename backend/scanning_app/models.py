@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.validators import ValidationError
+from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 TYPE = (
@@ -33,6 +36,42 @@ class AppUser(AbstractUser):
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+
+class UnacceptedClient(models.Model):
+    username_validator = UnicodeUsernameValidator()
+
+    username = models.CharField(
+        _('username'),
+        max_length=150,
+        unique=True,
+        help_text=_(
+            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        validators=[username_validator],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
+    )
+    password = models.CharField(_('password'), max_length=128)
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    email = models.EmailField(_('email address'), blank=True)
+    phone = PhoneNumberField()
+    address = models.CharField(null=True, max_length=255)
+    business_data = models.CharField(null=True, max_length=255)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        # filter app users for same username
+        app_user_same_username = AppUser.objects \
+            .filter(username__exact=self.username)
+        # if one exists, username is not unique
+        if app_user_same_username.exists():
+            raise ValidationError({
+                "username": ["Not a unique username"]
+            })
+        super(UnacceptedClient, self)\
+            .save(force_insert, force_update, using, update_fields)
 
 
 class Equipment(models.Model):
