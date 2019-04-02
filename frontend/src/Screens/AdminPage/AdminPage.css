@@ -1,5 +1,4 @@
 .ButtonGroup{
-<<<<<<< HEAD
     margin-top: 280px;
     position: relative;
 }
@@ -7,14 +6,5 @@
     position: absolute;
     left: 45%;
     transform: translate(-55%, 0);
-=======
-    margin-top: 100px;
-    display: block;
-    align-items: center;
-    justify-content: center;
-}
-a{
-    align-self: 'flex-end';
-    max-width: 50%;
->>>>>>> 2d5b37307c79251507c26bc4be17c5dd5d0b9f1a
+
 }
