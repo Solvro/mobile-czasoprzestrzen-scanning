@@ -1,7 +1,8 @@
 import datetime
 from django.test import TestCase
 
-from scanning_app.models import Equipment, AppUser, RentalInfo
+from scanning_app.models import Equipment, AppUser, RentalInfo, \
+    UnacceptedClient
 from scanning_app.serializers import RentalInfoSerializer, \
     EquipmentSerializer, SignUpClientSerializer, ClientSerializer
 
@@ -40,8 +41,8 @@ class SignUpClientSerializerTests(TestCase):
         ser = SignUpClientSerializer(data=client_data)
         self.assertTrue(ser.is_valid())
         ser.save()
-        self.assertEqual(AppUser.objects.count(), 1)
-        saved = AppUser.objects.get()
+        self.assertEqual(UnacceptedClient.objects.count(), 1)
+        saved = UnacceptedClient.objects.get()
         self.assertEqual(saved.username, CLIENT_USERNAME)
         self.assertIsNotNone(saved.password)
         self.assertEqual(saved.first_name, CLIENT_FIRST_NAME)

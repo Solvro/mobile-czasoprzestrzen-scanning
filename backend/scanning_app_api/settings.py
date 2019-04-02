@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'scanning_app_db',
         'USER': 'root',
         'PASSWORD': 'pass',
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
         'PORT': '3306',
     }
 }

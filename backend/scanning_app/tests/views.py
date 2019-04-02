@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from ..models import AppUser, Equipment, RentalInfo
+from ..models import AppUser, Equipment, RentalInfo, UnacceptedClient
 
 CLIENT_USERNAME = 'juras'
 CLIENT_PASSWORD = 'pass'
@@ -100,9 +100,47 @@ class AbstractAdminsCreationTests(AbstractAppUserCreationTests):
         self.send_request_with_data_expect_status(status.HTTP_403_FORBIDDEN)
 
 
-class ClientSignUpTests(AbstractAppUserCreationTests, TestCase):
-    endpoint = "signup"
-    type = "Cl"
+class ClientSignUpTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    def send_request_with_data_expect_status(self, status, data=USER_DATA):
+        response = self.apiClient \
+            .post(reverse("signup"), data, format='json')
+        self.assertEquals(response.status_code, status)
+        return response
+
+    def bad_request_with_data(self, data):
+        self.send_request_with_data_expect_status(
+            status.HTTP_400_BAD_REQUEST,
+            data
+        )
+
+    def test_valid_client_data_passed_saved_201_returned(self):
+        response = self.send_request_with_data_expect_status(
+            status.HTTP_201_CREATED
+        )
+        UnacceptedClient.objects.get(id=response.data['id'])
+
+    def test_no_username_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['username']
+        self.bad_request_with_data(data)
+
+    def test_no_password_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['password']
+        self.bad_request_with_data(data)
+
+    def test_no_email_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['email']
+        self.bad_request_with_data(data)
+
+    def test_no_phone_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['phone']
+        self.bad_request_with_data(data)
 
 
 class AdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
@@ -118,14 +156,6 @@ class SuperAdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
 class ClientViewsTests(TestCase):
     def setUp(self):
         self.apiClient = APIClient()
-
-    def test_valid_client_data_passed_token_returned_and_saved(self):
-        data = USER_DATA
-        response = self.apiClient \
-            .post(reverse('appuser-list'), data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue('access' in response.data)
-        self.assertEqual(AppUser.objects.count(), 1)
 
     def test_invalid_client_data_passed_bad_request_returned(self):
         data = USER_DATA.copy()
