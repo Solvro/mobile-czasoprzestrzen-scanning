@@ -21,6 +21,7 @@ const styles = theme => ({
 });
 
 class LoginPage extends React.Component {
+  
   state = {
     username: '',
     password: '',
@@ -61,7 +62,6 @@ handleChangePassword = event => {
 validateIsLogged = async () => {
   const token = await localStorage.getItem('token');
   const isLogged = token && await verifyUser(token);
-  console.log(isLogged);
   return isLogged;
 }
 
