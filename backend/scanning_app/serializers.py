@@ -81,3 +81,4 @@ class RentalInfoGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = RentalInfo
         fields = '__all__'
+

@@ -1,168 +1,61 @@
 import React from 'react';
-import { View, ScrollView, RefreshControl, TextInput, TouchableOpacity, Alert, Image } from 'react-native';
-import { Container, Text, Card, CardItem, Content } from 'native-base';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Container } from 'native-base';
+import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
-import logo from '../assets/logo.jpg';
+import alertStrings from '../assets/strings/AlertStrings';
+
+import apiConfig from '../services/api/config';
 
 export default class EquipmentList extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
-            categories: [],
-            equipment: [],
-            equipmentList: [],
-            refreshing: false,
             isReady: false,
-            searchedPhrase: '',
+            items: [],
         };
     }
 
     async componentWillMount() {
-        await this.getEquipmentList();
-        this.generateEquipmentList();
-        this.setState({searchedPhrase: ''});
-        this.setState({refreshing: false});
+        let response = await this.getItems();
+        this.setState({items: response});
         this.setState({isReady: true});
     }
 
-    search(phrase) {
-        console.log(phrase);
-        this.setState({searchedPhrase: phrase});
-        this.generateEquipmentList();
-    }
-
-    getEquipmentList() {
-        // Temporary solution
-        categoriesTemp = ['mikrofony', 'głośniki', 'przedłużacze', 'kable'];
-        this.setState({categories: categoriesTemp});
-
-        equipmentNames = ['Mikrofon', 'Głośnik', 'Przedłużacz', 'Kabel'];
-        numOfItems = categoriesTemp.length;
-
-        equipmentTemp = []
-        let availability;
-
-        for(let i = 0; i <= 10; i++) {
-            item = Math.floor(Math.random() * (numOfItems - 1));
-            
-            if(Math.random() < 0.5) {
-                availability = false;
-            } else {
-                availability = true;
-            }
-
-            equipmentTemp.push(
-                {
-                    name: equipmentNames[item],
-                    category: categoriesTemp[item],
-                    isAvaiable: availability,
-                }
-            );
-        }
-
-        this.setState({equipment: equipmentTemp});
-    }
-
-    generateEquipmentList = () => {
-        list = [];
-        showAll = true;
-
-        if(this.state.searchedPhrase != '') {
-            showAll = false;
-        } 
-
-        for(let i = 0; i < this.state.equipment.length; i++) {
-            item = this.state.equipment[i];
-            name = item['name'].toLowerCase();
-            key = 'item' + i;
-
-            if(showAll) {
-                list.push(this.generateItemCard(item['name'], item['category'], item['isAvaiable'], key));
-            } else {
-                if(name.includes(this.state.searchedPhrase.toLowerCase())) {
-                    list.push(this.generateItemCard(item['name'], item['category'], item['isAvaiable'], key));
-                }
+    getItems = async () => {
+        let fetchedItems;
+        data = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId, 
             }
         }
-        this.setState({equipmentList: list});
-    }
 
-    generateItemCard = (name, category, isAvaiable, key) => {
-        return(
-            <Card style={equipmentListStyles.card} key={key}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}>
-                    <CardItem style={equipmentListStyles.itemInfo}>
-                        <Text style={equipmentListStyles.description}>
-                            {category}
-                        </Text>
-                    </CardItem> 
-                    
-                    <CardItem style={equipmentListStyles.cardItem}>
-                        <Text style={equipmentListStyles.title}>
-                            {name}
-                        </Text>
-                        {this.putAvailabilityStatus(isAvaiable)}
-                    </CardItem>
-                    
-                </TouchableOpacity>
-            </Card>
-        );
-    }
+        await fetch(apiConfig.url + '/api-v1/equipment/', data)
+        .then((response) => {this.setState({status: response.status}); return response.json()})
+        .then((response) => {
+            if(this.state.status === 200) {
+                fetchedItems = response;
+            } else {
+                Alert.alert(alertStrings.noAuthoriatzion);
+            }
+        })
+        .catch(() => {
+            Alert.alert(alertStrings.noConnectionWithServer);
+        });
 
-    putAvailabilityStatus(isAvaiable) {
-        if(isAvaiable) {
-            return(
-                <Icon name='md-checkmark' style={equipmentListStyles.icon} color={'#3b82c4'}/>
-            );
-        } else {
-            return (
-                <Icon name='md-close' style={equipmentListStyles.icon} color={'#3b82c4'}/>
-            );
-        }
-    }
-
-    _onRefresh = () => {
-        this.setState({refreshing: true});
-        this.setState({equipment: []});
-        this.getEquipmentList();
-        this.generateEquipmentList();
-        this.setState({refreshing: false});
+        return fetchedItems;
     }
 
     render() {
         if(!this.state.isReady) {
             return <Expo.AppLoading />
-        } else {
+        } else {;
             return(
                 <Container style={equipmentListStyles.container}>
-                    <View style={equipmentListStyles.logoContainer}>
-                        <Image source={logo} style={equipmentListStyles.logo}/>
-                    </View>
-                    <View style={equipmentListStyles.input}>
-                        <Icon name='md-search' style={equipmentListStyles.searchIcon} color={'#3b82c4'}/>
-                        <TextInput style={equipmentListStyles.inputField}
-                                             onChangeText = {(text) => this.search(text)}
-                                            placeholder = {'Wyszukaj'}
-                                            placeholderTextColor = '#a2aabc'
-                                            underlineColorAndroid = 'transparent'
-                                        />
-                    </View>
-
-                    <ScrollView
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={false}
-                                onRefresh={() => this._onRefresh()}
-                            />
-                        }
-                    >
-                        <Content>
-                            {this.state.equipmentList}
-                        </Content>
-                    </ScrollView>
+                   <ItemsList items={this.state.items}/>
                 </Container>
             )
         }
