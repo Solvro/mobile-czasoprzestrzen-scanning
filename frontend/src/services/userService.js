@@ -50,10 +50,9 @@ export async function getUserName(token) {
   }
   try {
       const user = await instance.post(`verify/`, data);
-      console.log(user.data.username);
       return user.data.username;
   } catch (error) {
-      return false;
+      return "?";
   }
   
 

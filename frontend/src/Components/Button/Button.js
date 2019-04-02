@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
-// import styles from './styleButton';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 

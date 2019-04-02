@@ -25,7 +25,7 @@ class HomePage extends Component {
     const token = await localStorage.getItem('token');
     const user = await getUserName(token);
     this.setState({ username: user });
-    console.log("USER " + user);
+    console.log(user);
   }
 
   render() {

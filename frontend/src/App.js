@@ -11,6 +11,7 @@ import AdminPage from './Screens/AdminPage/AdminPage';
 import ClientTablePage from './Screens/ClientsTablePage/ClientsTablePage';
 import AddItemPage from './Screens/AddItemPage/AddItemPage';
 import LoginPage from './Screens/LoginPage/LoginPage';
+import ForgotPasswordPage from './Screens/ForgotPasswordPage/ForgotPasswordPage';
 import { MuiThemeProvider} from '@material-ui/core/styles';
 import theme from './theme';
 
@@ -19,6 +20,7 @@ import theme from './theme';
         <Router>
           <Switch>
             <Route path="/login" component={LoginPage}/>
+            <Route path="/forgotpass" component={ForgotPasswordPage}/>
             <PrivateRoute path='/home' component={HomePage} />
             <PrivateRoute path='/rents' component={RentPage} />
             <PrivateRoute path='/clients' component={ClientTablePage} />

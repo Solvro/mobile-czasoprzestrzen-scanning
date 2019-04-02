@@ -44,7 +44,7 @@ tryAuthorize = async e => {
   const token = await authorizeUser(username, password);
         if (token) {
             await localStorage.setItem('token', token);
-            this.props.history.push('/home')
+            this.props.history.push('/home');
         } else {
             this.setState({loginError: true})
         }
@@ -67,7 +67,7 @@ validateIsLogged = async () => {
 
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <div><Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button><TextButton text={"Zapomniałeś hasła?"}></TextButton></div>;    
+    const button = <div><Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button><TextButton link={'/forgotpass'} text={"Zapomniałeś hasła?"}></TextButton></div>;    
 
     return (
       <div>
