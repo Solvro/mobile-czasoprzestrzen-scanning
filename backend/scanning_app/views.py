@@ -1,5 +1,6 @@
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, viewsets, status
+from rest_framework import generics, viewsets, status, views
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -52,11 +53,34 @@ class UnacceptedClientListView(generics.ListAPIView):
                               "List unaccepted clients",
         responses={
             401: 'No token provided',
-            403: 'User in token doesn\'t have permissions to list unaccepted clients (Not admin or super admin)'
+            403: 'User in token doesn\'t have permissions to '
+                 'list unaccepted clients (Not admin or super admin)'
         }
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
+
+class AcceptUnacceptedClientView(views.APIView):
+    permission_classes = (IsAdminOrSuperAdmin,)
+
+    @swagger_auto_schema(
+        operation_description=
+        "POST /api-v1/unaccepted-client/{id}/accept/\n"
+        "Accept client, move from UnacceptedClients table to AppUser table",
+        responses={
+            200: ClientSerializer,
+            401: 'No token provided',
+            403: 'User in tokent doesn\'t have permissions to '
+                 'accept unaccepted clients (Not admin or super admin)',
+            404: 'No unaccepted client with given id found'
+        }
+    )
+    def post(self, request, pk):
+        user = get_object_or_404(UnacceptedClient, pk=pk)
+        accepted_user = user.accept()
+        ser = ClientSerializer(accepted_user)
+        return Response(data=ser.data, status=status.HTTP_200_OK)
 
 
 class UnacceptedClientDestroyView(generics.DestroyAPIView):
@@ -69,8 +93,9 @@ class UnacceptedClientDestroyView(generics.DestroyAPIView):
                               "Delete unaccepted client with given id",
         responses={
             401: 'No token provided',
-            403: 'User in token doesn\'t have permissions to delete unaccepted client (Not admin or super admin)',
-            404: 'No unaccepted client with given id'
+            403: 'User in token doesn\'t have permissions to '
+                 'delete unaccepted client (Not admin or super admin)',
+            404: 'No unaccepted client with given id found'
         }
     )
     def delete(self, request, *args, **kwargs):
@@ -88,7 +113,8 @@ class AdminCreationView(generics.CreateAPIView):
         responses={
             400: 'Obligatory field not provided or username duplicate',
             401: 'No token provided',
-            403: 'User in token doesn\'t have permissions to create admin (Not super admin)'
+            403: 'User in token doesn\'t have permissions to '
+                 'create admin (Not super admin)'
         }
     )
     def post(self, request, *args, **kwargs):
@@ -106,7 +132,8 @@ class SuperAdminCreationView(generics.CreateAPIView):
         responses={
             400: 'Obligatory field not provided or username duplicate',
             401: 'No token provided',
-            403: 'User in token doesn\'t have permissions to create super admin (Not super admin)'
+            403: 'User in token doesn\'t have permissions to '
+                 'create super admin (Not super admin)'
         }
     )
     def post(self, request, *args, **kwargs):

@@ -18,5 +18,8 @@ urlpatterns = [
     path('unaccepted-client/<int:pk>/',
          views.UnacceptedClientDestroyView.as_view(),
          name="unaccepted-client-detail"),
+    path('unaccepted-client/<int:pk>/accept/',
+         views.AcceptUnacceptedClientView.as_view(),
+         name="unaccepted-client-accept"),
     path('', include(router.urls))
 ]

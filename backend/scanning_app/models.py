@@ -70,8 +70,23 @@ class UnacceptedClient(models.Model):
             raise ValidationError({
                 "username": ["Not a unique username"]
             })
-        super(UnacceptedClient, self)\
+        super(UnacceptedClient, self) \
             .save(force_insert, force_update, using, update_fields)
+
+    def accept(self):
+        self.delete()
+        return AppUser.objects.create(
+            username=self.username,
+            password=self.password,
+            first_name=self.first_name,
+            last_name=self.last_name,
+            email=self.email,
+            phone=self.phone,
+            address=self.address,
+            business_data=self.business_data,
+            type="Cl",
+            is_active=True
+        )
 
 
 class Equipment(models.Model):
