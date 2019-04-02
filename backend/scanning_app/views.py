@@ -1,8 +1,10 @@
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenVerifySerializer
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.views import TokenVerifyView
 
 from .models import Equipment, AppUser, RentalInfo
 from .serializers import EquipmentSerializer, ClientSerializer, \
@@ -58,7 +60,7 @@ class SuperAdminCreationView(generics.CreateAPIView):
 class ClientView(viewsets.ModelViewSet):
     queryset = AppUser.objects.all()
     permission_classes = (PostPermissions,)
-    filter_backends = (DjangoFilterBackend, )
+    filter_backends = (DjangoFilterBackend,)
     filter_fields = ('first_name', 'last_name')
 
     def create(self, request, *args, **kwargs):
@@ -94,3 +96,15 @@ class RentalInfoView(viewsets.ModelViewSet):
         if not equipment_to_rent.available:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
+
+
+class VerifyTokenView(TokenVerifyView):
+    serializer_class = TokenVerifySerializer
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        token = request.data['token']
+        validated_token = JWTAuthentication.get_validated_token(JWTAuthentication(), raw_token=token)
+        user = JWTAuthentication.get_user(JWTAuthentication(), validated_token=validated_token)
+        response.data['username'] = user.username
+        return response

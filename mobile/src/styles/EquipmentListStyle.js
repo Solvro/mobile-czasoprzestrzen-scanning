@@ -60,7 +60,7 @@ const equipmentListStyles = StyleSheet.create({
     },
 
     container: {
-        marginTop: 20,
+        marginTop: 30,
     },
 
     //Style of input field for login and registration panels
