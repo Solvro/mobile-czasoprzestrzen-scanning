@@ -8,24 +8,32 @@ import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import {getUserName } from '../../services/userService';
 class HomePage extends Component {
 
-  state = {
-    loginInfo: false,
-    username: "?"
-  }
   
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginInfo: false,
+      username: "?"
+    }
+  }
 
   componentWillMount(){
     
     this.getName();
-    this.setState({ loginInfo: true });
+    
+    
 
   }
 
   getName = async () => {
-    const token = await localStorage.getItem('token');
-    const user = await getUserName(token);
-    this.setState({ username: user });
-    console.log(user);
+    const prevLocation =  await localStorage.getItem('prev');
+    if(prevLocation === 'login'){
+      const token = await localStorage.getItem('token');
+      const user = await getUserName(token);
+      this.setState({ username: user });
+      await localStorage.setItem('prev', 'null');
+      this.setState({ loginInfo: true });
+    }
   }
 
   render() {

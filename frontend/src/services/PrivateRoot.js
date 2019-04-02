@@ -17,11 +17,16 @@ class PrivateRoute extends React.Component {
     return verifyUser(token);
   }
 
+  setPreviousPath = async() => {
+    await localStorage.setItem('prev', 'login');
+  }
+
   componentWillMount(){
    this.validateIsLogged()
       .then(isLogged => {
         if(isLogged === true )
           this.setState({loggedIn: true})
+          this.setPreviousPath();
         this.setState({authorized: true})
       })
       .catch(err => {

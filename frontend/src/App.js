@@ -15,7 +15,23 @@ import ForgotPasswordPage from './Screens/ForgotPasswordPage/ForgotPasswordPage'
 import { MuiThemeProvider} from '@material-ui/core/styles';
 import theme from './theme';
 
-  const App = () => (
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { 
+      prevPath: true 
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.location !== this.props.location) {
+      this.setState({ prevPath: this.props.location })
+    }
+  }
+  
+    render(){
+      return(
       <MuiThemeProvider theme={theme}>
         <Router>
           <Switch>
@@ -30,6 +46,9 @@ import theme from './theme';
       </Router>      
     </MuiThemeProvider>
     );
+    }
+      
+}
 
   export default App;
 

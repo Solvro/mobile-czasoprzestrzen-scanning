@@ -44,6 +44,7 @@ tryAuthorize = async e => {
   const token = await authorizeUser(username, password);
         if (token) {
             await localStorage.setItem('token', token);
+            
             this.props.history.push('/home');
         } else {
             this.setState({loginError: true})
