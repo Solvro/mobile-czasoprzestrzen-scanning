@@ -15,5 +15,8 @@ urlpatterns = [
          name="super-admin-list"),
     path('unaccepted-client/', views.UnacceptedClientListView.as_view(),
          name="unaccepted-client-list"),
+    path('unaccepted-client/<int:pk>/',
+         views.UnacceptedClientDestroyView.as_view(),
+         name="unaccepted-client-detail"),
     path('', include(router.urls))
 ]

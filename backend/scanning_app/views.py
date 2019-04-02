@@ -49,14 +49,32 @@ class UnacceptedClientListView(generics.ListAPIView):
 
     @swagger_auto_schema(
         operation_description="GET /api-v1/unaccepted-client/\n"
-                              "Get list of unaccepted clients",
+                              "List unaccepted clients",
         responses={
             401: 'No token provided',
-            403: 'User in token doesn\'t have permissions to list unaccepted client (Not admin or super admin)'
+            403: 'User in token doesn\'t have permissions to list unaccepted clients (Not admin or super admin)'
         }
     )
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
+
+class UnacceptedClientDestroyView(generics.DestroyAPIView):
+    queryset = UnacceptedClient.objects.all()
+    serializer_class = SignUpUnacceptedClientSerializer
+    permission_classes = (IsAdminOrSuperAdmin,)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/unaccepted-client/{pk}/\n"
+                              "Delete unaccepted client with given id",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to delete unaccepted client (Not admin or super admin)',
+            404: 'No unaccepted client with given id'
+        }
+    )
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
 
 
 class AdminCreationView(generics.CreateAPIView):
