@@ -11,6 +11,11 @@ const alertStrings = {
     possibleSignIn: 'Teraz możesz się zalogować.',
     noConnectionWithServer: 'Brak połączenia z serwerem',
     noAuthoriatzion: 'Brak autoryzacji',
+    possibleSignIn: 'Logowanie będzie możliwe po zatwierdzeniu Twojego konta.',
+    invalidNIP: 'Nieprawidłowy numer NIP.',
+    invalidPostalCode: 'Nieprawidłowy kod pocztowy.',
+    invalidRegon: 'Nieprawidłowy numer REGON',
+
 };
 
 module.exports = alertStrings;

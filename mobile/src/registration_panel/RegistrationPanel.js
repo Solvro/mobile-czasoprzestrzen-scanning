@@ -1,6 +1,6 @@
     import React from 'react';
-import {Alert, View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
-import {Container, Text, CheckBox, ListItem, Radio, Left, Right} from 'native-base';
+import {Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {Container, Text, ListItem, Radio, Left, Right} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import validator from 'validator';
 import SubmitButton from '../components/SubmitButton';
@@ -10,6 +10,8 @@ import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 
 import alertStrings from '../assets/strings/AlertStrings.js';
 import buttonStrings from '../assets/strings/ButtonStrings.js';
+import registrationStrings from '../assets/strings/RegistrationStrings.js';
+import {nip, regon} from './NumberValidator.js';
 
 import logo from '../assets/logo_with_name.png';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -29,8 +31,12 @@ export default class RegistrationPanel extends React.Component {
             password2: null,
             email: null,
             phoneNumber: null,
+            street: null,
+            postalCode: null,
+            city: null,
+            nip: null,
+            regon: null,
             isPerson: true,
-            form: this.generateBasicForm(),
         }
     }
 
@@ -82,40 +88,57 @@ export default class RegistrationPanel extends React.Component {
      * Handles login button press action.
      */
     handlePressRegister = () => {
-      //if sth is null
-      if (!(this.state.username && this.state.password1
-        && this.state.password2 && this.state.email
-        && this.state.phoneNumber)) {
-          this.showWarningAlert(alertStrings.emptyField);
+        //if sth is null
+        if (!(this.state.username && this.state.password1
+          && this.state.password2 && this.state.email
+          && this.state.phoneNumber)) {
+            this.showWarningAlert(alertStrings.emptyField);
+          } else if (!(this.state.isPerson) && !(this.state.street && this.state.postalCode
+          && this.state.city && this.state.nip && this.state.regon)) {
+              this.showWarningAlert(alertStrings.emptyField);
+          }
+        //validate username
+        else if(this.state.username.length<5) {
+            this.showWarningAlert(alertStrings.usernameToShort);
+        }
+        //validate e-mail
+        else if (!validator.isEmail(this.state.email)){
+            this.showWarningAlert(alertStrings.invalidEmail);
+        }
+        //validate passwords
+        else if (this.state.password1.length<5) {
+            this.showWarningAlert(alertStrings.passwordToShort);
+        }
+        else if (this.state.password1.localeCompare(this.state.password2)!=0) {
+            this.showWarningAlert(alertStrings.differentPasswords);
+        }
+        //validate phone number
+        else if (!validator.isMobilePhone('+48'+this.state.phoneNumber,'pl-PL')) {
+            this.showWarningAlert(alertStrings.invalidPhoneNumber);
+        } 
+        //validate postal code
+        else if (!(this.state.isPerson) && !validator.isPostalCode(this.state.postalCode, 'PL')) {
+              this.showWarningAlert(alertStrings.invalidPostalCode);
+        }
+        //validate nip 
+        else if (!(this.state.isPerson) && !nip(this.state.nip)) {
+          this.showWarningAlert(alertStrings.invalidNIP);
+        }
+        //validate regon 
+        else if (!(this.state.isPerson) && !regon(this.state.regon)) {
+          this.showWarningAlert(alertStrings.invalidRegon);
+        }
+        else {
+          this.showRegisterAlert();
+          this.props.navigation.navigate("SignIn");
+        }
+  
       }
-      //validate username
-      else if(this.state.username.length<5) {
-          this.showWarningAlert(alertStrings.usernameToShort);
-      }
-      //validate e-mail
-      else if (!validator.isEmail(this.state.email)){
-          this.showWarningAlert(alertStrings.invalidEmail);
-      }
-      //validate passwords
-      else if (this.state.password1.length<5) {
-          this.showWarningAlert(alertStrings.passwordToShort);
-      }
-      else if (this.state.password1.localeCompare(this.state.password2)!=0) {
-          this.showWarningAlert(alertStrings.differentPasswords);
-      }
-      //validate phone number
-      else if (!validator.isMobilePhone(this.state.phoneNumber,'pl-PL')) {
-          this.showWarningAlert(alertStrings.invalidPhoneNumber);
-      } else {
-        this.showRegisterAlert();
-        this.props.navigation.navigate("SignIn");
-      }
-
-    }
+  
 
     showWarningAlert(text) {
       Alert.alert(
-        'Nieprawidłowe dane!',
+        alertStrings.invalidData,
         text,
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -126,8 +149,8 @@ export default class RegistrationPanel extends React.Component {
 
     showRegisterAlert() {
       Alert.alert(
-        'Poprawna rejestracja!',
-        'Teraz możesz się zalogować.',
+        alertStrings.correctRegistration,
+        alertStrings.possibleSignIn,
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ],
@@ -135,184 +158,189 @@ export default class RegistrationPanel extends React.Component {
       );
     }
 
-    setStateHandler = (state, text) => {
-        this.setState({state, text});
+    handleUsernameChange = (event) => {
+        this.setState({username: event});
     }
 
-    showForm = () => {
-       if(this.isPerson) this.setState({form: this.generateBasicForm()})
-       else this.setState({form: this.generateBusinessForm()}) 
-       this.refresh()
+    handlePassword1Change = (event) => {
+        this.setState({password1: event});
     }
 
-    generateBasicForm = () => {
-        return(
-            <View>
-                
-            </View>
-        );
+    handlePassword2Change = (event) => {
+        this.setState({password2: event});
     }
 
-    showBasic = () => {
-        this.setState({isPerson: true})
-        this.showForm()
-    }
-    showBusiness = () => {
-        this.setState({isPerson: false})
-        this.showForm()
+    handleEmailChange = (event) => {
+        this.setState({email: event});
     }
 
-
-    generateBusinessForm = () => {
-        return(
-            <View>
-                {this.generateBasicForm()}
-                
-                       
-            </View>
-        );
+    handlePhoneNumberChange = (event) => {
+        this.setState({phoneNumber: event});
     }
+
+    handleStreetChange = (event) => {
+        this.setState({street: event});
+    }
+
+    handlePostalCodeChange = (event) => {
+        this.setState({postalCode: event});
+    }
+
+    handleCityChange = (event) => {
+        this.setState({city: event});
+    }
+
+    handleNipChange = (event) => {
+        this.setState({nip: event});
+    }
+    
+    handleRegonChange = (event) => {
+        this.setState({regon: event});
+    }
+
 
     render() {
         return(
-          <Container>
-              <TouchableWithoutFeedback
-                  onPress={() => {
-                      DismissKeyboard();
-                  }}>
-                    <Animated.View style={loginRegisterStyles.background}>
-                    <View style={loginRegisterStyles.registerLogoContainer}>
-                        <Animated.Image source={logo} resizeMode='contain'
-                            style={
-                                    {height: this.imageHeight}} /> 
-                    </View> 
-                    <ScrollView style={loginRegisterStyles.scrollView}>
-                        <View style={loginRegisterStyles.radioButtonContainer} >
-                            <ListItem style={loginRegisterStyles.radioButton} onPress={() =>  this.setState({isPerson: true})} >
-                                <Left>
-                                    <Text>Osoba fizyczna</Text>
-                                </Left>
-                                <Right>
-                                    <Radio selected={this.state.isPerson}/>
-                                </Right>
-                            </ListItem>
-                            <ListItem style={loginRegisterStyles.radioButton} onPress={() => this.setState({isPerson: false})} >
-                                <Left>
-                                    <Text>Firma</Text>
-                                </Left>
-                                <Right>
-                                    <Radio selected={!(this.state.isPerson)}/>
-                                </Right>
-                            </ListItem>
-                        </View>
-                        <View style={loginRegisterStyles.inputFieldsContainer}>
-                            <TextInputField
-                                state = {'username'}
-                                setStateHandler={this.setStateHandler}
-                                keyboardType = 'default'
-                                returnKeyType = 'next'
-                                placeholder = {'Nazwa użytkownika'}
-                                secureTextEntry = {false}
-                            />
-                            <TextInputField
-                                state = {'email'}
-                                setStateHandler={this.setStateHandler}
-                                keyboardType = 'email-address'
-                                returnKeyType = 'next'
-                                placeholder = {'Adres e-mail'}
-                                secureTextEntry = {false}
-                            />
-                            <TextInputField
-                                state = {'password1'}
-                                setStateHandler={this.setStateHandler}
-                                keyboardType = 'default'
-                                returnKeyType = 'next'
-                                placeholder = {'Hasło'}
-                                secureTextEntry = {true}
-                            />
-                            <TextInputField
-                                state = {'password2'}
-                                setStateHandler={this.setStateHandler}
-                                keyboardType = 'default'
-                                returnKeyType = 'next'
-                                placeholder = {'Powtórz hasło'}
-                                secureTextEntry = {true}
-                            />
-                            <TextInputField
-                                state = {'phoneNumber'}
-                                setStateHandler={this.setStateHandler}
-                                keyboardType = 'phone-pad'
-                                returnKeyType = 'next'
-                                placeholder = {'Numer telefonu'}
-                                secureTextEntry = {true}
-                            />
+            <Container>
+            <TouchableWithoutFeedback
+                onPress={() => {
+                    DismissKeyboard();
+                }}>
+                  <Animated.View style={loginRegisterStyles.background}>
+                  <View style={loginRegisterStyles.registerLogoContainer}>
+                      <Animated.Image source={logo} resizeMode='contain'
+                          style={
+                                  {height: this.imageHeight}} /> 
+                  </View> 
+                  <ScrollView style={loginRegisterStyles.scrollView}>
+                      <View style={loginRegisterStyles.radioButtonContainer} >
+                          <ListItem style={loginRegisterStyles.radioButton} onPress={() =>  this.setState({isPerson: true})} >
+                              <Left>
+                                  <Text>{registrationStrings.person}</Text>
+                              </Left>
+                              <Right>
+                                  <Radio onPress={() =>  this.setState({isPerson: true})} selected={this.state.isPerson}/>
+                              </Right>
+                          </ListItem>
+                          <ListItem style={loginRegisterStyles.radioButton} onPress={() => this.setState({isPerson: false})} >
+                              <Left>
+                                  <Text>{registrationStrings.company}</Text>
+                              </Left>
+                              <Right>
+                                  <Radio onPress={() => this.setState({isPerson: false})} selected={!(this.state.isPerson)}/>
+                              </Right>
+                          </ListItem>
+                      </View>
+                      <View style={loginRegisterStyles.inputFieldsContainer}>
+                          <TextInputField
+                              state = {'username'}
+                              setStateHandler={this.handleUsernameChange}
+                              keyboardType = 'default'
+                              returnKeyType = 'next'
+                              placeholder = {registrationStrings.username}
+                              secureTextEntry = {false}
+                          />
+                          <TextInputField
+                              state = {'email'}
+                              setStateHandler={this.handleEmailChange}
+                              keyboardType = 'email-address'
+                              returnKeyType = 'next'
+                              placeholder = {registrationStrings.email}
+                              secureTextEntry = {false}
+                          />
+                          <TextInputField
+                              state = {'password1'}
+                              setStateHandler={this.handlePassword1Change}
+                              keyboardType = 'default'
+                              returnKeyType = 'next'
+                              placeholder = {registrationStrings.password}
+                              secureTextEntry = {true}
+                          />
+                          <TextInputField
+                              state = {'password2'}
+                              setStateHandler={this.handlePassword2Change}
+                              keyboardType = 'default'
+                              returnKeyType = 'next'
+                              placeholder = {registrationStrings.repeatPassword}
+                              secureTextEntry = {true}
+                          />
+                          <TextInputField
+                              state = {'phoneNumber'}
+                              setStateHandler={this.handlePhoneNumberChange}
+                              keyboardType = 'number-pad'
+                              returnKeyType = 'next'
+                              placeholder = {registrationStrings.phoneNumber}
+                              secureTextEntry = {false}
+                          />
 
-                        </View>
-                        <View >
-                            {!this.state.isPerson && (
-                                <View>
-                                    <View style={loginRegisterStyles.inputFieldsContainer}>
-                                        <TextInputField
-                                            state = {'street'}
-                                            setStateHandler={this.setStateHandler}
-                                            keyboardType = 'default'
-                                            returnKeyType = 'next'
-                                            placeholder = {'Ulica i numer'}
-                                            secureTextEntry = {false}
-                                        />
-                                        <TextInputField
-                                            state = {'postal-code'}
-                                            setStateHandler={this.setStateHandler}
-                                            keyboardType = 'default'
-                                            returnKeyType = 'next'
-                                            placeholder = {'Kod pocztowy'}
-                                            secureTextEntry = {false}
-                                        />
-                                        <TextInputField
-                                            state = {'city'}
-                                            setStateHandler={this.setStateHandler}
-                                            keyboardType = 'default'
-                                            returnKeyType = 'next'
-                                            placeholder = {'Miejscowość'}
-                                            secureTextEntry = {false}
-                                        />
-                                    </View>
-                                   <View style={loginRegisterStyles.inputFieldsContainer}>
-                                        <TextInputField
-                                            state = {'nip'}
-                                            setStateHandler={this.setStateHandler}
-                                            keyboardType = 'default'
-                                            returnKeyType = 'next'
-                                            placeholder = {'NIP'}
-                                            secureTextEntry = {true}
-                                        />
-                                        <TextInputField
-                                            state = {'regon'}
-                                            setStateHandler={this.setStateHandler}
-                                            keyboardType = 'default'
-                                            returnKeyType = 'next'
-                                            placeholder = {'REGON'}
-                                            secureTextEntry = {true}
-                                        />
-                                    </View>
-                                </View>
-                            )}
-                        </View>
-                    </ScrollView>
-                    
-                    <View style ={loginRegisterStyles.registerButtonAndLinkContainer}>
-                        <SubmitButton 
-                            handlePress={this.handlePressRegister} 
-                            buttonText={buttonStrings.registrationButton}
-                            icon = 'md-add-circle-outline'/>
-                        <TouchableOpacity style={loginRegisterStyles.linkContainer}
-                            onPress={() => this.props.navigation.navigate("SignIn")}>
-                            <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>
-                        </TouchableOpacity> 
-                    </View>
-                  </Animated.View>
-              </TouchableWithoutFeedback>
-          </Container>
+                      </View>
+                      <View >
+                          {!this.state.isPerson && (
+                              <View>
+                                  <View style={loginRegisterStyles.inputFieldsContainer}>
+                                      <TextInputField
+                                          state = {'street'}
+                                          setStateHandler={this.handleStreetChange}
+                                          keyboardType = 'default'
+                                          returnKeyType = 'next'
+                                          placeholder = {registrationStrings.street}
+                                          secureTextEntry = {false}
+                                      />
+                                      <TextInputField
+                                          state = {'postalCode'}
+                                          setStateHandler={this.handlePostalCodeChange}
+                                          keyboardType = 'default'
+                                          returnKeyType = 'next'
+                                          placeholder = {registrationStrings.postalCode}
+                                          secureTextEntry = {false}
+                                      />
+                                      <TextInputField
+                                          state = {'city'}
+                                          setStateHandler={this.handleCityChange}
+                                          keyboardType = 'default'
+                                          returnKeyType = 'next'
+                                          placeholder = {registrationStrings.city}
+                                          secureTextEntry = {false}
+                                      />
+                                  </View>
+                                 <View style={loginRegisterStyles.inputFieldsContainer}>
+                                      <TextInputField
+                                          state = {'nip'}
+                                          setStateHandler={this.handleNipChange}
+                                          keyboardType = 'number-pad'
+                                          returnKeyType = 'next'
+                                          placeholder = {registrationStrings.nip}
+                                          secureTextEntry = {false}
+                                      />
+                                      <TextInputField
+                                          state = {'regon'}
+                                          setStateHandler={this.handleRegonChange}
+                                          keyboardType = 'number-pad'
+                                          returnKeyType = 'next'
+                                          placeholder = {registrationStrings.regon}
+                                          secureTextEntry = {false}
+                                      />
+                                  </View>
+                              </View>
+                          )}
+                      </View>
+                  </ScrollView>
+                  
+                  <View style ={loginRegisterStyles.registerButtonAndLinkContainer}>
+                      <SubmitButton 
+                          handlePress={this.handlePressRegister} 
+                          buttonText={buttonStrings.registrationButton}
+                          icon = 'md-add-circle-outline'/>
+                      <TouchableOpacity style={loginRegisterStyles.linkContainer}
+                          onPress={() => this.props.navigation.navigate("SignIn")}>
+                          <Text style={loginRegisterStyles.linkText}>{registrationStrings.returnToSignIn}</Text>
+                      </TouchableOpacity> 
+                  </View>
+                </Animated.View>
+            </TouchableWithoutFeedback>
+        </Container>
+
+             
         )
     }
 
