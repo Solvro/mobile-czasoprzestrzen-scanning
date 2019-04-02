@@ -5,7 +5,9 @@ import {Text} from 'native-base';
 import {LinearGradient} from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import dataEditFieldStyles from '../styles/DataEditFieldStyles.js';   
+import dataEditFieldStyles from '../styles/DataFieldStyles.js';  
+import InputDialog from '../components/InputDialog';
+import DataField from '../components/DataField'; 
 
 
 /**
@@ -17,26 +19,56 @@ import dataEditFieldStyles from '../styles/DataEditFieldStyles.js';
 export default class DataEditField extends React.Component {
     constructor (props) {
         super(props);
+
+        this.state = {
+            visible: false,
+            data: this.props.data,
+            newData: null,
+        }
     }
+
+    hideDialog = (event) => {
+        this.setState({visible: false});
+    }
+
+    showDialog = (event) => {
+        this.setState({visible: true});
+    }
+
+    handleDataChange = (event) => {
+        this.setState({newData: event});
+    }
+
+    updateData = (event) => {
+        this.setState({data: this.state.newData})
+        this.setState({visible: false});
+    }
+
+    showWarningAlert() {
+        Alert.alert(
+          this.props.warningAlert,
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          {cancelable: false},
+        );
+      }
 
     render () {
         return(
-             <View style={dataEditFieldStyles.fieldContainer}>
-                <View style={dataEditFieldStyles.textContainer}>
-                    <View style={dataEditFieldStyles.titleContainer}>
-                        <Icon style={dataEditFieldStyles.icon} name= {this.props.icon}/>
-                        <Text style={dataEditFieldStyles.titleText}>{this.props.title}</Text>
-                    </View>
-                    <View>
-                        <Text style={dataEditFieldStyles.dataText}>{this.props.data}</Text>
-                    </View>
-                </View>
-                <TouchableOpacity onPress={() => this.props.handlePress()}>
-                    <Icon style={dataEditFieldStyles.editIcon} name='md-create'/>
-                </TouchableOpacity>
+             <View>
+                <InputDialog
+                            visible={this.state.visible}
+                            handleChange={this.handleDataChange}
+                            hide={this.hideDialog}
+                            text={this.props.inputText}
+                            action={this.updateData}/>
+               <DataField 
+                            title = {this.props.label}
+                            data = {this.state.data}
+                            handlePress = {this.showDialog}
+                            icon = {this.props.icon}/>
             </View> 
-
-            
         );
     }
 }
