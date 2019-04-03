@@ -2,6 +2,8 @@
 
 Scanning application is system designed and devlope for Czasoprzestzeń to improve managemant of warehouse with musical equipment. The main functionality of this system is using QRCodes to identify every item in magazine.
 
+(You can find detailed READme for every component of system in folders with source codes.)
+
 ## Frontend part
 
 ### Technology stack
