@@ -131,7 +131,9 @@ export default class RegistrationPanel extends React.Component {
         const { username, password1, firstName, lastName, email, phoneNumber } = this.state;
 
         if (!this.state.isPerson) {
-            address, businessData = this.getBusinessData();
+            result = this.getBusinessData();
+            address = result[0];
+            businesData = result[1];
         }
 
         const data = {
@@ -158,8 +160,7 @@ export default class RegistrationPanel extends React.Component {
                 if (this.state.status === 201) {
                     this.showRegisterAlert();
                     this.props.navigation.navigate("SignIn");
-                } else {
-                    //TODO: maybe more clever message?
+                } else {    
                     Alert.alert(alertStrings.unexpectedError);
                 }
             })
@@ -171,7 +172,7 @@ export default class RegistrationPanel extends React.Component {
     getBusinessData = () => {
         address = this.state.street + ' ' + this.state.city + ' ' + this.state.postalCode;
         bussinesData = 'NIP: ' + this.state.nip + ' REGON: ' + this.state.regon;
-        return address, bussinesData;
+        return [address, bussinesData];
     }
 
     showWarningAlert(text) {
