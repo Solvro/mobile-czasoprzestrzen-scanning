@@ -179,9 +179,8 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
             404: 'No client with given id found'
         }
     )
-    def update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return super().update(request, *args, **kwargs)
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_description="DELETE /api-v1/client/{id}/\n"
@@ -232,9 +231,8 @@ class AdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
             404: 'No admin with given id found'
         }
     )
-    def update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return super().update(request, *args, **kwargs)
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_description="DELETE /api-v1/admin/{id}/\n"
@@ -284,9 +282,8 @@ class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
             404: 'No super admin with given id found'
         }
     )
-    def update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return super().update(request, *args, **kwargs)
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_description="DELETE /api-v1/super-admin/{id}/\n"

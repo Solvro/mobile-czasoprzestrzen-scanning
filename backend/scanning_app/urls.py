@@ -11,7 +11,7 @@ router.register('rental-info', views.RentalInfoView)
 client_list_view = views.ClientListView.as_view({'get': 'list'})
 client_detail_views = views.ClientRetrieveUpdateDestroy.as_view({
     'get': 'retrieve',
-    'patch': 'update',
+    'patch': 'partial_update',
     'delete': 'destroy'
 })
 
@@ -21,7 +21,7 @@ admin_list_create_views = views.AdminListCreateViews.as_view({
 })
 admin_detail_views = views.AdminRetrieveUpdateDestroy.as_view({
     'get': 'retrieve',
-    'patch': 'update',
+    'patch': 'partial_update',
     'delete': 'destroy'
 })
 
@@ -31,7 +31,7 @@ super_admin_list_create_views = views.SuperAdminListCreateViews.as_view({
 })
 super_admin_detail_views = views.SuperAdminRetrieveUpdateDestroy.as_view({
     'get': 'retrieve',
-    'patch': 'update',
+    'patch': 'partial_update',
     'delete': 'destroy'
 })
 
