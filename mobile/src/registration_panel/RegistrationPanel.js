@@ -78,37 +78,55 @@ export default class RegistrationPanel extends React.Component {
             toValue: 30,
         }).start();
     }
+
+    validateData = () => {
+         //if sth is null
+        if (!(this.state.username && this.state.password1 && this.state.password2 && this.state.email
+            && this.state.phoneNumber && this.state.firstName && this.state.lastName)) {
+            this.showWarningAlert(alertStrings.emptyField);
+        }
+        //validate username
+        else if (this.state.username.length < 5) {
+            this.showWarningAlert(alertStrings.usernameToShort);
+        }
+        //validate e-mail
+        else if (!validator.isEmail(this.state.email)) {
+            this.showWarningAlert(alertStrings.invalidEmail);
+        }
+        //validate passwords
+        else if (this.state.password1.length < 5) {
+            this.showWarningAlert(alertStrings.passwordToShort);
+        }
+        else if (this.state.password1.localeCompare(this.state.password2) != 0) {
+            this.showWarningAlert(alertStrings.differentPasswords);
+        }
+        //validate phone number
+        else if (!validator.isMobilePhone(this.state.phoneNumber, 'pl-PL')) {
+            this.showWarningAlert(alertStrings.invalidPhoneNumber);
+        } else {
+            // this.showRegisterAlert();
+            // this.props.navigation.navigate("SignIn");
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Handles login button press action.
      */
-    handlePressRegister = () => {
-      //if sth is null
-      if (!(this.state.username && this.state.password1 && this.state.password2 && this.state.email 
-        && this.state.phoneNumber)) {
-          this.showWarningAlert(alertStrings.emptyField);
-      }
-      //validate username
-      else if(this.state.username.length<5) {
-          this.showWarningAlert(alertStrings.usernameToShort);
-      }
-      //validate e-mail
-      else if (!validator.isEmail(this.state.email)){
-          this.showWarningAlert(alertStrings.invalidEmail);
-      }
-      //validate passwords
-      else if (this.state.password1.length<5) {
-          this.showWarningAlert(alertStrings.passwordToShort);
-      }
-      else if (this.state.password1.localeCompare(this.state.password2)!=0) {
-          this.showWarningAlert(alertStrings.differentPasswords);
-      }
-      //validate phone number
-      else if (!validator.isMobilePhone(this.state.phoneNumber,'pl-PL')) {
-          this.showWarningAlert(alertStrings.invalidPhoneNumber);
-      } else {
-        this.showRegisterAlert();
-        this.props.navigation.navigate("SignIn");
-      }
+    handlePressRegister = async () => {
+        let validationResult = this.validateData();
+
+        if(!validationResult) {
+            return;
+        }
+
+        const {username, password1, } = this.state;
+        let data = {
+            method: 'GET',
+            body: ''
+        }
 
     }
 
@@ -140,6 +158,14 @@ export default class RegistrationPanel extends React.Component {
 
     handleUsernameChange = (event) => {
         this.setState({username: event});
+    }
+
+    handleFirstNameChane = (event) => {
+        this.setState({firstName: event});
+    }
+
+    handleLastNameChange = (event) => {
+        this.setState({lastName: event});
     }
 
     handleEmailChange = (event) => {
@@ -226,7 +252,6 @@ export default class RegistrationPanel extends React.Component {
                         </View>
                         <View style={loginRegisterStyles.inputFieldsContainer}>
                             <TextInputField
-                                state = {'username'}
                                 setStateHandler={this.handleUsernameChange}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
@@ -234,7 +259,20 @@ export default class RegistrationPanel extends React.Component {
                                 secureTextEntry = {false}
                             />
                             <TextInputField
-                                state = {'email'}
+                                setStateHandler={this.handleFirstNameChane}
+                                keyboardType = 'default'
+                                returnKeyType = 'next'
+                                placeholder = {'Imię'}
+                                secureTextEntry = {false}
+                            />
+                            <TextInputField
+                                setStateHandler={this.handleLastNameChange}
+                                keyboardType = 'default'
+                                returnKeyType = 'next'
+                                placeholder = {'Nazwisko'}
+                                secureTextEntry = {false}
+                            />
+                            <TextInputField
                                 setStateHandler={this.handleEmailChange}
                                 keyboardType = 'email-address'
                                 returnKeyType = 'next'
@@ -242,7 +280,6 @@ export default class RegistrationPanel extends React.Component {
                                 secureTextEntry = {false}
                             />
                             <TextInputField
-                                state = {'password1'}
                                 setStateHandler={this.handlePassword1Change}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
@@ -250,7 +287,6 @@ export default class RegistrationPanel extends React.Component {
                                 secureTextEntry = {true}
                             />
                             <TextInputField
-                                state = {'password2'}
                                 setStateHandler={this.handlePassword2Change}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
@@ -258,7 +294,6 @@ export default class RegistrationPanel extends React.Component {
                                 secureTextEntry = {true}
                             />
                             <TextInputField
-                                state = {'phoneNumber'}
                                 setStateHandler={this.handlePhoneNumberChange}
                                 keyboardType = 'phone-pad'
                                 returnKeyType = 'next'

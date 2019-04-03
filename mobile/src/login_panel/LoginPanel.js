@@ -78,8 +78,7 @@ export default class LoginPanel extends React.Component {
      */
     handlePressLogin = async () => {
         const { username, password } = this.state;
-        console.log(this.state['username']);
-        data = {
+        let data = {
             method: 'POST',
             body: JSON.stringify({
                 'username': username,
