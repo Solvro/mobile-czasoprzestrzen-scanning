@@ -1,4 +1,6 @@
-function nip(nip) {
+import validator from 'validator';
+
+function isNip(nip) {
     if (typeof nip !== 'string') {
         return false;
     }
@@ -20,7 +22,7 @@ function nip(nip) {
     }
 }
 
-function regon(regon) {
+function isRegon(regon) {
     const reg = /^[0-9]{9}$/;
     if (reg.test(regon) === false) {
         return false;
@@ -41,4 +43,27 @@ function regon(regon) {
     } 
 }
 
-export {nip, regon};
+function isUsername(username) {
+    if (username.length<5) return false
+    else return true
+}
+
+function isEmail(email) {
+    return validator.isEmail(email)
+}
+
+function isPassword(password) {
+    if (password.length<5) return false
+    else return true
+}
+
+function isPhoneNumber(phoneNumber) {
+    return validator.isMobilePhone('+48'+phoneNumber,'pl-PL')
+}
+
+function isPostalCode(postalCode) {
+    return validator.isPostalCode(postalCode)
+}
+
+
+export {isNip, isRegon, isUsername, isEmail, isPassword, isPhoneNumber, isPostalCode};

@@ -1,8 +1,7 @@
-    import React from 'react';
+import React from 'react';
 import {Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {Container, Text, ListItem, Radio, Left, Right} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
-import validator from 'validator';
 import SubmitButton from '../components/SubmitButton';
 import TextInputField from '../components/TextInputField';
 
@@ -11,7 +10,7 @@ import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 import alertStrings from '../assets/strings/AlertStrings.js';
 import buttonStrings from '../assets/strings/ButtonStrings.js';
 import registrationStrings from '../assets/strings/RegistrationStrings.js';
-import {nip, regon} from './NumberValidator.js';
+import {isNip, isRegon, isUsername, isEmail, isPassword, isPhoneNumber, isPostalCode} from '../validator/DataValidator.js';
 
 import logo from '../assets/logo_with_name.png';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -98,34 +97,34 @@ export default class RegistrationPanel extends React.Component {
               this.showWarningAlert(alertStrings.emptyField);
           }
         //validate username
-        else if(this.state.username.length<5) {
+        else if(!isUsername(this.state.username)) {
             this.showWarningAlert(alertStrings.usernameToShort);
         }
         //validate e-mail
-        else if (!validator.isEmail(this.state.email)){
+        else if (!isEmail(this.state.email)){
             this.showWarningAlert(alertStrings.invalidEmail);
         }
         //validate passwords
-        else if (this.state.password1.length<5) {
+        else if (!isPassword(this.state.password1)) {
             this.showWarningAlert(alertStrings.passwordToShort);
         }
         else if (this.state.password1.localeCompare(this.state.password2)!=0) {
             this.showWarningAlert(alertStrings.differentPasswords);
         }
         //validate phone number
-        else if (!validator.isMobilePhone('+48'+this.state.phoneNumber,'pl-PL')) {
+        else if (!isPhoneNumber(this.state.phoneNumber)) {
             this.showWarningAlert(alertStrings.invalidPhoneNumber);
         } 
         //validate postal code
-        else if (!(this.state.isPerson) && !validator.isPostalCode(this.state.postalCode, 'PL')) {
+        else if (!(this.state.isPerson) && !isPostalCode(this.state.postalCode)) {
               this.showWarningAlert(alertStrings.invalidPostalCode);
         }
         //validate nip 
-        else if (!(this.state.isPerson) && !nip(this.state.nip)) {
+        else if (!(this.state.isPerson) && !isNip(this.state.nip)) {
           this.showWarningAlert(alertStrings.invalidNIP);
         }
         //validate regon 
-        else if (!(this.state.isPerson) && !regon(this.state.regon)) {
+        else if (!(this.state.isPerson) && !isRegon(this.state.regon)) {
           this.showWarningAlert(alertStrings.invalidRegon);
         }
         else {
