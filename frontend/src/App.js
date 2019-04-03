@@ -13,6 +13,8 @@ import AddItemPage from './Screens/AddItemPage/AddItemPage';
 import LoginPage from './Screens/LoginPage/LoginPage';
 import { MuiThemeProvider} from '@material-ui/core/styles';
 import theme from './theme';
+import NewAccountPage from './Screens/NewAccountPage/NewAccountPage';
+import ChangePasswordPage from './Screens/ChangePasswordPage/ChangePasswordPage';
 
   const App = () => (
       <MuiThemeProvider theme={theme}>
@@ -24,6 +26,8 @@ import theme from './theme';
             <PrivateRoute path='/clients' component={ClientTablePage} />
             <PrivateRoute path='/account' component={AdminPage} />
             <PrivateRoute path='/adds' component={AddItemPage} />
+            <PrivateRoute path="/createNewAccount" component={NewAccountPage} />
+            <PrivateRoute path="/createNewAccount" component={ChangePasswordPage} />
         </Switch> 
       </Router>      
     </MuiThemeProvider>
