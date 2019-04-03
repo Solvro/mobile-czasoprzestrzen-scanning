@@ -1,6 +1,6 @@
     import React from 'react';
-import {Alert, View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
-import {Container, Text, CheckBox, ListItem, Radio, Left, Right} from 'native-base';
+import {Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {Container, Text, ListItem, Radio, Left, Right} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import validator from 'validator';
 import SubmitButton from '../components/SubmitButton';
@@ -83,8 +83,7 @@ export default class RegistrationPanel extends React.Component {
      */
     handlePressRegister = () => {
       //if sth is null
-      if (!(this.state.username && this.state.password1
-        && this.state.password2 && this.state.email
+      if (!(this.state.username && this.state.password1 && this.state.password2 && this.state.email 
         && this.state.phoneNumber)) {
           this.showWarningAlert(alertStrings.emptyField);
       }
@@ -137,6 +136,26 @@ export default class RegistrationPanel extends React.Component {
 
     setStateHandler = (state, text) => {
         this.setState({state, text});
+    }
+
+    handleUsernameChange = (event) => {
+        this.setState({username: event});
+    }
+
+    handleEmailChange = (event) => {
+        this.setState({email: event});
+    }
+
+    handlePassword1Change = (event) => {
+        this.setState({password1: event});
+    }
+
+    handlePassword2Change = (event) => {
+        this.setState({password2: event});
+    }
+
+    handlePhoneNumberChange = (event) => {
+        this.setState({phoneNumber: event});
     }
 
     showForm = () => {
@@ -208,7 +227,7 @@ export default class RegistrationPanel extends React.Component {
                         <View style={loginRegisterStyles.inputFieldsContainer}>
                             <TextInputField
                                 state = {'username'}
-                                setStateHandler={this.setStateHandler}
+                                setStateHandler={this.handleUsernameChange}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
                                 placeholder = {'Nazwa użytkownika'}
@@ -216,7 +235,7 @@ export default class RegistrationPanel extends React.Component {
                             />
                             <TextInputField
                                 state = {'email'}
-                                setStateHandler={this.setStateHandler}
+                                setStateHandler={this.handleEmailChange}
                                 keyboardType = 'email-address'
                                 returnKeyType = 'next'
                                 placeholder = {'Adres e-mail'}
@@ -224,7 +243,7 @@ export default class RegistrationPanel extends React.Component {
                             />
                             <TextInputField
                                 state = {'password1'}
-                                setStateHandler={this.setStateHandler}
+                                setStateHandler={this.handlePassword1Change}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
                                 placeholder = {'Hasło'}
@@ -232,7 +251,7 @@ export default class RegistrationPanel extends React.Component {
                             />
                             <TextInputField
                                 state = {'password2'}
-                                setStateHandler={this.setStateHandler}
+                                setStateHandler={this.handlePassword2Change}
                                 keyboardType = 'default'
                                 returnKeyType = 'next'
                                 placeholder = {'Powtórz hasło'}
@@ -240,7 +259,7 @@ export default class RegistrationPanel extends React.Component {
                             />
                             <TextInputField
                                 state = {'phoneNumber'}
-                                setStateHandler={this.setStateHandler}
+                                setStateHandler={this.handlePhoneNumberChange}
                                 keyboardType = 'phone-pad'
                                 returnKeyType = 'next'
                                 placeholder = {'Numer telefonu'}
