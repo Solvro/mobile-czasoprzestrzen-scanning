@@ -7,6 +7,14 @@ const profileDetailsStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 50,
     },
+
+    scrollView: {
+        marginBottom: 30,
+    },
+
+    buttonContainer: {
+        margin: 20,
+    }
 });
 
 module.exports = profileDetailsStyles;

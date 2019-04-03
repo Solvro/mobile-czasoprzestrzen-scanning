@@ -11,7 +11,9 @@ const registrationStrings = {
     city: 'Miejscowość',
     nip: 'NIP',
     regon: 'REGON',
-    returnToSignIn: 'Masz już konto? Zaloguj się!'
+    returnToSignIn: 'Masz już konto? Zaloguj się!',
+    firstName: 'Imię',
+    lastName: 'Nazwisko',
 
 };
 

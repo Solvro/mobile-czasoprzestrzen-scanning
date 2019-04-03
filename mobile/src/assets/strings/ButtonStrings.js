@@ -7,6 +7,7 @@ const buttonStrings = {
     profileDetailsButton: 'Dane profilowe',
     deleteAccountButton: 'Usuń konto',
     signOutButton: 'Wyloguj',
+    newPasswordButton: 'Zresetuj hasło'
 };
 
 module.exports = buttonStrings;
