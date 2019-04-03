@@ -3,9 +3,7 @@ from rest_framework import generics, viewsets, status, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, \
-    TokenVerifySerializer
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework_simplejwt.serializers import TokenVerifySerializer
 from rest_framework_simplejwt.views import TokenVerifyView
 
 from .models import Equipment, AppUser, RentalInfo
@@ -13,8 +11,9 @@ from .serializers import EquipmentSerializer, ClientSerializer, \
     RentalInfoSerializer, SignUpClientSerializer, RentalInfoGetSerializer, \
     AdminCreationSerializer, SuperAdminCreationSerializer, \
     AdminAndSuperAdminSerializer
-from .permissions import PostPermissions, RentalInfoPermissions, \
-    IsSuperAdmin, IsAppUser, IsAdminOrSuperAdmin
+from .permissions import RentalInfoPermissions, \
+    IsSuperAdmin, IsAppUser, IsAdminOrSuperAdmin, IsThisAdminOrSuperAdmin, \
+    IsThisClientOrAdminOrSuperAdmin
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -65,14 +64,9 @@ class ClientListView(mixins.ListModelMixin, viewsets.GenericViewSet):
 
 class AdminListCreateViews(mixins.ListModelMixin, mixins.CreateModelMixin,
                            viewsets.GenericViewSet):
-    queryset = AppUser.objects.all()
+    queryset = AppUser.objects.filter(type="Ra")
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('first_name', 'last_name')
-
-    def get_queryset(self):
-        if self.request.method == 'POST':
-            return self.queryset
-        return self.queryset.filter(type="Ra")
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -115,15 +109,10 @@ class AdminListCreateViews(mixins.ListModelMixin, mixins.CreateModelMixin,
 
 class SuperAdminListCreateViews(mixins.ListModelMixin, mixins.CreateModelMixin,
                                 viewsets.GenericViewSet):
-    queryset = AppUser.objects.all()
+    queryset = AppUser.objects.filter(type="Sa")
     permission_classes = (IsAuthenticated, IsAppUser, IsSuperAdmin)
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('first_name', 'last_name')
-
-    def get_queryset(self):
-        if self.request.method == 'POST':
-            return self.queryset
-        return self.queryset.filter(type="Sa")
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
@@ -156,27 +145,158 @@ class SuperAdminListCreateViews(mixins.ListModelMixin, mixins.CreateModelMixin,
         return super().create(request, *args, **kwargs)
 
 
-# class ClientView(viewsets.ModelViewSet):
-#     queryset = AppUser.objects.all()
-#     permission_classes = (PostPermissions,)
-#     filter_backends = (DjangoFilterBackend,)
-#     filter_fields = ('first_name', 'last_name')
-#
-#     def create(self, request, *args, **kwargs):
-#         created = super().create(request, *args, **kwargs)
-#         if created.status_code == status.HTTP_201_CREATED:
-#             token_serializer = TokenObtainPairSerializer(data=request.data)
-#             try:
-#                 token_serializer.is_valid(raise_exception=True)
-#                 created.data = token_serializer.validated_data
-#             except TokenError as e:
-#                 raise InvalidToken(e.args[0])
-#         return created
-#
-#     def get_serializer_class(self):
-#         if self.action == 'create':
-#             return SignUpClientSerializer
-#         return ClientSerializer
+class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
+                                  mixins.UpdateModelMixin,
+                                  mixins.DestroyModelMixin,
+                                  viewsets.GenericViewSet):
+    queryset = AppUser.objects.filter(type="Cl")
+    serializer_class = ClientSerializer
+    permission_classes = (IsAuthenticated, IsAppUser,
+                          IsThisClientOrAdminOrSuperAdmin)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/client/{id}/\n"
+                              "Retrieve client with given id",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'retrieve client (Not this client or admin or super admin)',
+            404: 'No client with given id found'
+        }
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="PATCH /api-v1/client/{id}/\n"
+                              "Update client with given id",
+        responses={
+            400: 'Obligatory field not provided or invalid value '
+                 'or username duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update client (Not this client or admin or super admin)',
+            404: 'No client with given id found'
+        }
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/client/{id}/\n"
+                              "Delete client with given id\n"
+                              "!!!AS OF NOW ONCE CLIENT IS DELETED ALL OF HIS RENT HISTORY IS DELETED AS WELL!!!",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update client (Not this client or admin or super admin)',
+            404: 'No client with given id found'
+        }
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+
+
+class AdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
+                                 mixins.UpdateModelMixin,
+                                 mixins.DestroyModelMixin,
+                                 viewsets.GenericViewSet):
+    queryset = AppUser.objects.filter(type="Ra")
+    serializer_class = ClientSerializer  # TODO
+    permission_classes = (IsAuthenticated, IsAppUser,
+                          IsThisAdminOrSuperAdmin)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/admin/{id}/\n"
+                              "Retrieve admin with given id",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'retrieve admin (Not this admin or super admin)',
+            404: 'No admin with given id found'
+        }
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="PATCH /api-v1/admin/{id}/\n"
+                              "Update admin with given id",
+        responses={
+            400: 'Obligatory field not provided or invalid value '
+                 'or username duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update admin (Not this admin or super admin)',
+            404: 'No admin with given id found'
+        }
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/admin/{id}/\n"
+                              "Delete admin with given id\n",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update admin (Not this admin or super admin)',
+            404: 'No admin with given id found'
+        }
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+
+
+class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
+                                      mixins.UpdateModelMixin,
+                                      mixins.DestroyModelMixin,
+                                      viewsets.GenericViewSet):
+    queryset = AppUser.objects.filter(type="Sa")
+    serializer_class = ClientSerializer  # TODO
+    permission_classes = (IsAuthenticated, IsAppUser,
+                          IsSuperAdmin)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/super-admin/{id}/\n"
+                              "Retrieve super admin with given id",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'retrieve super admin (Not super admin)',
+            404: 'No super admin with given id found'
+        }
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="PATCH /api-v1/super-admin/{id}/\n"
+                              "Update super admin with given id",
+        responses={
+            400: 'Obligatory field not provided or invalid value '
+                 'or username duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update super admin (Not super admin)',
+            404: 'No super admin with given id found'
+        }
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/super-admin/{id}/\n"
+                              "Delete super admin with given id\n",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update super admin (Not super admin)',
+            404: 'No super admin with given id found'
+        }
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
 
 
 class RentalInfoView(viewsets.ModelViewSet):
