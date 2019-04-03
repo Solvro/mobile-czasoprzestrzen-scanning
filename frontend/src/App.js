@@ -11,16 +11,34 @@ import AdminPage from './Screens/AdminPage/AdminPage';
 import ClientTablePage from './Screens/ClientsTablePage/ClientsTablePage';
 import AddItemPage from './Screens/AddItemPage/AddItemPage';
 import LoginPage from './Screens/LoginPage/LoginPage';
+import ForgotPasswordPage from './Screens/ForgotPasswordPage/ForgotPasswordPage';
 import { MuiThemeProvider} from '@material-ui/core/styles';
 import theme from './theme';
 import NewAccountPage from './Screens/NewAccountPage/NewAccountPage';
 import ChangePasswordPage from './Screens/ChangePasswordPage/ChangePasswordPage';
 
-  const App = () => (
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { 
+      prevPath: true 
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.location !== this.props.location) {
+      this.setState({ prevPath: this.props.location })
+    }
+  }
+  
+    render(){
+      return(
       <MuiThemeProvider theme={theme}>
         <Router>
           <Switch>
             <Route path="/login" component={LoginPage}/>
+            <Route path="/forgotpass" component={ForgotPasswordPage}/>
             <PrivateRoute path='/home' component={HomePage} />
             <PrivateRoute path='/rents' component={RentPage} />
             <PrivateRoute path='/clients' component={ClientTablePage} />
@@ -32,6 +50,9 @@ import ChangePasswordPage from './Screens/ChangePasswordPage/ChangePasswordPage'
       </Router>      
     </MuiThemeProvider>
     );
+    }
+      
+}
 
   export default App;
 
