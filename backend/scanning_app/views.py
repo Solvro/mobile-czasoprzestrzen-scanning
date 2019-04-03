@@ -274,7 +274,7 @@ class AdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
                                  mixins.DestroyModelMixin,
                                  viewsets.GenericViewSet):
     queryset = models.AppUser.objects.filter(type="Ra")
-    serializer_class = serializers.ClientSerializer  # TODO
+    serializer_class = serializers.AdminAndSuperAdminSerializer
     permission_classes = (IsAuthenticated, IsAppUser,
                           IsThisAdminOrSuperAdmin)
 
@@ -340,7 +340,7 @@ class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
                                       mixins.DestroyModelMixin,
                                       viewsets.GenericViewSet):
     queryset = models.AppUser.objects.filter(type="Sa")
-    serializer_class = serializers.ClientSerializer  # TODO
+    serializer_class = serializers.AdminAndSuperAdminSerializer
     permission_classes = (IsAuthenticated, IsAppUser,
                           IsSuperAdmin)
 
