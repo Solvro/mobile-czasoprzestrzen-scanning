@@ -5,7 +5,7 @@ const registrationStrings = {
     email: 'Adres e-mail',
     password: 'Hasło',
     repeatPassword: 'Powtórz hasło',
-    phoneNumber: 'Numer telefonu (9 cyfr)',
+    phoneNumber: 'Numer telefonu',
     street: 'Ulica i numer',
     postalCode: 'Kod pocztowy',
     city: 'Miejscowość',

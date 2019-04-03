@@ -18,6 +18,9 @@ import InputDialog from '../components/InputDialog';
 import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 import { ScrollView } from 'react-native-gesture-handler';
 import SubmitButton from '../components/SubmitButton';
+import registrationStrings from '../assets/strings/RegistrationStrings.js';
+import alertStrings from '../assets/strings/AlertStrings.js';
+import {isNip, isRegon, isUsername, isEmail, isPhoneNumber, isPostalCode} from '../validator/DataValidator.js';
 
 
 export default class ProfileDetailsView extends React.Component {
@@ -27,17 +30,17 @@ export default class ProfileDetailsView extends React.Component {
         this.state = {
             visible: false,
             
-            username: null,
-            email: null,
-            phoneNumber: null,
-            street: null,
-            postalCode: null,
-            city: null,
-            nip: null,
-            regon: null,
+            username: 'user123',
+            email: 'user123@gmail.com',
+            phoneNumber: '864325971',
+            street: 'Sienkiewicza 12',
+            postalCode: '59-430',
+            city: 'Wrocław',
+            nip: '6846123684',
+            regon: '1564834131',
 
             isPerson: false,
-        }
+        } 
     }
 
     render() {
@@ -46,61 +49,65 @@ export default class ProfileDetailsView extends React.Component {
                 <TouchableWithoutFeedback>
                     <Animated.View style={profileDetailsStyles.background}>
                         <DataEditField
-                            label='użytkownik'
-                            inputText='Nazwa użytkownika'
-                            data='user123'
-                            warningAlert='warn'
+                            title={registrationStrings.username}
+                            data={this.state.username}
+                            isValidated={true}
+                            validator={isUsername}
+                            warningAlert={alertStrings.usernameToShort}
                             icon='md-contact'
                         />
                          <DataEditField
-                            label='e-mail'
-                            inputText='Adres e-mail'
-                            data='user123@gmail.com'
-                            warningAlert='warn'
+                            title={registrationStrings.email}
+                            data={this.state.email}
+                            isValidated={true}
+                            validator={isEmail}
+                            warningAlert={alertStrings.invalidEmail}
                             icon='md-mail'
                         />
                          <DataEditField
-                            label='numer telefonu'
-                            inputText='Numer telefonu'
-                            data='864325971'
-                            warningAlert='warn'
+                            title={registrationStrings.phoneNumber}
+                            data={this.state.phoneNumber}
+                            isValidated={true}
+                            validator={isPhoneNumber}
+                            warningAlert={alertStrings.invalidPhoneNumber}
                             icon='md-call'
                         />
                         {!this.state.isPerson && (
                             <View>
                                 <DataEditField
-                                    label='ulica i numer'
-                                    inputText='Ulica i numer'
-                                    data='Sienkiewicza 12'
-                                    warningAlert='warn'
+                                    title={registrationStrings.street}
+                                    data={this.state.street}
+                                    isValidated={false}
                                     icon='md-pin'
                                 />
                                 <DataEditField
-                                    label='kod pocztowy'
-                                    inputText='kod pocztowy'
-                                    data='59-430'
-                                    warningAlert='warn'
+                                    title={registrationStrings.postalCode}
+                                    data={this.state.postalCode}
+                                    isValidated={true}
+                                    validator={isPostalCode}
+                                    warningAlert={alertStrings.invalidPostalCode}
                                     icon='md-pin'
                                 />
                                 <DataEditField
-                                    label='miejscowość'
-                                    inputText='miejscowość'
-                                    data='Wrocław'
-                                    warningAlert='warn'
+                                    title={registrationStrings.city}
+                                    data={this.state.city}
+                                    isValidated={false}
                                     icon='md-pin'
                                 />
                                 <DataEditField
-                                    label='NIP'
-                                    inputText='NIP'
-                                    data='6846123684'
-                                    warningAlert='warn'
+                                    title={registrationStrings.nip}
+                                    data={this.state.nip}
+                                    isValidated={true}
+                                    validator={isNip}
+                                    warningAlert={alertStrings.invalidNIP}
                                     icon='md-business'
                                 />
                                 <DataEditField
-                                    label='REGON'
-                                    inputText='REGON'
-                                    data='1564834131'
-                                    warningAlert='warn'
+                                    title={registrationStrings.regon}
+                                    data={this.state.regon}
+                                    isValidated={true}
+                                    validator={isRegon}
+                                    warningAlert={alertStrings.invalidRegon}
                                     icon='md-business'
                                 />
                             </View>

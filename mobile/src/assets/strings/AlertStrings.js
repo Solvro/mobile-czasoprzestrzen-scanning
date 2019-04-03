@@ -5,7 +5,7 @@ const alertStrings = {
     invalidEmail: 'Wprowadzono błędny adres e-mail.',
     passwordToShort: 'Hasło powinno zawierać min 5 znaków.',
     differentPasswords: 'Wprowadzone hasła różnią się.',
-    invalidPhoneNumber: 'Wprowadzono błędny numer telefonu',
+    invalidPhoneNumber: 'Wprowadzono błędny numer telefonu (numer telefonu powinien zawierać 9 cyfr).',
     invalidData: 'Nieprawidłowe dane!',
     correctRegistration: 'Poprawna rejestracja!', 
     possibleSignIn: 'Teraz możesz się zalogować.',

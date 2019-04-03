@@ -62,7 +62,7 @@ function isPhoneNumber(phoneNumber) {
 }
 
 function isPostalCode(postalCode) {
-    return validator.isPostalCode(postalCode)
+    return validator.isPostalCode(postalCode, 'PL')
 }
 
 
