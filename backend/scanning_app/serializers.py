@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from .models import Equipment, AppUser, RentalInfo, UnacceptedClient
+from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, TypeOfEquipment
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
@@ -10,10 +10,16 @@ class EquipmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TypeOfEquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeOfEquipment
+        fields = '__all__'
+
+
 class SignUpUnacceptedClientSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
-        return super(SignUpUnacceptedClientSerializer, self)\
+        return super(SignUpUnacceptedClientSerializer, self) \
             .create(validated_data)
 
     def validate(self, attrs):
@@ -102,4 +108,3 @@ class RentalInfoGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = RentalInfo
         fields = '__all__'
-

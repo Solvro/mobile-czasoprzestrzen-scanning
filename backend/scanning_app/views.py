@@ -9,10 +9,11 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, \
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.views import TokenVerifyView
 
-from .models import Equipment, AppUser, RentalInfo, UnacceptedClient
+from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, \
+    TypeOfEquipment
 from .serializers import EquipmentSerializer, ClientSerializer, \
     RentalInfoSerializer, SignUpUnacceptedClientSerializer, \
-    RentalInfoGetSerializer, \
+    RentalInfoGetSerializer, TypeOfEquipmentSerializer, \
     AdminCreationSerializer, SuperAdminCreationSerializer, \
     ListUnacceptedClientSerializer
 from .permissions import PostPermissions, RentalInfoPermissions, \
@@ -26,6 +27,11 @@ class EquipmentView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('name', 'available', 'type')
+
+
+class TypeOfEquipmentView(viewsets.ModelViewSet):
+    queryset = TypeOfEquipment.objects.all()
+    serializer_class = TypeOfEquipmentSerializer
 
 
 class UnacceptedClientListCreateDestroyViewSet(mixins.CreateModelMixin,

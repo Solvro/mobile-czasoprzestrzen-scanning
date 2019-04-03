@@ -19,6 +19,10 @@ USER_TYPE = (
 )
 
 
+class TypeOfEquipment(models.Model):
+    type_name = models.CharField(max_length=255)
+
+
 class AppUser(AbstractUser):
     phone = PhoneNumberField()
     address = models.CharField(null=True, max_length=255)
@@ -93,8 +97,8 @@ class Equipment(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=400)
     available = models.BooleanField(default=False)
-    type = models.CharField(choices=TYPE, max_length=64)
     max_rent_time = models.DurationField()
+    type = models.ForeignKey(TypeOfEquipment, on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         return "{}".format(self.name)

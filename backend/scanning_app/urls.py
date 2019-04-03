@@ -7,6 +7,7 @@ router = routers.DefaultRouter()
 router.register('equipment', views.EquipmentView)
 router.register('client', views.ClientView)
 router.register('rental-info', views.RentalInfoView)
+router.register('equipment-type', views.TypeOfEquipmentView)
 
 unaccepted_client_signup_view = views.UnacceptedClientListCreateDestroyViewSet\
     .as_view({'post': 'create'})
