@@ -115,27 +115,6 @@ class SuperAdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
     type = "Sa"
 
 
-# class ClientViewsTests(TestCase):
-#     def setUp(self):
-#         self.apiClient = APIClient()
-#
-#     def test_valid_client_data_passed_token_returned_and_saved(self):
-#         data = USER_DATA
-#         response = self.apiClient \
-#             .post(reverse('appuser-list'), data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#         self.assertTrue('access' in response.data)
-#         self.assertEqual(AppUser.objects.count(), 1)
-#
-#     def test_invalid_client_data_passed_bad_request_returned(self):
-#         data = USER_DATA.copy()
-#         del data['password']
-#         res = self.apiClient.post(reverse('appuser-list'), data, format='json')
-#         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-#         self.assertFalse(AppUser.objects.exists())
-#         self.assertFalse('access' in res.data)
-
-
 def create_client(username="client"):
     return AppUser.objects.create_user(
         username=username,
@@ -595,10 +574,140 @@ class SuperAdminUpdateTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, self.super_admin)
         res = self.apiClient.patch(
-            reverse('super-admin-detail', args=(self.super_admin.id + 1,)),
+            reverse('super-admin-detail', args=(self.super_admin.id+1,)),
             self.body,
             format='json'
         )
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class ClientDeleteTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.client = create_client()
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.delete(reverse('client-detail',
+                                            args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_this_client_token_deleted(self):
+        login_as_user(self.apiClient, self.client)
+        res = self.apiClient.delete(reverse('client-detail',
+                                            args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(AppUser.objects.filter(type="Cl").exists())
+
+    def test_other_client_token_403_returned(self):
+        login_as_user(self.apiClient, create_client("diff"))
+        res = self.apiClient.delete(reverse('client-detail',
+                                            args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_token_deleted(self):
+        login_as_user(self.apiClient, create_admin())
+        res = self.apiClient.delete(reverse('client-detail',
+                                            args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(AppUser.objects.filter(type="Cl").exists())
+
+    def test_super_admin_token_deleted(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.delete(reverse('client-detail',
+                                            args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(AppUser.objects.filter(type="Cl").exists())
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.delete(reverse('client-detail',
+                                            args=(self.client.id+1,)))
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class AdminDeleteTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.admin = create_admin()
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.delete(reverse('admin-detail',
+                                            args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        login_as_user(self.apiClient, create_client())
+        res = self.apiClient.delete(reverse('admin-detail',
+                                            args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_this_admin_token_deleted(self):
+        login_as_user(self.apiClient, self.admin)
+        res = self.apiClient.delete(reverse('admin-detail',
+                                            args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(AppUser.objects.filter(type="Ra").exists())
+
+    def test_other_admin_token_403_returned(self):
+        login_as_user(self.apiClient, create_admin("diff"))
+        res = self.apiClient.delete(reverse('admin-detail',
+                                            args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_super_admin_token_deleted(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.delete(reverse('admin-detail',
+                                            args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(AppUser.objects.filter(type="Ra").exists())
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.delete(reverse('admin-detail',
+                                            args=(self.admin.id+1,)))
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class SuperAdminDeleteTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.super_admin = create_super_admin()
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.delete(reverse('super-admin-detail',
+                                            args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        login_as_user(self.apiClient, create_client())
+        res = self.apiClient.delete(reverse('super-admin-detail',
+                                            args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_token_403_returned(self):
+        login_as_user(self.apiClient, create_admin())
+        res = self.apiClient.delete(reverse('super-admin-detail',
+                                            args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_this_super_admin_token_deleted(self):
+        login_as_user(self.apiClient, self.super_admin)
+        res = self.apiClient.delete(reverse('super-admin-detail',
+                                            args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(AppUser.objects.filter(type="Sa").exists())
+
+    def test_other_super_admin_token_deleted(self):
+        login_as_user(self.apiClient, create_super_admin("diff"))
+        res = self.apiClient.delete(reverse('super-admin-detail',
+                                            args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AppUser.objects.filter(type="Sa").count(), 1)
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, self.super_admin)
+        res = self.apiClient.delete(reverse('super-admin-detail',
+                                            args=(self.super_admin.id+1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
