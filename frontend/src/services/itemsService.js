@@ -9,6 +9,16 @@ const instance = axios.create({
   }
 });
 
+export async function getItemsList() {
+    
+    try {
+      const getItem = await instance.get(`equipment/`);
+      console.log(getItem.data);
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  }
+
 export async function addNewItemToItemList(itemName,itemType,itemDecription,itemRentTime) {
     const data = {
         "name": itemName,
@@ -21,7 +31,6 @@ export async function addNewItemToItemList(itemName,itemType,itemDecription,item
       const addItem = await instance.post(`equipment/`, data);
       console.log(addItem.status);
       return addItem.status === 201;
-    //   return isVerify;
     } catch (error) {
       console.log(`Error: ${error}`);
     }
