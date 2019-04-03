@@ -34,3 +34,8 @@ class IsSuperAdmin(permissions.BasePermission):
         if type(request.user) is AppUser:
             return request.user.is_super_admin()
         return False
+
+
+class IsAppUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return type(request.user) is AppUser
