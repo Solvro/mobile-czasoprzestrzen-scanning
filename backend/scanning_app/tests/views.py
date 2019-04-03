@@ -136,27 +136,27 @@ class SuperAdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
 #         self.assertFalse('access' in res.data)
 
 
-def create_client():
+def create_client(username="client"):
     return AppUser.objects.create_user(
-        username="client",
+        username=username,
         password="pass",
         email="sample@email.com",
         phone="+48793255012"
     )
 
 
-def create_admin():
+def create_admin(username="admin"):
     return AppUser.objects.create_user(
-        username="admin",
+        username=username,
         password="pass",
         phone="+48793255012",
         type="Ra"
     )
 
 
-def create_super_admin():
+def create_super_admin(username="root"):
     return AppUser.objects.create_user(
-        username="root",
+        username=username,
         password="pass",
         phone="+48793255012",
         type="Sa"
@@ -268,6 +268,144 @@ class SuperAdminListViewTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['username'], super_admin.username)
+
+
+class ClientRetrieveTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.client = create_client()
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.get(reverse('client-detail',
+                                         args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_this_client_token_data_returned(self):
+        login_as_user(self.apiClient, self.client)
+        res = self.apiClient.get(reverse('client-detail',
+                                         args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], self.client.username)
+        self.assertNotIn('password', res.data)
+
+    def test_another_client_token_403_returned(self):
+        diff_client = create_client("diff")
+        login_as_user(self.apiClient, diff_client)
+        res = self.apiClient.get(reverse('client-detail',
+                                         args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_token_data_returned(self):
+        login_as_user(self.apiClient, create_admin())
+        res = self.apiClient.get(reverse('client-detail',
+                                         args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], self.client.username)
+        self.assertNotIn('password', res.data)
+
+    def test_super_admin_token_data_returned(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.get(reverse('client-detail',
+                                         args=(self.client.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], self.client.username)
+        self.assertNotIn('password', res.data)
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.get(reverse('client-detail',
+                                         args=(self.client.id+1,)))
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class AdminRetrieveTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.admin = create_admin()
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.get(reverse('admin-detail',
+                                         args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        login_as_user(self.apiClient, create_client())
+        res = self.apiClient.get(reverse('admin-detail',
+                                         args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_this_admin_token_data_returned(self):
+        login_as_user(self.apiClient, self.admin)
+        res = self.apiClient.get(reverse('admin-detail',
+                                         args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], self.admin.username)
+        self.assertNotIn('password', res.data)
+
+    def test_another_admin_token_403_returned(self):
+        login_as_user(self.apiClient, create_admin("diff"))
+        res = self.apiClient.get(reverse('admin-detail',
+                                         args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_super_admin_token_data_returned(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.get(reverse('admin-detail',
+                                         args=(self.admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], self.admin.username)
+        self.assertNotIn('password', res.data)
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.get(reverse('admin-detail',
+                                         args=(self.admin.id+1,)))
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class SuperAdminRetrieveTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.super_admin = create_super_admin()
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.get(reverse('super-admin-detail',
+                                         args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        login_as_user(self.apiClient, create_client())
+        res = self.apiClient.get(reverse('super-admin-detail',
+                                         args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_token_403_returned(self):
+        login_as_user(self.apiClient, create_admin())
+        res = self.apiClient.get(reverse('super-admin-detail',
+                                         args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_this_super_admin_token_data_returned(self):
+        login_as_user(self.apiClient, self.super_admin)
+        res = self.apiClient.get(reverse('super-admin-detail',
+                                         args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], self.super_admin.username)
+        self.assertNotIn('password', res.data)
+
+    def test_another_super_admin_token_data_returned(self):
+        login_as_user(self.apiClient, create_super_admin("diff"))
+        res = self.apiClient.get(reverse('super-admin-detail',
+                                         args=(self.super_admin.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], self.super_admin.username)
+        self.assertNotIn('password', res.data)
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, self.super_admin)
+        res = self.apiClient.get(reverse('super-admin-detail',
+                                         args=(self.super_admin.id+1,)))
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class TokenTests(TestCase):
