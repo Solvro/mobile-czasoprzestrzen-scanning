@@ -10,12 +10,6 @@ const instance = axios.create({
   }
 });
 
-const config = {
-  headers: {
-    'Content-Type': 'application/json'
-  }
-};
-
 export async function authorizeUser(username, password) {
   const data1 = {
     "password": password,
