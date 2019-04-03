@@ -225,6 +225,21 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         return super().retrieve(request, *args, **kwargs)
 
     @swagger_auto_schema(
+        operation_description="PUT /api-v1/client/{id}/\n"
+                              "Update client with given id",
+        responses={
+            400: 'Obligatory field not provided or invalid value '
+                 'or username duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update client (Not this client or admin or super admin)',
+            404: 'No client with given id found'
+        }
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
         operation_description="PATCH /api-v1/client/{id}/\n"
                               "Update client with given id",
         responses={
@@ -277,6 +292,21 @@ class AdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         return super().retrieve(request, *args, **kwargs)
 
     @swagger_auto_schema(
+        operation_description="PUT /api-v1/admin/{id}/\n"
+                              "Update admin with given id",
+        responses={
+            400: 'Obligatory field not provided or invalid value '
+                 'or username duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update admin (Not this admin or super admin)',
+            404: 'No admin with given id found'
+        }
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
         operation_description="PATCH /api-v1/admin/{id}/\n"
                               "Update admin with given id",
         responses={
@@ -326,6 +356,21 @@ class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
     )
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="PUT /api-v1/super-admin/{id}/\n"
+                              "Update super admin with given id",
+        responses={
+            400: 'Obligatory field not provided or invalid value '
+                 'or username duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update super admin (Not super admin)',
+            404: 'No super admin with given id found'
+        }
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_description="PATCH /api-v1/super-admin/{id}/\n"
