@@ -11,6 +11,7 @@ const alertStrings = {
     possibleSignIn: 'Teraz możesz się zalogować.',
     noConnectionWithServer: 'Brak połączenia z serwerem',
     noAuthoriatzion: 'Brak autoryzacji',
+    unexpectedError: 'Coś poszło nie tak',
 };
 
 module.exports = alertStrings;

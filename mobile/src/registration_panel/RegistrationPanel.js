@@ -1,4 +1,4 @@
-    import React from 'react';
+import React from 'react';
 import {Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {Container, Text, ListItem, Radio, Left, Right} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
@@ -13,6 +13,8 @@ import buttonStrings from '../assets/strings/ButtonStrings.js';
 
 import logo from '../assets/logo_with_name.png';
 import { ScrollView } from 'react-native-gesture-handler';
+
+import apiConfig from '../services/api/config';
 
 export default class RegistrationPanel extends React.Component {
 
@@ -122,11 +124,39 @@ export default class RegistrationPanel extends React.Component {
             return;
         }
 
-        const {username, password1, } = this.state;
+        const {username, password1, firstName, lastName, email, phoneNumber} = this.state;
         let data = {
-            method: 'GET',
-            body: ''
+            method: 'POST',
+            body: JSON.stringify({
+                'username': username,
+                'password': password1,
+                'first_name': firstName,
+                'last_name': lastName,
+                'email': email,
+                'phone': phoneNumber,
+                'address': 'dummyData',
+                'business_data': 'dummyData',
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
         }
+
+        // TODO: change endpoint
+        fetch(apiConfig.url + '/api-v1/client/', data)
+            .then((response) => { this.setState({ status: response.status }); return response.json() })
+            .then((response) => {
+                if (this.state.status === 201) {
+                    this.showRegisterAlert();
+                    this.props.navigation.navigate("SignIn");
+                } else {
+                    //TODO: maybe more clever message?
+                    Alert.alert(alertStrings.unexpectedError);
+                }
+            })
+            .catch(() => {
+                Alert.alert(alertStrings.noConnectionWithServer);
+            });
 
     }
 
@@ -144,7 +174,7 @@ export default class RegistrationPanel extends React.Component {
     showRegisterAlert() {
       Alert.alert(
         'Poprawna rejestracja!',
-        'Teraz możesz się zalogować.',
+        'Teraz musisz poczekać na akceptację.',
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ],
@@ -212,8 +242,6 @@ export default class RegistrationPanel extends React.Component {
         return(
             <View>
                 {this.generateBasicForm()}
-                
-                       
             </View>
         );
     }
