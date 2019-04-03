@@ -180,6 +180,7 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         }
     )
     def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
 
     @swagger_auto_schema(
@@ -232,6 +233,7 @@ class AdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         }
     )
     def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
 
     @swagger_auto_schema(
@@ -283,6 +285,7 @@ class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         }
     )
     def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
 
     @swagger_auto_schema(

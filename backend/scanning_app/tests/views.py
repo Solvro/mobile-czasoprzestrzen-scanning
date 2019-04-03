@@ -408,6 +408,200 @@ class SuperAdminRetrieveTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
+class ClientUpdateTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.client = create_client()
+        self.body = {'email': 'new@email.com'}
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.patch(
+            reverse('client-detail', args=(self.client.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_this_client_token_model_updated(self):
+        login_as_user(self.apiClient, self.client)
+        res = self.apiClient.patch(
+            reverse('client-detail', args=(self.client.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(AppUser.objects.get(pk=self.client.id).email,
+                         self.body['email'])
+
+    def test_another_client_token_403_returned(self):
+        login_as_user(self.apiClient, create_client("diff"))
+        res = self.apiClient.patch(
+            reverse('client-detail', args=(self.client.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_token_model_updated(self):
+        login_as_user(self.apiClient, create_admin())
+        res = self.apiClient.patch(
+            reverse('client-detail', args=(self.client.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(AppUser.objects.get(pk=self.client.id).email,
+                         self.body['email'])
+
+    def test_super_admin_token_model_updated(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.patch(
+            reverse('client-detail', args=(self.client.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(AppUser.objects.get(pk=self.client.id).email,
+                         self.body['email'])
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.patch(
+            reverse('client-detail', args=(self.client.id+1,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class AdminUpdateTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.admin = create_admin()
+        self.body = {'email': 'new@email.com'}
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.patch(
+            reverse('admin-detail', args=(self.admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        login_as_user(self.apiClient, create_client())
+        res = self.apiClient.patch(
+            reverse('admin-detail', args=(self.admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_this_admin_token_model_updated(self):
+        login_as_user(self.apiClient, self.admin)
+        res = self.apiClient.patch(
+            reverse('admin-detail', args=(self.admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(AppUser.objects.get(pk=self.admin.id).email,
+                         self.body['email'])
+
+    def test_another_admin_token_403_returned(self):
+        login_as_user(self.apiClient, create_admin("diff"))
+        res = self.apiClient.patch(
+            reverse('admin-detail', args=(self.admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_super_admin_token_model_updated(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.patch(
+            reverse('admin-detail', args=(self.admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(AppUser.objects.get(pk=self.admin.id).email,
+                         self.body['email'])
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, create_super_admin())
+        res = self.apiClient.patch(
+            reverse('admin-detail', args=(self.admin.id+1,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class SuperAdminUpdateTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        self.super_admin = create_super_admin()
+        self.body = {'email': 'new@email.com'}
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.patch(
+            reverse('super-admin-detail', args=(self.super_admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        login_as_user(self.apiClient, create_client())
+        res = self.apiClient.patch(
+            reverse('super-admin-detail', args=(self.super_admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_token_403_returned(self):
+        login_as_user(self.apiClient, create_admin())
+        res = self.apiClient.patch(
+            reverse('super-admin-detail', args=(self.super_admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_this_super_admin_token_model_updated(self):
+        login_as_user(self.apiClient, self.super_admin)
+        res = self.apiClient.patch(
+            reverse('super-admin-detail', args=(self.super_admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(AppUser.objects.get(pk=self.super_admin.id).email,
+                         self.body['email'])
+
+    def test_another_super_admin_token_model_updated(self):
+        login_as_user(self.apiClient, create_super_admin("diff"))
+        res = self.apiClient.patch(
+            reverse('super-admin-detail', args=(self.super_admin.id,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(AppUser.objects.get(pk=self.super_admin.id).email,
+                         self.body['email'])
+
+    def test_invalid_id_404_returned(self):
+        login_as_user(self.apiClient, self.super_admin)
+        res = self.apiClient.patch(
+            reverse('super-admin-detail', args=(self.super_admin.id + 1,)),
+            self.body,
+            format='json'
+        )
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
 class TokenTests(TestCase):
 
     def setUp(self):
