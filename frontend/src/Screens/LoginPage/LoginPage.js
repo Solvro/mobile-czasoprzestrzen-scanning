@@ -21,6 +21,7 @@ const styles = theme => ({
 });
 
 class LoginPage extends React.Component {
+  
   state = {
     username: '',
     password: '',
@@ -44,7 +45,7 @@ tryAuthorize = async e => {
         if (token) {
             await localStorage.setItem('token', token);
             
-            this.props.history.push('/home')
+            this.props.history.push('/home');
         } else {
             this.setState({loginError: true})
         }
@@ -62,13 +63,12 @@ handleChangePassword = event => {
 validateIsLogged = async () => {
   const token = await localStorage.getItem('token');
   const isLogged = token && await verifyUser(token);
-  console.log(isLogged);
   return isLogged;
 }
 
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <div><Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button><TextButton text={"Zapomniałeś hasła?"}></TextButton></div>;    
+    const button = <div><Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button><TextButton link={'/forgotpass'} text={"Zapomniałeś hasła?"}></TextButton></div>;    
 
     return (
       <div>

@@ -5,6 +5,8 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import itemTypes from './itemTypes';
 
+import './Search.css'
+
 const styles = theme => ({
   button: {
     display: 'block',

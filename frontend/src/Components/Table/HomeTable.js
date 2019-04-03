@@ -10,7 +10,7 @@ function HomeTable (props) {
     const header = ["Nr","Nazwa","Typ","Dostępność", "Edytuj", "Usuń"];
     var rows = []
 
-    for(var i=0; i < 10; i++){
+    for(var i=0; i < 20; i++){
         rows.push([i,"Mikrofon XYZ", "mikrofon",<Icon>done</Icon>,
         <IconButton /*className={classes.button}*/ aria-label="Delete">
             <Icon>edit</Icon>
