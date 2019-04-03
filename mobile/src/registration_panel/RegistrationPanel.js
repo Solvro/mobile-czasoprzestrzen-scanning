@@ -29,6 +29,8 @@ export default class RegistrationPanel extends React.Component {
             username: null,
             password1: null,
             password2: null,
+            firstName: null,
+            lastName: null,
             email: null,
             phoneNumber: null,
             isPerson: true,
@@ -124,12 +126,15 @@ export default class RegistrationPanel extends React.Component {
             return;
         }
 
+        console.log('Button pressed');
+
         const {username, password1, firstName, lastName, email, phoneNumber} = this.state;
+
         let data = {
             method: 'POST',
             body: JSON.stringify({
                 'username': username,
-                'password': password1,
+                'password': password,
                 'first_name': firstName,
                 'last_name': lastName,
                 'email': email,
@@ -143,7 +148,7 @@ export default class RegistrationPanel extends React.Component {
         }
 
         // TODO: change endpoint
-        fetch(apiConfig.url + '/api-v1/client/', data)
+        await fetch(apiConfig.url + '/api-v1/client/', data)
             .then((response) => { this.setState({ status: response.status }); return response.json() })
             .then((response) => {
                 if (this.state.status === 201) {
