@@ -51,18 +51,21 @@ export default class ProfileDetailsView extends React.Component {
                                 validator={isUsername}
                                 warningAlert={alertStrings.usernameToShort}
                                 icon='md-contact'
+                                keyboardType = 'default'
                             />
                             <DataEditField
                                 title={registrationStrings.firstName}
                                 data={this.state.firstName}
                                 isValidated={false}
                                 icon='md-contact'
+                                keyboardType = 'default'
                             />
                             <DataEditField
                                 title={registrationStrings.lastName}
                                 data={this.state.lastName}
                                 isValidated={false}
                                 icon='md-contact'
+                                keyboardType = 'default'
                             />
                             <DataEditField
                                 title={registrationStrings.email}
@@ -71,6 +74,7 @@ export default class ProfileDetailsView extends React.Component {
                                 validator={isEmail}
                                 warningAlert={alertStrings.invalidEmail}
                                 icon='md-mail'
+                                keyboardType = 'email-address'
                             />
                             <DataEditField
                                 title={registrationStrings.phoneNumber}
@@ -79,6 +83,7 @@ export default class ProfileDetailsView extends React.Component {
                                 validator={isPhoneNumber}
                                 warningAlert={alertStrings.invalidPhoneNumber}
                                 icon='md-call'
+                                keyboardType = 'number-pad'
                             />
                             {!this.state.isPerson && (
                                 <View>
@@ -87,6 +92,7 @@ export default class ProfileDetailsView extends React.Component {
                                         data={this.state.street}
                                         isValidated={false}
                                         icon='md-pin'
+                                        keyboardType = 'default'
                                     />
                                     <DataEditField
                                         title={registrationStrings.postalCode}
@@ -95,12 +101,14 @@ export default class ProfileDetailsView extends React.Component {
                                         validator={isPostalCode}
                                         warningAlert={alertStrings.invalidPostalCode}
                                         icon='md-pin'
+                                        keyboardType = 'default'
                                     />
                                     <DataEditField
                                         title={registrationStrings.city}
                                         data={this.state.city}
                                         isValidated={false}
                                         icon='md-pin'
+                                        keyboardType = 'default'
                                     />
                                     <DataEditField
                                         title={registrationStrings.nip}
@@ -109,6 +117,7 @@ export default class ProfileDetailsView extends React.Component {
                                         validator={isNip}
                                         warningAlert={alertStrings.invalidNIP}
                                         icon='md-business'
+                                        keyboardType = 'number-pad'
                                     />
                                     <DataEditField
                                         title={registrationStrings.regon}
@@ -117,6 +126,7 @@ export default class ProfileDetailsView extends React.Component {
                                         validator={isRegon}
                                         warningAlert={alertStrings.invalidRegon}
                                         icon='md-business'
+                                        keyboardType = 'number-pad'
                                     />
                                 </View>
                             )}

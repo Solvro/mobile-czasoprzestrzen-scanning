@@ -5,6 +5,15 @@ import Dialog, { DialogFooter, DialogButton, DialogContent } from 'react-native-
 import TextInputField from '../components/TextInputField';
 import inputDialogStyles from '../styles/InputDialogStyles.js';
 
+/**
+ * Props:
+ * visible - is component visible
+ * hide - behaviour to hide component
+ * action - behaviour when accept clicked
+ * handleChange - behaviour while writing text
+ * text - text in inputField 
+ */
+
 export default class InputDialog extends React.Component {
     constructor(props) {
         super(props);
@@ -35,7 +44,7 @@ export default class InputDialog extends React.Component {
                             <View>
                                 <TextInputField
                                  setStateHandler={this.props.handleChange}
-                                 keyboardType = 'default'
+                                 keyboardType = {this.props.keyboardType}
                                  returnKeyType = 'next'
                                  placeholder = {this.props.text}
                                  secureTextEntry = {false}

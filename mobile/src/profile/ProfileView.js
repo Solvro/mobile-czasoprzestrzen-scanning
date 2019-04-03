@@ -1,13 +1,10 @@
 import React from 'react';
 import {Container, Text} from 'native-base';
-import {Image, View, Animated, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import { View, Animated, TouchableWithoutFeedback} from 'react-native';
 
 import profileStyles from '../styles/ProfileStyles.js';
 import buttonStyles from '../styles/ButtonStyles.js';
 import image from '../assets/user-in-a-square.png';
-
-
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import SubmitButton from '../components/SubmitButton';
 import buttonStrings from '../assets/strings/ButtonStrings.js';
@@ -19,7 +16,6 @@ export default class ProfileView extends React.Component {
         super(props);
         this.imageHeight = new Animated.Value(160);
 
-        //TODO
         this.state = {
             username: 'user123',
         }

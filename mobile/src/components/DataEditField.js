@@ -12,7 +12,8 @@ import alertStrings from '../assets/strings/AlertStrings.js';
  * Props:
  * handlePress - defining behaviour on button click
  * title - name of the type of data
- * data - 
+ * icon - 
+ * warningAlert - text in warning alert when data are invalid
  */
 export default class DataEditField extends React.Component {
     constructor (props) {
@@ -67,7 +68,8 @@ export default class DataEditField extends React.Component {
                             handleChange={this.handleDataChange}
                             hide={this.hideDialog}
                             text={this.props.title}
-                            action={this.updateData}/>
+                            action={this.updateData}
+                            keyboardType = {this.props.keyboardType}/>
                <DataField 
                             title = {this.props.title}
                             data = {this.state.data}

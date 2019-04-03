@@ -12,6 +12,7 @@ import dataFieldStyles from '../styles/DataFieldStyles.js';
  * handlePress - defining behaviour on button click
  * title - name of the type of data
  * data - 
+ * icon - 
  */
 export default class DataEditField extends React.Component {
     constructor (props) {
