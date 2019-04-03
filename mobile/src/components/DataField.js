@@ -2,7 +2,6 @@ import React from 'react';
 
 import {View, TouchableOpacity} from 'react-native';
 import {Text} from 'native-base';
-import {LinearGradient} from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import dataFieldStyles from '../styles/DataFieldStyles.js';   

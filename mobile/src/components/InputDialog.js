@@ -2,7 +2,6 @@ import React from 'react';
 import {View} from 'react-native';
 
 import Dialog, { DialogFooter, DialogButton, DialogContent } from 'react-native-popup-dialog';
-//import TextInputField from '../TextInputField.js';
 import TextInputField from '../components/TextInputField';
 import inputDialogStyles from '../styles/InputDialogStyles.js';
 

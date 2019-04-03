@@ -1,11 +1,7 @@
 import React from 'react';
 
-import {Alert, View, TouchableOpacity} from 'react-native';
-import {Text} from 'native-base';
-import {LinearGradient} from 'expo';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {Alert, View} from 'react-native';
 
-import dataEditFieldStyles from '../styles/DataFieldStyles.js';  
 import InputDialog from '../components/InputDialog';
 import DataField from '../components/DataField'; 
 import alertStrings from '../assets/strings/AlertStrings.js';

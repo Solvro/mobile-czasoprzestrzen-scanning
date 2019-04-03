@@ -1,21 +1,10 @@
 import React from 'react'
-import {Container, Text} from 'native-base';
-import {View, Animated, TouchableOpacity,TextInput, TouchableWithoutFeedback} from 'react-native';
-
-import Dialog, { DialogFooter, DialogButton, DialogContent } from 'react-native-popup-dialog';
+import {Container} from 'native-base';
+import {View, Animated, TouchableWithoutFeedback} from 'react-native';
 
 import DataEditField from '../components/DataEditField';
-
-import buttonStyles from '../styles/ButtonStyles.js';
 import buttonStrings from '../assets/strings/ButtonStrings.js';
-
-import homeStyles from '../styles/HomeStyles.js';
 import profileDetailsStyles from '../styles/ProfileDetailsStyles.js';
-
-import Icon from 'react-native-vector-icons/Ionicons';
-import TextInputField from '../components/TextInputField';
-import InputDialog from '../components/InputDialog';
-import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
 import { ScrollView } from 'react-native-gesture-handler';
 import SubmitButton from '../components/SubmitButton';
 import registrationStrings from '../assets/strings/RegistrationStrings.js';
