@@ -6,5 +6,6 @@
 }
 
 .SearchField {
-    display: 'block',
+    display: 'block';
+    margin-top: 1em
 }
