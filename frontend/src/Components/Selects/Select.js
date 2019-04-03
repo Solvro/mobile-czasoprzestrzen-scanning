@@ -26,9 +26,7 @@ class ControlledOpenSelect extends React.Component {
   }
 
   handleChange = event => {
-    this.setState({ item: event.target.value });
-    console.log("Item"+this.state.item);
-    console.log("Item"+this.getItemTypeName(this.state.item));
+    this.setState({ item: event.target.value }, ()=> console.log("Item"+this.getItemTypeName(this.state.item)));
   };
 
   handleClose = () => {
