@@ -127,13 +127,14 @@ export default class RegistrationPanel extends React.Component {
         if (!validationResult) {
             return;
         }
-
+        console.log("xDDDDDDDDDDD");
         const { username, password1, firstName, lastName, email, phoneNumber } = this.state;
 
         if (!this.state.isPerson) {
             result = this.getBusinessData();
+            console.log(result);
             address = result[0];
-            businesData = result[1];
+            businessData = result[1];
         }
 
         const data = {
@@ -205,7 +206,7 @@ export default class RegistrationPanel extends React.Component {
         this.setState({ username: event });
     }
 
-    handleFirstNameChane = (event) => {
+    handleFirstNameChange = (event) => {
         this.setState({ firstName: event });
     }
 
@@ -322,7 +323,7 @@ export default class RegistrationPanel extends React.Component {
                                     secureTextEntry={false}
                                 />
                                 <TextInputField
-                                    setStateHandler={this.handleFirstNameChane}
+                                    setStateHandler={this.handleFirstNameChange}
                                     keyboardType='default'
                                     returnKeyType='next'
                                     placeholder={'Imię'}

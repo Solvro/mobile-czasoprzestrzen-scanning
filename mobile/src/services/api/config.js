@@ -1,4 +1,4 @@
 export default {
     clientId: '',
-    url: 'http://192.168.1.107:8000'
+    url: 'http://172.20.10.3:8000'
 }
