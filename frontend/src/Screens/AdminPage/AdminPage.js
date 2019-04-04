@@ -38,7 +38,7 @@ class AdminPage extends Component {
       // .then((res) => console.log(res))
       .then((res) => this.createTable(res));
       
-
+    this.updateData();
     // console.log("RES "+ this.response.length);
     // this.createTable();
   }
