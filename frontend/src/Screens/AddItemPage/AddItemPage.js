@@ -20,7 +20,7 @@ class AddItem extends Component {
       <div className="container">
             <Toolbar/>
       <Layout layoutDivide={"363"}>
-        <Form header={header} button={button} >
+        <Form header={header} button={button}>
 
           <InputField placeholder={"Nazwa"} rows={"1"} label={"Nazwa urządzenia"}>
           </InputField>

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
-// import styles from './styleButton';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
@@ -18,19 +17,35 @@ const styles = theme => ({
   sizeButton: {
     width: '15em',
     height: '5em'
+  },
+  verticalButton:{
+    width: '20em',
+    height: '7.5em',
+    display: 'block',
+    margin: '28px',
   }
 });
 
 function Button(props) {
   const { classes } = props;
-    return (  
-      <Link to={props.link}>
-      <Fab color="primary" aria-label="Add" variant="extended" className={classes.sizeButton} onClick={props.onClick} >
+  var button;
+  if(props.button==="verticalButton"){
+    button = <Fab color="primary" aria-label="Add" variant="extended" className={classes.verticalButton} onClick={props.onClick} >
           {props.text}
           {props.icon}
       </Fab>
-      </Link>
-    );
+  } else {
+    button = <Fab color="primary" aria-label="Add" variant="extended" className={classes.sizeButton} onClick={props.onClick} >
+          {props.text}
+          {props.icon}
+      </Fab>
+  }
+  
+  return (  
+    <Link to={props.link} style={{textDecoration: 'none'}}>
+    {button}
+    </Link>
+  );
 }
 
 Button.propTypes = {

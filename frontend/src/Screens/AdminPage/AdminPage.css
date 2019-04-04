@@ -1,0 +1,10 @@
+.ButtonGroup{
+    margin-top: 280px;
+    position: relative;
+}
+.inner{
+    position: absolute;
+    left: 45%;
+    transform: translate(-55%, 0);
+
+}

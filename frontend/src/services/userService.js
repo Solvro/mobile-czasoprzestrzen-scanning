@@ -31,14 +31,29 @@ export async function authorizeUser(username, password) {
 
 export async function verifyUser(token) {
 
-  const data1 = {
+  const data = {
     "token": token
   }
   try {
-      const verification = await instance.post(`verify/`, data1);
+      const verification = await instance.post(`verify/`, data);
       const isVerify = verification && verification.status === 200;
       return isVerify;
   } catch (error) {
       return false;
   }
+}
+
+export async function getUserName(token) {
+
+  const data = {
+    "token": token
+  }
+  try {
+      const user = await instance.post(`verify/`, data);
+      return user.data.username;
+  } catch (error) {
+      return "?";
+  }
+  
+
 }

@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from ..models import AppUser, Equipment, RentalInfo
+from ..models import AppUser, Equipment, RentalInfo, UnacceptedClient
 
 CLIENT_USERNAME = 'juras'
 CLIENT_PASSWORD = 'pass'
@@ -70,6 +70,10 @@ class AbstractAppUserCreationTests:
         del data['phone']
         self.bad_request_with_data(data)
 
+    def test_username_duplicate_400_returned(self):
+        self.send_request_with_data_expect_status(status.HTTP_201_CREATED)
+        self.send_request_with_data_expect_status(status.HTTP_400_BAD_REQUEST)
+
 
 class AbstractAdminsCreationTests(AbstractAppUserCreationTests):
     def setUp(self):
@@ -100,9 +104,51 @@ class AbstractAdminsCreationTests(AbstractAppUserCreationTests):
         self.send_request_with_data_expect_status(status.HTTP_403_FORBIDDEN)
 
 
-class ClientSignUpTests(AbstractAppUserCreationTests, TestCase):
-    endpoint = "signup"
-    type = "Cl"
+class UnacceptedClientSignUpTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    def send_request_with_data_expect_status(self, status, data=USER_DATA):
+        response = self.apiClient \
+            .post(reverse("signup"), data, format='json')
+        self.assertEquals(response.status_code, status)
+        return response
+
+    def bad_request_with_data(self, data):
+        self.send_request_with_data_expect_status(
+            status.HTTP_400_BAD_REQUEST,
+            data
+        )
+
+    def test_valid_client_data_passed_saved_201_returned(self):
+        response = self.send_request_with_data_expect_status(
+            status.HTTP_201_CREATED
+        )
+        UnacceptedClient.objects.get(id=response.data['id'])
+
+    def test_no_username_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['username']
+        self.bad_request_with_data(data)
+
+    def test_no_password_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['password']
+        self.bad_request_with_data(data)
+
+    def test_no_email_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['email']
+        self.bad_request_with_data(data)
+
+    def test_no_phone_passed_400_returned(self):
+        data = USER_DATA.copy()
+        del data['phone']
+        self.bad_request_with_data(data)
+
+    def test_username_duplicate_400_returned(self):
+        AppUser.objects.create_user(**USER_DATA)
+        self.send_request_with_data_expect_status(status.HTTP_400_BAD_REQUEST)
 
 
 class AdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
@@ -115,17 +161,211 @@ class SuperAdminCreationViewTests(AbstractAdminsCreationTests, TestCase):
     type = "Sa"
 
 
-class ClientViewsTests(TestCase):
+class UnacceptedClientListViewTests(TestCase):
     def setUp(self):
         self.apiClient = APIClient()
 
-    def test_valid_client_data_passed_token_returned_and_saved(self):
-        data = USER_DATA
-        response = self.apiClient \
-            .post(reverse('appuser-list'), data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue('access' in response.data)
+    def test_list_contains_all_and_only_unaccepted_users(self):
+        UnacceptedClient.objects.create(
+            username="username",
+            email="sample@email.com",
+            password="pass",
+            phone="+48793255012"
+        )
+        AppUser.objects.create_user(
+            username="admin",
+            password="pass",
+            phone="+48793255012",
+            type="Ra"
+        )
+        credentials = {'username': "admin",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient.get(reverse('unaccepted-client-list'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 1)
+        self.assertEqual(res.data[0]['email'], 'sample@email.com')
+
+    def test_no_token_401_returned(self):
+        res = self.apiClient.get(reverse('unaccepted-client-list'))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        AppUser.objects.create_user(
+            username="client",
+            password="pass",
+            phone="+48793255012"
+        )
+        credentials = {'username': "client",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient.get(reverse('unaccepted-client-list'))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class AcceptUnacceptedClientViewTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    @classmethod
+    def create_unaccepted_user(cls):
+        return UnacceptedClient.objects.create(
+            username="username",
+            email="sample@email.com",
+            password="pass",
+            phone="+48793255012"
+        )
+
+    def test_once_accepted_client_moves_from_unaccepted_to_user_table(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="admin",
+            password="pass",
+            phone="+48793255012",
+            type="Ra"
+        )
+        credentials = {'username': "admin",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient\
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['username'], unaccepted.username)
+        self.assertEqual(res.data['email'], unaccepted.email)
+        self.assertNotIn('password', res.data)
+        self.assertEqual(res.data['phone'], unaccepted.phone)
+        self.assertFalse(UnacceptedClient.objects.exists())
+        self.assertEqual(AppUser.objects.count(), 2)
+
+    def test_no_token_401_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        res = self.apiClient\
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="client",
+            password="pass",
+            phone="+48793255012"
+        )
+        credentials = {'username': "client",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient \
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_invalid_id_404_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="admin",
+            password="pass",
+            phone="+48793255012",
+            type="Ra"
+        )
+        credentials = {'username': "admin",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient \
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id+1,)))
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class UnacceptedClientDestroyViewTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    @classmethod
+    def create_unaccepted_user(cls):
+        return UnacceptedClient.objects.create(
+            username="username",
+            email="sample@email.com",
+            password="pass",
+            phone="+48793255012"
+        )
+
+    def test_valid_token_and_id_deleted(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="admin",
+            password="pass",
+            phone="+48793255012",
+            type="Ra"
+        )
+        credentials = {'username': "admin",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient \
+            .delete(reverse('unaccepted-client-detail', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(AppUser.objects.count(), 1)
+        self.assertFalse(UnacceptedClient.objects.exists())
+
+    def test_no_token_401_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        res = self.apiClient \
+            .delete(reverse('unaccepted-client-detail', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_client_token_403_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="client",
+            password="pass",
+            phone="+48793255012"
+        )
+        credentials = {'username': "client",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient \
+            .delete(reverse('unaccepted-client-detail', args=(unaccepted.id,)))
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_invalid_id_404_returned(self):
+        unaccepted = self.create_unaccepted_user()
+        AppUser.objects.create_user(
+            username="admin",
+            password="pass",
+            phone="+48793255012",
+            type="Ra"
+        )
+        credentials = {'username': "admin",
+                       'password': "pass"}
+        token = self.apiClient \
+            .post(reverse('login'), credentials, format='json') \
+            .data['access']
+        self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
+        res = self.apiClient.delete(
+            reverse('unaccepted-client-detail', args=(unaccepted.id+1,)))
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class ClientViewsTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
 
     def test_invalid_client_data_passed_bad_request_returned(self):
         data = USER_DATA.copy()
