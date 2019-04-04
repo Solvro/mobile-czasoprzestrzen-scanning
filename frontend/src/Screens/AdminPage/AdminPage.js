@@ -43,6 +43,13 @@ class AdminPage extends Component {
     // this.createTable();
   }
 
+  updateData = async() => {
+    await getUnacceptedClientsList()
+      .then((res) => this.createTable(res));
+
+    this.forceUpdate();
+  }
+
   approveClient  = async(id)  => {
     console.log("ID to approve "+ id);
     var res = await approveUnacceptedClient(id);
@@ -54,6 +61,7 @@ class AdminPage extends Component {
       this.setState({loginError: true});
       this.setState({errorMessage: 'Coś poszło nie tak'});
     }
+    this.updateData();
   }
 
   removeClient = async (id) => {
@@ -66,6 +74,7 @@ class AdminPage extends Component {
       this.setState({loginError: true});
       this.setState({errorMessage: 'Coś poszło nie tak'});
     }
+    this.updateData();
   }
 
   createButtonAccept(id){
