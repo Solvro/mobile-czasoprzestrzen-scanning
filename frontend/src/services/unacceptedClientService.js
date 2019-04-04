@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const instance = axios.create({
   baseURL: 'http://localhost:8000/api-v1/unaccepted-client/',
-  timeout: 1000,
+//   timeout: 1000,
   headers: {
     'Content-Type': 'application/json',
     'Authorization':'Bearer ' + localStorage.getItem('token'),
@@ -10,7 +10,6 @@ const instance = axios.create({
 });
 
 export async function getUnacceptedClientsList() {
-
     try {
         const verification = await instance.get();
         return verification.data;
