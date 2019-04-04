@@ -6,13 +6,14 @@ function SearchField(props) {
     if(props.type === "password") {
         return(
             <div>
-            <div class='normalText'>{props.label} </div>
+            <div className='normalText'>{props.label} </div>
             <TextField
                 type="password"
                 placeholder={props.placeholder}
                 fullWidth
                 onChange={props.onChange}
                 InputProps={props.inputprops}
+                
                />
             </div>
         );
@@ -21,9 +22,8 @@ function SearchField(props) {
     return ( 
         
             <div>
-            <div class='normalText'>{props.label} </div>
+            <div className='normalText'>{props.label} </div>
             <TextField
-                type="password"
                 placeholder={props.placeholder}
                 fullWidth
                 onChange={props.onChange}
