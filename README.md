@@ -1,6 +1,6 @@
 # Scanning application
 
-Scanning application is system designed and devlope for Czasoprzestzeń to improve managemant of warehouse with musical equipment. The main functionality of this system is using QRCodes to identify every item in magazine.
+Scanning application is system designed and devloped for Czasoprzestzeń to improve managemant of warehouse with musical equipment. The main functionality of this system is using QRCodes to identify every item in magazine.
 
 (You can find detailed READme for every component of system in folders with source codes.)
 
@@ -27,4 +27,4 @@ Mobile application id intended for clients. They can use it to rent or return eq
 - Django
 - MariaDB
 
-Backend is implemented in **Django** framework for Python. It uses REST API to comunicate with other parts of system.
+Backend is implemented in **Django** framework for Python. It uses REST API to communicate with other parts of system.
