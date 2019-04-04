@@ -152,7 +152,7 @@ export default class RegistrationPanel extends React.Component {
             },
         }
 
-        fetch(apiConfig.url + '/api-v1/client/', data)
+        fetch(apiConfig.url + '/api-v1/signup/', data)
             .then((response) => { this.setState({ status: response.status })})
             .then(() => {
                 if (this.state.status === 201) {
