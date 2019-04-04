@@ -75,6 +75,13 @@ class ClientSerializer(serializers.ModelSerializer):
                   'email', 'phone', 'address', 'business_data')
 
 
+class AdminAndSuperAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AppUser
+        fields = ('id', 'username', 'first_name',
+                  'last_name', 'email', 'phone')
+
+
 # It's assumed that whenever actual_return date is specified,
 # it's in the past, meaning equipment is still available.
 class RentalInfoSerializer(serializers.ModelSerializer):
