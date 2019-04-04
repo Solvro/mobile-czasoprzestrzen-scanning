@@ -1,6 +1,6 @@
 import React from 'react';
-import { Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { Container, Text, ListItem, Radio, Left, Right } from 'native-base';
+import { Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { Container, Text, ListItem, Radio, Left, Right, Content } from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import validator from 'validator';
 import SubmitButton from '../components/SubmitButton';
@@ -12,7 +12,6 @@ import alertStrings from '../assets/strings/AlertStrings.js';
 import buttonStrings from '../assets/strings/ButtonStrings.js';
 
 import logo from '../assets/logo_with_name.png';
-import { ScrollView } from 'react-native-gesture-handler';
 
 import apiConfig from '../services/api/config';
 
@@ -34,7 +33,7 @@ export default class RegistrationPanel extends React.Component {
             email: null,
             phoneNumber: null,
             isPerson: true,
-            form: this.generateBasicForm(),
+            //form: this.generateBasicForm(),
         }
     }
 
@@ -108,8 +107,6 @@ export default class RegistrationPanel extends React.Component {
         else if (!validator.isMobilePhone(this.state.phoneNumber, 'pl-PL')) {
             this.showWarningAlert(alertStrings.invalidPhoneNumber);
         } else {
-            // this.showRegisterAlert();
-            // this.props.navigation.navigate("SignIn");
             return true;
         }
 
@@ -119,7 +116,7 @@ export default class RegistrationPanel extends React.Component {
     /**
      * Handles login button press action.
      */
-    handlePressRegister = async () => {
+    handlePressRegister = () => {
         let validationResult = this.validateData();
         let address = null;
         let businessData = null;
@@ -127,37 +124,37 @@ export default class RegistrationPanel extends React.Component {
         if (!validationResult) {
             return;
         }
-        console.log("xDDDDDDDDDDD");
+
         const { username, password1, firstName, lastName, email, phoneNumber } = this.state;
 
         if (!this.state.isPerson) {
             result = this.getBusinessData();
-            console.log(result);
             address = result[0];
             businessData = result[1];
         }
 
-        const data = {
+        let bodyData = JSON.stringify({
+            'username': username,
+            'password': password1,
+            'first_name': firstName,
+            'last_name': lastName,
+            'email': email,
+            'phone': phoneNumber,
+            'address': address,
+            'business_data': businessData,
+        });
+
+        let data = {
             method: 'POST',
-            body: JSON.stringify({
-                'username': username,
-                'password': password1,
-                'first_name': firstName,
-                'last_name': lastName,
-                'email': email,
-                'phone': phoneNumber,
-                'address': address,
-                'business_data': businessData,
-            }),
+            body: bodyData,
             headers: {
                 'Content-Type': 'application/json',
             },
         }
 
-        // TODO: change endpoint
-        await fetch(apiConfig.url + '/api-v1/client/', data)
-            .then((response) => { this.setState({ status: response.status }); return response.json() })
-            .then((response) => {
+        fetch(apiConfig.url + '/api-v1/client/', data)
+            .then((response) => { this.setState({ status: response.status })})
+            .then(() => {
                 if (this.state.status === 201) {
                     this.showRegisterAlert();
                     this.props.navigation.navigate("SignIn");
@@ -250,38 +247,6 @@ export default class RegistrationPanel extends React.Component {
         this.setState({ regon: event });
     }
 
-    showForm = () => {
-        if (this.isPerson) this.setState({ form: this.generateBasicForm() })
-        else this.setState({ form: this.generateBusinessForm() })
-        this.refresh()
-    }
-
-    generateBasicForm = () => {
-        return (
-            <View>
-
-            </View>
-        );
-    }
-
-    showBasic = () => {
-        this.setState({ isPerson: true })
-        this.showForm()
-    }
-    showBusiness = () => {
-        this.setState({ isPerson: false })
-        this.showForm()
-    }
-
-
-    generateBusinessForm = () => {
-        return (
-            <View>
-                {this.generateBasicForm()}
-            </View>
-        );
-    }
-
     render() {
         return (
             <Container>
@@ -296,6 +261,8 @@ export default class RegistrationPanel extends React.Component {
                                     { height: this.imageHeight }} />
                         </View>
                         <ScrollView style={loginRegisterStyles.scrollView}>
+                            <Content>
+
                             <View style={loginRegisterStyles.radioButtonContainer} >
                                 <ListItem style={loginRegisterStyles.radioButton} onPress={() => this.setState({ isPerson: true })} >
                                     <Left>
@@ -411,6 +378,7 @@ export default class RegistrationPanel extends React.Component {
                                     </View>
                                 )}
                             </View>
+                            </Content>
                         </ScrollView>
 
                         <View style={loginRegisterStyles.registerButtonAndLinkContainer}>
