@@ -33,7 +33,6 @@ export default class RegistrationPanel extends React.Component {
             email: null,
             phoneNumber: null,
             isPerson: true,
-            //form: this.generateBasicForm(),
         }
     }
 
