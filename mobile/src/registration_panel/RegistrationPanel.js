@@ -59,7 +59,7 @@ export default class RegistrationPanel extends React.Component {
     keyboardDidShow = () => {
         Animated.timing(this.imageHeight, {
             duration: 200,
-            toValue: 50,
+            toValue: 0,
         }).start();
         Animated.timing(this.keyboardHeight, {
             duration: 200,
