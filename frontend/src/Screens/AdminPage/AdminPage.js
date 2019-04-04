@@ -84,11 +84,10 @@ class AdminPage extends Component {
         business = <Icon>approve</Icon>
       }
       ID = res[i].id
-      rows.push([ID, res[i].first_name, res[i].email,'999999999',
+      rows.push([ID, res[i].first_name +' '+res[i].last_name, res[i].email,'999999999',
       business, this.createButtonAccept(ID), this.createButtonRemove(ID)]);
       
     }
-    console.log(rows);
     var table = <Table contains={rows} />;
     this.setState({unacceptClientTable: table});
   }
@@ -109,23 +108,24 @@ class AdminPage extends Component {
             <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
             <Button button={"verticalButton"} link={'/login'} text={"Wyloguj"}></Button> 
             </div>
-
-            {this.state.loginError &&
-                <ErrorDisplay
-                    removeError={id => {this.setState({loginError: false})}}
-                    errors={[{message: this.state.errorMessage , id: 100}]}
-                    />}
-            {this.state.infoDisplay && <InfoDisplay
-            removeInfo={id => {this.setState({infoDisplay: false})}}
-            info={[{message: this.state.infoMessage, id: 100}]}
-            />}
           </div>;
 
     return (
-
+      <div>
       <Layout layoutDivide={"84"} leftChildren={left} rightChildren={right}>
        
       </Layout>
+      {this.state.loginError &&
+        <ErrorDisplay
+            removeError={id => {this.setState({loginError: false})}}
+            errors={[{message: this.state.errorMessage , id: 100}]}
+            />}
+      {this.state.infoDisplay && 
+        <InfoDisplay
+          removeInfo={id => {this.setState({infoDisplay: false})}}
+          info={[{message: this.state.infoMessage, id: 100}]}
+          />}
+    </div>
    
     );
   }
