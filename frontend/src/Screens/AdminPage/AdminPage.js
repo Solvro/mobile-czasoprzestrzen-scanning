@@ -30,13 +30,20 @@ class AdminPage extends Component {
 
 
   async componentWillMount(){
-    this.response = await getUnacceptedClientsList();
-    console.log("RES "+ this.response.length);
-    this.createTable();
+    // this.response = await getUnacceptedClientsList();
+    // console.log("RES "+ this.response.length);
+    // this.createTable();
+
+    await getUnacceptedClientsList()
+      // .then((res) => console.log(res))
+      .then((res) => this.createTable(res));
+      
+
+    // console.log("RES "+ this.response.length);
+    // this.createTable();
   }
 
-  approveClient  = async( id)  => {
-    // e.preventDefault();
+  approveClient  = async(id)  => {
     console.log("ID to approve "+ id);
     var res = await approveUnacceptedClient(id);
     if(res){
@@ -68,16 +75,16 @@ class AdminPage extends Component {
     return <IconButton aria-label="Delete" onClick={() => this.removeClient(id)}> <DeleteIcon /></IconButton>;
   }
 
-  createTable = () => {
+  createTable = (res) => {
     var rows = [];
     var business = <Icon>clear</Icon>;
     var ID = 0;
-    for(var i = 0 ; i < this.response.length; i++){
-      if(this.response[i].is_bussines === true){
+    for(var i = 0 ; i < res.length; i++){
+      if(res[i].is_bussines === true){
         business = <Icon>approve</Icon>
       }
-      ID = this.response[i].id
-      rows.push([ID, this.response[i].first_name, this.response[i].email,'999999999',
+      ID = res[i].id
+      rows.push([ID, res[i].first_name, res[i].email,'999999999',
       business, this.createButtonAccept(ID), this.createButtonRemove(ID)]);
       
     }
@@ -93,7 +100,6 @@ class AdminPage extends Component {
             <Toolbar/>
             <SearchContainer placeholder={"Wyszukaj po nazwie ..."} />
             {this.state.unacceptClientTable}
-            {/* <Table /> */}
           </div>;
 
     const right = <div className='ButtonGroup'>
