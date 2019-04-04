@@ -81,10 +81,24 @@ export default class RegistrationPanel extends React.Component {
         }).start();
     }
 
-    validateData = () => {
-        //if sth is null
+    checkInputFields = () => {
         if (!(this.state.username && this.state.password1 && this.state.password2 && this.state.email
             && this.state.phoneNumber && this.state.firstName && this.state.lastName)) {
+            return false;
+        } else {
+            if (!this.state.isPerson) {
+                if(!(this.state.street && this.state.postalCode && this.state.city
+                    && this.state.nip && this.state.regon))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    validateData = () => {
+        //if sth is null
+        if (!this.checkInputFields()) {
             this.showWarningAlert(alertStrings.emptyField);
         }
         //validate username
