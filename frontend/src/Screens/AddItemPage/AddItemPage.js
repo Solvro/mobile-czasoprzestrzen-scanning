@@ -10,15 +10,19 @@ import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import {addNewItemToItemList} from '../../services/itemsService';
 
 class AddItem extends Component {
-
-  state = {
-    itemName: '',
-    itemType: 'mikrofon',
-    itemDecription: '',
-    itemRentTime: '',
-    formError: false,
-    errorMessage: ''
+  constructor(props) {
+    super(props);
+    // Don't call this.setState() here!
+    this.state = {
+      itemName: '',
+      itemType: 'mikrofon',
+      itemDecription: '',
+      itemRentTime: '',
+      formError: false,
+      errorMessage: ''
+    }
   }
+  
 
   handleItemName = event => {
     this.setState({ itemName: event.target.value });
@@ -27,9 +31,8 @@ class AddItem extends Component {
 
   handleItemDecription = event => {
     this.setState({ itemDecription: event.target.value });
-
-
   }
+
 
   handleItemRentTime = event => {
     var itemTime = event.target.value
@@ -76,7 +79,7 @@ class AddItem extends Component {
           <InputField placeholder={"Nazwa"} rows={"1"} label={"Nazwa urządzenia"} onChange={this.handleItemName}>
           </InputField>
 
-          <TypeSelect ></TypeSelect>
+          <TypeSelect></TypeSelect>
 
           <InputField placeholder={"Opis"} rows={"4"} label={"Opis"} onChange={this.handleItemDecription}>
           </InputField>
