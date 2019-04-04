@@ -34,3 +34,24 @@ class IsSuperAdmin(permissions.BasePermission):
         if type(request.user) is AppUser:
             return request.user.is_super_admin()
         return False
+
+
+class IsAppUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return type(request.user) is AppUser
+
+
+class IsThisClientOrAdminOrSuperAdmin(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        token_user = request.user
+        if token_user.is_client():
+            return bool(token_user == obj)
+        return True
+
+
+class IsThisAdminOrSuperAdmin(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        token_user = request.user
+        if token_user.is_admin():
+            return bool(token_user == obj)
+        return token_user.is_super_admin()
