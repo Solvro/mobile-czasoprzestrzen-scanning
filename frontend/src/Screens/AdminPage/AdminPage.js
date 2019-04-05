@@ -31,7 +31,6 @@ class AdminPage extends Component {
   async componentDidMount() {
     await getUnacceptedClientsList()
     .then((res) => {
-      // console.log(res);
       this.setState({isLoading : false});
       this.createTable(res);
       
@@ -45,7 +44,6 @@ class AdminPage extends Component {
   }
 
   approveClient = async (id) => {
-    console.log("ID to approve " + id);
     var res = await approveUnacceptedClient(id);
     if (res) {
       this.setState({ infoDisplay: true });
