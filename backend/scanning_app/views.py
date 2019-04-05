@@ -422,6 +422,15 @@ class RentalInfoView(viewsets.ModelViewSet):
 class VerifyTokenView(TokenVerifyView):
     serializer_class = TokenVerifySerializer
 
+    @swagger_auto_schema(
+        request_body=TokenVerifySerializer,
+        responses={
+            200: "User info",
+            "200 client": serializers.CustomVerifyUserSerializer,
+            "200 admins": serializers.CustomVerifyAdminsSerializer,
+            401: "Token is invalid or expired"
+        }
+    )
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         token = request.data['token']
@@ -429,5 +438,9 @@ class VerifyTokenView(TokenVerifyView):
             JWTAuthentication(), raw_token=token)
         user = JWTAuthentication.get_user(JWTAuthentication(),
                                           validated_token=validated_token)
-        response.data['username'] = user.username
+        if user.is_client():
+            ser = serializers.CustomVerifyUserSerializer(user)
+        else:
+            ser = serializers.CustomVerifyAdminsSerializer(user)
+        response.data = ser.data
         return response
