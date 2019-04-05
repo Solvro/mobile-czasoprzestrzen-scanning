@@ -1,25 +1,31 @@
 const axios = require('axios');
 
-const instance = axios.create({
-  baseURL: 'http://localhost:8000/api-v1/unaccepted-client/',
-//   timeout: 1000,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization':'Bearer ' + localStorage.getItem('token'),
-  }
-});
-
 export async function getUnacceptedClientsList() {
+    const instance = axios.create({
+        baseURL: 'http://localhost:8000/api-v1/unaccepted-client/',
+          timeout: 1000,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':'Bearer ' + localStorage.getItem('token')
+        }
+      });
     try {
         const verification = await instance.get();
         return verification.data;
     } catch (error) {
-        return false;
+        throw error;
     }
   }
 
 export async function approveUnacceptedClient(id) {
-
+    const instance = axios.create({
+        baseURL: 'http://localhost:8000/api-v1/unaccepted-client/',
+          timeout: 1000,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':'Bearer ' + localStorage.getItem('token')
+        }
+      });
     try {
         const verification = await instance.post(id+'/accept/');
         return verification.status === 200;
@@ -29,7 +35,14 @@ export async function approveUnacceptedClient(id) {
 }
 
 export async function removeUnacceptedClient(id) {
-
+    const instance = axios.create({
+        baseURL: 'http://localhost:8000/api-v1/unaccepted-client/',
+          timeout: 1000,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':'Bearer ' + localStorage.getItem('token')
+        }
+      });
     try {
         const verification = await instance.delete(id+'/');
         return verification.status === 204;
