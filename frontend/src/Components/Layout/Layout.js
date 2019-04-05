@@ -1,7 +1,6 @@
 import React from 'react';
 import {spacing} from '../../theme';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '../Toolbar/Toolbar';
 
 function Layout(props) {
 
