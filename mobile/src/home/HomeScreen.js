@@ -47,7 +47,6 @@ export default class HomeScreen extends React.Component {
                 if (this.state.status === 200) {
                     apiConfig.clientUsername = response.username;
                     this.setState({isAuthorized: true});
-                    console.log('xDDDDDDDD');
                 } else {
                     Alert.alert(alertStrings.noAuthoriatzion);
                 }
