@@ -18,7 +18,7 @@ const errorDisplayStyles = theme => createStyles({
         alignItems: 'center',
     },
     errorsContainer: {
-        position: 'absolute',
+        position: 'fixed',
         left: theme.spacing.unit * 2,
         bottom: theme.spacing.unit * 2,
         display: 'flex',

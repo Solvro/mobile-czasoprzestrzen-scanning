@@ -5,8 +5,6 @@ import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import itemTypes from './itemTypes';
 
-import './Search.css'
-
 const styles = theme => ({
   button: {
     display: 'block',
@@ -23,8 +21,12 @@ class ControlledOpenSelect extends React.Component {
     open: false,
   };
 
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
+  getItemTypeName = (i) =>{
+    return itemTypes[i];
+  }
+
+  handleChange = event => {
+    this.setState({ item: event.target.value }, ()=> console.log("Item"+this.getItemTypeName(this.state.item)));
   };
 
   handleClose = () => {
@@ -44,8 +46,7 @@ class ControlledOpenSelect extends React.Component {
           <NativeSelect
             className={classes.selectEmpty}
             value={this.state.item}
-            chosenItem="item"
-            onChange={this.handleChange('item')}>
+            onChange={this.handleChange}>
 
             <option value="" disabled>
               Wybierz typ

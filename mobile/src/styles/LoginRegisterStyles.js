@@ -73,7 +73,7 @@ const loginRegisterStyles = StyleSheet.create({
 
     //ScrollView
     scrollView: {
-        maxHeight: 380,
+        maxHeight: 340,
     },
 
     inputFieldsContainer: {
