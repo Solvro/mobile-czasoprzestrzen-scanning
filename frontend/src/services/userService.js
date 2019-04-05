@@ -1,5 +1,3 @@
-// import axios from 'axios';
-
 const axios = require('axios');
 
 const instance = axios.create({
@@ -9,6 +7,7 @@ const instance = axios.create({
     'Content-Type': 'application/json'
   }
 });
+
 
 export async function authorizeUser(username, password) {
   const data1 = {

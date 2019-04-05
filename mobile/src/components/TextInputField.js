@@ -1,16 +1,8 @@
 import React from 'react';
-import {View, TextInput, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, StatusBar} from 'react-native';
-import {Container, Text} from 'native-base';
-import {LinearGradient} from 'expo';
-import DismissKeyboard from 'dismissKeyboard';
-import Icon from 'react-native-vector-icons/Ionicons';
-import SubmitButton from '../components/SubmitButton';
+import {View, TextInput} from 'react-native';
 
-import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
-import buttonStyles from '../styles/ButtonStyles.js';   
 import inputFieldsStyles from '../styles/InputFieldsStyles.js';
 
-import logo from '../assets/logo.jpg';
 
 export default class TextInputField extends React.Component {
 

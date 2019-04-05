@@ -1,6 +1,8 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenVerifySerializer
 
-from .models import Equipment, AppUser, RentalInfo
+from .models import Equipment, AppUser, RentalInfo, UnacceptedClient
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
@@ -9,12 +11,20 @@ class EquipmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AppUserCreationSerializer(serializers.ModelSerializer):
+class SignUpUnacceptedClientSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
-        return AppUser.objects.create_user(**validated_data)
+        validated_data['password'] = make_password(validated_data['password'])
+        return super(SignUpUnacceptedClientSerializer, self) \
+            .create(validated_data)
+
+    def validate(self, attrs):
+        if AppUser.objects.filter(username__exact=attrs['username']).exists():
+            raise serializers.ValidationError(
+                "A user with that username already exists.")
+        return super().validate(attrs)
 
     class Meta:
-        model = AppUser
+        model = UnacceptedClient
         fields = ('id', 'username', 'password', 'first_name', 'last_name',
                   'email', 'phone', 'address', 'business_data')
         extra_kwargs = {
@@ -23,28 +33,40 @@ class AppUserCreationSerializer(serializers.ModelSerializer):
         }
 
 
-class SignUpClientSerializer(AppUserCreationSerializer):
-    pass
+class ListUnacceptedClientSerializer(serializers.ModelSerializer):
+    is_business = serializers.SerializerMethodField()
+
+    class Meta:
+        model = UnacceptedClient
+        fields = ('id', 'first_name', 'last_name', 'email', 'is_business')
+
+    def get_is_business(self, obj):
+        return bool(not (obj.business_data is None or obj.business_data == ''))
 
 
-class AdminCreationSerializer(AppUserCreationSerializer):
+class AppAdminCreationSerializer(serializers.ModelSerializer):
+    type = None
+
     def create(self, validated_data):
-        validated_data['type'] = 'Ra'  # set user type to admin
-        return super(AppUserCreationSerializer, self).create(validated_data)
+        validated_data['type'] = self.type
+        return AppUser.objects.create_user(**validated_data)
 
-    class Meta(AppUserCreationSerializer.Meta):
+    class Meta:
+        model = AppUser
         fields = ('id', 'username', 'password', 'first_name', 'last_name',
                   'email', 'phone')
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'email': {'required': True}
+        }
 
 
-class SuperAdminCreationSerializer(AppUserCreationSerializer):
-    def create(self, validated_data):
-        validated_data['type'] = 'Sa'  # set user type to super-admin
-        return super(AppUserCreationSerializer, self).create(validated_data)
+class AdminCreationSerializer(AppAdminCreationSerializer):
+    type = 'Ra'
 
-    class Meta(AppUserCreationSerializer.Meta):
-        fields = ('id', 'username', 'password', 'first_name', 'last_name',
-                  'email', 'phone')
+
+class SuperAdminCreationSerializer(AppAdminCreationSerializer):
+    type = 'Sa'
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -52,6 +74,13 @@ class ClientSerializer(serializers.ModelSerializer):
         model = AppUser
         fields = ('id', 'username', 'first_name', 'last_name',
                   'email', 'phone', 'address', 'business_data')
+
+
+class AdminAndSuperAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AppUser
+        fields = ('id', 'username', 'first_name',
+                  'last_name', 'email', 'phone')
 
 
 # It's assumed that whenever actual_return date is specified,
@@ -82,3 +111,21 @@ class RentalInfoGetSerializer(serializers.ModelSerializer):
         model = RentalInfo
         fields = '__all__'
 
+
+class CustomVerifyUserSerializer(serializers.ModelSerializer):
+    is_business = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AppUser
+        fields = ('id', 'username', 'first_name', 'last_name',
+                  'email', 'phone', 'address', 'business_data', 'is_business')
+
+    def get_is_business(self, obj):
+        return bool(not (obj.business_data is None or obj.business_data == ''))
+
+
+class CustomVerifyAdminsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AppUser
+        fields = ('id', 'username', 'first_name', 'last_name',
+                  'email', 'phone',)
