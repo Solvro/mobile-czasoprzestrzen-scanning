@@ -1,5 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenVerifySerializer
 
 from .models import Equipment, AppUser, RentalInfo, UnacceptedClient
 
@@ -13,7 +14,7 @@ class EquipmentSerializer(serializers.ModelSerializer):
 class SignUpUnacceptedClientSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
-        return super(SignUpUnacceptedClientSerializer, self)\
+        return super(SignUpUnacceptedClientSerializer, self) \
             .create(validated_data)
 
     def validate(self, attrs):
@@ -75,6 +76,13 @@ class ClientSerializer(serializers.ModelSerializer):
                   'email', 'phone', 'address', 'business_data')
 
 
+class AdminAndSuperAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AppUser
+        fields = ('id', 'username', 'first_name',
+                  'last_name', 'email', 'phone')
+
+
 # It's assumed that whenever actual_return date is specified,
 # it's in the past, meaning equipment is still available.
 class RentalInfoSerializer(serializers.ModelSerializer):
@@ -103,3 +111,21 @@ class RentalInfoGetSerializer(serializers.ModelSerializer):
         model = RentalInfo
         fields = '__all__'
 
+
+class CustomVerifyUserSerializer(serializers.ModelSerializer):
+    is_business = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AppUser
+        fields = ('id', 'username', 'first_name', 'last_name',
+                  'email', 'phone', 'address', 'business_data', 'is_business')
+
+    def get_is_business(self, obj):
+        return bool(not (obj.business_data is None or obj.business_data == ''))
+
+
+class CustomVerifyAdminsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AppUser
+        fields = ('id', 'username', 'first_name', 'last_name',
+                  'email', 'phone',)
