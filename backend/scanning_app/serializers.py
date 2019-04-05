@@ -38,7 +38,8 @@ class ListUnacceptedClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UnacceptedClient
-        fields = ('id', 'first_name', 'last_name', 'email', 'is_business')
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone',
+                  'is_business')
 
     def get_is_business(self, obj):
         return bool(not (obj.business_data is None or obj.business_data == ''))
