@@ -104,7 +104,6 @@ class AdminPage extends Component {
 
     const right = <div className='ButtonGroup'>
 
-<<<<<<< HEAD
             <div className='inner'>
             <Button button={"verticalButton"} link={'/changePassword'} text={"Zmień hasło"}></Button>
             <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
@@ -112,14 +111,7 @@ class AdminPage extends Component {
             </div>
 
           </div>;
-=======
-      <div className='inner'>
-        <Button button={"verticalButton"} link={'/changePassword'} text={"Zmień hasło"}></Button>
-        <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
-        <Button button={"verticalButton"} link={'/login'} text={"Wyloguj"}></Button>
-      </div>
-    </div>;
->>>>>>> develop
+
 
     return (
       <div>
