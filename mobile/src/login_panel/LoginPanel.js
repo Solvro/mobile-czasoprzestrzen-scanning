@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Alert, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {View, Alert, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import {Container, Text} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import SubmitButton from '../components/SubmitButton';
@@ -78,8 +78,7 @@ export default class LoginPanel extends React.Component {
      */
     handlePressLogin = async () => {
         const { username, password } = this.state;
-        console.log(this.state['username']);
-        data = {
+        let data = {
             method: 'POST',
             body: JSON.stringify({
                 'username': username,
@@ -91,18 +90,18 @@ export default class LoginPanel extends React.Component {
         };
 
         fetch(apiConfig.url + '/api-v1/login/', data)
-        .then((response) => {this.setState({status: response.status}); return response.json()})
-        .then((response) => { 
-            if(this.state.status === 200) {
-                apiConfig.clientId = response.access;
-                this.props.navigation.navigate('SignedIn');
-            } else {
-                Alert.alert('Invalid username or password!');
-            }
-        })
-        .catch(() => {
-            Alert.alert('No connection with server!');
-        });
+            .then((response) => { this.setState({ status: response.status }); return response.json() })
+            .then((response) => {
+                if (this.state.status === 200) {
+                    apiConfig.clientId = response.access;
+                    this.props.navigation.navigate('SignedIn');
+                } else {
+                    Alert.alert('Invalid username or password!');
+                }
+            })
+            .catch(() => {
+                Alert.alert('No connection with server!');
+            });
 
     }
 

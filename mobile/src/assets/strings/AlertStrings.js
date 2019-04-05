@@ -15,6 +15,7 @@ const alertStrings = {
     invalidNIP: 'Nieprawidłowy numer NIP.',
     invalidPostalCode: 'Nieprawidłowy kod pocztowy.',
     invalidRegon: 'Nieprawidłowy numer REGON',
+    unexpectedError: 'Coś poszło nie tak',
     authorizationInfo: 'Jesteś zalogowany jako'
 };
 
