@@ -29,45 +29,14 @@ class AdminPage extends Component {
 
 
   async componentDidMount() {
-    // console.log('mount');
-    // this.response = await getUnacceptedClientsList();
-    // console.log("RES "+ this.response.length);
-    // this.createTable();
-
     await getUnacceptedClientsList()
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       this.setState({isLoading : false});
       this.createTable(res);
       
     })
   }
-
-  // componentDidMount() {
-  //   var component = this;
-  //   var req = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization':'Bearer ' + localStorage.getItem('token')
-  //     }
-  //   }
-
-    
-  //         fetch('http://localhost:8000/api-v1/unaccepted-client/',req)
-  //             .then(function(response) {
-  //                 return response.json()
-  //             }).then(function(json) {
-  //                 var data = json;
-  //                 console.log(data[0]);
-  //                 console.log(data[0].email);
-  //                 component.createTable(data);
-  //                 component.setState({
-  //                     data: json
-  //                 })
-  //             })
-  //     }
-
 
   updateData = async () => {
     await getUnacceptedClientsList()
