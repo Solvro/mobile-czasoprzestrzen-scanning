@@ -5,7 +5,6 @@ import InputField from '../../Components/Input/InputField';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 import Form from '../../Components/Form/Form';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
-import { changePassword } from '../../services/adminService';
 
 class ChangePasswordPage extends Component {
 
