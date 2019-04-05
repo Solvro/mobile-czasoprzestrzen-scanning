@@ -1,16 +1,11 @@
+from typing import Any, Tuple, Dict
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
-
-TYPE = (
-    ("Mic", "Microphone"),
-    ("Gui", "Guitar"),
-    ("Spe", "Speakers"),
-
-)
 
 USER_TYPE = (
     ("Cl", "Client"),
@@ -98,7 +93,7 @@ class Equipment(models.Model):
     description = models.CharField(max_length=400)
     available = models.BooleanField(default=False)
     max_rent_time = models.DurationField()
-    type = models.ForeignKey(TypeOfEquipment, on_delete=models.DO_NOTHING, null=True)
+    type = models.ForeignKey(TypeOfEquipment, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return "{}".format(self.name)
