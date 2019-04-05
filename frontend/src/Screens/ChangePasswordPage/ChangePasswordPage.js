@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
 import Layout from '../../Components/Layout/Layout';
 import Button from '../../Components/Button/Button';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TypeSelect from '../../Components/Selects/Select';
 import InputField from '../../Components/Input/InputField';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 import Form from '../../Components/Form/Form';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
-
+import { changePassword } from '../../services/adminService';
 
 class ChangePasswordPage extends Component {
 
   state = {
     oldPassword: '',
-    repetitionOfOldPassword: '',
     newPassword: '',
-    errorMsg: false
+    repetitionOfNewPassword: '',
+    errorMsg: ''
 }
 
 validate = async e => {
     e.preventDefault();
-    if (this.state.oldPassword!==this.state.repetitionOfOldPassword) {
+    if (this.state.newPassword!==this.state.repetitionOfNewPassword) {
       this.setState({errorMsg: 'Podane hasła różnią się od siebie'})
     } else if (!this.state.oldPassword ||
-      !this.state.repetitionOfOldPassword ||
+      !this.state.repetitionOfNewPassword ||
       !this.state.newPassword) 
     {
        this.setState({errorMsg: 'Należy wypełnić wszystkie pola'})
@@ -37,12 +35,12 @@ handleChangeOldPassword = event => {
   this.setState({ oldPassword: event.target.value });
 }
 
-handleChangeRepetitionOfOldPassword = event => {
-  this.setState({ repetitionOfOldPassword: event.target.value });
-}
-
 handleChangeNewPassword = event => {
   this.setState({ newPassword: event.target.value });
+}
+
+handleChangeRepetitionOfNewPassword = event => {
+  this.setState({ repetitionOfNewPassword: event.target.value });
 }
 
   render() {
@@ -61,14 +59,28 @@ handleChangeNewPassword = event => {
       <Layout layoutDivide={"363"}>
         <Form header={header} button={button}>
 
-          <InputField placeholder={"Stare hasło"} type={"password"} rows={"1"} label={"Wprowadź stare hasło"} onChange={this.handleChangeOldPassword}>
+          <InputField placeholder={"Stare hasło"}
+                      type={"password"} 
+                      rows={"1"}
+                      label={"Wprowadź stare hasło"} 
+                      onChange={this.handleChangeOldPassword}>
           </InputField>
 
-          <InputField placeholder={"Stare hasło"} type={"password"} rows={"1"} label={"Powtórz stare hasło"} onChange={this.handleChangeRepetitionOfOldPassword}>
+          <InputField placeholder={"Nowe hasło"} 
+                      type={"password"} 
+                      rows={"1"} 
+                      label={"Wprowadź nowe hasło"} 
+                      onChange={this.handleChangeNewPassword}>
           </InputField>
 
-          <InputField placeholder={"Nowe hasło"} type={"password"} rows={"1"} label={"Wprowadź nowe hasło"} onChange={this.handleChangeNewPassword}>
+          <InputField placeholder={"Nowe hasło"} 
+                      type={"password"} 
+                      rows={"1"} 
+                      label={"Powtórz nowe hasło"} 
+                      onChange={this.handleChangeRepetitionOfNewPassword}>
           </InputField>
+
+          
 
 
  
