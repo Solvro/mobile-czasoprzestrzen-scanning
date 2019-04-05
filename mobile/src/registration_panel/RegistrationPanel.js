@@ -306,7 +306,6 @@ export default class RegistrationPanel extends React.Component {
                         </View>
                         <ScrollView style={loginRegisterStyles.scrollView}>
                             <Content>
-
                                 <View style={loginRegisterStyles.radioButtonContainer} >
                                     <ListItem style={loginRegisterStyles.radioButton} onPress={() => this.setState({ isPerson: true })} >
                                         <Left>
