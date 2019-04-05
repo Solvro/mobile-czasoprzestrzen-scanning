@@ -32,6 +32,7 @@ class EquipmentView(viewsets.ModelViewSet):
 class TypeOfEquipmentView(viewsets.ModelViewSet):
     queryset = TypeOfEquipment.objects.all()
     serializer_class = TypeOfEquipmentSerializer
+    permission_classes = (IsAdminOrSuperAdmin,)
 
 
 class UnacceptedClientListCreateDestroyViewSet(mixins.CreateModelMixin,
