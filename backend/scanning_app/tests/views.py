@@ -1,7 +1,6 @@
 import datetime
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -1070,7 +1069,6 @@ class ChangePasswordViewTests(TestCase):
         data = {'new_password': 'new pass'}
         response = self.apiClient \
             .post(reverse('change-password'), data, format='json')
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_no_new_password_400_returned(self):
@@ -1079,7 +1077,6 @@ class ChangePasswordViewTests(TestCase):
         data = {'old_password': 'pass'}
         response = self.apiClient \
             .post(reverse('change-password'), data, format='json')
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_incorrect_old_password_401_returned(self):
@@ -1088,5 +1085,4 @@ class ChangePasswordViewTests(TestCase):
         data = {'old_password': 'wrong pass', 'new_password': 'new pass'}
         response = self.apiClient \
             .post(reverse('change-password'), data, format='json')
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

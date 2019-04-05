@@ -451,6 +451,16 @@ class VerifyTokenView(TokenVerifyView):
 class ChangePasswordView(views.APIView):
     permission_classes = (IsAuthenticated, IsAppUser,)
 
+    @swagger_auto_schema(
+        operation_description="POST api-v1/change-password/\n"
+                              "Change users in token password",
+        request_body=serializers.ChangePasswordSerializer,
+        responses={
+            200: "Users password changed",
+            400: "field not provided",
+            401: "Incorrect old password provided"
+        }
+    )
     def post(self, request):
         user = request.user
         data = request.data
@@ -461,6 +471,6 @@ class ChangePasswordView(views.APIView):
                                   data={'error': e})
         except serializers.AuthorizationError as e:
             return views.Response(status=status.HTTP_401_UNAUTHORIZED,
-                                  )  # TODO data
+                                  data={'error': e.message})
         return views.Response(status=status.HTTP_200_OK)
 

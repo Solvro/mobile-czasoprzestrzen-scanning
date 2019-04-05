@@ -133,7 +133,8 @@ class CustomVerifyAdminsSerializer(serializers.ModelSerializer):
 
 
 class AuthorizationError(Exception):
-    pass
+    def __init__(self, message):
+        self.message = message
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
