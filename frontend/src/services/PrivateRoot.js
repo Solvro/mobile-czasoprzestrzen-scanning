@@ -1,9 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { verifyUser } from './userService';
-import InfoDisplay from '../Components/Displays/InfoDisplay';
-
-
 class PrivateRoute extends React.Component {
 
   state = {
