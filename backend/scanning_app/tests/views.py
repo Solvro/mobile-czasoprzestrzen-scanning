@@ -1,6 +1,7 @@
 import datetime
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -1047,3 +1048,45 @@ class RentalInfoViewsTests(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Equipment.objects.get().available, True)
+
+
+class ChangePasswordViewTests(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    def test_correct_old_password_changed(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        data = {'old_password': 'pass', 'new_password': 'new pass'}
+        response = self.apiClient\
+            .post(reverse('change-password'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(
+            AppUser.objects.get(pk=user.id).check_password('new pass'))
+
+    def test_no_old_password_400_returned(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        data = {'new_password': 'new pass'}
+        response = self.apiClient \
+            .post(reverse('change-password'), data, format='json')
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_no_new_password_400_returned(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        data = {'old_password': 'pass'}
+        response = self.apiClient \
+            .post(reverse('change-password'), data, format='json')
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_incorrect_old_password_401_returned(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        data = {'old_password': 'wrong pass', 'new_password': 'new pass'}
+        response = self.apiClient \
+            .post(reverse('change-password'), data, format='json')
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

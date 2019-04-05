@@ -45,6 +45,8 @@ super_admin_detail_views = views.SuperAdminRetrieveUpdateDestroy.as_view({
 
 urlpatterns = [
     path('signup/', unaccepted_client_signup_view, name="signup"),
+    path('change-password', views.ChangePasswordView.as_view(),
+         name="change-password"),
     path('unaccepted-client/', unaccepted_client_list_view,
          name="unaccepted-client-list"),
     path('unaccepted-client/<int:pk>/',
