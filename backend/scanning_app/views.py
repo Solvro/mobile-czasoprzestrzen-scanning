@@ -1,5 +1,6 @@
 import json
 from django.core.exceptions import ValidationError
+import datetime
 from rest_framework import viewsets, status, views, mixins, generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -10,6 +11,12 @@ from rest_framework_simplejwt.views import TokenVerifyView
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 
+from scanning_app.models import Equipment
+from scanning_app.serializers import RentalInfoSerializer
+
+from scanning_app.serializers import RentalInfoRentSerializer
+
+from scanning_app.models import RentalInfo
 from . import models, serializers
 from .permissions import IsAppUser, IsThisClientOrAdminOrSuperAdmin, \
     IsAdminOrSuperAdmin, IsThisAdminOrSuperAdmin, IsSuperAdmin, \
@@ -474,3 +481,34 @@ class ChangePasswordView(views.APIView):
                                   data={'error': e.message})
         return views.Response(status=status.HTTP_200_OK)
 
+
+class RentEquipmentView(generics.GenericAPIView):
+    serializer_class = RentalInfoRentSerializer
+    permission_classes = (IsAppUser,)
+
+    def post(self, request, pk):
+        equip = Equipment.objects.get(pk=pk)
+        request.data['equipment_data'] = pk
+        request.data['client_data'] = request.user.pk
+        serializer = RentalInfoSerializer(data=request.data)
+        if equip is not None:
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReturnEquipmentView(views.APIView):
+    permission_classes = (IsAppUser,)
+
+    def put(self, request, pk):
+        equip = Equipment.objects.get(pk=pk)
+        if equip is not None and not equip.available:
+            rent = RentalInfo.objects.get(equipment_data=pk)
+            equip.available = True
+            rent.actual_return = datetime.date.today()
+            equip.save()
+            rent.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
