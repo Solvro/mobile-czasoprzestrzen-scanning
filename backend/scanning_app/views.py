@@ -1,4 +1,3 @@
-import json
 from django.core.exceptions import ValidationError
 import datetime
 from rest_framework import viewsets, status, views, mixins, generics
@@ -486,20 +485,27 @@ class RentEquipmentView(generics.GenericAPIView):
         request_body=serializers.RentalInfoRentSerializer,
         responses={
             201: "Created rent",
-            400: "Equipment with id doesn't exist or wrong data"
+            400: "Wrong data or available==False",
+            404: "Equipment with id doesn't exist"
         }
     )
     def post(self, request, pk):
-        equip = models.Equipment.objects.get(pk=pk)
-        request.data['equipment_data'] = pk
-        request.data['client_data'] = request.user.pk
-        serializer = serializers.RentalInfoSerializer(data=request.data)
-        if equip is not None:
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            equip = models.Equipment.objects.get(pk=pk)
+            request.data['equipment_data'] = pk
+            request.data['client_data'] = request.user.pk
+            serializer = serializers.RentalInfoSerializer(data=request.data)
+            if equip is not None and equip.available:
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            elif equip is None:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        except models.Equipment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class ReturnEquipmentView(views.APIView):
@@ -510,19 +516,26 @@ class ReturnEquipmentView(views.APIView):
                               "Return equipment with id",
         responses={
             200: "Equipment returned",
-            400: "Equipment doesn't exist or equipment is available",
-            401: "Rent isn't assigned to you"
+            400: "Equipment is available",
+            401: "Rent isn't assigned to you",
+            404: "Equipment doesn't exist"
         }
     )
     def put(self, request, pk):
-        equip = models.Equipment.objects.get(pk=pk)
-        if equip is not None and not equip.available:
-            rent = models.RentalInfo.objects.get(equipment_data=pk)
-            if rent.client_data == request.user.pk:
-                equip.available = True
-                rent.actual_return = datetime.date.today()
-                equip.save()
-                rent.save()
-                return Response(status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        try:
+            equip = models.Equipment.objects.get(pk=pk)
+            if equip is not None and not equip.available:
+                rent = models.RentalInfo.objects.get(equipment_data=pk)
+                if rent.client_data == request.user.pk:
+                    equip.available = True
+                    rent.actual_return = datetime.date.today()
+                    equip.save()
+                    rent.save()
+                    return Response(status=status.HTTP_200_OK)
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+            elif equip is None:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        except models.Equipment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
