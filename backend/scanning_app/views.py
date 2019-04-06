@@ -11,12 +11,6 @@ from rest_framework_simplejwt.views import TokenVerifyView
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 
-from scanning_app.models import Equipment
-from scanning_app.serializers import RentalInfoSerializer
-
-from scanning_app.serializers import RentalInfoRentSerializer
-
-from scanning_app.models import RentalInfo
 from . import models, serializers
 from .permissions import IsAppUser, IsThisClientOrAdminOrSuperAdmin, \
     IsAdminOrSuperAdmin, IsThisAdminOrSuperAdmin, IsSuperAdmin, \
@@ -483,14 +477,23 @@ class ChangePasswordView(views.APIView):
 
 
 class RentEquipmentView(generics.GenericAPIView):
-    serializer_class = RentalInfoRentSerializer
-    permission_classes = (IsAppUser,)
+    serializer_class = serializers.RentalInfoRentSerializer
+    permission_classes = (IsAppUser, IsAuthenticated)
 
+    @swagger_auto_schema(
+        operation_description="POST api-v1/equipment/{id}/rent/\n"
+                              "Rent equipment with id",
+        request_body=serializers.RentalInfoRentSerializer,
+        responses={
+            201: "Created rent",
+            400: "Equipment with id doesn't exist or wrong data"
+        }
+    )
     def post(self, request, pk):
-        equip = Equipment.objects.get(pk=pk)
+        equip = models.Equipment.objects.get(pk=pk)
         request.data['equipment_data'] = pk
         request.data['client_data'] = request.user.pk
-        serializer = RentalInfoSerializer(data=request.data)
+        serializer = serializers.RentalInfoSerializer(data=request.data)
         if equip is not None:
             if serializer.is_valid():
                 serializer.save()
@@ -500,15 +503,26 @@ class RentEquipmentView(generics.GenericAPIView):
 
 
 class ReturnEquipmentView(views.APIView):
-    permission_classes = (IsAppUser,)
+    permission_classes = (IsAppUser, IsAuthenticated)
 
+    @swagger_auto_schema(
+        operation_description="PUT api-v1/equipment/{id}/return/\n"
+                              "Return equipment with id",
+        responses={
+            200: "Equipment returned",
+            400: "Equipment doesn't exist or equipment is available",
+            401: "Rent isn't assigned to you"
+        }
+    )
     def put(self, request, pk):
-        equip = Equipment.objects.get(pk=pk)
+        equip = models.Equipment.objects.get(pk=pk)
         if equip is not None and not equip.available:
-            rent = RentalInfo.objects.get(equipment_data=pk)
-            equip.available = True
-            rent.actual_return = datetime.date.today()
-            equip.save()
-            rent.save()
-            return Response(status=status.HTTP_200_OK)
+            rent = models.RentalInfo.objects.get(equipment_data=pk)
+            if rent.client_data == request.user.pk:
+                equip.available = True
+                rent.actual_return = datetime.date.today()
+                equip.save()
+                rent.save()
+                return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
