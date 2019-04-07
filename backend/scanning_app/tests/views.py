@@ -4,7 +4,6 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from scanning_app.serializers import RentalInfoSerializer
 from ..models import AppUser, Equipment, RentalInfo, UnacceptedClient
 
 CLIENT_USERNAME = 'juras'
@@ -1109,6 +1108,23 @@ def create_unavailable_equipment():
     )
 
 
+def create_rental_info(equip, user):
+    return RentalInfo.objects.create(
+        expected_return='2018-10-13',
+        equipment_data=equip,
+        client_data=user
+    )
+
+
+def create_with_actual_return_rental_info(equip, user):
+    return RentalInfo.objects.create(
+        expected_return='2018-10-13',
+        actual_return='2018-10-14',
+        equipment_data=equip,
+        client_data=user
+    )
+
+
 class RentEquipmentView(TestCase):
     def setUp(self):
         self.apiClient = APIClient()
@@ -1166,13 +1182,50 @@ class ReturnEquipmentView(TestCase):
         user = create_client()
         login_as_user(self.apiClient, user)
         equip = create_unavailable_equipment()
-        rental = RentalInfo.objects.create(
-            expected_return='2018-10-13',
-            equipment_data=equip,
-            client_data=user
-        )
+        rental = create_rental_info(equip, user)
         response = self.apiClient \
             .put(reverse('equipment-return', args=(equip.pk,)), format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(Equipment.objects.get(pk=equip.pk).available)
-        self.assertEqual(RentalInfo.objects.get(equipment_data=equip.pk).actual_return, datetime.date.today())
+        self.assertEqual(RentalInfo.objects.filter(pk=rental.pk, expected_return='2018-10-13')[0].actual_return,
+                         datetime.date.today())
+
+    def test_equip_desnt_exist(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk + 1,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_equip_is_available(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_equipment()
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_if_finds_only_one_rent(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        create_with_actual_return_rental_info(equip, user)
+        rental = create_rental_info(equip, user)
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk,)), format='json')
+        self.assertEqual(RentalInfo.objects.count(), 2)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(Equipment.objects.get(pk=equip.pk).available)
+        self.assertEqual(RentalInfo.objects.filter(pk=rental.pk, expected_return='2018-10-13')[0].actual_return,
+                         datetime.date.today())
+
+    def test_rental_info_isnt_assigned_to_user(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        second_user = create_client("second")
+        create_rental_info(equip, second_user)
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
