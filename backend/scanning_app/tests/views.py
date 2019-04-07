@@ -1,11 +1,10 @@
 import datetime
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.test import APIClient
 
-
+from scanning_app.serializers import RentalInfoSerializer
 from ..models import AppUser, Equipment, RentalInfo, UnacceptedClient
 
 CLIENT_USERNAME = 'juras'
@@ -18,17 +17,6 @@ USER_DATA = {
     'last_name': 'Owsiak',
     'phone': '+48732005003',
     'address': 'Cokolwiek'
-}
-
-EQUIPMENT_NAME = "Name"
-EQUIPMENT_DESCRIPTION = "description"
-EQUIPMENT_TYPE = "Mic"
-EQUIPMENT_MAX_RENT_TIME = datetime.timedelta(days=3)
-EQUIPMENT_DATA = {
-    "name": EQUIPMENT_NAME,
-    "description": EQUIPMENT_DESCRIPTION,
-    "type": EQUIPMENT_TYPE,
-    "max_rent_time": EQUIPMENT_MAX_RENT_TIME
 }
 
 
@@ -1101,27 +1089,29 @@ class ChangePasswordViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
+def create_equipment():
+    return Equipment.objects.create(
+        name="Mikrofon",
+        description="Costam",
+        available=True,
+        type='Mic',
+        max_rent_time=datetime.timedelta(days=3)
+    )
+
+
+def create_unavailable_equipment():
+    return Equipment.objects.create(
+        name="Mikrofon",
+        description="Costam",
+        available=False,
+        type='Mic',
+        max_rent_time=datetime.timedelta(days=3)
+    )
+
+
 class RentEquipmentView(TestCase):
     def setUp(self):
         self.apiClient = APIClient()
-
-    def create_equipment(self):
-        return Equipment.objects.create(
-            name="Mikrofon",
-            description="Costam",
-            available=True,
-            type='Mic',
-            max_rent_time=datetime.timedelta(days=3)
-        )
-
-    def create_unavailable_equipment(self):
-        return Equipment.objects.create(
-            name="Mikrofon",
-            description="Costam",
-            available=False,
-            type='Mic',
-            max_rent_time=datetime.timedelta(days=3)
-        )
 
     def test_correct_rent_equipment(self):
         user = create_client()
@@ -1129,7 +1119,7 @@ class RentEquipmentView(TestCase):
         data = {
             'expected_return': '2018-10-13'
         }
-        equip = self.create_equipment()
+        equip = create_equipment()
         response = self.apiClient \
             .post(reverse('equipment-rent', args=(equip.pk,)), data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -1140,7 +1130,7 @@ class RentEquipmentView(TestCase):
         data = {
             'expected_return': 'wrong_type_data'
         }
-        equip = self.create_equipment()
+        equip = create_equipment()
         response = self.apiClient \
             .post(reverse('equipment-rent', args=(equip.pk,)), data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -1151,9 +1141,9 @@ class RentEquipmentView(TestCase):
         data = {
             'expected_return': '2018-10-13'
         }
-        equip = self.create_equipment()
+        equip = create_equipment()
         response = self.apiClient \
-            .post(reverse('equipment-rent', args=(equip.pk+1,)), data=data, format='json')
+            .post(reverse('equipment-rent', args=(equip.pk + 1,)), data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_equipment_is_unavailable(self):
@@ -1162,11 +1152,27 @@ class RentEquipmentView(TestCase):
         data = {
             'expected_return': '2018-10-13'
         }
-        equip = self.create_unavailable_equipment()
+        equip = create_unavailable_equipment()
         response = self.apiClient \
             .post(reverse('equipment-rent', args=(equip.pk,)), data=data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class ReturnEquipmentView(TestCase):
-    pass
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    def test_correct_return(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        rental = RentalInfo.objects.create(
+            expected_return='2018-10-13',
+            equipment_data=equip,
+            client_data=user
+        )
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(Equipment.objects.get(pk=equip.pk).available)
+        self.assertEqual(RentalInfo.objects.get(equipment_data=equip.pk).actual_return, datetime.date.today())

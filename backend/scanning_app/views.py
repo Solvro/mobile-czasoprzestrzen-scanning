@@ -525,8 +525,8 @@ class ReturnEquipmentView(views.APIView):
         try:
             equip = models.Equipment.objects.get(pk=pk)
             if equip is not None and not equip.available:
-                rent = models.RentalInfo.objects.get(equipment_data=pk)
-                if rent.client_data == request.user.pk:
+                rent = models.RentalInfo.objects.filter(equipment_data=pk).filter(actual_return=None).get()
+                if rent.client_data.pk == request.user.pk:
                     equip.available = True
                     rent.actual_return = datetime.date.today()
                     equip.save()
