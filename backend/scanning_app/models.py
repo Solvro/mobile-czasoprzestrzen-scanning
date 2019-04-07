@@ -5,18 +5,15 @@ from django.core.validators import ValidationError
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
-TYPE = (
-    ("Mic", "Microphone"),
-    ("Gui", "Guitar"),
-    ("Spe", "Speakers"),
-
-)
-
 USER_TYPE = (
     ("Cl", "Client"),
     ("Ra", "Regular Administrator"),
     ("Sa", "Super Administrator"),
 )
+
+
+class TypeOfEquipment(models.Model):
+    type_name = models.CharField(max_length=255)
 
 
 class AppUser(AbstractUser):
@@ -93,8 +90,8 @@ class Equipment(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=400)
     available = models.BooleanField(default=False)
-    type = models.CharField(choices=TYPE, max_length=64)
     max_rent_time = models.DurationField()
+    type = models.ForeignKey(TypeOfEquipment, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return "{}".format(self.name)

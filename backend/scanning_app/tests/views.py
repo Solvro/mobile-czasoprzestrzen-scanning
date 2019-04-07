@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from ..models import AppUser, Equipment, RentalInfo, UnacceptedClient
+from ..models import AppUser, Equipment, RentalInfo, UnacceptedClient, TypeOfEquipment
 
 CLIENT_USERNAME = 'juras'
 CLIENT_PASSWORD = 'pass'
@@ -997,12 +997,13 @@ class TokenTests(TestCase):
 
 class RentalInfoViewsTests(TestCase):
     def setUp(self):
+        self.type = TypeOfEquipment.objects.create(type_name='Guitar')
         self.client = AppUser.objects.create_user(**USER_DATA)
         self.equipment = Equipment.objects.create(
             name='Electric Guitar',
             description='Playable XD',
             available=True,
-            type='Gui',
+            type=self.type,
             max_rent_time=datetime.timedelta(days=2)
         )
 

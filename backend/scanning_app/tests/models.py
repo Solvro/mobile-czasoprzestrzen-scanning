@@ -1,7 +1,10 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+import datetime
 
 from scanning_app.models import AppUser, UnacceptedClient
+
+from scanning_app.models import Equipment, TypeOfEquipment
 
 
 class ModelTestCase(TestCase):
@@ -44,3 +47,22 @@ class UnacceptedClientTests(TestCase):
                           username=USERNAME, password="other pass",
                           phone="+48732450112")
         self.assertEqual(UnacceptedClient.objects.count(), 0)
+
+
+class TypeOfEquipmentTests(TestCase):
+
+    def setUp(self):
+        self.type = TypeOfEquipment(type_name="Mikro")
+        self.type.save()
+        self.equipment = Equipment(name="Mikrofon",
+                                   description="Makes you louder",
+                                   available=True,
+                                   max_rent_time=datetime.timedelta(days=3),
+                                   type=self.type)
+
+    def test_equipment_exist_with_out_type(self):
+        self.equipment.save()
+        self.assertEqual(Equipment.objects.count(), 1)
+        self.assertIsNotNone(Equipment.objects.get(name="Mikrofon").type)
+        TypeOfEquipment.objects.all().delete()
+        self.assertIsNone(Equipment.objects.get(name="Mikrofon").type)

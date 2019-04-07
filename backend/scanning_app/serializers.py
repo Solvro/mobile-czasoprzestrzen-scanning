@@ -2,12 +2,18 @@ from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from .models import Equipment, AppUser, RentalInfo, UnacceptedClient
+from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, TypeOfEquipment
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipment
+        fields = '__all__'
+
+
+class TypeOfEquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeOfEquipment
         fields = '__all__'
 
 
