@@ -97,6 +97,9 @@ class SuperAdminCreationSerializer(AppAdminCreationSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
+    address = AddressSerializer(required=False, many=False)
+    business_data = BusinessInfoSerializer(required=False, many=False)
+
     class Meta:
         model = AppUser
         fields = ('id', 'username', 'first_name', 'last_name',
@@ -140,6 +143,8 @@ class RentalInfoGetSerializer(serializers.ModelSerializer):
 
 
 class CustomVerifyTokenClientSerializer(serializers.ModelSerializer):
+    address = AddressSerializer(required=False, many=False)
+    business_data = BusinessInfoSerializer(required=False, many=False)
     is_business = serializers.SerializerMethodField()
 
     class Meta:
