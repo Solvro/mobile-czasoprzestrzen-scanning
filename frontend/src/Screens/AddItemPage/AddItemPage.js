@@ -51,7 +51,7 @@ class AddItem extends Component {
     const { itemName, itemType, itemDecription,itemRentTime } = this.state;
     if(itemName===''||itemType===''||itemRentTime===''){
       this.setState({ formError:  true});
-      this.setState({ errorMessage:  "Zadne pole nie może być puste :-("});
+      this.setState({ errorMessage:  "Żadne pole nie może być puste"});
     }
     else{
       const addItem = await addNewItemToItemList(itemName,itemType,itemDecription,itemRentTime);
@@ -59,7 +59,7 @@ class AddItem extends Component {
             this.props.history.push('/home')
         } else {
           this.setState({ formError:  true});
-          this.setState({ errorMessage:  "Coś poszło nie tak :-("});
+          this.setState({ errorMessage:  "Coś poszło nie tak"});
         } 
     }
     

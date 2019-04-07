@@ -1,15 +1,16 @@
 const axios = require('axios');
+const URL = 'http://localhost:8000/api-v1/';
 
-const instance = axios.create({
-  baseURL: 'http://localhost:8000/api-v1/',
-  timeout: 1000,
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization':'Bearer ' + localStorage.getItem('token'),
-  }
-});
 
 export async function getItemsList() {
+  const instance = axios.create({
+    baseURL: URL,
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + localStorage.getItem('token'),
+    }
+  });
     
     try {
       const getItem = await instance.get(`equipment/`);
@@ -20,6 +21,14 @@ export async function getItemsList() {
   }
 
 export async function addNewItemToItemList(itemName,itemType,itemDecription,itemRentTime) {
+  const instance = axios.create({
+    baseURL: URL,
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization':'Bearer ' + localStorage.getItem('token'),
+    }
+  });
     const data = {
         "name": itemName,
         "description": itemDecription,
