@@ -1,5 +1,10 @@
 from django.urls import include, path
 from rest_framework import routers
+from drf_yasg.utils import swagger_auto_schema
+from django_rest_passwordreset.views import reset_password_confirm, \
+    reset_password_request_token
+from django_rest_passwordreset.serializers import EmailSerializer, \
+    PasswordTokenSerializer
 
 from . import views
 
@@ -43,10 +48,22 @@ super_admin_detail_views = views.SuperAdminRetrieveUpdateDestroy.as_view({
     'delete': 'destroy'
 })
 
+decorated_reset_pass_request = (
+    swagger_auto_schema(request_body=EmailSerializer, method='post')
+)(reset_password_request_token)
+
+decorated_reset_pass_confirm = (
+    swagger_auto_schema(request_body=PasswordTokenSerializer, method='post')
+)(reset_password_confirm)
+
 urlpatterns = [
     path('signup/', unaccepted_client_signup_view, name="signup"),
     path('change-password/', views.ChangePasswordView.as_view(),
          name="change-password"),
+    path('reset-password/', decorated_reset_pass_request,
+         name="reset-request"),
+    path('reset-password/confirm/', decorated_reset_pass_confirm,
+         name='reset-confirm'),
     path('unaccepted-client/', unaccepted_client_list_view,
          name="unaccepted-client-list"),
     path('unaccepted-client/<int:pk>/',

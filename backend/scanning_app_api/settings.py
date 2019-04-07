@@ -145,6 +145,8 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'scanning_app.AppUser'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 #CORS settings
 CORS_ORIGIN_ALLOW_ALL = DEBUG
 
