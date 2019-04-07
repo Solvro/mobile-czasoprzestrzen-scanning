@@ -78,7 +78,20 @@ class UnacceptedClientTests(TestCase):
         self.assertFalse(BusinessInfo.objects.exists())
 
     def test_acceptation_doesnt_loose_address_and_business_info(self):
-        pass
+        address = Address.objects.create(street="Ulica 12/13",
+                                         zip_code="50-330",
+                                         city="Wroclaw")
+        business_info = BusinessInfo.objects.create(nip="725-18-01-126",
+                                                    regon="472836141")
+        client = UnacceptedClient.objects.create(username=USERNAME,
+                                                 password="pass",
+                                                 phone="+48732288410",
+                                                 address=address,
+                                                 business_data=business_info)
+        accepted_client = client.accept()
+        self.assertEqual(accepted_client.address.street, client.address.street)
+        self.assertEqual(accepted_client.business_data.nip,
+                         client.business_data.nip)
 
 
 class AddressTests(TestCase):
