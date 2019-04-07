@@ -1,13 +1,33 @@
 [
   {
     "pk": 1,
+    "model": "scanning_app.Address",
+    "fields": {
+      "street": "Ulica 12/13",
+      "zip_code": "50-333",
+      "city": "Wrocław"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "scanning_app.BusinessInfo",
+    "fields": {
+      "nip": "725-18-01-126",
+      "regon": "472836141"
+    }
+  },
+  {
+    "pk": 1,
     "model": "scanning_app.AppUser",
     "fields": {
       "username": "client",
+      "first_name": "Wojtek",
+      "last_name": "Jóźwiak",
       "password": "pbkdf2_sha256$120000$aqu2lcr7LGMf$dE5EyHCvWeJr/KvlYxDUaY9GRlWM8bpJZi2kgMSsMRM=",
       "phone": "+48735248900",
       "type": "Cl",
-      "address": "Potocka 13, Warszawa"
+      "address": 1,
+      "business_data": 1
     }
   },
   {
