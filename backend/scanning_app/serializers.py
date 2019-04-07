@@ -2,7 +2,8 @@ from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from .models import Equipment, AppUser, RentalInfo, UnacceptedClient
+from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, \
+    Address, BusinessInfo
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
@@ -11,9 +12,34 @@ class EquipmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = '__all__'
+
+
+class BusinessInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BusinessInfo
+        fields = '__all__'
+
+
 class SignUpUnacceptedClientSerializer(serializers.ModelSerializer):
+    address = AddressSerializer(required=False, many=False)
+    business_data = BusinessInfoSerializer(required=False, many=False)
+
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
+        if 'address' in validated_data:
+            add_ser = AddressSerializer(data=validated_data['address'])
+            add_ser.is_valid()
+            validated_data['address'] = add_ser.save()
+        if 'business_data' in validated_data:
+            bus_ser = BusinessInfoSerializer(
+                data=validated_data['business_data']
+            )
+            bus_ser.is_valid()
+            validated_data['business_data'] = bus_ser.save()
         return super(SignUpUnacceptedClientSerializer, self) \
             .create(validated_data)
 
@@ -42,7 +68,7 @@ class ListUnacceptedClientSerializer(serializers.ModelSerializer):
                   'is_business')
 
     def get_is_business(self, obj):
-        return bool(not (obj.business_data is None or obj.business_data == ''))
+        return bool(not (obj.business_data is None))
 
 
 class AppAdminCreationSerializer(serializers.ModelSerializer):
@@ -113,7 +139,7 @@ class RentalInfoGetSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CustomVerifyUserSerializer(serializers.ModelSerializer):
+class CustomVerifyTokenClientSerializer(serializers.ModelSerializer):
     is_business = serializers.SerializerMethodField()
 
     class Meta:
@@ -125,7 +151,7 @@ class CustomVerifyUserSerializer(serializers.ModelSerializer):
         return bool(not (obj.business_data is None or obj.business_data == ''))
 
 
-class CustomVerifyAdminsSerializer(serializers.ModelSerializer):
+class CustomVerifyTokenAdminsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = ('id', 'username', 'first_name', 'last_name',

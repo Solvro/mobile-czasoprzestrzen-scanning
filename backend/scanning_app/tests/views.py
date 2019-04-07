@@ -14,8 +14,7 @@ USER_DATA = {
     'email': 'JurekOwsiak@email.com',
     'first_name': 'Jurek',
     'last_name': 'Owsiak',
-    'phone': '+48732005003',
-    'address': 'Cokolwiek'
+    'phone': '+48732005003'
 }
 
 

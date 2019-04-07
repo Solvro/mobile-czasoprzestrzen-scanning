@@ -12,8 +12,15 @@ CLIENT_FIRST_NAME = "first"
 CLIENT_LAST_NAME = "last"
 CLIENT_EMAIL = "mail@mail.com"
 CLIENT_PHONE = "+48723124589"
-CLIENT_ADDRESS = "Adress"
-CLIENT_BUSINESS_INFO = "Bussiness info"
+CLIENT_ADDRESS = {
+    "street": "Ulica 12/13",
+    "zip_code": "50-330",
+    "city": "Wroclaw"
+}
+CLIENT_BUSINESS_INFO = {
+    "nip": "725-18-01-126",
+    "regon": "472836141"
+}
 CLIENT_DATA = {
     "username": CLIENT_USERNAME,
     "password": CLIENT_PASSWORD,
@@ -56,8 +63,8 @@ class SignUpClientSerializerTests(TestCase):
         data['address'] = CLIENT_ADDRESS
         data['business_data'] = CLIENT_BUSINESS_INFO
         saved = self.create_and_check_basic_client(data)
-        self.assertEqual(saved.address, CLIENT_ADDRESS)
-        self.assertEqual(saved.business_data, CLIENT_BUSINESS_INFO)
+        self.assertEqual(saved.address.street, CLIENT_ADDRESS['street'])
+        self.assertEqual(saved.business_data.nip, CLIENT_BUSINESS_INFO['nip'])
 
     def test_proper_partial_client_data_passed_is_valid(self):
         data = CLIENT_DATA

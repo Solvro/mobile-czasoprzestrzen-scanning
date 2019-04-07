@@ -428,8 +428,8 @@ class VerifyTokenView(TokenVerifyView):
         request_body=TokenVerifySerializer,
         responses={
             200: "User info",
-            "200 client": serializers.CustomVerifyUserSerializer,
-            "200 admins": serializers.CustomVerifyAdminsSerializer,
+            "200 client": serializers.CustomVerifyTokenClientSerializer,
+            "200 admins": serializers.CustomVerifyTokenAdminsSerializer,
             401: "Token is invalid or expired"
         }
     )
@@ -441,9 +441,9 @@ class VerifyTokenView(TokenVerifyView):
         user = JWTAuthentication.get_user(JWTAuthentication(),
                                           validated_token=validated_token)
         if user.is_client():
-            ser = serializers.CustomVerifyUserSerializer(user)
+            ser = serializers.CustomVerifyTokenClientSerializer(user)
         else:
-            ser = serializers.CustomVerifyAdminsSerializer(user)
+            ser = serializers.CustomVerifyTokenAdminsSerializer(user)
         response.data = ser.data
         return response
 
