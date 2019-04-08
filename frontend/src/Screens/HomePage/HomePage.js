@@ -7,7 +7,7 @@ import Button from '../../Components/Button/AddButton';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import {getUserName } from '../../services/userService';
 import Icon from '@material-ui/core/Icon';
-import {getItemsList} from '../../services/itemsService';
+import {getItemsList,getItemTypesList} from '../../services/itemsService';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 class HomePage extends Component {
@@ -19,7 +19,8 @@ class HomePage extends Component {
       itemListTable: '',
       loginInfo: false,
       username: "?",
-      isLoading: true
+      isLoading: true,
+      typesList: []
     }
   }
 
@@ -30,13 +31,23 @@ class HomePage extends Component {
   }
 
   async componentDidMount() {
+   
+    await getItemTypesList()
+    .then((res) => {
+      var itemTypes = []
+      for(var i = 0; i < res.length; i++){
+          itemTypes[i] = res[i].type_name
+      }
+      console.log(itemTypes)
+      this.setState({typesList : itemTypes});
+    })
     await getItemsList()
     .then((res) => {
       this.setState({isLoading : false});
-      console.log(res);
-      this.createTable(res);
-      
+      this.createTable(res); 
     })
+    
+
   }
   createButtonEdit(id) {
     return <IconButton aria-label="Approve" onClick={() => console.log(id)}><Icon>edit</Icon> </IconButton>;
@@ -53,8 +64,9 @@ class HomePage extends Component {
       if (res[i].available === true) {
         available = <Icon>done</Icon>
       }
-      ID = res[i].id
-      rows.push([ID, res[i].name, res[i].type, available,this.createButtonEdit(ID),this.createButtonRemove(ID)]);
+      ID = res[i].id;
+      console.log("TYPE "+ this.state.typesList)
+      rows.push([ID, res[i].name, this.state.typesList[res[i].type - 1], available,this.createButtonEdit(ID),this.createButtonRemove(ID)]);
 
     }
     var table = <Table contains={rows} />;

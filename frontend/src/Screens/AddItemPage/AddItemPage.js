@@ -29,7 +29,6 @@ class AddItem extends Component {
     await getItemTypesList()
     .then((res) => {
       this.setState({isLoading : false});
-      console.log(res);
       var itemTypes = []
       for(var i = 0; i < res.length; i++){
           itemTypes[i] = res[i].type_name
