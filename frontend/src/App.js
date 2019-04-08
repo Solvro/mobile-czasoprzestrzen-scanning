@@ -45,7 +45,7 @@ class App extends React.Component {
             <PrivateRoute path='/account' component={AdminPage} />
             <PrivateRoute path='/adds' component={AddItemPage} />
             <PrivateRoute path="/createNewAccount" component={NewAccountPage} />
-            <PrivateRoute path="/createNewAccount" component={ChangePasswordPage} />
+            <PrivateRoute path="/changePassword" component={ChangePasswordPage} />
         </Switch> 
       </Router>      
     </MuiThemeProvider>

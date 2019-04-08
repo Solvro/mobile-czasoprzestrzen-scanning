@@ -104,12 +104,14 @@ class AdminPage extends Component {
 
     const right = <div className='ButtonGroup'>
 
-      <div className='inner'>
-        <Button button={"verticalButton"} link={'/changePassword'} text={"Zmień hasło"}></Button>
-        <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
-        <Button button={"verticalButton"} link={'/login'} text={"Wyloguj"}></Button>
-      </div>
-    </div>;
+            <div className='inner'>
+            <Button button={"verticalButton"} link={'/changePassword'} text={"Zmień hasło"}></Button>
+            <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
+            <Button button={"verticalButton"} link={'/login'} onClick={()=>localStorage.clear()} text={"Wyloguj"}></Button> 
+            </div>
+
+          </div>;
+
 
     return (
       <div>

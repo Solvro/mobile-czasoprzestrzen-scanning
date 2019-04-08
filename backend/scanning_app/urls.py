@@ -11,7 +11,9 @@ from . import views
 router = routers.DefaultRouter()
 router.register('equipment', views.EquipmentView)
 router.register('rental-info', views.RentalInfoView)
-unaccepted_client_signup_view = views.UnacceptedClientListCreateDestroyViewSet \
+router.register('equipment-type', views.TypeOfEquipmentView)
+
+unaccepted_client_signup_view = views.UnacceptedClientListCreateDestroyViewSet\
     .as_view({'post': 'create'})
 unaccepted_client_list_view = views.UnacceptedClientListCreateDestroyViewSet \
     .as_view({'get': 'list'})
