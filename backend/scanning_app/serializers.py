@@ -163,3 +163,9 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = ('old_password', 'new_password')
+
+
+class RentalInfoRentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RentalInfo
+        fields = ('id', 'expected_return')
