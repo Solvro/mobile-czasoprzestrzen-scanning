@@ -33,7 +33,7 @@ export async function addNewItemToItemList(itemName,itemType,itemDecription,item
         "name": itemName,
         "description": itemDecription,
         "available": true,
-        "type": 1,
+        "type": itemType,
         "max_rent_time": itemRentTime
     }
     try {
@@ -44,3 +44,21 @@ export async function addNewItemToItemList(itemName,itemType,itemDecription,item
       console.log(`Error: ${error}`);
     }
   }
+
+export async function getItemTypesList() {
+    const instance = axios.create({
+      baseURL: URL,
+      timeout: 1000,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':'Bearer ' + localStorage.getItem('token'),
+      }
+    });
+      
+      try {
+        const getItem = await instance.get(`equipment-type/`);
+        return getItem.data;
+      } catch (error) {
+        console.log(`Error: ${error}`);
+      }
+    }

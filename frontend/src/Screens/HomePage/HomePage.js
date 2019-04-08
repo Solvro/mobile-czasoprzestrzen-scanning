@@ -83,7 +83,7 @@ class HomePage extends Component {
       </Layout>
       {this.state.loginInfo && <InfoDisplay
         removeInfo={id => {this.setState({loginInfo: false})}}
-        info={[{message: 'Zalogowałeś się jako ' + this.state.username, id: 100}]}
+        info={[{message: 'Zalogowałeś się jako ' + this.state.username, id: 101}]}
         />}
       </div>
     );
