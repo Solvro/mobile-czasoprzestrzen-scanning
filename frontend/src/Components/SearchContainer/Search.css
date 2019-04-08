@@ -4,3 +4,7 @@
     margin-top: 6em;
     padding: 1em;
 }
+.SearchField {
+    display: 'block';
+    margin-top: 1em;
+}
