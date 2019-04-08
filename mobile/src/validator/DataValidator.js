@@ -58,7 +58,7 @@ function isPassword(password) {
 }
 
 function isPhoneNumber(phoneNumber) {
-    return validator.isMobilePhone('+48'+phoneNumber,'pl-PL')
+    return validator.isMobilePhone(phoneNumber,'pl-PL')
 }
 
 function isPostalCode(postalCode) {
