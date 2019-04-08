@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, \
-    Address, BusinessInfo
+    Address, BusinessInfo, TypeOfEquipment
 
 
 class EquipmentSerializer(serializers.ModelSerializer):
@@ -21,6 +21,12 @@ class AddressSerializer(serializers.ModelSerializer):
 class BusinessInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = BusinessInfo
+        fields = '__all__'
+
+
+class TypeOfEquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeOfEquipment
         fields = '__all__'
 
 

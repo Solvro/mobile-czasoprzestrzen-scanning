@@ -7,6 +7,16 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.serializers import TokenVerifySerializer
 from rest_framework_simplejwt.views import TokenVerifyView
+
+from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, \
+    TypeOfEquipment
+from .serializers import EquipmentSerializer, ClientSerializer, \
+    RentalInfoSerializer, SignUpUnacceptedClientSerializer, \
+    RentalInfoGetSerializer, TypeOfEquipmentSerializer, \
+    AdminCreationSerializer, SuperAdminCreationSerializer, \
+    ListUnacceptedClientSerializer
+from .permissions import PostPermissions, RentalInfoPermissions, \
+    IsSuperAdmin, IsAdminOrSuperAdmin
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 
@@ -22,6 +32,50 @@ class EquipmentView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('name', 'available', 'type')
+
+
+class TypeOfEquipmentView(viewsets.ModelViewSet):
+    queryset = TypeOfEquipment.objects.all()
+    serializer_class = TypeOfEquipmentSerializer
+    permission_classes = (IsAdminOrSuperAdmin,)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/equipment-type/\n"
+                              "List of equipment types",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'list types (Not admin or super admin)'
+        }
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="POST /api-v1/equipment-type/\n"
+                              "Create new type",
+        responses={
+            400: 'Obligatory field not provided or username duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'create type (Not admin or super admin)'
+        }
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/equipment-type/{id}/\n"
+                              "Delete type",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'delete type (Not admin or super admin)',
+            404: 'No type with given id found'
+        }
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
 
 
 class UnacceptedClientListCreateDestroyViewSet(mixins.CreateModelMixin,

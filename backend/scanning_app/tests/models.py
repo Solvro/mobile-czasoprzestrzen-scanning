@@ -1,8 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+import datetime
 
 from scanning_app.models import AppUser, UnacceptedClient, Address, \
-    BusinessInfo
+    BusinessInfo, Equipment, TypeOfEquipment
 
 
 class AppUserTestCase(TestCase):
@@ -126,3 +127,21 @@ class BusinessInfoTests(TestCase):
         self.assertRaises(ValidationError,
                           BusinessInfo.regon_validator,
                           invalid_regon)
+
+class TypeOfEquipmentTests(TestCase):
+
+    def setUp(self):
+        self.type = TypeOfEquipment(type_name="Mikro")
+        self.type.save()
+        self.equipment = Equipment(name="Mikrofon",
+                                   description="Makes you louder",
+                                   available=True,
+                                   max_rent_time=datetime.timedelta(days=3),
+                                   type=self.type)
+
+    def test_equipment_exist_with_out_type(self):
+        self.equipment.save()
+        self.assertEqual(Equipment.objects.count(), 1)
+        self.assertIsNotNone(Equipment.objects.get(name="Mikrofon").type)
+        TypeOfEquipment.objects.all().delete()
+        self.assertIsNone(Equipment.objects.get(name="Mikrofon").type)

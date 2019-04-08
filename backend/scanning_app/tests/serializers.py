@@ -2,9 +2,10 @@ import datetime
 from django.test import TestCase
 
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
-    UnacceptedClient, Address, BusinessInfo
+    UnacceptedClient, Address, BusinessInfo, TypeOfEquipment
 from scanning_app.serializers import RentalInfoSerializer, \
     EquipmentSerializer, SignUpUnacceptedClientSerializer, ClientSerializer
+
 
 CLIENT_USERNAME = "username"
 CLIENT_PASSWORD = "pass"
@@ -29,15 +30,17 @@ CLIENT_DATA = {
     "email": CLIENT_EMAIL,
     "phone": CLIENT_PHONE
 }
+TYPE_NAME = "Microphone"
 
 EQUIPMENT_NAME = "Name"
 EQUIPMENT_DESCRIPTION = "description"
-EQUIPMENT_TYPE = "Mic"
+EQUIPMENT_TYPE = {
+    "type_name": TYPE_NAME
+}
 EQUIPMENT_MAX_RENT_TIME = datetime.timedelta(days=3)
 EQUIPMENT_DATA = {
     "name": EQUIPMENT_NAME,
     "description": EQUIPMENT_DESCRIPTION,
-    "type": EQUIPMENT_TYPE,
     "max_rent_time": EQUIPMENT_MAX_RENT_TIME
 }
 
@@ -155,18 +158,22 @@ class EquipmentSerializerTests(TestCase):
         saved = Equipment.objects.get()
         self.assertEqual(saved.name, EQUIPMENT_NAME)
         self.assertEqual(saved.description, EQUIPMENT_DESCRIPTION)
-        self.assertEqual(saved.type, EQUIPMENT_TYPE)
+        self.assertIsNotNone(saved.type)
         self.assertEqual(saved.max_rent_time, EQUIPMENT_MAX_RENT_TIME)
         return saved
 
     def test_proper_full_equipment_data_passed_is_valid(self):
+        type = TypeOfEquipment.objects.create(**EQUIPMENT_TYPE)
         data = EQUIPMENT_DATA.copy()
         data['available'] = True
+        data['type'] = type.id
         saved = self.handle_serializer_with_proper_data(data)
         self.assertEqual(saved.available, True)
 
     def test_proper_partial_equipment_data_passed_is_valid(self):
+        type = TypeOfEquipment.objects.create(**EQUIPMENT_TYPE)
         data = EQUIPMENT_DATA
+        data['type'] = type.id
         saved = self.handle_serializer_with_proper_data(data)
         self.assertEqual(saved.available, False)
 
@@ -183,15 +190,17 @@ class EquipmentSerializerTests(TestCase):
         expected_data = EQUIPMENT_DATA.copy()
         expected_data['id'] = 1
         expected_data['available'] = False
+        expected_data['type'] = None
         expected_data['max_rent_time'] = '3 00:00:00'
 
         self.assertDictEqual(ser.data, expected_data)
 
 
 def create_equip_client_and_return_rental_info_data(testcase):
+    testcase.type = TypeOfEquipment.objects.create(type_name=TYPE_NAME)
     testcase.equip = Equipment.objects \
         .create(name="Equip", description="yes",
-                type="Mic", available=True,
+                type=testcase.type, available=True,
                 max_rent_time=datetime.timedelta(days=20, hours=5))
     testcase.client = AppUser.objects.create(username="username",
                                              password="pass")

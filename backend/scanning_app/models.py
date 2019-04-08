@@ -5,13 +5,6 @@ from django.core.validators import ValidationError, RegexValidator
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
-TYPE = (
-    ("Mic", "Microphone"),
-    ("Gui", "Guitar"),
-    ("Spe", "Speakers"),
-
-)
-
 USER_TYPE = (
     ("Cl", "Client"),
     ("Ra", "Regular Administrator"),
@@ -40,6 +33,10 @@ class BusinessInfo(models.Model):
 
     nip = models.CharField(max_length=13, validators=[nip_validator])
     regon = models.CharField(max_length=9, validators=[regon_validator])
+
+
+class TypeOfEquipment(models.Model):
+    type_name = models.CharField(max_length=255)
 
 
 class AppUser(AbstractUser):
@@ -78,7 +75,8 @@ class UnacceptedClient(models.Model):
         max_length=150,
         unique=True,
         help_text=_(
-            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'
+        ),
         validators=[username_validator],
         error_messages={
             'unique': _("A user with that username already exists."),
@@ -140,8 +138,9 @@ class Equipment(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=400)
     available = models.BooleanField(default=False)
-    type = models.CharField(choices=TYPE, max_length=64)
     max_rent_time = models.DurationField()
+    type = models.ForeignKey(TypeOfEquipment, on_delete=models.SET_NULL,
+                             null=True)
 
     def __str__(self):
         return "{}".format(self.name)
