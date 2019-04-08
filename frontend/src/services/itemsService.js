@@ -14,7 +14,7 @@ export async function getItemsList() {
     
     try {
       const getItem = await instance.get(`equipment/`);
-      console.log(getItem.data);
+      return getItem.data;
     } catch (error) {
       console.log(`Error: ${error}`);
     }
@@ -33,7 +33,7 @@ export async function addNewItemToItemList(itemName,itemType,itemDecription,item
         "name": itemName,
         "description": itemDecription,
         "available": true,
-        "type": 'Mic',
+        "type": 1,
         "max_rent_time": itemRentTime
     }
     try {
