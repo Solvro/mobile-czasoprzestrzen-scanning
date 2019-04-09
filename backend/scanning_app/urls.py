@@ -5,7 +5,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register('equipment', views.EquipmentView)
-router.register('rental-info', views.RentalInfoView)
+router.register('rental-info', views.RentalInfoView, basename='rentalinfo')
 router.register('equipment-type', views.TypeOfEquipmentView)
 
 unaccepted_client_signup_view = views.UnacceptedClientListCreateDestroyViewSet\

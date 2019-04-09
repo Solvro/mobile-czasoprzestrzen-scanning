@@ -1039,15 +1039,26 @@ class RentalInfoViewsTests(TestCase):
     def test_equipments_becomes_unavailable_when_rented(self):
         self.rent_equipment_and_check_response()
 
-    def test_equipment_becomes_available_when_actual_return_date_set(self):
-        self.rent_equipment_and_check_response()
-        response = self.apiClient.patch(
-            reverse('rentalinfo-detail', args=(RentalInfo.objects.get().id,)),
-            {'actual_return': '2019-02-23'},
-            format='json'
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Equipment.objects.get().available, True)
+    def test_after_remove_rental_equip_becomes_available(self):
+        user = create_admin()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        rent = create_rental_info(equip, user)
+        self.assertFalse(equip.available)
+        response = self.apiClient \
+            .delete(reverse('rentalinfo-detail', args=(rent.pk,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        equip_after_delete = Equipment.objects.get(pk=equip.pk)
+        self.assertTrue(equip_after_delete.available)
+
+    def test_wrong_id_to_delete_404(self):
+        user = create_admin()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        rent = create_rental_info(equip, user)
+        response = self.apiClient \
+            .delete(reverse('rentalinfo-detail', args=(rent.pk+1,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class ChangePasswordViewTests(TestCase):
@@ -1089,12 +1100,18 @@ class ChangePasswordViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
+def create_type_of_equipment():
+    return TypeOfEquipment.objects.create(
+        type_name="Microphone"
+    )
+
+
 def create_equipment():
     return Equipment.objects.create(
         name="Mikrofon",
         description="Costam",
         available=True,
-        type='Mic',
+        type=create_type_of_equipment(),
         max_rent_time=datetime.timedelta(days=3)
     )
 
@@ -1104,7 +1121,7 @@ def create_unavailable_equipment():
         name="Mikrofon",
         description="Costam",
         available=False,
-        type='Mic',
+        type=create_type_of_equipment(),
         max_rent_time=datetime.timedelta(days=3)
     )
 
