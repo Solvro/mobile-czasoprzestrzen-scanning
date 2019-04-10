@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
-from django.core.validators import ValidationError
+from django.core.validators import ValidationError, RegexValidator
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -12,15 +12,47 @@ USER_TYPE = (
 )
 
 
+class Address(models.Model):
+    zip_code_validator = RegexValidator(r'^\d{2}-\d{3}$',
+                                        "Zip code doesn't comply")
+
+    street = models.CharField(max_length=128)
+    zip_code = models.CharField(max_length=6, validators=[zip_code_validator])
+    city = models.CharField(max_length=32)
+
+
+class BusinessInfo(models.Model):
+    nip_validator = RegexValidator(
+        r'^((\d{3}[-]\d{3}[-]\d{2}[-]\d{2})|(\d{3}[-]\d{2}[-]\d{2}[-]\d{3}))$',
+        "Nip doesn't comply"
+    )
+    regon_validator = RegexValidator(
+        r'^\d{9}$',
+        "Regon doesn't comply"
+    )
+
+    nip = models.CharField(max_length=13, validators=[nip_validator])
+    regon = models.CharField(max_length=9, validators=[regon_validator])
+
+
 class TypeOfEquipment(models.Model):
     type_name = models.CharField(max_length=255)
 
 
 class AppUser(AbstractUser):
     phone = PhoneNumberField()
-    address = models.CharField(null=True, max_length=255)
-    business_data = models.CharField(null=True, max_length=255)
+    address = models.OneToOneField(Address, null=True,
+                                   on_delete=models.SET_NULL)
+    business_data = models.OneToOneField(BusinessInfo, null=True,
+                                         on_delete=models.SET_NULL)
     type = models.CharField(max_length=2, choices=USER_TYPE, default="Cl")
+
+    def delete(self, using=None, keep_parents=False):
+        if self.address is not None:
+            self.address.delete()
+        if self.business_data is not None:
+            self.business_data.delete()
+        return super().delete(using, keep_parents)
 
     def is_client(self):
         return self.type == "Cl"
@@ -43,7 +75,8 @@ class UnacceptedClient(models.Model):
         max_length=150,
         unique=True,
         help_text=_(
-            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+            'Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'
+        ),
         validators=[username_validator],
         error_messages={
             'unique': _("A user with that username already exists."),
@@ -54,8 +87,10 @@ class UnacceptedClient(models.Model):
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), blank=True)
     phone = PhoneNumberField()
-    address = models.CharField(null=True, max_length=255)
-    business_data = models.CharField(null=True, max_length=255)
+    address = models.OneToOneField(Address, null=True,
+                                   on_delete=models.SET_NULL)
+    business_data = models.OneToOneField(BusinessInfo, null=True,
+                                         on_delete=models.SET_NULL)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -70,8 +105,21 @@ class UnacceptedClient(models.Model):
         super(UnacceptedClient, self) \
             .save(force_insert, force_update, using, update_fields)
 
+    def delete(self, using=None, keep_parents=False):
+        if self.address is not None:
+            self.address.delete()
+        if self.business_data is not None:
+            self.business_data.delete()
+        return super().delete(using, keep_parents)
+
     def accept(self):
+        address = self.address
+        business_data = self.business_data
         self.delete()
+        if address is not None:
+            address.save()
+        if business_data is not None:
+            business_data.save()
         return AppUser.objects.create(
             username=self.username,
             password=self.password,
@@ -79,8 +127,8 @@ class UnacceptedClient(models.Model):
             last_name=self.last_name,
             email=self.email,
             phone=self.phone,
-            address=self.address,
-            business_data=self.business_data,
+            address=address,
+            business_data=business_data,
             type="Cl",
             is_active=True
         )
@@ -91,7 +139,8 @@ class Equipment(models.Model):
     description = models.CharField(max_length=400)
     available = models.BooleanField(default=False)
     max_rent_time = models.DurationField()
-    type = models.ForeignKey(TypeOfEquipment, on_delete=models.SET_NULL, null=True)
+    type = models.ForeignKey(TypeOfEquipment, on_delete=models.SET_NULL,
+                             null=True)
 
     def __str__(self):
         return "{}".format(self.name)

@@ -9,7 +9,7 @@ function ClientTable (props) {
   var rows = props.contains;
    
   return (
-      <Table header={header} row={rows}/>
+      <Table header={header} row={rows} height={"400px"}/>
   );
   
 }
