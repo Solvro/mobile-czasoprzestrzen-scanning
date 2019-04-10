@@ -82,5 +82,7 @@ urlpatterns = [
          name="super-admin-list"),
     path('super-admin/<int:pk>/', super_admin_detail_views,
          name="super-admin-detail"),
+    path('equipment/<int:pk>/rent/', views.RentEquipmentView.as_view(), name="equipment-rent"),
+    path('equipment/<int:pk>/return/', views.ReturnEquipmentView.as_view(), name="equipment-return"),
     path('', include(router.urls))
 ]

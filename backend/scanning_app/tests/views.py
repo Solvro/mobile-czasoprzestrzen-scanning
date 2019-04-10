@@ -14,8 +14,7 @@ USER_DATA = {
     'email': 'JurekOwsiak@email.com',
     'first_name': 'Jurek',
     'last_name': 'Owsiak',
-    'phone': '+48732005003',
-    'address': 'Cokolwiek'
+    'phone': '+48732005003'
 }
 
 
@@ -236,7 +235,7 @@ class AcceptUnacceptedClientViewTests(TestCase):
             .post(reverse('login'), credentials, format='json') \
             .data['access']
         self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
-        res = self.apiClient\
+        res = self.apiClient \
             .post(reverse('unaccepted-client-accept', args=(unaccepted.id,)))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data['username'], unaccepted.username)
@@ -248,7 +247,7 @@ class AcceptUnacceptedClientViewTests(TestCase):
 
     def test_no_token_401_returned(self):
         unaccepted = self.create_unaccepted_user()
-        res = self.apiClient\
+        res = self.apiClient \
             .post(reverse('unaccepted-client-accept', args=(unaccepted.id,)))
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -284,7 +283,7 @@ class AcceptUnacceptedClientViewTests(TestCase):
             .data['access']
         self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
         res = self.apiClient \
-            .post(reverse('unaccepted-client-accept', args=(unaccepted.id+1,)))
+            .post(reverse('unaccepted-client-accept', args=(unaccepted.id + 1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -359,7 +358,7 @@ class UnacceptedClientDestroyViewTests(TestCase):
             .data['access']
         self.apiClient.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
         res = self.apiClient.delete(
-            reverse('unaccepted-client-detail', args=(unaccepted.id+1,)))
+            reverse('unaccepted-client-detail', args=(unaccepted.id + 1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -393,7 +392,7 @@ def create_super_admin(username="root"):
 def login_as_user(api_client, user):
     credentials = {'username': user.username,
                    'password': "pass"}
-    token = api_client.post(reverse('login'), credentials, format='json')\
+    token = api_client.post(reverse('login'), credentials, format='json') \
         .data['access']
     api_client.credentials(HTTP_AUTHORIZATION='Bearer ' + token)
 
@@ -541,7 +540,7 @@ class ClientRetrieveTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, create_super_admin())
         res = self.apiClient.get(reverse('client-detail',
-                                         args=(self.client.id+1,)))
+                                         args=(self.client.id + 1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -586,7 +585,7 @@ class AdminRetrieveTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, create_super_admin())
         res = self.apiClient.get(reverse('admin-detail',
-                                         args=(self.admin.id+1,)))
+                                         args=(self.admin.id + 1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -631,7 +630,7 @@ class SuperAdminRetrieveTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, self.super_admin)
         res = self.apiClient.get(reverse('super-admin-detail',
-                                         args=(self.super_admin.id+1,)))
+                                         args=(self.super_admin.id + 1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -694,7 +693,7 @@ class ClientUpdateTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, create_super_admin())
         res = self.apiClient.patch(
-            reverse('client-detail', args=(self.client.id+1,)),
+            reverse('client-detail', args=(self.client.id + 1,)),
             self.body,
             format='json'
         )
@@ -758,7 +757,7 @@ class AdminUpdateTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, create_super_admin())
         res = self.apiClient.patch(
-            reverse('admin-detail', args=(self.admin.id+1,)),
+            reverse('admin-detail', args=(self.admin.id + 1,)),
             self.body,
             format='json'
         )
@@ -822,7 +821,7 @@ class SuperAdminUpdateTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, self.super_admin)
         res = self.apiClient.patch(
-            reverse('super-admin-detail', args=(self.super_admin.id+1,)),
+            reverse('super-admin-detail', args=(self.super_admin.id + 1,)),
             self.body,
             format='json'
         )
@@ -869,7 +868,7 @@ class ClientDeleteTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, create_super_admin())
         res = self.apiClient.delete(reverse('client-detail',
-                                            args=(self.client.id+1,)))
+                                            args=(self.client.id + 1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -912,7 +911,7 @@ class AdminDeleteTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, create_super_admin())
         res = self.apiClient.delete(reverse('admin-detail',
-                                            args=(self.admin.id+1,)))
+                                            args=(self.admin.id + 1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -955,7 +954,7 @@ class SuperAdminDeleteTests(TestCase):
     def test_invalid_id_404_returned(self):
         login_as_user(self.apiClient, self.super_admin)
         res = self.apiClient.delete(reverse('super-admin-detail',
-                                            args=(self.super_admin.id+1,)))
+                                            args=(self.super_admin.id + 1,)))
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -1058,7 +1057,7 @@ class ChangePasswordViewTests(TestCase):
         user = create_client()
         login_as_user(self.apiClient, user)
         data = {'old_password': 'pass', 'new_password': 'new pass'}
-        response = self.apiClient\
+        response = self.apiClient \
             .post(reverse('change-password'), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(
@@ -1086,4 +1085,153 @@ class ChangePasswordViewTests(TestCase):
         data = {'old_password': 'wrong pass', 'new_password': 'new pass'}
         response = self.apiClient \
             .post(reverse('change-password'), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+def create_type_of_equipment():
+    return TypeOfEquipment.objects.create(
+        type_name="Microphone"
+    )
+
+
+def create_equipment():
+    return Equipment.objects.create(
+        name="Mikrofon",
+        description="Costam",
+        available=True,
+        type=create_type_of_equipment(),
+        max_rent_time=datetime.timedelta(days=3)
+    )
+
+
+def create_unavailable_equipment():
+    return Equipment.objects.create(
+        name="Mikrofon",
+        description="Costam",
+        available=False,
+        type=create_type_of_equipment(),
+        max_rent_time=datetime.timedelta(days=3)
+    )
+
+
+def create_rental_info(equip, user):
+    return RentalInfo.objects.create(
+        expected_return='2018-10-13',
+        equipment_data=equip,
+        client_data=user
+    )
+
+
+def create_with_actual_return_rental_info(equip, user):
+    return RentalInfo.objects.create(
+        expected_return='2018-10-13',
+        actual_return='2018-10-14',
+        equipment_data=equip,
+        client_data=user
+    )
+
+
+class RentEquipmentView(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    def test_correct_rent_equipment(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        data = {
+            'expected_return': '2018-10-13'
+        }
+        equip = create_equipment()
+        response = self.apiClient \
+            .post(reverse('equipment-rent', args=(equip.pk,)), data=data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_incorrect_data(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        data = {
+            'expected_return': 'wrong_type_data'
+        }
+        equip = create_equipment()
+        response = self.apiClient \
+            .post(reverse('equipment-rent', args=(equip.pk,)), data=data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_id_of_equipment_which_desnt_exist(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        data = {
+            'expected_return': '2018-10-13'
+        }
+        equip = create_equipment()
+        response = self.apiClient \
+            .post(reverse('equipment-rent', args=(equip.pk + 1,)), data=data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_equipment_is_unavailable(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        data = {
+            'expected_return': '2018-10-13'
+        }
+        equip = create_unavailable_equipment()
+        response = self.apiClient \
+            .post(reverse('equipment-rent', args=(equip.pk,)), data=data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class ReturnEquipmentView(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+
+    def test_correct_return(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        rental = create_rental_info(equip, user)
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(Equipment.objects.get(pk=equip.pk).available)
+        self.assertEqual(RentalInfo.objects.filter(pk=rental.pk, expected_return='2018-10-13')[0].actual_return,
+                         datetime.date.today())
+
+    def test_equip_desnt_exist(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk + 1,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_equip_is_available(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_equipment()
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_if_finds_only_one_rent(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        create_with_actual_return_rental_info(equip, user)
+        rental = create_rental_info(equip, user)
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk,)), format='json')
+        self.assertEqual(RentalInfo.objects.count(), 2)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(Equipment.objects.get(pk=equip.pk).available)
+        self.assertEqual(RentalInfo.objects.filter(pk=rental.pk, expected_return='2018-10-13')[0].actual_return,
+                         datetime.date.today())
+
+    def test_rental_info_isnt_assigned_to_user(self):
+        user = create_client()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        second_user = create_client("second")
+        create_rental_info(equip, second_user)
+        response = self.apiClient \
+            .put(reverse('equipment-return', args=(equip.pk,)), format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

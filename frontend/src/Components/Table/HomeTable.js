@@ -1,16 +1,12 @@
 import React from 'react';
-
 import Table from './Table';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
 
 function HomeTable (props) {
 
     const header = ["Nr","Nazwa","Typ","Dostępność", "Edytuj", "Usuń"];
-    var rows = []
+    var rows = props.contains;
 
-    for(var i=0; i < 10; i++){
+    for(var i=0; i < 20; i++){
         rows.push([i,"Mikrofon XYZ", "mikrofon",<Icon>done</Icon>,
         <IconButton /*className={classes.button}*/ aria-label="Delete">
             <Icon>edit</Icon>
@@ -21,7 +17,7 @@ function HomeTable (props) {
     }
      
     return (
-        <Table header={header} row={rows}/>
+        <Table header={header} row={rows} height={"700px"}/>
     );
     
 }

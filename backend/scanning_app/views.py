@@ -1,5 +1,5 @@
-import json
 from django.core.exceptions import ValidationError
+import datetime
 from rest_framework import viewsets, status, views, mixins, generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -483,8 +483,8 @@ class VerifyTokenView(TokenVerifyView):
         request_body=TokenVerifySerializer,
         responses={
             200: "User info",
-            "200 client": serializers.CustomVerifyUserSerializer,
-            "200 admins": serializers.CustomVerifyAdminsSerializer,
+            "200 client": serializers.CustomVerifyTokenClientSerializer,
+            "200 admins": serializers.CustomVerifyTokenAdminsSerializer,
             401: "Token is invalid or expired"
         }
     )
@@ -496,9 +496,9 @@ class VerifyTokenView(TokenVerifyView):
         user = JWTAuthentication.get_user(JWTAuthentication(),
                                           validated_token=validated_token)
         if user.is_client():
-            ser = serializers.CustomVerifyUserSerializer(user)
+            ser = serializers.CustomVerifyTokenClientSerializer(user)
         else:
-            ser = serializers.CustomVerifyAdminsSerializer(user)
+            ser = serializers.CustomVerifyTokenAdminsSerializer(user)
         response.data = ser.data
         return response
 
@@ -536,4 +536,70 @@ class CustomResetPasswordRequestToken(ResetPasswordRequestToken):
         try:
             return super().post(request, args, kwargs)
         except ValidationError:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        
+class RentEquipmentView(generics.GenericAPIView):
+    serializer_class = serializers.RentalInfoRentSerializer
+    permission_classes = (IsAppUser, IsAuthenticated)
+
+    @swagger_auto_schema(
+        operation_description="POST api-v1/equipment/{id}/rent/\n"
+                              "Rent equipment with id",
+        request_body=serializers.RentalInfoRentSerializer,
+        responses={
+            201: "Created rent",
+            400: "Wrong data or available==False",
+            404: "Equipment with id doesn't exist"
+        }
+    )
+    def post(self, request, pk):
+        try:
+            equip = models.Equipment.objects.get(pk=pk)
+            request.data['equipment_data'] = pk
+            request.data['client_data'] = request.user.pk
+            serializer = serializers.RentalInfoSerializer(data=request.data)
+            if equip is not None and equip.available:
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            elif equip is None:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        except models.Equipment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class ReturnEquipmentView(views.APIView):
+    permission_classes = (IsAppUser, IsAuthenticated)
+
+    @swagger_auto_schema(
+        operation_description="PUT api-v1/equipment/{id}/return/\n"
+                              "Return equipment with id",
+        responses={
+            200: "Equipment returned",
+            400: "Equipment is available",
+            401: "Rent isn't assigned to you",
+            404: "Equipment doesn't exist"
+        }
+    )
+    def put(self, request, pk):
+        try:
+            equip = models.Equipment.objects.get(pk=pk)
+            if equip is not None and not equip.available:
+                rent = models.RentalInfo.objects.filter(equipment_data=pk, actual_return=None)[0]
+                if rent.client_data.pk == request.user.pk:
+                    equip.available = True
+                    rent.actual_return = datetime.date.today()
+                    equip.save()
+                    rent.save()
+                    return Response(status=status.HTTP_200_OK)
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+            elif equip is None:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        except models.Equipment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
