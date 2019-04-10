@@ -7,12 +7,12 @@ function RentsTable (props) {
   const header = ["Nr","Nazwa","Wypożyczający","Data Wypożyczenia", "Data zwrotu", "Gdzie"];
   var rows = []
 
-  for(var i=0; i < 10; i++){
+  for(var i=0; i < 20; i++){
       rows.push([i,'Mikrofon XYZ', 'gogolix','11.12.2018', '22.01.2019', 'polibuda']);
   }
    
   return (
-      <Table header={header} row={rows}/>
+      <Table header={header} row={rows} height={"700px"}/>
   );
   
 }
