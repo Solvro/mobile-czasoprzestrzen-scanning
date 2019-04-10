@@ -538,7 +538,7 @@ class CustomResetPasswordRequestToken(ResetPasswordRequestToken):
         except ValidationError:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        
+
 class RentEquipmentView(generics.GenericAPIView):
     serializer_class = serializers.RentalInfoRentSerializer
     permission_classes = (IsAppUser, IsAuthenticated)
