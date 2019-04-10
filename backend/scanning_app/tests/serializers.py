@@ -2,10 +2,9 @@ import datetime
 from django.test import TestCase
 
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
-    UnacceptedClient, TypeOfEquipment
+    UnacceptedClient, Address, BusinessInfo, TypeOfEquipment
 from scanning_app.serializers import RentalInfoSerializer, \
     EquipmentSerializer, SignUpUnacceptedClientSerializer, ClientSerializer
-
 
 
 CLIENT_USERNAME = "username"
@@ -14,8 +13,15 @@ CLIENT_FIRST_NAME = "first"
 CLIENT_LAST_NAME = "last"
 CLIENT_EMAIL = "mail@mail.com"
 CLIENT_PHONE = "+48723124589"
-CLIENT_ADDRESS = "Adress"
-CLIENT_BUSINESS_INFO = "Bussiness info"
+CLIENT_ADDRESS = {
+    "street": "Ulica 12/13",
+    "zip_code": "50-330",
+    "city": "Wroclaw"
+}
+CLIENT_BUSINESS_INFO = {
+    "nip": "725-18-01-126",
+    "regon": "472836141"
+}
 CLIENT_DATA = {
     "username": CLIENT_USERNAME,
     "password": CLIENT_PASSWORD,
@@ -60,8 +66,8 @@ class SignUpClientSerializerTests(TestCase):
         data['address'] = CLIENT_ADDRESS
         data['business_data'] = CLIENT_BUSINESS_INFO
         saved = self.create_and_check_basic_client(data)
-        self.assertEqual(saved.address, CLIENT_ADDRESS)
-        self.assertEqual(saved.business_data, CLIENT_BUSINESS_INFO)
+        self.assertEqual(saved.address.street, CLIENT_ADDRESS['street'])
+        self.assertEqual(saved.business_data.nip, CLIENT_BUSINESS_INFO['nip'])
 
     def test_proper_partial_client_data_passed_is_valid(self):
         data = CLIENT_DATA
@@ -94,6 +100,52 @@ class ClientSerializerTests(TestCase):
         expected_data['business_data'] = None
 
         self.assertDictEqual(ser.data, expected_data)
+
+    def test_change_address_changes_address(self):
+        address = Address.objects.create(street="Ulica 12/13",
+                                         zip_code="50-330",
+                                         city="Wroclaw")
+        business_info = BusinessInfo.objects.create(nip="725-18-01-126",
+                                                    regon="472836141")
+        client = AppUser.objects.create_user(username=CLIENT_USERNAME,
+                                             password="pass",
+                                             phone="+48732288410",
+                                             address=address,
+                                             business_data=business_info)
+        new_address = {
+            "street": "Inna Ulica",
+            "zip_code": "41-141",
+            "city": "Warszawa"
+        }
+        ser = ClientSerializer(client,
+                               data={"address": new_address},
+                               partial=True)
+        self.assertTrue(ser.is_valid())
+        ser.save()
+        updated_client = AppUser.objects.get(pk=client.id)
+        self.assertEqual(updated_client.address.street, new_address['street'])
+        self.assertEqual(updated_client.address.zip_code,
+                         new_address['zip_code'])
+        self.assertEqual(updated_client.address.city, new_address['city'])
+
+    def test_change_invalid_address_is_not_valid(self):
+        address = Address.objects.create(street="Ulica 12/13",
+                                         zip_code="50-330",
+                                         city="Wroclaw")
+        business_info = BusinessInfo.objects.create(nip="725-18-01-126",
+                                                    regon="472836141")
+        client = AppUser.objects.create_user(username=CLIENT_USERNAME,
+                                             password="pass",
+                                             phone="+48732288410",
+                                             address=address,
+                                             business_data=business_info)
+        new_address = {
+            "street": "Inna Ulica",
+            "zip_code": "1-141",
+            "city": "Warszawa"
+        }
+        ser = ClientSerializer(client, data={"address": new_address})
+        self.assertFalse(ser.is_valid())
 
 
 class EquipmentSerializerTests(TestCase):
