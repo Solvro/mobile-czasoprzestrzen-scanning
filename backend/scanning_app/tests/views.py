@@ -1088,12 +1088,18 @@ class ChangePasswordViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
+def create_type_of_equipment():
+    return TypeOfEquipment.objects.create(
+        type_name="Microphone"
+    )
+
+
 def create_equipment():
     return Equipment.objects.create(
         name="Mikrofon",
         description="Costam",
         available=True,
-        type='Mic',
+        type=create_type_of_equipment(),
         max_rent_time=datetime.timedelta(days=3)
     )
 
@@ -1103,7 +1109,7 @@ def create_unavailable_equipment():
         name="Mikrofon",
         description="Costam",
         available=False,
-        type='Mic',
+        type=create_type_of_equipment(),
         max_rent_time=datetime.timedelta(days=3)
     )
 
