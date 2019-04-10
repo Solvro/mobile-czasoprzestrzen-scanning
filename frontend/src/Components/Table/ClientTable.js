@@ -11,18 +11,18 @@ function ClientTable (props) {
   const header = ["Nr","Imię i nazwisko","E-mail","Numer telefonu", "Firma","Wiadomość", "Usuń"];
   var rows = []
 
-  for(var i=0; i < 10; i++){
+  for(var i=0; i < 20; i++){
       rows.push([i,'Jakub Gogola', 'a@a.com','888888888', <Icon>clear</Icon>,
-      <IconButton /*className={classes.button}*/ aria-label="Delete">
+      <IconButton aria-label="Delete">
         <Icon>message</Icon>
       </IconButton>,
-      <IconButton /*className={classes.button}*/ aria-label="Delete">
+      <IconButton aria-label="Delete">
         <DeleteIcon />
       </IconButton>]);
   }
    
   return (
-      <Table header={header} row={rows}/>
+      <Table header={header} row={rows} height={"700px"}/>
   );
   
 }
