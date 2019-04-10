@@ -8,10 +8,12 @@ import Select from '../Selects/Select';
 
 function SearchContainerWithSelect(props) {
 
+
+
     const left = <div className='SearchField'> 
             <SearchField placeholder={props.placeholder} /></div>;
 
-    const right =  <Select />
+    const right =  <Select itemTypes={[]} />
         return (
             <div className='SearchContent'>
                 <Layout layoutDivide={"66"} leftChildren={left} rightChildren={right}></Layout>
