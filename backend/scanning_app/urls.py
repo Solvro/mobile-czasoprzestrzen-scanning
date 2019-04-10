@@ -52,7 +52,7 @@ super_admin_detail_views = views.SuperAdminRetrieveUpdateDestroy.as_view({
 
 decorated_reset_pass_request = (
     swagger_auto_schema(request_body=EmailSerializer, method='post')
-)(reset_password_request_token)
+)(views.CustomResetPasswordRequestToken.as_view())
 
 decorated_reset_pass_confirm = (
     swagger_auto_schema(request_body=PasswordTokenSerializer, method='post')

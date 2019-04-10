@@ -24,6 +24,7 @@ from . import models, serializers
 from .permissions import IsAppUser, IsThisClientOrAdminOrSuperAdmin, \
     IsAdminOrSuperAdmin, IsThisAdminOrSuperAdmin, IsSuperAdmin, \
     RentalInfoPermissions
+from django_rest_passwordreset.views import ResetPasswordRequestToken
 
 
 class EquipmentView(viewsets.ModelViewSet):
@@ -528,3 +529,11 @@ class ChangePasswordView(views.APIView):
                                   data={'error': e.message})
         return views.Response(status=status.HTTP_200_OK)
 
+
+class CustomResetPasswordRequestToken(ResetPasswordRequestToken):
+
+    def post(self, request, *args, **kwargs):
+        try:
+            return super().post(request, args, kwargs)
+        except ValidationError:
+            return Response(status=status.HTTP_404_NOT_FOUND)
