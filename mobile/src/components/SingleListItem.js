@@ -43,8 +43,13 @@ export default class SingleListItem extends React.Component {
         return(
             <ListItem>
                 <Body>
-
+                    <Text style={singleListItemStyles.name}>{item.name}</Text>
+                    <Text style={singleListItemStyles.noteText}>{item.type}</Text>
+                    <Text style={item.noteText}>{'Data zwrotu: ' + item.return_date}</Text>
                 </Body>
+                <Right>
+                    
+                </Right>
             </ListItem>
         )
     }
