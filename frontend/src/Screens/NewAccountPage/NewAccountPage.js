@@ -5,7 +5,7 @@ import InputField from '../../Components/Input/InputField';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 import Form from '../../Components/Form/Form';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
-
+import {createNewAdminAccount} from '../../services/adminService';
 
 class NewAccountPage extends Component {
 
@@ -52,7 +52,14 @@ class NewAccountPage extends Component {
     {
       this.setState({errorMsg: 'Należy wypełnić wszystkie pola oznaczone *'})
     } else {
-      alert("TODO: Zamiast tego alertu idzie POST na backend");
+      const { username, password, firstName, lastName, email, phone } = this.state;
+      const response = await createNewAdminAccount(username, password, firstName, lastName, email, phone);
+
+      if (response) {
+        alert("Utworzono nowe konto")
+      } else {
+          this.setState({errorMsg: "Coś poczło nie tak"})
+      }
     }
     
   }
