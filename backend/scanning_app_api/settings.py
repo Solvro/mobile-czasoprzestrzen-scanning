@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_rest_passwordreset',
     'django_filters',
     'drf_yasg',
     'corsheaders',
@@ -144,6 +145,8 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'scanning_app.AppUser'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #CORS settings
 CORS_ORIGIN_ALLOW_ALL = DEBUG

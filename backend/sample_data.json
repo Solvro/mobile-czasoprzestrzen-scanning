@@ -23,6 +23,7 @@
       "username": "client",
       "first_name": "Wojtek",
       "last_name": "Jóźwiak",
+      "email": "client@email.com",
       "password": "pbkdf2_sha256$120000$aqu2lcr7LGMf$dE5EyHCvWeJr/KvlYxDUaY9GRlWM8bpJZi2kgMSsMRM=",
       "phone": "+48735248900",
       "type": "Cl",
@@ -35,6 +36,7 @@
     "model": "scanning_app.AppUser",
     "fields": {
       "username": "admin",
+      "email": "admin@email.com",
       "password": "pbkdf2_sha256$120000$aqu2lcr7LGMf$dE5EyHCvWeJr/KvlYxDUaY9GRlWM8bpJZi2kgMSsMRM=",
       "phone": "+48735248900",
       "type": "Ra"
@@ -45,6 +47,7 @@
     "model": "scanning_app.AppUser",
     "fields": {
       "username": "root",
+      "email": "root@email.com",
       "password": "pbkdf2_sha256$120000$aqu2lcr7LGMf$dE5EyHCvWeJr/KvlYxDUaY9GRlWM8bpJZi2kgMSsMRM=",
       "phone": "+48735248900",
       "type": "Sa"
