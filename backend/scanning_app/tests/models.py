@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
 from django.test import TestCase
 import datetime
 
@@ -30,6 +31,7 @@ class AppUserTestCase(TestCase):
                                                     regon="472836141")
         client = AppUser.objects.create_user(username=USERNAME,
                                              password="pass",
+                                             email="example@email.com",
                                              phone="+48732288410",
                                              address=address,
                                              business_data=business_info)
@@ -38,6 +40,20 @@ class AppUserTestCase(TestCase):
         self.assertFalse(Address.objects.exists())
         self.assertFalse(BusinessInfo.objects.exists())
 
+    def test_email_duplicate_Integrity_Error_raised(self):
+        AppUser.objects.create_user(username="username",
+                                    email="example@email.com",
+                                    password="pass",
+                                    phone="+48732288410")
+        try:
+            AppUser.objects.create_user(username="username",
+                                        email="example@email.com",
+                                        password="pass",
+                                        phone="+48732288410")
+            self.fail('Duplicate email allowed')
+        except IntegrityError:
+            pass
+
 
 USERNAME = "username"
 
@@ -45,20 +61,38 @@ USERNAME = "username"
 class UnacceptedClientTests(TestCase):
 
     def test_unique_username_passed_obj_created(self):
-        AppUser.objects.create_user(username=USERNAME, password="pass",
+        AppUser.objects.create_user(username=USERNAME,
+                                    email="example@email.com",
+                                    password="pass",
                                     phone="+48732288410")
         self.assertEqual(AppUser.objects.count(), 1)
         UnacceptedClient.objects.create(username="diff username",
+                                        email="example2@email.com",
                                         password="other pass",
                                         phone="+48732450112")
         self.assertEqual(UnacceptedClient.objects.count(), 1)
 
     def test_username_in_appuser_passed_validation_error_raised(self):
-        AppUser.objects.create_user(username=USERNAME, password="pass",
+        AppUser.objects.create_user(username=USERNAME,
+                                    email="example@email.com",
+                                    password="pass",
                                     phone="+48732288410")
         self.assertEqual(AppUser.objects.count(), 1)
         self.assertRaises(ValidationError, UnacceptedClient.objects.create,
-                          username=USERNAME, password="other pass",
+                          username=USERNAME, email="example2@email.com",
+                          password="other pass",
+                          phone="+48732450112")
+        self.assertEqual(UnacceptedClient.objects.count(), 0)
+
+    def test_email_in_appuser_passed_validation_error_raised(self):
+        AppUser.objects.create_user(username=USERNAME,
+                                    email="example@email.com",
+                                    password="pass",
+                                    phone="+48732288410")
+        self.assertEqual(AppUser.objects.count(), 1)
+        self.assertRaises(ValidationError, UnacceptedClient.objects.create,
+                          username="diff name", email="example@email.com",
+                          password="other pass",
                           phone="+48732450112")
         self.assertEqual(UnacceptedClient.objects.count(), 0)
 
@@ -70,6 +104,7 @@ class UnacceptedClientTests(TestCase):
                                                     regon="472836141")
         client = UnacceptedClient.objects.create(username=USERNAME,
                                                  password="pass",
+                                                 email="example@email.com",
                                                  phone="+48732288410",
                                                  address=address,
                                                  business_data=business_info)
@@ -86,6 +121,7 @@ class UnacceptedClientTests(TestCase):
                                                     regon="472836141")
         client = UnacceptedClient.objects.create(username=USERNAME,
                                                  password="pass",
+                                                 email="example@email.com",
                                                  phone="+48732288410",
                                                  address=address,
                                                  business_data=business_info)
@@ -128,8 +164,8 @@ class BusinessInfoTests(TestCase):
                           BusinessInfo.regon_validator,
                           invalid_regon)
 
-class TypeOfEquipmentTests(TestCase):
 
+class TypeOfEquipmentTests(TestCase):
     def setUp(self):
         self.type = TypeOfEquipment(type_name="Mikro")
         self.type.save()
