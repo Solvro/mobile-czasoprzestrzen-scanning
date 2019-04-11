@@ -40,16 +40,13 @@ export default class SingleListItem extends React.Component {
      * Adds rented item when prop type is 'rented'
      */
     addRentedItem = (item) => {
-        return(
+        return (
             <ListItem>
                 <Body>
                     <Text style={singleListItemStyles.name}>{item.name}</Text>
                     <Text style={singleListItemStyles.noteText}>{item.type}</Text>
-                    <Text style={item.noteText}>{'Data zwrotu: ' + item.return_date}</Text>
+                    <Text style={item.noteText}>{'Oczekiwany zwrot: ' + item.expected_return_date}</Text>
                 </Body>
-                <Right>
-                    
-                </Right>
             </ListItem>
         )
     }
@@ -58,7 +55,16 @@ export default class SingleListItem extends React.Component {
      * Adds history item when prop type is 'history
      */
     addHistoryItem = (item) => {
-
+        return (
+            <ListItem>
+                <Body>
+                    <Text style={singleListItemStyles.name}>{item.name}</Text>
+                    <Text style={singleListItemStyles.noteText}>{item.type}</Text>
+                    <Text style={singleListItemStyles.noteText}>{'Data wypożyczenia: ' + item.rent_date}</Text>
+                    <Text style={singleListItemStyles.noteText}>{'Data zwrotu: ' + item.return_date}</Text>
+                </Body>
+            </ListItem>
+        );
     }
 
     addItem = () => {
