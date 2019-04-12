@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container, Text} from 'native-base';
-import { View, Animated, TouchableWithoutFeedback} from 'react-native';
+import {Alert, View, Animated, TouchableWithoutFeedback} from 'react-native';
 
 import profileStyles from '../styles/ProfileStyles.js';
 import buttonStyles from '../styles/ButtonStyles.js';
@@ -8,6 +8,8 @@ import image from '../assets/user-in-a-square.png';
 
 import SubmitButton from '../components/SubmitButton';
 import buttonStrings from '../assets/strings/ButtonStrings.js';
+import apiConfig from '../services/api/config';
+import alertStrings from '../assets/strings/AlertStrings.js';
 
 
 export default class ProfileView extends React.Component {
@@ -17,7 +19,8 @@ export default class ProfileView extends React.Component {
         this.imageHeight = new Animated.Value(160);
 
         this.state = {
-            username: 'user123',
+            isReady: false,
+            username: null,
         }
     }
 
@@ -25,7 +28,47 @@ export default class ProfileView extends React.Component {
 
     }
 
+    async componentWillMount() {
+        let response = await this.getData();
+        this.setState({username: response.username});
+
+        this.setState({isReady: true});
+    }
+
+    getData = async () => {
+        let fetchedData;
+        data = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId, 
+            },
+            body: JSON.stringify({
+                'token': apiConfig.clientId,
+            })
+        }
+
+        await fetch(apiConfig.url + '/api-v1/verify/', data)
+        .then((response) => {this.setState({status: response.status}); return response.json()})
+        .then((response) => {
+            if(this.state.status === 200) {
+                fetchedData = response;
+            } else {
+                Alert.alert(alertStrings.noAuthoriatzion);
+            }
+        })
+        .catch(() => {
+            Alert.alert(alertStrings.noConnectionWithServer);
+        });
+
+        return fetchedData;
+    }
+
+
     render() {
+        if(!this.state.isReady) {
+            return <Expo.AppLoading />
+        } else
         return(
             <Container>
                 <TouchableWithoutFeedback>
