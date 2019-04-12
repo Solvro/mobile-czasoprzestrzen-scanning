@@ -9,14 +9,17 @@ class QRContainer extends React.Component{
         super(props);    
     }
 
-    download() {
-        
+    download(el) {
+        const canvas = document.querySelector('.HpQrcode > canvas');
+        var image = canvas.toDataURL("image/jpg");
+        el.href = image;
     }
     render() {
         var qrValue = "rent:"+this.props.rentID;
         const rightChildren = <div>
-            <QRCode value={qrValue} />
-            <Button text={"Pobierz QR"} link={"/home"}></Button></div>;
+            <div style={{display: "none"}} className="HpQrcode">
+            <QRCode value={qrValue} renderAs={'canvas'} level={'H'} /></div>
+            <Button text={"Pobierz QR"} link={"/home"} onClick={() => this.download(this)}></Button></div>;
     return (
         <Layout layoutDivide={'282'}>
         <Layout layoutDivide={'66'}
