@@ -133,7 +133,9 @@ class NewAccountPage extends Component {
                 <Toolbar />
                 <Layout layoutDivide={"363"}>
                     {!this.state.isLoading ? this.state.form : null}
+                    
                 </Layout>
+                
                 {this.state.formError &&
                 <ErrorDisplay
                     removeError={id => {this.setState({formError: false})}}
