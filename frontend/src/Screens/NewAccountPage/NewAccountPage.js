@@ -6,18 +6,25 @@ import Toolbar from '../../Components/Toolbar/Toolbar';
 import Form from '../../Components/Form/Form';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import {createNewAdminAccount} from '../../services/adminService';
+import {createNewSuperAdminAccount} from '../../services/superAdminService';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TypeSelect from '../../Components/Selects/Select';
+
 
 class NewAccountPage extends Component {
 
   state = {
     username: '',
     password: '',
+    accountType: '',
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     errorMsg: ''
   }
+
+  
 
   handleChangeUsername = event => {
     this.setState({ username: event.target.value });
@@ -40,28 +47,71 @@ class NewAccountPage extends Component {
   }
   
   handleChangePhone = event => {
-    this.setState({ phone: event.target.value });
+    var phoneNumber = event.target.value
+    if(isNaN(phoneNumber)){
+      this.setState({errorMsg: "Numer telefonu powinien składać się z dziewięciu cyfr"})
+    } else {
+      this.setState({ phone: event.target.value });
+    }
+    
+  }
+
+  handleAccountType = event => {
+    this.setState({accountType: event.target.value});
   }
 
   validate = async e => {
     e.preventDefault();
-    if (!this.state.username ||
-        !this.state.password ||
-        !this.state.email ||
-        !this.state.phone) 
-    {
-      this.setState({errorMsg: 'Należy wypełnić wszystkie pola oznaczone *'})
-    } else {
-      const { username, password, firstName, lastName, email, phone } = this.state;
-      const response = await createNewAdminAccount(username, password, firstName, lastName, email, phone);
+    
+    try{
+      this.validateUsername(this.state.username)
+      this.validatePassword(this.state.password)
+      this.validateEmail(this.state.email)
+      this.validatePhoneNumber(this.state.phone)
+      var { username, password, firstName, lastName, email, phone } = this.state;
+      phone = "+48" + phone
+      var response;
+      if(this.state.accountType==="Admin"){
+        response = await createNewAdminAccount(username, password, firstName, lastName, email, phone);
+      } else{
+
+        response = await createNewSuperAdminAccount(username, password, firstName, lastName, email, phone);
+      }
 
       if (response) {
         alert("Utworzono nowe konto")
       } else {
-          this.setState({errorMsg: "Coś poczło nie tak"})
+         throw new Error("Coś poszło nie tak ")
       }
+    } catch(error){
+      this.setState({errorMsg: error.message})
     }
     
+  }
+
+  validateUsername(username){
+    if(!username){
+      throw new Error('Należy wypełnić wszystkie pola oznaczone *')
+    }
+  }
+
+  validatePassword(password){
+    if(!password){
+      throw new Error('Należy wypełnić wszystkie pola oznaczone *')
+    }
+  }
+
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(!re.test(String(email).toLowerCase())){
+      throw new Error('Nieprawidłowy adres email')
+    }
+  }
+
+  validatePhoneNumber(phoneNumber){
+    if(phoneNumber.toString().length !==9){
+      throw new Error('Numer telefonu powinien składać się z dziewięciu cyfr')
+    }
   }
 
   render() {
@@ -93,6 +143,9 @@ class NewAccountPage extends Component {
                       onChange = {this.handleChangePassword}>
           </InputField>
 
+          <TypeSelect value={""} onChange={this.handleAccountType} itemTypes={["Admin", "Super admin"]}></TypeSelect>
+
+
           <InputField placeholder = {"Wprowadź imię"}
                       rows = {"1"}
                       label = {"Imię"} 
@@ -114,7 +167,8 @@ class NewAccountPage extends Component {
           <InputField placeholder = {"Wprowadź numer telefonu"}
                       rows = {"1"} 
                       label = {"Telefon*"} 
-                      onChange = {this.handleChangePhone}>
+                      onChange = {this.handleChangePhone}
+                      inputprops={{startAdornment: <InputAdornment position='start' >(+48)</InputAdornment>}}>
           </InputField>
 
  

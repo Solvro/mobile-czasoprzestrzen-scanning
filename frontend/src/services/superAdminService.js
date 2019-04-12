@@ -1,10 +1,8 @@
-// import axios from 'axios';
-
 const axios = require('axios');
 
 
-export async function createNewAdminAccount(username, password, firstName, lastName, email, phone) {
-  
+
+export async function createNewSuperAdminAccount(username, password, firstName, lastName, email, phone) {
     const instance = axios.create({
         baseURL: 'http://localhost:8000/api-v1/',
         timeout: 1000,
@@ -24,15 +22,10 @@ export async function createNewAdminAccount(username, password, firstName, lastN
     }
     alert(data1.password + " " + data1.username + " " + data1.email + " " + data1.phone)
     try {
-     const response = await instance.post(`admin/`, data1);
+     const response = await instance.post(`super-admin/`, data1);
      return response.status;
     } catch (error) {
         alert(error);
      console.log(`Error: ${error}`);
     } 
 }
-
-
-
-
-
