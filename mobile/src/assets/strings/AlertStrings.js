@@ -5,7 +5,7 @@ const alertStrings = {
     invalidEmail: 'Wprowadzono błędny adres e-mail.',
     passwordToShort: 'Hasło powinno zawierać min 5 znaków.',
     differentPasswords: 'Wprowadzone hasła różnią się.',
-    invalidPhoneNumber: 'Wprowadzono błędny numer telefonu (numer telefonu powinien zawierać 9 cyfr).',
+    invalidPhoneNumber: 'Wprowadzono błędny numer telefonu (numer powinien zaczynać się od \'+48\').',
     invalidData: 'Nieprawidłowe dane!',
     correctRegistration: 'Poprawna rejestracja!', 
     possibleSignIn: 'Teraz możesz się zalogować.',
@@ -16,7 +16,10 @@ const alertStrings = {
     invalidPostalCode: 'Nieprawidłowy kod pocztowy.',
     invalidRegon: 'Nieprawidłowy numer REGON',
     unexpectedError: 'Coś poszło nie tak',
-    authorizationInfo: 'Jesteś zalogowany jako'
+    authorizationInfo: 'Jesteś zalogowany jako',
+    newPasswordButton: 'Zmień hasło',
+    passwordChanged: 'Hasło zostało zmienione',
+    incorrectPassword: 'Wprowadzono nieprawidłowe hasło'
 };
 
 module.exports = alertStrings;
