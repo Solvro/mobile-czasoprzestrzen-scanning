@@ -82,7 +82,7 @@ export async function getItemViewFromId(id) {
   }
 }
 
-export async function editItemData(id) {
+export async function editItemData(id,itemName,itemType,itemDescription,itemRentTime) {
   const instance = axios.create({
     baseURL: URL,
     timeout: 1000,
@@ -92,8 +92,16 @@ export async function editItemData(id) {
     }
   });
 
+  const data = {
+    "name": itemName,
+  "description": itemDescription,
+  "available": true,
+  "max_rent_time": itemRentTime,
+  "type": itemType
+  }
+
   try {
-    const getItem = await instance.put(`equipment/` + id + '/');
+    const getItem = await instance.put(`equipment/` + id + '/', data);
     return getItem.data;
   } catch (error) {
     console.log(`Error: ${error}`);

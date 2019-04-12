@@ -17,10 +17,11 @@ class NewAccountPage extends Component {
             itemName: '',
             itemDescription: '',
             itemRentTime: '',
-            itemType: '1',
+            itemType: 1,
             isLoading: true,
-            form: ''
-
+            form: '',
+            formError: false,
+            errorMessage: ''
         }
     }
 
@@ -67,18 +68,16 @@ class NewAccountPage extends Component {
         e.preventDefault();
         const { itemName, itemType, itemDescription,itemRentTime } = this.state;
         if(itemName=== '' || itemType === 0 || itemRentTime===''){
-        //   this.setState({ formError:  true});
-        //   this.setState({ errorMessage:  "Żadne pole nie może być puste"});
-        console.log("EROORR");
+          this.setState({ formError:  true});
+          this.setState({ errorMessage:  "Żadne pole nie może być puste"});
         }
         else{
           const editItem = await editItemData(this.itemID,itemName,itemType,itemDescription,itemRentTime);
             if (editItem) {
                 this.props.history.push('/home')
             } else {
-            //   this.setState({ formError:  true});
-            //   this.setState({ errorMessage:  "Coś poszło nie tak"});
-            console.log("Coś  ie ak");
+              this.setState({ formError:  true});
+              this.setState({ errorMessage:  "Coś poszło nie tak"});
             } 
         }
         
@@ -117,13 +116,17 @@ class NewAccountPage extends Component {
     }
 
     render() {
-        console.log(this.state.form)
         return (
             <div className="container">
                 <Toolbar />
                 <Layout layoutDivide={"363"}>
                     {!this.state.isLoading ? this.state.form : null}
                 </Layout>
+                {this.state.formError &&
+                <ErrorDisplay
+                    removeError={id => {this.setState({formError: false})}}
+                    errors={[{message: this.state.errorMessage, id: 100}]}
+                    />}
             </div>
         );
     }

@@ -71,7 +71,7 @@ class HomePage extends Component {
       }
       ID = res[i].id;
       console.log("TYPE "+ this.state.typesList)
-      rows.push([ID, res[i].name, this.state.typesList[res[i].type - 1],this.createButtonRemove(ID), available,this.createButtonEdit(ID)]);
+      rows.push([ID, res[i].name, this.state.typesList[res[i].type - 1],available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
 
     }
     var table = <Table contains={rows} />;
