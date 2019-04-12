@@ -11,6 +11,7 @@ import SingleItem from './equipment/SingleItem';
 import HistoryView from './history/HistoryView';
 import RentEquipmentView from './rent_equipment/RentEquipmentView';
 import ReturnEquipmentView from './return_equipment/ReturnEquipmentView';
+import ItemDetailsView from './item_details/ItemDetailsView';
 
 
 export const SignedOutNavigator = createStackNavigator(
@@ -40,6 +41,7 @@ export const MainNavigator = createStackNavigator(
         Rent: RentEquipmentView,
         Return: ReturnEquipmentView,
         ProfileDetails: ProfileDetailsView,
+        ItemDetails: ItemDetailsView,
     }, 
     {
         headerMode: 'none',
