@@ -26,22 +26,28 @@ class NewAccountPage extends Component {
 
     async componentDidMount() {
 
-        await getItemTypesList()
+        const itemTypes = await getItemTypesList()
             .then((res) => {
-                var itemTypes = []
+                const itemTypes = []
                 for (var i = 0; i < res.length; i++) {
                     itemTypes[i] = res[i].type_name
                 }
                 console.log(itemTypes)
-                this.setState({ typesList: itemTypes });
+                return itemTypes;
             })
         console.log("ID" + this.itemID);
-        await getItemViewFromId(this.props.location.ID)
-            .then((res) => {
-                console.log("RES" + res.name);
-                this.createForm(res);
-            })
-        this.setState({ isLoading: false });
+        const res = await getItemViewFromId(this.props.location.ID)
+
+        console.log("RES" + res.name);
+        this.setState({ itemName: res.name,
+            itemDescription: res.description,
+            itemRentTime: res.max_rent_time });
+        this.createForm(res);
+
+        this.setState({ 
+            isLoading: false,
+            typesList: itemTypes 
+        });
 
     }
 
@@ -83,24 +89,23 @@ class NewAccountPage extends Component {
             <Button link={'/home'} onClick={this.tryToEditItem} text={"Zatwierdź"}></Button></div>;
         const header = <div class='headText'>Edycja sprzętu</div>;
         
-        this.setState({ itemName: res.name });
-        this.setState({ itemDescription: res.description });
-        this.setState({ itemRentTime: res.max_rent_time });
+        
+        console.log("NAME"+this.state.itemName)
         var form = (<Form header={header} button={button}>
 
-            <InputField defaultValue={res.name}
+            <InputField defaultValue={this.state.itemName}
                 rows={"1"}
                 label={"Nazwa"}
                 onChange={this.handleChangeItemName}>
             </InputField>
 
-            <InputField defaultValue={res.description}
+            <InputField defaultValue={this.state.itemDescription}
                 label={"Opis"}
                 rows={"4"}
                 onChange={this.handleChangeItemDescpition}>
             </InputField>
 
-            <InputField defaultValue={res.max_rent_time} label={"Maksymalny czas wypożyczenia"}
+            <InputField defaultValue={this.state.itemRentTime} label={"Maksymalny czas wypożyczenia"}
                 rows={"1"} onChange={this.handleItemRentTime}
                 inputprops={{ endAdornment: <InputAdornment position="end" >dni</InputAdornment> }}>
             </InputField>
@@ -112,6 +117,7 @@ class NewAccountPage extends Component {
     }
 
     render() {
+        console.log(this.state.form)
         return (
             <div className="container">
                 <Toolbar />

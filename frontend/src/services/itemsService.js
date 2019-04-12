@@ -8,57 +8,94 @@ export async function getItemsList() {
     timeout: 1000,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + localStorage.getItem('token'),
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
     }
   });
-    
-    try {
-      const getItem = await instance.get(`equipment/`);
-      return getItem.data;
-    } catch (error) {
-      console.log(`Error: ${error}`);
-    }
-  }
 
-export async function addNewItemToItemList(itemName,itemType,itemDecription,itemRentTime) {
+  try {
+    const getItem = await instance.get(`equipment/`);
+    return getItem.data;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
+
+export async function addNewItemToItemList(itemName, itemType, itemDecription, itemRentTime) {
   const instance = axios.create({
     baseURL: URL,
     timeout: 1000,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization':'Bearer ' + localStorage.getItem('token'),
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
     }
   });
-    const data = {
-        "name": itemName,
-        "description": itemDecription,
-        "available": true,
-        "type": itemType,
-        "max_rent_time": itemRentTime
-    }
-    try {
-      const addItem = await instance.post(`equipment/`, data);
-      console.log(addItem.status);
-      return addItem.status === 201;
-    } catch (error) {
-      console.log(`Error: ${error}`);
-    }
+  const data = {
+    "name": itemName,
+    "description": itemDecription,
+    "available": true,
+    "type": itemType,
+    "max_rent_time": itemRentTime
   }
+  try {
+    const addItem = await instance.post(`equipment/`, data);
+    console.log(addItem.status);
+    return addItem.status === 201;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
 
 export async function getItemTypesList() {
-    const instance = axios.create({
-      baseURL: URL,
-      timeout: 1000,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization':'Bearer ' + localStorage.getItem('token'),
-      }
-    });
-      
-      try {
-        const getItem = await instance.get(`equipment-type/`);
-        return getItem.data;
-      } catch (error) {
-        console.log(`Error: ${error}`);
-      }
+  const instance = axios.create({
+    baseURL: URL,
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
     }
+  });
+
+  try {
+    const getItem = await instance.get(`equipment-type/`);
+    return getItem.data;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
+
+
+export async function getItemViewFromId(id) {
+  const instance = axios.create({
+    baseURL: URL,
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+    }
+  });
+
+  try {
+    const getItem = await instance.get(`equipment/` + id + '/');
+    return getItem.data;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
+
+export async function editItemData(id) {
+  const instance = axios.create({
+    baseURL: URL,
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+    }
+  });
+
+  try {
+    const getItem = await instance.put(`equipment/` + id + '/');
+    return getItem.data;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
