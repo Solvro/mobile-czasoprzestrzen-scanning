@@ -70,7 +70,6 @@ class HomePage extends Component {
         available = <Icon>done</Icon>
       }
       ID = res[i].id;
-      console.log("TYPE "+ this.state.typesList)
       rows.push([ID, res[i].name, this.state.typesList[res[i].type - 1],available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
 
     }

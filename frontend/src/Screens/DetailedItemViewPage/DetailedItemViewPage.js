@@ -7,6 +7,7 @@ import Form from '../../Components/Form/Form';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import QRContainer from '../../Components/QRContainer/QRContainer';
+import TypeSelect from '../../Components/Selects/Select';
 import { getItemViewFromId, getItemTypesList, editItemData } from '../../services/itemsService';
 
 class NewAccountPage extends Component {
@@ -17,11 +18,12 @@ class NewAccountPage extends Component {
             itemName: '',
             itemDescription: '',
             itemRentTime: '',
-            itemType: 1,
+            itemType: 0,
             isLoading: true,
             form: '',
             formError: false,
-            errorMessage: ''
+            errorMessage: '',
+            item: '1',
         }
     }
 
@@ -42,12 +44,15 @@ class NewAccountPage extends Component {
         console.log("RES" + res.name);
         this.setState({ itemName: res.name,
             itemDescription: res.description,
-            itemRentTime: res.max_rent_time });
+            itemRentTime: res.max_rent_time,
+            itemType : res.type,
+            itemTypesList: itemTypes  });
+
         this.createForm(res);
 
         this.setState({ 
             isLoading: false,
-            typesList: itemTypes 
+            
         });
 
     }
@@ -64,6 +69,10 @@ class NewAccountPage extends Component {
         this.setState({ itemRentTime: event.target.value });
     }
 
+    handleSelectChange = event => {
+        this.setState({ itemType: +event.target.value + 1 }, ()=> console.log("Item"+(this.state.itemType)));
+      };
+
     tryToEditItem = async e => {
         e.preventDefault();
         const { itemName, itemType, itemDescription,itemRentTime } = this.state;
@@ -72,6 +81,7 @@ class NewAccountPage extends Component {
           this.setState({ errorMessage:  "Żadne pole nie może być puste"});
         }
         else{
+            console.log("ITEM TYPE"+ itemType);
           const editItem = await editItemData(this.itemID,itemName,itemType,itemDescription,itemRentTime);
             if (editItem) {
                 this.props.history.push('/home')
@@ -103,6 +113,8 @@ class NewAccountPage extends Component {
                 rows={"4"}
                 onChange={this.handleChangeItemDescpition}>
             </InputField>
+
+            <TypeSelect value={this.state.item} onChange={this.handleSelectChange} itemTypes={this.state.itemTypesList}></TypeSelect>
 
             <InputField defaultValue={this.state.itemRentTime} label={"Maksymalny czas wypożyczenia"}
                 rows={"1"} onChange={this.handleItemRentTime}
