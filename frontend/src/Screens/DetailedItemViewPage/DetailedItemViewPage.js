@@ -42,17 +42,19 @@ class NewAccountPage extends Component {
         const res = await getItemViewFromId(this.props.location.ID)
 
         console.log("RES" + res.name);
-        this.setState({ itemName: res.name,
+        this.setState({
+            itemName: res.name,
             itemDescription: res.description,
             itemRentTime: res.max_rent_time,
-            itemType : res.type,
-            itemTypesList: itemTypes  });
+            itemType: res.type,
+            itemTypesList: itemTypes
+        });
 
         this.createForm(res);
 
-        this.setState({ 
+        this.setState({
             isLoading: false,
-            
+
         });
 
     }
@@ -70,36 +72,39 @@ class NewAccountPage extends Component {
     }
 
     handleSelectChange = event => {
-        this.setState({ itemType: +event.target.value + 1 }, ()=> console.log("Item"+(this.state.itemType)));
-      };
+        this.setState({ itemType: +event.target.value + 1 }, () => console.log("Item" + (this.state.itemType)));
+    };
 
     tryToEditItem = async e => {
         e.preventDefault();
-        const { itemName, itemType, itemDescription,itemRentTime } = this.state;
-        if(itemName=== '' || itemType === 0 || itemRentTime===''){
-          this.setState({ formError:  true});
-          this.setState({ errorMessage:  "Żadne pole nie może być puste"});
+        const { itemName, itemType, itemDescription, itemRentTime } = this.state;
+        if (itemName === '' || itemType === 0 || itemRentTime === '') {
+            this.setState({ formError: true });
+            this.setState({ errorMessage: "Żadne pole nie może być puste" });
         }
-        else{
-            console.log("ITEM TYPE"+ itemType);
-          const editItem = await editItemData(this.itemID,itemName,itemType,itemDescription,itemRentTime);
+        else {
+            console.log("ITEM TYPE" + itemType);
+            const editItem = await editItemData(this.itemID, itemName, itemType, itemDescription, itemRentTime);
             if (editItem) {
                 this.props.history.push('/home')
             } else {
-              this.setState({ formError:  true});
-              this.setState({ errorMessage:  "Coś poszło nie tak"});
-            } 
+                this.setState({ formError: true });
+                this.setState({ errorMessage: "Coś poszło nie tak" });
+            }
         }
-        
-      }
+
+    }
 
     createForm = (res) => {
         const button = <div><Button link={'/home'} text={"Anuluj"}></Button>
-            <Button link={'/home'} onClick={this.tryToEditItem} text={"Zatwierdź"}></Button></div>;
+            <Button link={'/home'} onClick={this.tryToEditItem} text={"Zatwierdź"}></Button>
+            <Button text={"Pobierz QR"} link={"/home"} ></Button>
+            <QRContainer rentID={this.props.location.ID}></QRContainer></div>
+
         const header = <div class='headText'>Edycja sprzętu</div>;
-        
-        
-        console.log("NAME"+this.state.itemName)
+
+
+        console.log("NAME" + this.state.itemName)
         var form = (<Form header={header} button={button}>
 
             <InputField defaultValue={this.state.itemName}
@@ -121,7 +126,7 @@ class NewAccountPage extends Component {
                 inputprops={{ endAdornment: <InputAdornment position="end" >dni</InputAdornment> }}>
             </InputField>
 
-            <QRContainer rentID={this.props.location.ID}></QRContainer>
+
         </Form>);
 
         this.setState({ form: form });
@@ -133,13 +138,13 @@ class NewAccountPage extends Component {
                 <Toolbar />
                 <Layout layoutDivide={"363"}>
                     {!this.state.isLoading ? this.state.form : null}
-                    
+
                 </Layout>
-                
+
                 {this.state.formError &&
-                <ErrorDisplay
-                    removeError={id => {this.setState({formError: false})}}
-                    errors={[{message: this.state.errorMessage, id: 100}]}
+                    <ErrorDisplay
+                        removeError={id => { this.setState({ formError: false }) }}
+                        errors={[{ message: this.state.errorMessage, id: 100 }]}
                     />}
             </div>
         );
