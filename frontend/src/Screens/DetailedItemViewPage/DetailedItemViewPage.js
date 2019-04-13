@@ -9,7 +9,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import QRContainer from '../../Components/QRContainer/QRContainer';
 import TypeSelect from '../../Components/Selects/Select';
 import { getItemViewFromId, getItemTypesList, editItemData } from '../../services/itemsService';
+import * as jsPDF from 'jspdf';
 
+const QRCode = require('qrcode.react');
 class NewAccountPage extends Component {
     constructor(props) {
         super(props);
@@ -96,10 +98,11 @@ class NewAccountPage extends Component {
     }
 
     createForm = (res) => {
+
+        const qrMessage = "rent:"+this.itemID;
         const button = <div><Button link={'/home'} text={"Anuluj"}></Button>
             <Button link={'/home'} onClick={this.tryToEditItem} text={"Zatwierdź"}></Button>
-            <Button text={"Pobierz QR"} link={"/home"} ></Button>
-            <QRContainer rentID={this.props.location.ID}></QRContainer></div>
+            <Button text={"Pobierz QR"} link={"/home"} onClick={this.print} ></Button></div>
 
         const header = <div class='headText'>Edycja sprzętu</div>;
 
@@ -126,19 +129,31 @@ class NewAccountPage extends Component {
                 inputprops={{ endAdornment: <InputAdornment position="end" >dni</InputAdornment> }}>
             </InputField>
 
+            <Layout layoutDivide={'444'}>
+                <div className="HpQrcode" style={{ padding: '2em' }}>
+                <QRCode value={qrMessage} renderAs={'canvas'} level={'H'} size={120} /></div>
+            </Layout>
+
 
         </Form>);
 
         this.setState({ form: form });
     }
 
+    print = () => {
+       const canvas = document.querySelector('.HpQrcode > canvas');
+       let pdf = new jsPDF('p', 'mm', 'a4');
+       pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 15, 40, 50, 50);
+       pdf.save("QR");
+   };
+    
+
     render() {
         return (
             <div className="container">
                 <Toolbar />
                 <Layout layoutDivide={"363"}>
-                    {!this.state.isLoading ? this.state.form : null}
-
+                    {!this.state.isLoading ? this.state.form : null} 
                 </Layout>
 
                 {this.state.formError &&
