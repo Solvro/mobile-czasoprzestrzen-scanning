@@ -40,6 +40,7 @@ class TypeOfEquipment(models.Model):
 
 
 class AppUser(AbstractUser):
+    email = models.EmailField(_('email address'), null=False, unique=True)
     phone = PhoneNumberField()
     address = models.OneToOneField(Address, null=True,
                                    on_delete=models.SET_NULL)
@@ -85,7 +86,7 @@ class UnacceptedClient(models.Model):
     password = models.CharField(_('password'), max_length=128)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), blank=True)
+    email = models.EmailField(_('email address'), null=False, unique=True)
     phone = PhoneNumberField()
     address = models.OneToOneField(Address, null=True,
                                    on_delete=models.SET_NULL)
@@ -96,12 +97,22 @@ class UnacceptedClient(models.Model):
              update_fields=None):
         # filter app users for same username
         app_user_same_username = AppUser.objects \
-            .filter(username__exact=self.username)
-        # if one exists, username is not unique
+            .filter(username__iexact=self.username)
+        # if any exists, username is not unique
         if app_user_same_username.exists():
             raise ValidationError({
                 "username": ["Not a unique username"]
             })
+
+        # filter app users for same email
+        app_user_same_email = AppUser.objects \
+            .filter(email__iexact=self.email)
+        # if any exists, email is not unique
+        if app_user_same_email.exists():
+            raise ValidationError({
+                "email": ["Not a unique email"]
+            })
+
         super(UnacceptedClient, self) \
             .save(force_insert, force_update, using, update_fields)
 

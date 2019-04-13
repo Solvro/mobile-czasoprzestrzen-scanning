@@ -77,11 +77,13 @@ class AbstractAppUserCreationTests:
 class AbstractAdminsCreationTests(AbstractAppUserCreationTests):
     def setUp(self):
         super().setUp()
-        self.create_user_set_token("Sa", "admin", "admin")
+        self.create_user_set_token("Sa", "admin", "admin",
+                                   "test_admin@email.com")
 
     def create_user_set_token(self, user_type, username="username",
-                              password="pass"):
+                              password="pass", email="test_user@email.com"):
         AppUser.objects.create_user(username=username, password=password,
+                                    email=email,
                                     phone=USER_DATA['phone'], type=user_type)
         credentials = {'username': username,
                        'password': password}
@@ -362,28 +364,30 @@ class UnacceptedClientDestroyViewTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
 
 
-def create_client(username="client"):
+def create_client(email="test_client@email.com", username="client"):
     return AppUser.objects.create_user(
         username=username,
         password="pass",
-        email="sample@email.com",
+        email=email,
         phone="+48793255012"
     )
 
 
-def create_admin(username="admin"):
+def create_admin(email="test_admin@email.com", username="admin"):
     return AppUser.objects.create_user(
         username=username,
         password="pass",
+        email=email,
         phone="+48793255012",
         type="Ra"
     )
 
 
-def create_super_admin(username="root"):
+def create_super_admin(email="test_root@email.com",username="root"):
     return AppUser.objects.create_user(
         username=username,
         password="pass",
+        email=email,
         phone="+48793255012",
         type="Sa"
     )
@@ -515,7 +519,7 @@ class ClientRetrieveTests(TestCase):
         self.assertNotIn('password', res.data)
 
     def test_another_client_token_403_returned(self):
-        diff_client = create_client("diff")
+        diff_client = create_client("diff@email.com", "diff")
         login_as_user(self.apiClient, diff_client)
         res = self.apiClient.get(reverse('client-detail',
                                          args=(self.client.id,)))
@@ -569,7 +573,7 @@ class AdminRetrieveTests(TestCase):
         self.assertNotIn('password', res.data)
 
     def test_another_admin_token_403_returned(self):
-        login_as_user(self.apiClient, create_admin("diff"))
+        login_as_user(self.apiClient, create_admin("diff@email.com", "diff"))
         res = self.apiClient.get(reverse('admin-detail',
                                          args=(self.admin.id,)))
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
@@ -620,7 +624,8 @@ class SuperAdminRetrieveTests(TestCase):
         self.assertNotIn('password', res.data)
 
     def test_another_super_admin_token_data_returned(self):
-        login_as_user(self.apiClient, create_super_admin("diff"))
+        login_as_user(self.apiClient,
+                      create_super_admin("diff@email.com", "diff"))
         res = self.apiClient.get(reverse('super-admin-detail',
                                          args=(self.super_admin.id,)))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -660,7 +665,7 @@ class ClientUpdateTests(TestCase):
                          self.body['email'])
 
     def test_another_client_token_403_returned(self):
-        login_as_user(self.apiClient, create_client("diff"))
+        login_as_user(self.apiClient, create_client("diff@email.com", "diff"))
         res = self.apiClient.patch(
             reverse('client-detail', args=(self.client.id,)),
             self.body,
@@ -735,7 +740,7 @@ class AdminUpdateTests(TestCase):
                          self.body['email'])
 
     def test_another_admin_token_403_returned(self):
-        login_as_user(self.apiClient, create_admin("diff"))
+        login_as_user(self.apiClient, create_admin("diff@email.com", "diff"))
         res = self.apiClient.patch(
             reverse('admin-detail', args=(self.admin.id,)),
             self.body,
@@ -808,7 +813,8 @@ class SuperAdminUpdateTests(TestCase):
                          self.body['email'])
 
     def test_another_super_admin_token_model_updated(self):
-        login_as_user(self.apiClient, create_super_admin("diff"))
+        login_as_user(self.apiClient,
+                      create_super_admin("diff@email.com", "diff"))
         res = self.apiClient.patch(
             reverse('super-admin-detail', args=(self.super_admin.id,)),
             self.body,
@@ -846,7 +852,7 @@ class ClientDeleteTests(TestCase):
         self.assertFalse(AppUser.objects.filter(type="Cl").exists())
 
     def test_other_client_token_403_returned(self):
-        login_as_user(self.apiClient, create_client("diff"))
+        login_as_user(self.apiClient, create_client("diff@email.com", "diff"))
         res = self.apiClient.delete(reverse('client-detail',
                                             args=(self.client.id,)))
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
@@ -896,7 +902,7 @@ class AdminDeleteTests(TestCase):
         self.assertFalse(AppUser.objects.filter(type="Ra").exists())
 
     def test_other_admin_token_403_returned(self):
-        login_as_user(self.apiClient, create_admin("diff"))
+        login_as_user(self.apiClient, create_admin("diff@email.com", "diff"))
         res = self.apiClient.delete(reverse('admin-detail',
                                             args=(self.admin.id,)))
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
@@ -945,7 +951,8 @@ class SuperAdminDeleteTests(TestCase):
         self.assertFalse(AppUser.objects.filter(type="Sa").exists())
 
     def test_other_super_admin_token_deleted(self):
-        login_as_user(self.apiClient, create_super_admin("diff"))
+        login_as_user(self.apiClient,
+                      create_super_admin("diff@email.com", "diff"))
         res = self.apiClient.delete(reverse('super-admin-detail',
                                             args=(self.super_admin.id,)))
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
@@ -1230,7 +1237,7 @@ class ReturnEquipmentView(TestCase):
         user = create_client()
         login_as_user(self.apiClient, user)
         equip = create_unavailable_equipment()
-        second_user = create_client("second")
+        second_user = create_client("second@email.com", "second")
         create_rental_info(equip, second_user)
         response = self.apiClient \
             .put(reverse('equipment-return', args=(equip.pk,)), format='json')
