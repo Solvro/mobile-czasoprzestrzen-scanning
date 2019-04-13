@@ -26,15 +26,6 @@ export const SignedOutNavigator = createStackNavigator(
     }
 );
 
-export const DrawerNavigator = createDrawerNavigator(
-    {
-        Home: HomeScreen,
-        Profile: ProfileView,
-        History: HistoryView,
-    },
-    
-);
-
 export const BottomTabNavigator = createBottomTabNavigator(
     {
         Home: HomeScreen,
@@ -46,7 +37,6 @@ export const BottomTabNavigator = createBottomTabNavigator(
             tabBarIcon: ({ tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
-                console.log(routeName);
                 if (routeName === 'Home') {
                     iconName = 'md-home';
                 } else if (routeName === 'Profile') {
@@ -68,7 +58,6 @@ export const BottomTabNavigator = createBottomTabNavigator(
 
 export const MainNavigator = createStackNavigator(
     {
-        //Menu: DrawerNavigator,
         Menu: BottomTabNavigator,
         Home: HomeScreen,
         Equipment: EquipmentList,
