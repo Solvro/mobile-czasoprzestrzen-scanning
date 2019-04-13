@@ -20,11 +20,11 @@ class AdminPage extends Component {
       unacceptClientTable: '',
       loginError: false,
       errorMessage: '',
-      infoDisplay: false,
       infoMessage: '',
       data: '',
       isLoading: true
     };
+    this.state.infoMessage=this.props.location.infoMessage
   }
 
 
@@ -46,7 +46,6 @@ class AdminPage extends Component {
   approveClient = async (id) => {
     var res = await approveUnacceptedClient(id);
     if (res) {
-      this.setState({ infoDisplay: true });
       this.setState({ infoMessage: 'Klient zaakceptowany' });
     }
     else {
@@ -59,11 +58,9 @@ class AdminPage extends Component {
   removeClient = async (id) => {
     var res = await removeUnacceptedClient(id);
     if (res) {
-      this.setState({ infoDisplay: true });
       this.setState({ infoMessage: 'Klient usunięty' });
     }
     else {
-      this.setState({ loginError: true });
       this.setState({ errorMessage: 'Coś poszło nie tak' });
     }
     this.updateData();
@@ -123,9 +120,9 @@ class AdminPage extends Component {
             removeError={id => { this.setState({ loginError: false }) }}
             errors={[{ message: this.state.errorMessage, id: 100 }]}
           />}
-        {this.state.infoDisplay &&
+        {this.state.infoMessage &&
           <InfoDisplay
-            removeInfo={id => { this.setState({ infoDisplay: false }) }}
+            removeInfo={id => { this.setState({ infoMessage: false }) }}
             info={[{ message: this.state.infoMessage, id: 100 }]}
           />}
       </div>

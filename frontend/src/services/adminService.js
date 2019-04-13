@@ -22,13 +22,11 @@ export async function createNewAdminAccount(username, password, firstName, lastN
         "email": email,
         "phone": phone
     }
-    alert(data1.password + " " + data1.username + " " + data1.email + " " + data1.phone)
     try {
-     const response = await instance.post(`admin/`, data1);
-     return response.status;
+        const response = await instance.post(`admin/`, data1);
+        return response.status;
     } catch (error) {
-        alert(error);
-     console.log(`Error: ${error}`);
+        return error.response.status;
     } 
 }
 

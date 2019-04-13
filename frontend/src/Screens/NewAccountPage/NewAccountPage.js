@@ -63,7 +63,7 @@ class NewAccountPage extends Component {
   validate = async e => {
     e.preventDefault();
     
-    try{
+    try {
       this.validateUsername(this.state.username)
       this.validatePassword(this.state.password)
       this.validateEmail(this.state.email)
@@ -71,17 +71,24 @@ class NewAccountPage extends Component {
       var { username, password, firstName, lastName, email, phone } = this.state;
       phone = "+48" + phone
       var response;
-      if(this.state.accountType==="Admin"){
+      if(this.state.accountType==0){ 
         response = await createNewAdminAccount(username, password, firstName, lastName, email, phone);
       } else{
 
         response = await createNewSuperAdminAccount(username, password, firstName, lastName, email, phone);
       }
 
-      if (response) {
-        alert("Utworzono nowe konto")
+      if (response===200) {
+        this.props.history.push({
+          pathname: '/account',
+          infoMessage: 'Pomyślnie utworzono nowe konto ' + (this.state.accountType==="Admin" ? "admina" : "super admina")
+        })
+      } else if(response===400){
+        throw new Error("Konto z taką nazwą już istnieje")
+      } else if(response===403){
+        throw new Error("Nie masz uprawnień do wykonania tej akcji")
       } else {
-         throw new Error("Coś poszło nie tak ")
+        throw new Error("Coś poszło nie tak")
       }
     } catch(error){
       this.setState({errorMsg: error.message})

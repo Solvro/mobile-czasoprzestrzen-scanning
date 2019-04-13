@@ -28,11 +28,15 @@ validate = async e => {
     } else {
       const response = await changePassword(this.state.oldPassword, this.state.newPassword);
 
-      if (response) {
-        alert("Zmieniono hasło")
-        this.props.history.push('/account')
+      if (response===200) {
+        this.props.history.push({
+          pathname: '/account',
+          infoMessage: 'Pomyślnie zmieniono hasło'
+        })
+      } else if(response===401){
+          this.setState({errorMsg: "Wprowadzono niepoprawne hasło"})
       } else {
-          this.setState({errorMsg: "Coś poczło nie tak"})
+          this.setState({errorMsg: "Coś poszło nie tak"})
       }
     }
     

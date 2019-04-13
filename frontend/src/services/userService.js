@@ -68,9 +68,8 @@ export async function changePassword(oldPassword, newPassword) {
   }
   try {
       const response = await instance.post(`change-password/`, data1);
-      console.log(response.status)
       return response.status;
   } catch (error) {
-      console.log(`Error: ${error}`);
+      return error.response.status;
   }
 }
