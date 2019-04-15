@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Layout from '../../Components/Layout/Layout';
 import Button from '../../Components/Button/Button';
-import SearchContainer from '../../Components/SearchContainer/SearchContainer';
 import Table from '../../Components/Table/ClientsWaitingForApprovalTable';
 import AdminTable from '../../Components/Table/AllAdminTable'
 import './AdminPage.css';
@@ -128,7 +127,7 @@ class AdminPage extends Component {
     });
     superAdminList.forEach((admin) => {
       rows.push([ID, admin.first_name + ' ' + admin.last_name,admin.username, admin.email, admin.phone,
-        <Icon>done</Icon>, <Icon>close</Icon>]);
+        <Icon>done</Icon>,]);
         ID++;
     });
     const table = <AdminTable contains={rows} />;
@@ -140,9 +139,7 @@ class AdminPage extends Component {
     const left = <div className='Table'>
 
       <Toolbar />
-      <SearchContainer placeholder={"Wyszukaj po nazwie ..."} />
       {!this.state.isLoading ? this.state.unacceptClientTable : null}
-      <SearchContainer placeholder={"Wyszukaj po nazwie ..."} margin={"small"} />
       {!this.state.isLoading ? this.state.adminTable : null}
     </div>;
 
