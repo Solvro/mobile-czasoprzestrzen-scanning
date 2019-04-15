@@ -16,6 +16,7 @@ import { MuiThemeProvider} from '@material-ui/core/styles';
 import theme from './theme';
 import NewAccountPage from './Screens/NewAccountPage/NewAccountPage';
 import ChangePasswordPage from './Screens/ChangePasswordPage/ChangePasswordPage';
+import DetailedItemView from './Screens/DetailedItemViewPage/DetailedItemViewPage';
 
 class App extends React.Component {
 
@@ -46,6 +47,7 @@ class App extends React.Component {
             <PrivateRoute path='/adds' component={AddItemPage} />
             <PrivateRoute path="/createNewAccount" component={NewAccountPage} />
             <PrivateRoute path="/changePassword" component={ChangePasswordPage} />
+            <PrivateRoute path="/detailedItem" component={DetailedItemView} />
         </Switch> 
       </Router>      
     </MuiThemeProvider>

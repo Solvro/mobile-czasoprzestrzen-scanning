@@ -55,7 +55,9 @@ export default class EquipmentList extends React.Component {
         } else {;
             return(
                 <Container style={equipmentListStyles.container}>
-                   <ItemsList items={this.state.items}/>
+                    <ItemsList
+                        type='equipment'
+                        items={this.state.items} />
                 </Container>
             )
         }
