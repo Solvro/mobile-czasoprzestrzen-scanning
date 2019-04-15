@@ -38,7 +38,6 @@ class HomePage extends Component {
       for(var i = 0; i < res.length; i++){
           itemTypes[i] = res[i].type_name
       }
-      console.log(itemTypes)
       this.setState({typesList : itemTypes});
     })
     await getItemsList()

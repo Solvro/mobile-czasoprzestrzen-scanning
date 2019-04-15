@@ -3,6 +3,7 @@ import Layout from '../../Components/Layout/Layout';
 import Button from '../../Components/Button/Button';
 import SearchContainer from '../../Components/SearchContainer/SearchContainer';
 import Table from '../../Components/Table/ClientsWaitingForApprovalTable';
+import AdminTable from '../../Components/Table/AllAdminTable'
 import './AdminPage.css';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 import { getUnacceptedClientsList, approveUnacceptedClient, removeUnacceptedClient } from '../../services/unacceptedClientService';
@@ -12,6 +13,7 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
+import {getSuperAdminList,getAdminList} from '../../services/adminService';
 class AdminPage extends Component {
 
   constructor(props) {
@@ -23,7 +25,8 @@ class AdminPage extends Component {
       infoDisplay: false,
       infoMessage: '',
       data: '',
-      isLoading: true
+      isLoading: true,
+      adminTable: ''
     };
   }
 
@@ -35,6 +38,11 @@ class AdminPage extends Component {
       this.createTable(res);
       
     })
+
+    const adminList = await getAdminList();
+    const superAdminList = await getSuperAdminList();
+
+    this.createAdminTable(adminList,superAdminList);
   }
 
   updateData = async () => {
@@ -93,6 +101,23 @@ class AdminPage extends Component {
     this.setState({ unacceptClientTable: table });
   }
 
+  createAdminTable = (adminList, superAdminList) => {
+    var rows = [];
+    var ID = 1;
+    adminList.forEach((admin) => {
+      rows.push([ID, admin.first_name + ' ' + admin.last_name,admin.username, admin.email, admin.phone,
+        <Icon>home</Icon>, this.createButtonRemove(ID)]);
+        ID++;
+    });
+    superAdminList.forEach((admin) => {
+      rows.push([ID, admin.first_name + ' ' + admin.last_name,admin.username, admin.email, admin.phone,
+        <Icon>done</Icon>, <Icon>close</Icon>]);
+        ID++;
+    });
+    const table = <AdminTable contains={rows} />;
+    this.setState({ adminTable: table });
+  }
+
   render() {
 
     const left = <div className='Table'>
@@ -100,6 +125,8 @@ class AdminPage extends Component {
       <Toolbar />
       <SearchContainer placeholder={"Wyszukaj po nazwie ..."} />
       {!this.state.isLoading ? this.state.unacceptClientTable : null}
+      <SearchContainer placeholder={"Wyszukaj po nazwie ..."} margin={"small"} />
+      {!this.state.isLoading ? this.state.adminTable : null}
     </div>;
 
     const right = <div className='ButtonGroup'>
