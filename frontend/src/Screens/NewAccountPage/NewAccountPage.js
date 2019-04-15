@@ -78,7 +78,7 @@ class NewAccountPage extends Component {
         response = await createNewSuperAdminAccount(username, password, firstName, lastName, email, phone);
       }
 
-      if (response===200) {
+      if (response===201 || response===200) {
         this.props.history.push({
           pathname: '/account',
           infoMessage: 'Pomyślnie utworzono nowe konto ' + (this.state.accountType==="Admin" ? "admina" : "super admina")
