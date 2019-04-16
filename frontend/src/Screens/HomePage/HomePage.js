@@ -10,6 +10,7 @@ import Icon from '@material-ui/core/Icon';
 import {getItemsList,getItemTypesList} from '../../services/itemsService';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
+import {Link} from 'react-router-dom';
 class HomePage extends Component {
 
   
@@ -50,7 +51,11 @@ class HomePage extends Component {
 
   }
   createButtonEdit(id) {
-    return <IconButton aria-label="Approve" onClick={() => console.log(id)}><Icon>edit</Icon> </IconButton>;
+    const newTo = { 
+      pathname: "/detailedItem", 
+      ID: id 
+    };
+    return <Link to={newTo}><IconButton aria-label="Approve" onClick={() => console.log(id)}><Icon>arrow_forward</Icon> </IconButton></Link>;
   }
   createButtonRemove(id) {
     return <IconButton aria-label="Delete" onClick={() => console.log(id)}> <DeleteIcon /></IconButton>;
@@ -65,8 +70,7 @@ class HomePage extends Component {
         available = <Icon>done</Icon>
       }
       ID = res[i].id;
-      console.log("TYPE "+ this.state.typesList)
-      rows.push([ID, res[i].name, this.state.typesList[res[i].type - 1], available,this.createButtonEdit(ID),this.createButtonRemove(ID)]);
+      rows.push([ID, res[i].name, this.state.typesList[res[i].type - 1],available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
 
     }
     var table = <Table contains={rows} />;

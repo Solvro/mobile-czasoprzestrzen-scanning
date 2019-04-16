@@ -6,7 +6,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import ReactTableContainer from "react-table-container";
 
 const CustomTableCell = withStyles(theme => ({
@@ -24,6 +23,7 @@ const styles = theme => ({
       width: '100%',
       marginTop: theme.spacing.unit * 3,
       overflowX: 'auto',
+      overflowY: 'auto',
     },
     table: {
       minWidth: 700,
@@ -70,8 +70,7 @@ function table (props) {
     }
  
   return (
-    <Paper className={classes.root}>
-      <ReactTableContainer width="100%" height={props.height} customHeader={[TableHead]}>
+      <ReactTableContainer width="100%" height={props.height} customHeader={[TableHead]} className={classes.root}>
         <Table >
           <TableHead>
             <TableRow>
@@ -83,7 +82,6 @@ function table (props) {
           </TableBody>
         </Table>
       </ReactTableContainer>
-    </Paper>
   );
 }
 

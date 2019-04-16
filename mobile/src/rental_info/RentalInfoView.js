@@ -5,7 +5,7 @@ import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
 
-export default class HistoryView extends React.Component {
+export default class RentalInfoView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -30,7 +30,7 @@ export default class HistoryView extends React.Component {
                     name: 'An item',
                     type: 'Type',
                     rent_date: '01-01-2019',
-                    return_date: '01-01-2019',
+                    expected_return_date: '01-01-2019',
                 }
             )
         }
@@ -45,7 +45,7 @@ export default class HistoryView extends React.Component {
             return(
                 <Container style={equipmentListStyles.container}>
                     <ItemsList
-                        type='history'
+                        type='rented'
                         items={this.state.items} />
                 </Container>
             )
