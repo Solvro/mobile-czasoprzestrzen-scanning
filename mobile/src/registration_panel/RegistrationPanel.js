@@ -44,7 +44,7 @@ export default class RegistrationPanel extends React.Component {
             nip: null,
             regon: null,
             isPerson: true,
-            numOfViews: 3,
+            numOfViews: 2,
         }
     }
 
@@ -336,7 +336,7 @@ export default class RegistrationPanel extends React.Component {
         } else {
             this.setState({
                 isPerson: true,
-                numOfViews: 3
+                numOfViews: 2
             });
         }
     }
