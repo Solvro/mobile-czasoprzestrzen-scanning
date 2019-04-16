@@ -100,7 +100,7 @@ export default class RegistrationPanel extends React.Component {
         } else {
             if (!this.state.isPerson) {
                 if (!(this.state.street && this.state.postalCode && this.state.city
-                    && this.state.nip && this.state.regon))
+                    && this.state.nip && this.state.regon && this.state.companyName))
                     return false;
             }
         }
@@ -155,31 +155,12 @@ export default class RegistrationPanel extends React.Component {
      */
     handlePressRegister = () => {
         let validationResult = this.validateData();
-        let address = null;
-        let businessData = null;
 
         if (!validationResult) {
             return;
         }
 
-        const { username, password1, firstName, lastName, email, phoneNumber } = this.state;
-
-        if (!this.state.isPerson) {
-            result = this.getBusinessData();
-            address = result[0];
-            businessData = result[1];
-        }
-
-        let bodyData = JSON.stringify({
-            'username': username,
-            'password': password1,
-            'first_name': firstName,
-            'last_name': lastName,
-            'email': email,
-            'phone': '+48' + phoneNumber,
-            'address': address,
-            'business_data': businessData,
-        });
+        let bodyData = this.generateData();
 
         let data = {
             method: 'POST',
@@ -204,9 +185,55 @@ export default class RegistrationPanel extends React.Component {
             });
     }
 
+    generateData = () => {
+        let address = null;
+        let businessData = null;
+        let data = null;
+
+        const { username, password1, firstName, lastName, email, phoneNumber } = this.state;
+
+        if (!this.state.isPerson) {
+            result = this.getBusinessData();
+            address = result[0];
+            businessData = result[1];
+
+            data = JSON.stringify({
+                'username': username,
+                'password': password1,
+                'first_name': firstName,
+                'last_name': lastName,
+                'email': email,
+                'phone': '+48' + phoneNumber,
+                'address': address,
+                'business_data': businessData,
+            });
+        } else {
+            
+            data = JSON.stringify({
+                'username': username,
+                'password': password1,
+                'first_name': firstName,
+                'last_name': lastName,
+                'email': email,
+                'phone': '+48' + phoneNumber
+            });
+        }
+
+        return data;
+    }
+
     getBusinessData = () => {
-        address = this.state.street + ' ' + this.state.city + ' ' + this.state.postalCode;
-        bussinesData = 'NIP: ' + this.state.nip + ' REGON: ' + this.state.regon;
+        let address = {
+            'street': this.state.street,
+            'zip_code': this.state.postalCode,
+            'city': this.state.city,
+        };
+
+        let bussinesData = {
+            'nip': this.state.nip,
+            'regon': this.state.regon,
+        };
+
         return [address, bussinesData];
     }
 
