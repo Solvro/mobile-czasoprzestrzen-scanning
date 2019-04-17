@@ -178,7 +178,7 @@ class CustomVerifyTokenClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AppUser
-        fields = ('id', 'username', 'first_name', 'last_name',
+        fields = ('id', 'username', 'first_name', 'last_name', 'type',
                   'email', 'phone', 'address', 'business_data', 'is_business')
 
     def get_is_business(self, obj):
@@ -188,7 +188,7 @@ class CustomVerifyTokenClientSerializer(serializers.ModelSerializer):
 class CustomVerifyTokenAdminsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
-        fields = ('id', 'username', 'first_name', 'last_name',
+        fields = ('id', 'username', 'first_name', 'last_name', 'type',
                   'email', 'phone',)
 
 
