@@ -19,6 +19,7 @@ from .permissions import PostPermissions, RentalInfoPermissions, \
     IsSuperAdmin, IsAdminOrSuperAdmin
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.openapi import Parameter
 
 from . import models, serializers
 from .permissions import IsAppUser, IsThisClientOrAdminOrSuperAdmin, \
@@ -98,6 +99,7 @@ class EquipmentView(viewsets.ModelViewSet):
         operation_description="DELETE /api-v1/equipment/{id}/\n"
                               "Delete equipment",
         responses={
+            400: 'Client has ongoing rents',
             401: 'No token provided',
             403: 'User in token doesn\'t have permissions to '
                  'delete equipment (Not admin or super admin)',
@@ -556,13 +558,31 @@ class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
 
 class RentalInfoView(viewsets.ModelViewSet):
     queryset = models.RentalInfo.objects.all()
-    serializer_class = serializers.RentalInfoSerializer
     permission_classes = (RentalInfoPermissions,)
+
+    def get_queryset(self):
+        qs = self.queryset
+        user = AppUser.objects.get(pk=self.request.user.id)
+        if user.is_client():
+            qs = qs.filter(client_data=user)
+        if 'status' in self.request.query_params:
+            status = self.request.query_params['status']
+            if status == 'ongoing':
+                qs = qs.filter(actual_return__isnull=True)
+            elif status == 'finished':
+                qs = qs.filter(actual_return__isnull=False)
+        return qs
 
     def get_serializer_class(self):
         if self.action in ['retrieve', 'list']:
             return serializers.RentalInfoGetSerializer
         return serializers.RentalInfoSerializer
+
+    @swagger_auto_schema(
+        manual_parameters=[Parameter('status', 'query', type='string', enum=['finished', 'ongoing'])]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         equipment_to_rent = \
