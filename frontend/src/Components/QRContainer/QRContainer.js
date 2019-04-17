@@ -1,7 +1,5 @@
 import React from 'react';
 import Layout from '../../Components/Layout/Layout';
-import * as jsPDF from 'jspdf';
-import { renderToString } from "react-dom/server";
 const QRCode = require('qrcode.react');
 
 class QRContainer extends React.Component {
