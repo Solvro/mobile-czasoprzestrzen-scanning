@@ -36,7 +36,7 @@ class BusinessInfo(models.Model):
 
 
 class TypeOfEquipment(models.Model):
-    type_name = models.CharField(max_length=255)
+    type_name = models.CharField(max_length=255, unique=True)
 
 
 class AppUser(AbstractUser):
@@ -161,8 +161,10 @@ class RentalInfo(models.Model):
     rental_date = models.DateField(auto_now=True)
     expected_return = models.DateField()
     actual_return = models.DateField(null=True)
-    equipment_data = models.ForeignKey(Equipment, on_delete=models.DO_NOTHING)
-    client_data = models.ForeignKey(AppUser, on_delete=models.DO_NOTHING)
+    equipment_data = models.ForeignKey(Equipment, on_delete=models.SET_NULL,
+                                       null=True)
+    client_data = models.ForeignKey(AppUser, on_delete=models.SET_NULL,
+                                    null=True)
 
     def __str__(self):
         return "{}".format(self.rental_date)

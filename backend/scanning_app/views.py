@@ -34,6 +34,91 @@ class EquipmentView(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('name', 'available', 'type')
 
+    @swagger_auto_schema(
+        operation_description="POST /api-v1/equipment/\n"
+                              "Create new equipment",
+        responses={
+            400: 'Obligatory field not provided or type name duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'create equipment (Not admin or super admin)'
+        }
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/equipment/{id}/\n"
+                              "Retrieve equipment with given id",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'retrieve equipment (Not this client or admin or super admin)',
+            404: 'No equipment with given id found'
+        }
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="PUT /api-v1/equipment/{id}/\n"
+                              "Update equipment with given id",
+        responses={
+            400: 'Obligatory field not provided or invalid value ',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update equipment (Not admin or super admin)',
+            404: 'No equipment with given id found'
+        }
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="PATCH /api-v1/equipment/{id}/\n"
+                              "Update equipment with given id",
+        responses={
+            400: 'Invalid value',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update equipment (Not admin or super admin)',
+            404: 'No equipment with given id found'
+        }
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/equipment/{id}/\n"
+                              "Delete equipment",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'delete equipment (Not admin or super admin)',
+            404: 'No equipment with given id found'
+        }
+    )
+    def destroy(self, request, *args, **kwargs):
+        has_ongoing_rents = RentalInfo.objects \
+            .filter(equipment_data=self.get_object()) \
+            .filter(actual_return__isnull=True) \
+            .exists()
+        if has_ongoing_rents:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return super().destroy(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/equipment/\n"
+                              "List all equipment",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'list equipment (Not admin or super admin)'
+        }
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
 
 class TypeOfEquipmentView(viewsets.ModelViewSet):
     queryset = TypeOfEquipment.objects.all()
@@ -56,7 +141,7 @@ class TypeOfEquipmentView(viewsets.ModelViewSet):
         operation_description="POST /api-v1/equipment-type/\n"
                               "Create new type",
         responses={
-            400: 'Obligatory field not provided or username duplicate',
+            400: 'Obligatory field not provided or type name duplicate',
             401: 'No token provided',
             403: 'User in token doesn\'t have permissions to '
                  'create type (Not admin or super admin)'
@@ -300,8 +385,7 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         operation_description="PATCH /api-v1/client/{id}/\n"
                               "Update client with given id",
         responses={
-            400: 'Obligatory field not provided or invalid value '
-                 'or username duplicate',
+            400: 'Invalid value or username duplicate',
             401: 'No token provided',
             403: 'User in token doesn\'t have permissions to '
                  'update client (Not this client or admin or super admin)',
@@ -313,9 +397,9 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
 
     @swagger_auto_schema(
         operation_description="DELETE /api-v1/client/{id}/\n"
-                              "Delete client with given id\n"
-                              "!!!AS OF NOW ONCE CLIENT IS DELETED ALL OF HIS RENT HISTORY IS DELETED AS WELL!!!",
+                              "Delete client with given id\n",
         responses={
+            400: 'Client has ongoing equipment rents',
             401: 'No token provided',
             403: 'User in token doesn\'t have permissions to '
                  'update client (Not this client or admin or super admin)',
@@ -323,6 +407,12 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         }
     )
     def destroy(self, request, *args, **kwargs):
+        has_ongoing_rents = RentalInfo.objects\
+            .filter(client_data=self.get_object())\
+            .filter(actual_return__isnull=True)\
+            .exists()
+        if has_ongoing_rents:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().destroy(request, *args, **kwargs)
 
 

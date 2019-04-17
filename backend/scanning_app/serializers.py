@@ -159,6 +159,10 @@ class RentalInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RentalInfo
         exclude = ('rental_date',)
+        extra_kwargs = {
+            'equipment_data': {'required': True},
+            'client_data': {'required': True}
+        }
 
 
 class RentalInfoGetSerializer(serializers.ModelSerializer):
