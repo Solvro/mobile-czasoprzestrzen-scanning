@@ -24,6 +24,7 @@ function SearchField(props) {
             <div>
             <div className='normalText'>{props.label} </div>
             <TextField
+                defaultValue = {props.defaultValue}
                 placeholder={props.placeholder}
                 fullWidth
                 onChange={props.onChange}

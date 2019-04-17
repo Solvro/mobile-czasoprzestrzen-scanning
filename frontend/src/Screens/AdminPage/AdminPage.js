@@ -47,6 +47,11 @@ class AdminPage extends Component {
   updateData = async () => {
     await getUnacceptedClientsList()
       .then((res) => this.createTable(res));
+    
+    const adminList = await getAdminList();
+    const superAdminList = await getSuperAdminList();
+  
+    this.createAdminTable(adminList,superAdminList);
     this.forceUpdate();
   }
 

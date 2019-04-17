@@ -16,7 +16,8 @@ const styles = theme => ({
   },
   sizeButton: {
     width: '15em',
-    height: '5em'
+    height: '5em',
+    margin: '0 1em'
   },
   verticalButton:{
     width: '20em',
