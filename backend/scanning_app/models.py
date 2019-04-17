@@ -33,6 +33,7 @@ class BusinessInfo(models.Model):
 
     nip = models.CharField(max_length=13, validators=[nip_validator])
     regon = models.CharField(max_length=9, validators=[regon_validator])
+    name = models.CharField(max_length=64)
 
 
 class TypeOfEquipment(models.Model):
