@@ -29,10 +29,16 @@ from django_rest_passwordreset.views import ResetPasswordRequestToken
 
 class EquipmentView(viewsets.ModelViewSet):
     queryset = models.Equipment.objects.all()
-    serializer_class = serializers.EquipmentSerializer
+    # serializer_class = serializers.EquipmentSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('name', 'available', 'type')
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return serializers.EquipmentCreateSerializer
+        else:
+            return serializers.EquipmentSerializer
 
     @swagger_auto_schema(
         operation_description="POST /api-v1/equipment/\n"

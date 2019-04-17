@@ -6,10 +6,24 @@ from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, \
     Address, BusinessInfo, TypeOfEquipment
 
 
+class TypeOfEquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeOfEquipment
+        fields = '__all__'
+
+
 class EquipmentSerializer(serializers.ModelSerializer):
+    type = TypeOfEquipmentSerializer(required=False, many=False)
+
     class Meta:
         model = Equipment
         fields = '__all__'
+
+
+class EquipmentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipment
+        exclude = ('available',)
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -21,12 +35,6 @@ class AddressSerializer(serializers.ModelSerializer):
 class BusinessInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = BusinessInfo
-        fields = '__all__'
-
-
-class TypeOfEquipmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TypeOfEquipment
         fields = '__all__'
 
 
@@ -166,6 +174,9 @@ class RentalInfoSerializer(serializers.ModelSerializer):
 
 
 class RentalInfoGetSerializer(serializers.ModelSerializer):
+    equipment_data = EquipmentSerializer(required=False, many=False)
+    client_data = ClientSerializer(required=False, many=False)
+
     class Meta:
         model = RentalInfo
         fields = '__all__'
