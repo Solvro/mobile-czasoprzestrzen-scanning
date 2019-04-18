@@ -46,8 +46,11 @@ export default class ProfileDetailsView extends React.Component {
         this.setState({lastName: response.last_name});
         this.setState({email: response.email});
         this.setState({phoneNumber: response.phone});
-        this.setState({street: response.address});
-        this.setState({nip: response.business_data});
+        this.setState({street: response.address.street});
+        this.setState({postalCode: response.address.zip_code});
+        this.setState({city: response.address.city});
+        this.setState({nip: response.business_data.nip});
+        this.setState({regon: response.business_data.regon});
         this.setState({isBusiness: response.is_business});
         this.setState({id: response.id})
 
@@ -86,12 +89,45 @@ export default class ProfileDetailsView extends React.Component {
 
     updateData = async (label, newValue) => {
         
-        this.setState({email: label})
         let fetchedItems;
 
         var item = {}
             item [label] = newValue;
             var b = JSON.stringify(item);
+            data = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + apiConfig.clientId, 
+                },
+                body: b,
+            }
+
+        await fetch(apiConfig.url + '/api-v1/client/' + this.state.id + '/', data)
+        .then((response) => {this.setState({status: response.status}); return response.json()})
+        .then((response) => {
+            if(this.state.status === 200) {
+                fetchedItems = response;
+            } else {
+                Alert.alert(alertStrings.unexpectedError);
+            }
+        })
+        .catch(() => {
+            Alert.alert(alertStrings.noConnectionWithServer);
+        });
+
+        return fetchedItems;
+    }
+
+    updateAddress = async (label, newValue) => {
+        
+        let fetchedItems;
+
+        var item = {}
+            item [label] = newValue;
+        var add = {}
+            add['address'] = item
+            var b = JSON.stringify(add);
             data = {
                 method: 'PATCH',
                 headers: {
@@ -216,6 +252,8 @@ export default class ProfileDetailsView extends React.Component {
                                         isValidated={false}
                                         icon='md-pin'
                                         keyboardType = 'default'
+                                        updateRequest = {this.updateAddress}
+                                        label = 'address.street'
                                     />
                                     <DataEditField
                                         title={registrationStrings.postalCode}
@@ -223,8 +261,8 @@ export default class ProfileDetailsView extends React.Component {
                                         isValidated={true}
                                         validator={isPostalCode}
                                         warningAlert={alertStrings.invalidPostalCode}
-                                        icon='md-pin'
-                                        keyboardType = 'default'
+                                        updateRequest = {this.updateData}
+                                        label = 'zip_code'
                                     />
                                     <DataEditField
                                         title={registrationStrings.city}
@@ -232,6 +270,8 @@ export default class ProfileDetailsView extends React.Component {
                                         isValidated={false}
                                         icon='md-pin'
                                         keyboardType = 'default'
+                                        updateRequest = {this.updateData}
+                                        label = 'city'
                                     />
                                     <DataEditField
                                         title={registrationStrings.nip}
@@ -241,6 +281,8 @@ export default class ProfileDetailsView extends React.Component {
                                         warningAlert={alertStrings.invalidNIP}
                                         icon='md-business'
                                         keyboardType = 'number-pad'
+                                        updateRequest = {this.updateData}
+                                        label = 'nip'
                                     />
                                     <DataEditField
                                         title={registrationStrings.regon}
@@ -250,6 +292,8 @@ export default class ProfileDetailsView extends React.Component {
                                         warningAlert={alertStrings.invalidRegon}
                                         icon='md-business'
                                         keyboardType = 'number-pad'
+                                        updateRequest = {this.updateData}
+                                        label = 'regon'
                                     />
                                 </View>
                             )}
