@@ -81,7 +81,7 @@ class AdminPage extends Component {
     var business = <Icon>clear</Icon>;
     var ID = 0;
     for (var i = 0; i < res.length; i++) {
-      if (res[i].is_bussines === true) {
+      if (res[i].is_bussines == null) {
         business = <Icon>approve</Icon>
       }
       ID = res[i].id

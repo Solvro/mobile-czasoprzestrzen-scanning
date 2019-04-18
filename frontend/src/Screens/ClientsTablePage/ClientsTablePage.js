@@ -57,7 +57,7 @@ class Clients extends Component {
       const response = await deleteClient(id);
 
       if(response===204)
-        this.setState({infoMessage: 'Pomyslnie usunięto klienta z id ' + id })
+        this.setState({infoMessage: 'Pomyslnie usunięto klienta numer ' + id })
       else if ( response === 403)
         throw new Error("Nie masz uprawnień do wykonania tej akcji");
       else
