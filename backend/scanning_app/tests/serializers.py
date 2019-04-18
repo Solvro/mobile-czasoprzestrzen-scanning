@@ -39,7 +39,7 @@ EQUIPMENT_DESCRIPTION = "description"
 EQUIPMENT_TYPE = {
     "type_name": TYPE_NAME
 }
-EQUIPMENT_MAX_RENT_TIME = datetime.timedelta(days=3)
+EQUIPMENT_MAX_RENT_TIME = 3
 EQUIPMENT_DATA = {
     "name": EQUIPMENT_NAME,
     "description": EQUIPMENT_DESCRIPTION,
@@ -161,7 +161,8 @@ class EquipmentSerializerTests(TestCase):
         self.assertEqual(saved.name, EQUIPMENT_NAME)
         self.assertEqual(saved.description, EQUIPMENT_DESCRIPTION)
         self.assertIsNotNone(saved.type)
-        self.assertEqual(saved.max_rent_time, EQUIPMENT_MAX_RENT_TIME)
+        self.assertEqual(saved.max_rent_time,
+                         datetime.timedelta(days=EQUIPMENT_MAX_RENT_TIME))
         return saved
 
     def test_proper_full_equipment_data_passed_is_valid(self):
@@ -186,7 +187,11 @@ class EquipmentSerializerTests(TestCase):
         self.assertFalse(ser.is_valid())
 
     def test_equipment_obj_passed_proper_dict_returned(self):
-        equipment = Equipment.objects.create(**EQUIPMENT_DATA)
+        data = EQUIPMENT_DATA.copy()
+        data['max_rent_time'] = datetime.timedelta(
+            days=EQUIPMENT_MAX_RENT_TIME
+        )
+        equipment = Equipment.objects.create(**data)
         ser = EquipmentSerializer(equipment)
         expected_data = EQUIPMENT_DATA.copy()
         expected_data['id'] = equipment.id

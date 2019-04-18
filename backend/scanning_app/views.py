@@ -30,13 +30,12 @@ from django_rest_passwordreset.views import ResetPasswordRequestToken
 
 class EquipmentView(viewsets.ModelViewSet):
     queryset = models.Equipment.objects.all()
-    # serializer_class = serializers.EquipmentSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('name', 'available', 'type')
 
     def get_serializer_class(self):
-        if self.request.method == 'POST':
+        if self.request.method in ['POST', 'PATCH', 'PUT']:
             return serializers.EquipmentCreateSerializer
         else:
             return serializers.EquipmentSerializer
@@ -562,7 +561,10 @@ class RentalInfoView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = self.queryset
-        user = AppUser.objects.get(pk=self.request.user.id)
+        try:
+            user = AppUser.objects.get(pk=self.request.user.id)
+        except AppUser.DoesNotExist:
+            return AppUser.objects.none()
         if user.is_client():
             qs = qs.filter(client_data=user)
         if 'status' in self.request.query_params:
