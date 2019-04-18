@@ -6,6 +6,7 @@ function HomeTable (props) {
     const header = ["Nr","Nazwa","Typ","Dostępność", "Usuń", "Szczegóły"];
     var rows = props.contains;    
 
+
     return (
         <Table header={header} row={rows} height={"700px"}/>
     );
