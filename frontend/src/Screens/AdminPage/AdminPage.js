@@ -7,7 +7,7 @@ import './AdminPage.css';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 import { getUnacceptedClientsList, approveUnacceptedClient, removeUnacceptedClient } from '../../services/unacceptedClientService';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ApproveIcon from '@material-ui/icons/Done';
+import DoneIcon from '@material-ui/icons/Done';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
@@ -70,7 +70,7 @@ class AdminPage extends Component {
   }
 
   createButtonAccept(id) {
-    return <IconButton aria-label="Approve" onClick={() => this.approveClient(id)}><ApproveIcon /> </IconButton>;
+    return <IconButton aria-label="Approve" onClick={() => this.approveClient(id)}><DoneIcon /> </IconButton>;
   }
   createButtonRemove(id) {
     return <IconButton aria-label="Delete" onClick={() => this.removeClient(id)}> <DeleteIcon /></IconButton>;
@@ -78,11 +78,11 @@ class AdminPage extends Component {
 
   createTable = (res) => {
     var rows = [];
-    var business = <Icon>clear</Icon>;
+    var business = <Icon>done</Icon>;
     var ID = 0;
     for (var i = 0; i < res.length; i++) {
       if (res[i].is_bussines == null) {
-        business = <Icon>approve</Icon>
+        business = <Icon>clear</Icon>
       }
       ID = res[i].id
       rows.push([ID, res[i].first_name + ' ' + res[i].last_name, res[i].email, '999999999',
