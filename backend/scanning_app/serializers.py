@@ -6,10 +6,24 @@ from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, \
     Address, BusinessInfo, TypeOfEquipment
 
 
+class TypeOfEquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeOfEquipment
+        fields = '__all__'
+
+
 class EquipmentSerializer(serializers.ModelSerializer):
+    type = TypeOfEquipmentSerializer(required=False, many=False)
+
     class Meta:
         model = Equipment
         fields = '__all__'
+
+
+class EquipmentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipment
+        exclude = ('available',)
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -21,12 +35,6 @@ class AddressSerializer(serializers.ModelSerializer):
 class BusinessInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = BusinessInfo
-        fields = '__all__'
-
-
-class TypeOfEquipmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TypeOfEquipment
         fields = '__all__'
 
 
@@ -159,9 +167,16 @@ class RentalInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RentalInfo
         exclude = ('rental_date',)
+        extra_kwargs = {
+            'equipment_data': {'required': True},
+            'client_data': {'required': True}
+        }
 
 
 class RentalInfoGetSerializer(serializers.ModelSerializer):
+    equipment_data = EquipmentSerializer(required=False, many=False)
+    client_data = ClientSerializer(required=False, many=False)
+
     class Meta:
         model = RentalInfo
         fields = '__all__'
@@ -174,7 +189,7 @@ class CustomVerifyTokenClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AppUser
-        fields = ('id', 'username', 'first_name', 'last_name',
+        fields = ('id', 'username', 'first_name', 'last_name', 'type',
                   'email', 'phone', 'address', 'business_data', 'is_business')
 
     def get_is_business(self, obj):
@@ -184,7 +199,7 @@ class CustomVerifyTokenClientSerializer(serializers.ModelSerializer):
 class CustomVerifyTokenAdminsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
-        fields = ('id', 'username', 'first_name', 'last_name',
+        fields = ('id', 'username', 'first_name', 'last_name', 'type',
                   'email', 'phone',)
 
 
