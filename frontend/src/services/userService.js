@@ -37,7 +37,6 @@ export async function verifyUser(token) {
 }
 
 export async function getUserName(token) {
-
   const data = {
     "token": token
   }
@@ -47,8 +46,6 @@ export async function getUserName(token) {
   } catch (error) {
       return "?";
   }
-  
-
 }
 
 export async function changePassword(oldPassword, newPassword) {

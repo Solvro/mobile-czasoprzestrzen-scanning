@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+let deviceWidth = Dimensions.get('window').width;
 
 const loginRegisterStyles = StyleSheet.create({
     //Name of app
@@ -37,6 +39,7 @@ const loginRegisterStyles = StyleSheet.create({
 
     radioButtonContainer: {
         marginBottom: 15,
+        width: deviceWidth,
     },
 
     radioButton: {
@@ -78,7 +81,19 @@ const loginRegisterStyles = StyleSheet.create({
 
     inputFieldsContainer: {
         marginBottom: 20,
-    }
+        width: deviceWidth,
+    },
+    
+    innerContainer: {
+        marginTop: 20,
+    },
+
+    stepInfo: {
+        fontSize: 20,
+        alignSelf: 'center',
+        fontWeight: 'bold',
+        margin: 5,
+    },
 
 });
 
