@@ -12,6 +12,7 @@ import HistoryView from './history/HistoryView';
 import RentEquipmentView from './rent_equipment/RentEquipmentView';
 import ReturnEquipmentView from './return_equipment/ReturnEquipmentView';
 import ItemDetailsView from './item_details/ItemDetailsView';
+import RentalInfoView from './rental_info/RentalInfoView';
 
 
 export const SignedOutNavigator = createStackNavigator(
@@ -29,6 +30,7 @@ export const DrawerNavigator = createDrawerNavigator(
         Home: HomeScreen,
         Profile: ProfileView,
         History: HistoryView,
+        RentalInfo: RentalInfoView,
     }
 );
 

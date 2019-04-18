@@ -36,8 +36,47 @@ export default class SingleListItem extends React.Component {
         );
     }
 
+    /**
+     * Adds rented item when prop type is 'rented'
+     */
+    addRentedItem = (item) => {
+        return (
+            <ListItem>
+                <Body>
+                    <Text style={singleListItemStyles.name}>{item.name}</Text>
+                    <Text style={singleListItemStyles.noteText}>{item.type}</Text>
+                    <Text style={item.noteText}>{'Oczekiwany zwrot: ' + item.expected_return_date}</Text>
+                </Body>
+            </ListItem>
+        )
+    }
+
+    /**
+     * Adds history item when prop type is 'history
+     */
+    addHistoryItem = (item) => {
+        return (
+            <ListItem>
+                <Body>
+                    <Text style={singleListItemStyles.name}>{item.name}</Text>
+                    <Text style={singleListItemStyles.noteText}>{item.type}</Text>
+                    <Text style={singleListItemStyles.noteText}>{'Data wypożyczenia: ' + item.rent_date}</Text>
+                    <Text style={singleListItemStyles.noteText}>{'Data zwrotu: ' + item.return_date}</Text>
+                </Body>
+            </ListItem>
+        );
+    }
+
+    addItem = () => {
+        switch(this.props.type) {
+            case 'equipment': return this.addEquipmentItem(this.props.item);
+            case 'rented': return this.addRentedItem(this.props.item);
+            case 'history': return this.addHistoryItem(this.props.item);
+        }
+    }
+
     render() {
-        return this.addEquipmentItem(this.props.item);
+        return this.addItem();
     }
 
 }
