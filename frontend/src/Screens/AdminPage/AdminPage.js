@@ -81,11 +81,8 @@ class AdminPage extends Component {
     var business;
     var ID = 0;
     for (var i = 0; i < res.length; i++) {
-       alert(res[i].is_business);
-      // alert(res[i].email);
       if (res[i].is_business === false) {
         business = <Icon>clear</Icon>
-        alert('apruw')
       } else
       business = <Icon>done</Icon>;
       ID = res[i].id
