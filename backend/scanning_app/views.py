@@ -459,21 +459,53 @@ class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
 
 
 class RentalInfoView(viewsets.ModelViewSet):
-    queryset = models.RentalInfo.objects.all()
     serializer_class = serializers.RentalInfoSerializer
     permission_classes = (RentalInfoPermissions,)
+
+    def get_queryset(self):
+        if self.request.user.is_client():
+            return models.RentalInfo.objects.filter(client_data=self.request.user)
+        else:
+            return models.RentalInfo.objects.all()
 
     def get_serializer_class(self):
         if self.action in ['retrieve', 'list']:
             return serializers.RentalInfoGetSerializer
         return serializers.RentalInfoSerializer
 
+    @swagger_auto_schema(
+        operation_description="POST /api-v1/rental-info/{id}\n"
+                              "Create rental-info manually",
+        responses={
+            400: 'Equipment.available == False',
+            404: 'Equipment not found'
+        }
+    )
     def create(self, request, *args, **kwargs):
         equipment_to_rent = \
             models.Equipment.objects.get(id=request.data['equipment_data'])
         if not equipment_to_rent.available:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/rental-info/{id}\n"
+                              "Delete rental info with given id",
+        responses={
+            404: 'Id of rental-info which doesn\'t exist',
+            403: 'User doesn\'t have permissions to delete'
+        }
+    )
+    def destroy(self, request, *args, **kwargs):
+        try:
+            rent = RentalInfo.objects.get(pk=kwargs['pk'])
+            equip_to_update = models.Equipment.objects.get(id=rent.equipment_data.pk)
+            if rent.actual_return is None:
+                equip_to_update.available = True
+                equip_to_update.save()
+            return super().destroy(request, *args, **kwargs)
+        except RentalInfo.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class VerifyTokenView(TokenVerifyView):
@@ -542,6 +574,7 @@ class CustomResetPasswordRequestToken(ResetPasswordRequestToken):
 class RentEquipmentView(generics.GenericAPIView):
     serializer_class = serializers.RentalInfoRentSerializer
     permission_classes = (IsAppUser, IsAuthenticated)
+    queryset = models.RentalInfo.objects.all()
 
     @swagger_auto_schema(
         operation_description="POST api-v1/equipment/{id}/rent/\n"
