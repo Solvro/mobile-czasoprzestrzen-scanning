@@ -19,6 +19,7 @@ from .permissions import PostPermissions, RentalInfoPermissions, \
     IsSuperAdmin, IsAdminOrSuperAdmin
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.openapi import Parameter
 
 from . import models, serializers
 from .permissions import IsAppUser, IsThisClientOrAdminOrSuperAdmin, \
@@ -29,10 +30,102 @@ from django_rest_passwordreset.views import ResetPasswordRequestToken
 
 class EquipmentView(viewsets.ModelViewSet):
     queryset = models.Equipment.objects.all()
-    serializer_class = serializers.EquipmentSerializer
+    # serializer_class = serializers.EquipmentSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('name', 'available', 'type')
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return serializers.EquipmentCreateSerializer
+        else:
+            return serializers.EquipmentSerializer
+
+    @swagger_auto_schema(
+        operation_description="POST /api-v1/equipment/\n"
+                              "Create new equipment",
+        responses={
+            400: 'Obligatory field not provided or type name duplicate',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'create equipment (Not admin or super admin)'
+        }
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/equipment/{id}/\n"
+                              "Retrieve equipment with given id",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'retrieve equipment (Not this client or admin or super admin)',
+            404: 'No equipment with given id found'
+        }
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="PUT /api-v1/equipment/{id}/\n"
+                              "Update equipment with given id",
+        responses={
+            400: 'Obligatory field not provided or invalid value ',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update equipment (Not admin or super admin)',
+            404: 'No equipment with given id found'
+        }
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="PATCH /api-v1/equipment/{id}/\n"
+                              "Update equipment with given id",
+        responses={
+            400: 'Invalid value',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'update equipment (Not admin or super admin)',
+            404: 'No equipment with given id found'
+        }
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="DELETE /api-v1/equipment/{id}/\n"
+                              "Delete equipment",
+        responses={
+            400: 'Client has ongoing rents',
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'delete equipment (Not admin or super admin)',
+            404: 'No equipment with given id found'
+        }
+    )
+    def destroy(self, request, *args, **kwargs):
+        has_ongoing_rents = RentalInfo.objects \
+            .filter(equipment_data=self.get_object()) \
+            .filter(actual_return__isnull=True) \
+            .exists()
+        if has_ongoing_rents:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return super().destroy(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        operation_description="GET /api-v1/equipment/\n"
+                              "List all equipment",
+        responses={
+            401: 'No token provided',
+            403: 'User in token doesn\'t have permissions to '
+                 'list equipment (Not admin or super admin)'
+        }
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 
 class TypeOfEquipmentView(viewsets.ModelViewSet):
@@ -56,7 +149,7 @@ class TypeOfEquipmentView(viewsets.ModelViewSet):
         operation_description="POST /api-v1/equipment-type/\n"
                               "Create new type",
         responses={
-            400: 'Obligatory field not provided or username duplicate',
+            400: 'Obligatory field not provided or type name duplicate',
             401: 'No token provided',
             403: 'User in token doesn\'t have permissions to '
                  'create type (Not admin or super admin)'
@@ -300,8 +393,7 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         operation_description="PATCH /api-v1/client/{id}/\n"
                               "Update client with given id",
         responses={
-            400: 'Obligatory field not provided or invalid value '
-                 'or username duplicate',
+            400: 'Invalid value or username duplicate',
             401: 'No token provided',
             403: 'User in token doesn\'t have permissions to '
                  'update client (Not this client or admin or super admin)',
@@ -313,9 +405,9 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
 
     @swagger_auto_schema(
         operation_description="DELETE /api-v1/client/{id}/\n"
-                              "Delete client with given id\n"
-                              "!!!AS OF NOW ONCE CLIENT IS DELETED ALL OF HIS RENT HISTORY IS DELETED AS WELL!!!",
+                              "Delete client with given id\n",
         responses={
+            400: 'Client has ongoing equipment rents',
             401: 'No token provided',
             403: 'User in token doesn\'t have permissions to '
                  'update client (Not this client or admin or super admin)',
@@ -323,6 +415,12 @@ class ClientRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         }
     )
     def destroy(self, request, *args, **kwargs):
+        has_ongoing_rents = RentalInfo.objects\
+            .filter(client_data=self.get_object())\
+            .filter(actual_return__isnull=True)\
+            .exists()
+        if has_ongoing_rents:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return super().destroy(request, *args, **kwargs)
 
 
@@ -459,19 +557,32 @@ class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
 
 
 class RentalInfoView(viewsets.ModelViewSet):
-    serializer_class = serializers.RentalInfoSerializer
+    queryset = models.RentalInfo.objects.all()
     permission_classes = (RentalInfoPermissions,)
 
     def get_queryset(self):
-        if self.request.user.is_client():
-            return models.RentalInfo.objects.filter(client_data=self.request.user)
-        else:
-            return models.RentalInfo.objects.all()
+        qs = self.queryset
+        user = AppUser.objects.get(pk=self.request.user.id)
+        if user.is_client():
+            qs = qs.filter(client_data=user)
+        if 'status' in self.request.query_params:
+            status = self.request.query_params['status']
+            if status == 'ongoing':
+                qs = qs.filter(actual_return__isnull=True)
+            elif status == 'finished':
+                qs = qs.filter(actual_return__isnull=False)
+        return qs
 
     def get_serializer_class(self):
         if self.action in ['retrieve', 'list']:
             return serializers.RentalInfoGetSerializer
         return serializers.RentalInfoSerializer
+
+    @swagger_auto_schema(
+        manual_parameters=[Parameter('status', 'query', type='string', enum=['finished', 'ongoing'])]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_description="POST /api-v1/rental-info/{id}\n"
