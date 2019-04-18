@@ -4,7 +4,7 @@ import Table from './Table';
 function HomeTable (props) {
 
     const header = ["Nr","Nazwa","Typ","Dostępność", "Usuń", "Szczegóły"];
-    var rows = props.contains;
+    var rows = props.contains;    
 
 
     return (

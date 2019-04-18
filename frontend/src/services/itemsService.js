@@ -107,3 +107,21 @@ export async function editItemData(id,itemName,itemType,itemDescription,itemRent
     console.log(`Error: ${error}`);
   }
 }
+
+export async function removeItemFromList(id) {
+  const instance = axios.create({
+    baseURL: URL,
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+    }
+  });
+
+  try {
+    const getItem = await instance.delete(`equipment/` + id + '/');
+    return getItem.status === 204;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}

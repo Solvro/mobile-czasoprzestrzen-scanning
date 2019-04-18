@@ -6,7 +6,6 @@ import Toolbar from '../../Components/Toolbar/Toolbar';
 import Form from '../../Components/Form/Form';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import QRContainer from '../../Components/QRContainer/QRContainer';
 import TypeSelect from '../../Components/Selects/Select';
 import { getItemViewFromId, getItemTypesList, editItemData } from '../../services/itemsService';
 import * as jsPDF from 'jspdf';

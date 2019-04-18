@@ -1,7 +1,6 @@
 import React from 'react';
-
 import Table from './Table';
-
+import "./TableStyle.css" 
 
 function ClientTable (props) {
 
@@ -9,7 +8,9 @@ function ClientTable (props) {
   var rows = props.contains;
    
   return (
-      <Table header={header} row={rows} height={"400px"}/>
+    <div className='BigTableMargin'>
+      <Table header={header} row={rows} height={"250px"}/>
+    </div>
   );
   
 }
