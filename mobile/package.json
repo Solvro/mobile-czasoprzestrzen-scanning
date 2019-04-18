@@ -22,6 +22,7 @@
     "react-native-popup-dialog": "^0.18.2",
     "react-native-vector-icons": "^6.3.0",
     "react-navigation": "^3.1.4",
+    "rn-viewpager": "^1.2.9",
     "validator": "^10.11.0"
   },
   "devDependencies": {
