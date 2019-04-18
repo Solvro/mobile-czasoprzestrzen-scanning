@@ -6,8 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
-
+import ReactTableContainer from "react-table-container";
 
 const CustomTableCell = withStyles(theme => ({
     head: {
@@ -24,6 +23,7 @@ const styles = theme => ({
       width: '100%',
       marginTop: theme.spacing.unit * 3,
       overflowX: 'auto',
+      overflowY: 'auto',
     },
     table: {
       minWidth: 700,
@@ -41,13 +41,15 @@ const styles = theme => ({
     input: {
       display: 'none',
     },
+    blankTable: {
+      marginTop: theme.spacing.unit * 3,
+      marginLeft: theme.spacing.unit * 3,
+    }
   });
 
-
-// funkcja table przyjmuje w props parametry header(tablica nagłówków w tabeli) 
-// oraz row(dwuwymiarowa tablica zawartości tabeli)
-function table ( props ) {
-    const { classes } = props;
+ 
+function table (props) {
+  const { classes } = props;
 
     let header = [];
     let body = [];
@@ -60,26 +62,31 @@ function table ( props ) {
       for (i = 0; i < props.header.length ; i++){
           children.push(<CustomTableCell align='center'> {props.row[j][i]} </CustomTableCell>);
         }
-      body.push(<TableRow key={props.row[j].id} className={classes.row} >{children}</TableRow>);
-      
+      body.push(<TableRow key={props.row[j].id} className={classes.row} >{children}</TableRow>);  
     }
 
-    return (
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-          {header}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {body}
-        </TableBody>
-      </Table>
-    );
-};
+    if(props.row.length === 0){
+      body.push(<div className={classes.blankTable}>Brak rekordów</div>);
+    }
+ 
+  return (
+      <ReactTableContainer width="100%" height={props.height} customHeader={[TableHead]} className={classes.root}>
+        <Table >
+          <TableHead>
+            <TableRow>
+              {header}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {body}
+          </TableBody>
+        </Table>
+      </ReactTableContainer>
+  );
+}
 
 table.propTypes = {
-    classes: PropTypes.object.isRequired,
-  };
-
+  classes: PropTypes.object.isRequired,
+};
+ 
 export default withStyles(styles)(table);

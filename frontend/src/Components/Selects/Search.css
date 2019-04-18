@@ -7,5 +7,6 @@
 
 .SearchField {
     display: 'block';
-    margin-top: 1em
+    margin-top: 20em;
+    background-color: brown;
 }

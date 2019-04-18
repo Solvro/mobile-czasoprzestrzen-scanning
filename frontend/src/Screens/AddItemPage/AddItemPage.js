@@ -7,22 +7,36 @@ import TypeSelect from '../../Components/Selects/Select';
 import InputField from '../../Components/Input/InputField';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
-import {addNewItemToItemList} from '../../services/itemsService';
+import {addNewItemToItemList, getItemTypesList} from '../../services/itemsService';
 
 class AddItem extends Component {
   constructor(props) {
     super(props);
-    // Don't call this.setState() here!
     this.state = {
       itemName: '',
-      itemType: 'mikrofon',
+      itemType: 0,
       itemDecription: '',
       itemRentTime: '',
       formError: false,
-      errorMessage: ''
+      errorMessage: '',
+      item: '',
+      isLoading: true,
+      itemTypesList: []
     }
   }
   
+  async componentDidMount() {
+    await getItemTypesList()
+    .then((res) => {
+      this.setState({isLoading : false});
+      var itemTypes = []
+      for(var i = 0; i < res.length; i++){
+          itemTypes[i] = res[i].type_name
+      }
+      console.log("ITEM"+itemTypes);
+      this.setState({itemTypesList : itemTypes});
+    })
+  }
 
   handleItemName = event => {
     this.setState({ itemName: event.target.value });
@@ -46,10 +60,14 @@ class AddItem extends Component {
     
   }
 
+  handleSelectChange = event => {
+    this.setState({ itemType: +event.target.value + 1 }, ()=> console.log("Item"+(this.state.itemType)));
+  };
+
   tryToAddItem = async e => {
     e.preventDefault();
     const { itemName, itemType, itemDecription,itemRentTime } = this.state;
-    if(itemName===''||itemType===''||itemRentTime===''){
+    if(itemName=== '' || itemType === 0 || itemRentTime===''){
       this.setState({ formError:  true});
       this.setState({ errorMessage:  "Żadne pole nie może być puste"});
     }
@@ -79,7 +97,7 @@ class AddItem extends Component {
           <InputField placeholder={"Nazwa"} rows={"1"} label={"Nazwa urządzenia"} onChange={this.handleItemName}>
           </InputField>
 
-          <TypeSelect></TypeSelect>
+          <TypeSelect value={this.state.item} onChange={this.handleSelectChange} itemTypes={this.state.itemTypesList}></TypeSelect>
 
           <InputField placeholder={"Opis"} rows={"4"} label={"Opis"} onChange={this.handleItemDecription}>
           </InputField>

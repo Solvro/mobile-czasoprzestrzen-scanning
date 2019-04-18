@@ -23,7 +23,10 @@ export default class ItemsList extends React.Component {
         itemsList = []
 
         for(let i = 0; i < this.props.items.length; i++) {
-            itemsList.push(<SingleListItem key={i} item={this.props.items[i]}/>);
+            itemsList.push(<SingleListItem
+                type={this.props.type}
+                key={i}
+                item={this.props.items[i]} />);
         }
 
         this.setState({ items: itemsList });

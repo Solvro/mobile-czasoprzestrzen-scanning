@@ -24,6 +24,7 @@ from . import models, serializers
 from .permissions import IsAppUser, IsThisClientOrAdminOrSuperAdmin, \
     IsAdminOrSuperAdmin, IsThisAdminOrSuperAdmin, IsSuperAdmin, \
     RentalInfoPermissions
+from django_rest_passwordreset.views import ResetPasswordRequestToken
 
 
 class EquipmentView(viewsets.ModelViewSet):
@@ -514,8 +515,8 @@ class VerifyTokenView(TokenVerifyView):
         request_body=TokenVerifySerializer,
         responses={
             200: "User info",
-            "200 client": serializers.CustomVerifyUserSerializer,
-            "200 admins": serializers.CustomVerifyAdminsSerializer,
+            "200 client": serializers.CustomVerifyTokenClientSerializer,
+            "200 admins": serializers.CustomVerifyTokenAdminsSerializer,
             401: "Token is invalid or expired"
         }
     )
@@ -527,9 +528,9 @@ class VerifyTokenView(TokenVerifyView):
         user = JWTAuthentication.get_user(JWTAuthentication(),
                                           validated_token=validated_token)
         if user.is_client():
-            ser = serializers.CustomVerifyUserSerializer(user)
+            ser = serializers.CustomVerifyTokenClientSerializer(user)
         else:
-            ser = serializers.CustomVerifyAdminsSerializer(user)
+            ser = serializers.CustomVerifyTokenAdminsSerializer(user)
         response.data = ser.data
         return response
 
@@ -559,6 +560,15 @@ class ChangePasswordView(views.APIView):
             return views.Response(status=status.HTTP_401_UNAUTHORIZED,
                                   data={'error': e.message})
         return views.Response(status=status.HTTP_200_OK)
+
+
+class CustomResetPasswordRequestToken(ResetPasswordRequestToken):
+
+    def post(self, request, *args, **kwargs):
+        try:
+            return super().post(request, args, kwargs)
+        except ValidationError:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class RentEquipmentView(generics.GenericAPIView):
