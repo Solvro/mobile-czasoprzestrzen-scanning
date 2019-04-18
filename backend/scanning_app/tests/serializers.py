@@ -189,7 +189,7 @@ class EquipmentSerializerTests(TestCase):
         equipment = Equipment.objects.create(**EQUIPMENT_DATA)
         ser = EquipmentSerializer(equipment)
         expected_data = EQUIPMENT_DATA.copy()
-        expected_data['id'] = 1
+        expected_data['id'] = equipment.id
         expected_data['available'] = True
         expected_data['type'] = None
         expected_data['max_rent_time'] = '3 00:00:00'

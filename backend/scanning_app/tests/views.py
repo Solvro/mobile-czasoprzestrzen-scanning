@@ -1252,4 +1252,34 @@ class ReturnEquipmentView(TestCase):
         create_rental_info(equip, second_user)
         response = self.apiClient \
             .put(reverse('equipment-return', args=(equip.pk,)), format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class AdminsReturnEquipmentView(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        login_as_user(self.apiClient, create_admin())
+
+    def test_invalid_equip_id_404_returned(self):
+        response = self.apiClient\
+            .put(reverse('equipment-admins-return', args=(1,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_equip_is_available_400_returned(self):
+        equip = create_equipment()
+        response = self.apiClient \
+            .put(reverse('equipment-admins-return', args=(equip.pk,)),
+                 format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_valid_request_equip_and_rental_info_updated(self):
+        user = create_client()
+        equip = create_unavailable_equipment()
+        rental = create_rental_info(equip, user)
+        response = self.apiClient \
+            .put(reverse('equipment-admins-return', args=(equip.pk,)),
+                 format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(Equipment.objects.get(pk=equip.pk).available)
+        self.assertEqual(RentalInfo.objects.get(pk=rental.pk).actual_return,
+                         datetime.date.today())
