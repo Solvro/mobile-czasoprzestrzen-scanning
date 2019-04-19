@@ -1036,14 +1036,14 @@ class RentalInfoViewsTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Equipment.objects.get().available, False)
 
-    def test_cant_rent_rented_equipment(self):
-        self.equipment.available = False
-        self.equipment.save()
-        response = self.rent_equipment()
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    # def test_cant_rent_rented_equipment(self):
+    #     self.equipment.available = False
+    #     self.equipment.save()
+    #     response = self.rent_equipment()
+    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_equipments_becomes_unavailable_when_rented(self):
-        self.rent_equipment_and_check_response()
+    # def test_equipments_becomes_unavailable_when_rented(self):
+    #     self.rent_equipment_and_check_response()
 
     def test_after_remove_rental_equip_becomes_available(self):
         user = create_admin()

@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from scanning_app.permissions import IsAdminOrSuperAdmin, IsAppUser, \
-    RentalInfoPermissions
+    IsThisClientOrAdminOrSuperAdmin
 from .serializers import EquipmentCreateSerializer, EquipmentSerializer, \
     TypeOfEquipmentSerializer, EquipmentRentSerializer, \
     RentalInfoGetSerializer, RentalInfoSerializer
@@ -263,7 +263,7 @@ class AdminReturnEquipmentView(views.APIView):
 
 class RentalInfoViewSet(viewsets.ModelViewSet):
     queryset = RentalInfo.objects.all()
-    permission_classes = (RentalInfoPermissions,)
+    # permission_classes = (RentalInfoPermissions,)
 
     def get_queryset(self):
         qs = self.queryset
@@ -286,8 +286,18 @@ class RentalInfoViewSet(viewsets.ModelViewSet):
             return RentalInfoGetSerializer
         return RentalInfoSerializer
 
+    def get_permissions(self):
+        if self.action in ['retrieve', 'list']:
+            return IsAuthenticated(), IsAppUser(), \
+                    IsThisClientOrAdminOrSuperAdmin()
+        else:
+            return IsAuthenticated(), IsAppUser(), IsAdminOrSuperAdmin()
+
     @swagger_auto_schema(
-        manual_parameters=[Parameter('status', 'query', type='string', enum=['finished', 'ongoing'])]
+        manual_parameters=[
+            Parameter('status', 'query', type='string',
+                      enum=['finished', 'ongoing'])
+        ]
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
