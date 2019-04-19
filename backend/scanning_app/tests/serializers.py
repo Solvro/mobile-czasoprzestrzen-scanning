@@ -23,7 +23,7 @@ CLIENT_ADDRESS = {
 }
 CLIENT_BUSINESS_INFO = {
     "name": "Businesses name",
-    "nip": "725-18-01-126",
+    "nip": "7251801126",
     "regon": "472836141"
 }
 CLIENT_DATA = {

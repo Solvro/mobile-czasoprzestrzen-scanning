@@ -145,11 +145,11 @@ class AddressTests(TestCase):
 
 class BusinessInfoTests(TestCase):
     def test_valid_nip_passes(self):
-        valid_nip = "725-18-01-126"
+        valid_nip = "7251801126"
         BusinessInfo.nip_validator(valid_nip)
 
     def test_invalid_nip_doesnt_pass(self):
-        invalid_nip = "725-1-801-126"
+        invalid_nip = "72518011261"
         self.assertRaises(ValidationError,
                           BusinessInfo.nip_validator,
                           invalid_nip)

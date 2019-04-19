@@ -23,11 +23,11 @@ class Address(models.Model):
 
 class BusinessInfo(models.Model):
     nip_validator = RegexValidator(
-        r'^((\d{3}[-]\d{3}[-]\d{2}[-]\d{2})|(\d{3}[-]\d{2}[-]\d{2}[-]\d{3}))$',
+        r'^[0-9]{10}$',
         "Nip doesn't comply"
     )
     regon_validator = RegexValidator(
-        r'^\d{9}$',
+        r'^[0-9]{9}$',
         "Regon doesn't comply"
     )
 
