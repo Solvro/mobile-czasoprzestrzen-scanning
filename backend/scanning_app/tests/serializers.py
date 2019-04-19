@@ -3,9 +3,10 @@ from django.test import TestCase
 
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
     UnacceptedClient, Address, BusinessInfo, TypeOfEquipment
-from scanning_app.serializers import RentalInfoSerializer, \
-    EquipmentSerializer, SignUpUnacceptedClientSerializer, ClientSerializer, \
+from scanning_app.serializers import EquipmentSerializer, \
+    SignUpUnacceptedClientSerializer, ClientSerializer, \
     EquipmentCreateSerializer
+from scanning_app.rentalinfo.serializers import RentalInfoSerializer
 
 
 CLIENT_USERNAME = "username"

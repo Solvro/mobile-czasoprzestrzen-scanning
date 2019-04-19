@@ -11,8 +11,7 @@ from rest_framework_simplejwt.views import TokenVerifyView
 from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, \
     TypeOfEquipment
 from .serializers import EquipmentSerializer, ClientSerializer, \
-    RentalInfoSerializer, SignUpUnacceptedClientSerializer, \
-    RentalInfoGetSerializer, TypeOfEquipmentSerializer, \
+    SignUpUnacceptedClientSerializer, TypeOfEquipmentSerializer, \
     AdminCreationSerializer, SuperAdminCreationSerializer, \
     ListUnacceptedClientSerializer
 from .permissions import PostPermissions, RentalInfoPermissions, \
@@ -25,6 +24,7 @@ from . import models, serializers
 from .permissions import IsAppUser, IsThisClientOrAdminOrSuperAdmin, \
     IsAdminOrSuperAdmin, IsThisAdminOrSuperAdmin, IsSuperAdmin, \
     RentalInfoPermissions
+from .rentalinfo.serializers import RentalInfoSerializer
 from django_rest_passwordreset.views import ResetPasswordRequestToken
 
 
@@ -555,72 +555,6 @@ class SuperAdminRetrieveUpdateDestroy(mixins.RetrieveModelMixin,
         return super().destroy(request, *args, **kwargs)
 
 
-class RentalInfoView(viewsets.ModelViewSet):
-    queryset = models.RentalInfo.objects.all()
-    permission_classes = (RentalInfoPermissions,)
-
-    def get_queryset(self):
-        qs = self.queryset
-        try:
-            user = AppUser.objects.get(pk=self.request.user.id)
-        except AppUser.DoesNotExist:
-            return AppUser.objects.none()
-        if user.is_client():
-            qs = qs.filter(client_data=user)
-        if 'status' in self.request.query_params:
-            status = self.request.query_params['status']
-            if status == 'ongoing':
-                qs = qs.filter(actual_return__isnull=True)
-            elif status == 'finished':
-                qs = qs.filter(actual_return__isnull=False)
-        return qs
-
-    def get_serializer_class(self):
-        if self.action in ['retrieve', 'list']:
-            return serializers.RentalInfoGetSerializer
-        return serializers.RentalInfoSerializer
-
-    @swagger_auto_schema(
-        manual_parameters=[Parameter('status', 'query', type='string', enum=['finished', 'ongoing'])]
-    )
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
-
-    @swagger_auto_schema(
-        operation_description="POST /api-v1/rental-info/{id}\n"
-                              "Create rental-info manually",
-        responses={
-            400: 'Equipment.available == False',
-            404: 'Equipment not found'
-        }
-    )
-    def create(self, request, *args, **kwargs):
-        equipment_to_rent = \
-            models.Equipment.objects.get(id=request.data['equipment_data'])
-        if not equipment_to_rent.available:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        return super().create(request, *args, **kwargs)
-
-    @swagger_auto_schema(
-        operation_description="DELETE /api-v1/rental-info/{id}\n"
-                              "Delete rental info with given id",
-        responses={
-            404: 'Id of rental-info which doesn\'t exist',
-            403: 'User doesn\'t have permissions to delete'
-        }
-    )
-    def destroy(self, request, *args, **kwargs):
-        try:
-            rent = RentalInfo.objects.get(pk=kwargs['pk'])
-            equip_to_update = models.Equipment.objects.get(id=rent.equipment_data.pk)
-            if rent.actual_return is None:
-                equip_to_update.available = True
-                equip_to_update.save()
-            return super().destroy(request, *args, **kwargs)
-        except RentalInfo.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-
 class VerifyTokenView(TokenVerifyView):
     serializer_class = TokenVerifySerializer
 
@@ -704,7 +638,7 @@ class RentEquipmentView(generics.GenericAPIView):
             equip = models.Equipment.objects.get(pk=pk)
             request.data['equipment_data'] = pk
             request.data['client_data'] = request.user.pk
-            serializer = serializers.RentalInfoSerializer(data=request.data)
+            serializer = RentalInfoSerializer(data=request.data)
             if equip is not None and equip.available:
                 if serializer.is_valid():
                     serializer.save()
