@@ -4,7 +4,8 @@ from django.test import TestCase
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
     UnacceptedClient, Address, BusinessInfo, TypeOfEquipment
 from scanning_app.serializers import RentalInfoSerializer, \
-    EquipmentSerializer, SignUpUnacceptedClientSerializer, ClientSerializer
+    EquipmentSerializer, SignUpUnacceptedClientSerializer, ClientSerializer, \
+    EquipmentCreateSerializer
 
 
 CLIENT_USERNAME = "username"
@@ -19,6 +20,7 @@ CLIENT_ADDRESS = {
     "city": "Wroclaw"
 }
 CLIENT_BUSINESS_INFO = {
+    "name": "Businesses name",
     "nip": "725-18-01-126",
     "regon": "472836141"
 }
@@ -151,7 +153,7 @@ class ClientSerializerTests(TestCase):
 class EquipmentSerializerTests(TestCase):
 
     def handle_serializer_with_proper_data(self, data):
-        ser = EquipmentSerializer(data=data)
+        ser = EquipmentCreateSerializer(data=data)
         self.assertTrue(ser.is_valid())
         ser.save()
         self.assertEqual(Equipment.objects.count(), 1)
@@ -165,17 +167,16 @@ class EquipmentSerializerTests(TestCase):
     def test_proper_full_equipment_data_passed_is_valid(self):
         type = TypeOfEquipment.objects.create(**EQUIPMENT_TYPE)
         data = EQUIPMENT_DATA.copy()
-        data['available'] = True
         data['type'] = type.id
         saved = self.handle_serializer_with_proper_data(data)
         self.assertEqual(saved.available, True)
 
     def test_proper_partial_equipment_data_passed_is_valid(self):
         type = TypeOfEquipment.objects.create(**EQUIPMENT_TYPE)
-        data = EQUIPMENT_DATA
+        data = EQUIPMENT_DATA.copy()
         data['type'] = type.id
         saved = self.handle_serializer_with_proper_data(data)
-        self.assertEqual(saved.available, False)
+        self.assertEqual(saved.available, True)
 
     def test_incorrect_equipment_passed_data_is_not_valid(self):
         data = EQUIPMENT_DATA.copy()
@@ -189,7 +190,7 @@ class EquipmentSerializerTests(TestCase):
         ser = EquipmentSerializer(equipment)
         expected_data = EQUIPMENT_DATA.copy()
         expected_data['id'] = 1
-        expected_data['available'] = False
+        expected_data['available'] = True
         expected_data['type'] = None
         expected_data['max_rent_time'] = '3 00:00:00'
 

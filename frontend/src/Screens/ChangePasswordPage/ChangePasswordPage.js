@@ -5,6 +5,7 @@ import InputField from '../../Components/Input/InputField';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 import Form from '../../Components/Form/Form';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
+import { changePassword } from '../../services/userService';
 
 class ChangePasswordPage extends Component {
 
@@ -25,7 +26,18 @@ validate = async e => {
     {
        this.setState({errorMsg: 'Należy wypełnić wszystkie pola'})
     } else {
-       alert("TODO: Zamiast tego alertu idzie POST na backend");
+      const response = await changePassword(this.state.oldPassword, this.state.newPassword);
+
+      if (response===200) {
+        this.props.history.push({
+          pathname: '/account',
+          infoMessage: 'Pomyślnie zmieniono hasło'
+        })
+      } else if(response===401){
+          this.setState({errorMsg: "Wprowadzono niepoprawne hasło"})
+      } else {
+          this.setState({errorMsg: "Coś poszło nie tak"})
+      }
     }
     
 }

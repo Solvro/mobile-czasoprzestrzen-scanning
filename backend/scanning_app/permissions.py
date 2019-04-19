@@ -17,8 +17,8 @@ class RentalInfoPermissions(permissions.BasePermission):
         if request.method == 'GET':
             if request.user == obj.client_data:
                 return True
-            return False
-        return request.user and request.user.is_authenticated
+            return IsAdminOrSuperAdmin.has_permission(IsAdminOrSuperAdmin(), request, view)
+        return IsAdminOrSuperAdmin.has_permission(IsAdminOrSuperAdmin(), request, view)
 
 
 class IsAdminOrSuperAdmin(permissions.BasePermission):
