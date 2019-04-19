@@ -122,19 +122,17 @@ export default class ProfileDetailsView extends React.Component {
     updateAddress = async (label, newValue) => {
         
         let fetchedItems;
-
-        var item = {}
-            item [label] = newValue;
-        var add = {}
-            add['address'] = item
-            var b = JSON.stringify(add);
             data = {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + apiConfig.clientId, 
                 },
-                body: b,
+                body: JSON.stringify({
+                    'address': {
+                        'street': {}
+                    },
+                })
             }
 
         await fetch(apiConfig.url + '/api-v1/client/' + this.state.id + '/', data)
