@@ -1,48 +1,8 @@
-import datetime
-
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
-from .models import Equipment, AppUser, RentalInfo, UnacceptedClient, \
-    Address, BusinessInfo, TypeOfEquipment
-
-
-class TypeOfEquipmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TypeOfEquipment
-        fields = '__all__'
-
-
-class EquipmentSerializer(serializers.ModelSerializer):
-    type = TypeOfEquipmentSerializer(required=False, many=False)
-
-    class Meta:
-        model = Equipment
-        fields = '__all__'
-
-
-class EquipmentCreateSerializer(serializers.ModelSerializer):
-    max_rent_time = serializers.IntegerField(required=True)
-
-    def create(self, validated_data):
-        max_rent_time_delta = datetime.timedelta(
-            days=validated_data['max_rent_time']
-        )
-        validated_data['max_rent_time'] = max_rent_time_delta
-        return super().create(validated_data)
-
-    def update(self, instance, validated_data):
-        if 'max_rent_time' in validated_data:
-            max_rent_time_delta = datetime.timedelta(
-                days=validated_data['max_rent_time']
-            )
-            validated_data['max_rent_time'] = max_rent_time_delta
-        return super().update(instance, validated_data)
-
-    class Meta:
-        model = Equipment
-        exclude = ('available',)
+from .models import AppUser, UnacceptedClient, Address, BusinessInfo
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -211,9 +171,3 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = ('old_password', 'new_password')
-
-
-class RentalInfoRentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RentalInfo
-        fields = ('id', 'expected_return')

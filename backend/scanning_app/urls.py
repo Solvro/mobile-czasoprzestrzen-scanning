@@ -1,15 +1,10 @@
 from django.urls import include, path
-from rest_framework import routers
 from drf_yasg.utils import swagger_auto_schema
 from django_rest_passwordreset.views import reset_password_confirm
 from django_rest_passwordreset.serializers import EmailSerializer, \
     PasswordTokenSerializer
 
 from . import views
-
-router = routers.DefaultRouter()
-router.register('equipment', views.EquipmentView)
-router.register('equipment-type', views.TypeOfEquipmentView)
 
 unaccepted_client_signup_view = views.UnacceptedClientListCreateDestroyViewSet\
     .as_view({'post': 'create'})
@@ -80,13 +75,5 @@ urlpatterns = [
          name="super-admin-list"),
     path('super-admin/<int:pk>/', super_admin_detail_views,
          name="super-admin-detail"),
-    path('equipment/<int:pk>/rent/', views.RentEquipmentView.as_view(),
-         name="equipment-rent"),
-    path('equipment/<int:pk>/return/', views.ReturnEquipmentView.as_view(),
-         name="equipment-return"),
-    path('equipment/<int:pk>/admin-return/',
-         views.AdminReturnEquipmentView.as_view(),
-         name='equipment-admins-return'),
-    path('', include('scanning_app.rentalinfo.urls')),
-    path('', include(router.urls))
+    path('', include('scanning_app.equipment.urls')),
 ]

@@ -1,12 +1,12 @@
 import datetime
 from django.test import TestCase
 
+from scanning_app.equipment import EquipmentCreateSerializer, \
+    EquipmentSerializer, RentalInfoSerializer
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
     UnacceptedClient, Address, BusinessInfo, TypeOfEquipment
-from scanning_app.serializers import EquipmentSerializer, \
-    SignUpUnacceptedClientSerializer, ClientSerializer, \
-    EquipmentCreateSerializer
-from scanning_app.rentalinfo.serializers import RentalInfoSerializer
+from scanning_app.serializers import SignUpUnacceptedClientSerializer, \
+    ClientSerializer
 
 
 CLIENT_USERNAME = "username"
