@@ -3,7 +3,7 @@ import datetime
 from rest_framework import serializers
 
 from scanning_app.models import TypeOfEquipment, Equipment, RentalInfo
-from scanning_app.serializers import ClientSerializer
+from scanning_app.user.client.serializers import ClientSerializer
 
 
 class TypeOfEquipmentSerializer(serializers.ModelSerializer):

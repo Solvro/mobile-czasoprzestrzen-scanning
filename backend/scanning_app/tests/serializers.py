@@ -5,7 +5,7 @@ from scanning_app.equipment import EquipmentCreateSerializer, \
     EquipmentSerializer, RentalInfoSerializer
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
     UnacceptedClient, Address, BusinessInfo, TypeOfEquipment
-from scanning_app.serializers import ClientSerializer
+from scanning_app.user.client.serializers import ClientSerializer
 from scanning_app.unacceptedclient.serializers import \
     SignUpUnacceptedClientSerializer
 

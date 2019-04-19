@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from scanning_app.models import UnacceptedClient
 from scanning_app.permissions import IsAdminOrSuperAdmin
-from scanning_app.serializers import ClientSerializer
+from scanning_app.user.client.serializers import ClientSerializer
 from .serializers import ListUnacceptedClientSerializer, \
     SignUpUnacceptedClientSerializer
 
