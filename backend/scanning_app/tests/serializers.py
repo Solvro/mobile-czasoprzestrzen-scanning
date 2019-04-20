@@ -169,6 +169,7 @@ class EquipmentSerializerTests(TestCase):
         type = TypeOfEquipment.objects.create(**EQUIPMENT_TYPE)
         data = EQUIPMENT_DATA.copy()
         data['type'] = type.id
+        data['max_rent_time'] = datetime.timedelta(days=data['max_rent_time'])
         saved = self.handle_serializer_with_proper_data(data)
         self.assertEqual(saved.available, True)
 
@@ -176,6 +177,8 @@ class EquipmentSerializerTests(TestCase):
         type = TypeOfEquipment.objects.create(**EQUIPMENT_TYPE)
         data = EQUIPMENT_DATA.copy()
         data['type'] = type.id
+        data['max_rent_time'] = datetime.timedelta(
+            days=data['max_rent_time'])
         saved = self.handle_serializer_with_proper_data(data)
         self.assertEqual(saved.available, True)
 

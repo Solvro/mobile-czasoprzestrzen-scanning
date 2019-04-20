@@ -51,7 +51,16 @@ class EquipmentView(viewsets.ModelViewSet):
         }
     )
     def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+        data = request.data
+        data['max_rent_time'] = datetime.timedelta(
+            days=data['max_rent_time']
+        )
+        save_ser = EquipmentCreateSerializer(data=data)
+        save_ser.is_valid(raise_exception=True)
+        self.perform_create(save_ser)
+        headers = self.get_success_headers(save_ser.data)
+        return Response(save_ser.data, status=status.HTTP_201_CREATED,
+                        headers=headers)
 
     @swagger_auto_schema(
         operation_description="GET /api-v1/equipment/{id}/\n"
@@ -78,7 +87,17 @@ class EquipmentView(viewsets.ModelViewSet):
         }
     )
     def update(self, request, *args, **kwargs):
-        return super().update(request, *args, **kwargs)
+        data = request.data
+        if 'max_rent_time' in data:
+            data['max_rent_time'] = datetime.timedelta(
+                days=data['max_rent_time']
+            )
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=data,
+                                         partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
 
     @swagger_auto_schema(
         operation_description="PATCH /api-v1/equipment/{id}/\n"
