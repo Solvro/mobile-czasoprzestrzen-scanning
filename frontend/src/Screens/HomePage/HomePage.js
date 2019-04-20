@@ -36,10 +36,8 @@ class HomePage extends Component {
     await getItemsList()
     .then((res) => {
       this.setState({isLoading : false});
-      this.createTable(res); 
-      console.log(res);
+      this.createTable(res);
     })
-    console.log("Force up")
     this.forceUpdate();
   }
 
@@ -97,7 +95,7 @@ class HomePage extends Component {
         available = <Icon>done</Icon>
       }
       ID = res[i].id;
-      rows.push([i+1, res[i].name, this.state.typesList[res[i].type - 1],available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
+      rows.push([i+1, res[i].name, res[i].type.type_name ,available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
 
     }
     var table = <Table contains={rows} />;
