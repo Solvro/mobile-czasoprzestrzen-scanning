@@ -1,11 +1,13 @@
 import datetime
 from django.test import TestCase
 
+from scanning_app.equipment import EquipmentCreateSerializer, \
+    EquipmentSerializer, RentalInfoSerializer
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
     UnacceptedClient, Address, BusinessInfo, TypeOfEquipment
-from scanning_app.serializers import RentalInfoSerializer, \
-    EquipmentSerializer, SignUpUnacceptedClientSerializer, ClientSerializer, \
-    EquipmentCreateSerializer
+from scanning_app.user.client.serializers import ClientSerializer
+from scanning_app.unacceptedclient.serializers import \
+    SignUpUnacceptedClientSerializer
 
 
 CLIENT_USERNAME = "username"
@@ -21,7 +23,7 @@ CLIENT_ADDRESS = {
 }
 CLIENT_BUSINESS_INFO = {
     "name": "Businesses name",
-    "nip": "725-18-01-126",
+    "nip": "7251801126",
     "regon": "472836141"
 }
 CLIENT_DATA = {
