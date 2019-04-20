@@ -8,7 +8,8 @@ import InputField from '../../Components/Input/InputField';
 import Toolbar from '../../Components/Toolbar/Toolbar';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import {addNewItemToItemList, getItemTypesList} from '../../services/itemsService';
-
+import {userSuperAdmin} from '../../services/userService';
+import Select from '../../Components/Selects/Select';
 
 class AddItem extends Component {
   constructor(props) {
@@ -23,11 +24,16 @@ class AddItem extends Component {
       errorMessage: '',
       item: '',
       isLoading: true,
-      itemTypesList: []
+      itemTypesList: [],
+      isSuperAdmin: false
     }
   }
   
   async componentDidMount() {
+    await userSuperAdmin()
+    .then((isSuperAdmin) => { 
+      this.setState({isSuperAdmin: isSuperAdmin}); 
+    })
     await getItemTypesList()
     .then((res) => {
       this.setState({isLoading : false});
@@ -116,8 +122,11 @@ class AddItem extends Component {
           <InputField placeholder={"Nazwa"} rows={"1"} label={"Nazwa urządzenia"} onChange={this.handleItemName}>
           </InputField>
 
-          <SelectWithChoose action={this.handler} value={this.state.item} onChange={this.handleSelectChange} itemTypes={this.state.itemTypesList}>
-          </SelectWithChoose>
+          {this.state.isSuperAdmin ? <SelectWithChoose action={this.handler} value={this.state.item} onChange={this.handleSelectChange} itemTypes={this.state.itemTypesList}>
+          </SelectWithChoose> 
+          : <Select value={this.state.item} onChange={this.handleSelectChange} itemTypes={this.state.itemTypesList}>
+          </Select> }
+          
 
           <InputField placeholder={"Opis"} rows={"4"} label={"Opis"} onChange={this.handleItemDecription}>
           </InputField>
