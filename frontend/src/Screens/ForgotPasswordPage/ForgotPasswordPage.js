@@ -7,6 +7,8 @@ import InputField from '../../Components/Input/InputField';
 import Form from '../../Components/Form/Form';
 import Layout from '../../Components/Layout/Layout';
 import logo from '../../assests/czasoprzestrzen_logo.png';
+import {resetPassword} from '../../services/userService';
+import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 
 
 const styles = theme => ({
@@ -19,36 +21,62 @@ const styles = theme => ({
 class LoginPage extends React.Component {
   
   state = {
-    username: '',
-    password: '',
-    loginError: false
+    email: '',
+    resetError: false,
+    message:''
 }
 
 
 
-handleChangeUser = event => {
-  this.setState({ username: event.target.value });
+handleChangeEmail = event => {
+  this.setState({ email: event.target.value });
 }
 
-handleChangePassword = event => {
-  this.setState({ password: event.target.value });
+tryReset = async e => {
+
+  e.preventDefault();
+  const {email} = this.state;
+  const response = await resetPassword(email);
+        if (response) {            
+            this.props.history.push('/login');
+        } else {
+            this.setState({resetError: true, message: "Coś poszło nie tak"})
+        }
+
+  
+    
 }
+
+validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if(!re.test(String(email).toLowerCase())){
+    return false;
+  }
+  return true;
+}
+
 
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <div><Button link={'/home'} text={"Resetuj hasło"}></Button></div>;    
+    const button = <div><Button link={'/home'} text={"Resetuj hasło"} onClick={this.tryReset}></Button></div>;    
 
     return (
       <div>
       <Layout layoutDivide={"363"}>
         <Form header={header} button={button} >
 
-        <InputField placeholder={"E-mail"} rows={"1"} onChange={this.handleChangeUser}>
+        <InputField placeholder={"E-mail"} rows={"1"} onChange={this.handleChangeEmail}>
         </InputField>
           
         
         </Form>
       </Layout>
+
+      {this.state.resetError &&
+                <ErrorDisplay
+                    removeError={id => {this.setState({resetError: false})}}
+                    errors={[{message: this.state.message, id: 100}]}
+                    />}
       </div>
     );
   }

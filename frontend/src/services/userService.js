@@ -70,3 +70,15 @@ export async function changePassword(oldPassword, newPassword) {
       return error.response.status;
   }
 }
+
+export async function resetPassword(email) {
+  const data = {
+    "email": email
+  }
+  try {
+      const user = await instance.post(`reset-password/`, data);
+      return user.status === 200;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
