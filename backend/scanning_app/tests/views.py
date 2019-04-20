@@ -1010,7 +1010,7 @@ class RentalInfoViewsTests(TestCase):
             description='Playable XD',
             available=True,
             type=self.type,
-            max_rent_time=datetime.timedelta(days=2)
+            max_rent_time=2
         )
 
         self.apiClient = APIClient()
@@ -1118,7 +1118,7 @@ def create_equipment():
         description="Costam",
         available=True,
         type=create_type_of_equipment(),
-        max_rent_time=datetime.timedelta(days=3)
+        max_rent_time=3
     )
 
 
@@ -1128,7 +1128,7 @@ def create_unavailable_equipment():
         description="Costam",
         available=False,
         type=create_type_of_equipment(),
-        max_rent_time=datetime.timedelta(days=3)
+        max_rent_time=3
     )
 
 
