@@ -1,11 +1,13 @@
 import datetime
 from django.test import TestCase
 
+from scanning_app.equipment import EquipmentCreateSerializer, \
+    EquipmentSerializer, RentalInfoSerializer
 from scanning_app.models import Equipment, AppUser, RentalInfo, \
     UnacceptedClient, Address, BusinessInfo, TypeOfEquipment
-from scanning_app.serializers import RentalInfoSerializer, \
-    EquipmentSerializer, SignUpUnacceptedClientSerializer, ClientSerializer, \
-    EquipmentCreateSerializer
+from scanning_app.user.client.serializers import ClientSerializer
+from scanning_app.unacceptedclient.serializers import \
+    SignUpUnacceptedClientSerializer
 
 
 CLIENT_USERNAME = "username"
@@ -21,7 +23,7 @@ CLIENT_ADDRESS = {
 }
 CLIENT_BUSINESS_INFO = {
     "name": "Businesses name",
-    "nip": "725-18-01-126",
+    "nip": "7251801126",
     "regon": "472836141"
 }
 CLIENT_DATA = {
@@ -39,7 +41,7 @@ EQUIPMENT_DESCRIPTION = "description"
 EQUIPMENT_TYPE = {
     "type_name": TYPE_NAME
 }
-EQUIPMENT_MAX_RENT_TIME = datetime.timedelta(days=3)
+EQUIPMENT_MAX_RENT_TIME = 3
 EQUIPMENT_DATA = {
     "name": EQUIPMENT_NAME,
     "description": EQUIPMENT_DESCRIPTION,
@@ -186,13 +188,13 @@ class EquipmentSerializerTests(TestCase):
         self.assertFalse(ser.is_valid())
 
     def test_equipment_obj_passed_proper_dict_returned(self):
-        equipment = Equipment.objects.create(**EQUIPMENT_DATA)
+        data = EQUIPMENT_DATA
+        equipment = Equipment.objects.create(**data)
         ser = EquipmentSerializer(equipment)
         expected_data = EQUIPMENT_DATA.copy()
-        expected_data['id'] = 1
+        expected_data['id'] = equipment.id
         expected_data['available'] = True
         expected_data['type'] = None
-        expected_data['max_rent_time'] = '3 00:00:00'
 
         self.assertDictEqual(ser.data, expected_data)
 
@@ -202,7 +204,7 @@ def create_equip_client_and_return_rental_info_data(testcase):
     testcase.equip = Equipment.objects \
         .create(name="Equip", description="yes",
                 type=testcase.type, available=True,
-                max_rent_time=datetime.timedelta(days=20, hours=5))
+                max_rent_time=20)
     testcase.client = AppUser.objects.create(username="username",
                                              password="pass")
     testcase.rental_info_data = {
