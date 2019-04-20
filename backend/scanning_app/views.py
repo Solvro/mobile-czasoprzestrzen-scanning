@@ -30,13 +30,12 @@ from django_rest_passwordreset.views import ResetPasswordRequestToken
 
 class EquipmentView(viewsets.ModelViewSet):
     queryset = models.Equipment.objects.all()
-    # serializer_class = serializers.EquipmentSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('name', 'available', 'type')
 
     def get_serializer_class(self):
-        if self.request.method == 'POST':
+        if self.request.method in ['POST', 'PATCH', 'PUT']:
             return serializers.EquipmentCreateSerializer
         else:
             return serializers.EquipmentSerializer
@@ -562,7 +561,10 @@ class RentalInfoView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = self.queryset
-        user = AppUser.objects.get(pk=self.request.user.id)
+        try:
+            user = AppUser.objects.get(pk=self.request.user.id)
+        except AppUser.DoesNotExist:
+            return AppUser.objects.none()
         if user.is_client():
             qs = qs.filter(client_data=user)
         if 'status' in self.request.query_params:
@@ -725,7 +727,7 @@ class ReturnEquipmentView(views.APIView):
         responses={
             200: "Equipment returned",
             400: "Equipment is available",
-            401: "Rent isn't assigned to you",
+            403: "Rent isn't assigned to you",
             404: "Equipment doesn't exist"
         }
     )
@@ -733,17 +735,51 @@ class ReturnEquipmentView(views.APIView):
         try:
             equip = models.Equipment.objects.get(pk=pk)
             if equip is not None and not equip.available:
-                rent = models.RentalInfo.objects.filter(equipment_data=pk, actual_return=None)[0]
+                rent = models.RentalInfo.objects \
+                    .filter(equipment_data=pk, actual_return__isnull=True)[0]
                 if rent.client_data.pk == request.user.pk:
                     equip.available = True
                     rent.actual_return = datetime.date.today()
                     equip.save()
                     rent.save()
                     return Response(status=status.HTTP_200_OK)
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
+                return Response(status=status.HTTP_403_FORBIDDEN)
             elif equip is None:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
         except models.Equipment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class AdminReturnEquipmentView(views.APIView):
+    permission_classes = (IsAppUser, IsAuthenticated, IsAdminOrSuperAdmin)
+
+    @swagger_auto_schema(
+        operation_description="PUT api-v1/equipment/{id}/admin-return/\n"
+                              "Return equipment with id",
+        responses={
+            200: "Equipment returned",
+            400: "Equipment is available",
+            401: "No token provided",
+            403: "Not admin or super-admin user",
+            404: "Equipment doesn't exist"
+        }
+    )
+    def put(self, request, pk):
+        try:
+            equip = models.Equipment.objects.get(pk=pk)
+            if equip.available:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        except models.Equipment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        rent = models.RentalInfo.objects \
+            .filter(equipment_data=pk, actual_return__isnull=True)[0]
+        if rent is not None:
+            equip.available = True
+            equip.save()
+            rent.actual_return = datetime.date.today()
+            rent.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
