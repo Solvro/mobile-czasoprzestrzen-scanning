@@ -103,12 +103,13 @@ class AdminPage extends Component {
 
   createTable = (res) => {
     var rows = [];
-    var business = <Icon>clear</Icon>;
+    var business;
     var ID = 0;
     for (var i = 0; i < res.length; i++) {
-      if (res[i].is_bussines === true) {
-        business = <Icon>approve</Icon>
-      }
+      if (res[i].is_business === false) {
+        business = <Icon>clear</Icon>
+      } else
+      business = <Icon>done</Icon>;
       ID = res[i].id
       rows.push([ID, res[i].first_name + ' ' + res[i].last_name, res[i].email, '999999999',
         business, this.createButtonAccept(ID), this.createButtonRemove(ID)]);
