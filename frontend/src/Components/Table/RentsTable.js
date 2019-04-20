@@ -4,7 +4,7 @@ import Table from './Table';
 
 function RentsTable (props) {
 
-  const header = ["Nr","Nazwa","Wypożyczający","Data Wypożyczenia", "Data zwrotu", "Gdzie"];
+  const header = ["Nr","Nazwa","Wypożyczający","Data Wypożyczenia", "Spodziewana data zwrotu", "Data zwrotu", "Gdzie"];
   var rows = props.contains;
    
   return (

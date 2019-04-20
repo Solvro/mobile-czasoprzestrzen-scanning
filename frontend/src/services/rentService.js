@@ -12,9 +12,9 @@ export async function getRentsList() {
     });
 
     try {
-        const response = await instance.get('rental-info/?status=finished');
+        const response = await instance.get('rental-info/?status=ongoing');
         return response.data;
     } catch (error) {
-        console.log('Error: ${error}');
+        console.log('Error: ' + error);
     }
 }

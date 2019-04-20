@@ -32,6 +32,7 @@ class Rents extends Component {
         res[i].equipment_data.name,
         res[i].client_data.username,
         res[i].rental_date,
+        res[i].expected_return,
         res[i].actual_return,
         res[i].client_data.address.city + " " + res[i].client_data.address.street])
     }
