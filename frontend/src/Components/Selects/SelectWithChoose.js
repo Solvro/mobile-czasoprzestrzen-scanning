@@ -48,7 +48,6 @@ handleDialogOpen = () => {
 
   handleDialogCloseAgree = () => {
     this.setState({ dialogOpen: false });
-    console.log(this.state.typeName);
     addNewItemType(this.state.typeName);
     this.props.action()
     this.forceUpdate();
@@ -61,7 +60,7 @@ handleDialogOpen = () => {
 
 handleChange = chosen => event => {
   this.setState({ [chosen]: event.target.value });
-  this.props.onChange(event);
+  
 };
 
 
@@ -79,7 +78,6 @@ handleChange = chosen => event => {
     
     return (
         <div>
-      <form autoComplete="off" className='SearchField' className={classes.container}>
         <FormControl className={classes.formControl}>
           <NativeSelect
             className={classes.selectEmpty}
@@ -90,12 +88,11 @@ handleChange = chosen => event => {
             <option value='' disabled>
               Wybierz typ
             </option>
-            {this.props.itemTypes.map((itemType,i) => <option value={i}>{itemType}</option>)}
+            {this.props.itemTypes.map((itemType,i) => <option key={i} value={i}>{itemType}</option>)}
           </NativeSelect>
         </FormControl>
         <IconButton aria-label="Add an alarm" className={classes.iconAdd} onClick={this.handleDialogOpen}>
           <Icon>add</Icon></IconButton>
-      </form>
       <Dialog dialogOpen={this.state.dialogOpen} handleCloseRefuse={this.handleDialogCloseRefuse} 
       handleCloseAgree={() =>  {this.handleDialogCloseAgree()}} handleChangeType={this.handleChangeType}>
       </Dialog>
