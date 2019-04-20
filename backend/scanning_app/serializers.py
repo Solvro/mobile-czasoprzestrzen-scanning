@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
@@ -21,6 +23,7 @@ class EquipmentSerializer(serializers.ModelSerializer):
 
 
 class EquipmentCreateSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Equipment
         exclude = ('available',)
