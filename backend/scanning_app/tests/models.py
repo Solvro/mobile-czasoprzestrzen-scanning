@@ -172,7 +172,7 @@ class TypeOfEquipmentTests(TestCase):
         self.equipment = Equipment(name="Mikrofon",
                                    description="Makes you louder",
                                    available=True,
-                                   max_rent_time=datetime.timedelta(days=3),
+                                   max_rent_time=3,
                                    type=self.type)
 
     def test_equipment_exist_with_out_type(self):
