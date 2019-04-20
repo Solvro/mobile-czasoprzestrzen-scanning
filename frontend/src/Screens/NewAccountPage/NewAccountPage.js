@@ -71,7 +71,7 @@ class NewAccountPage extends Component {
       var { username, password, firstName, lastName, email, phone } = this.state;
       phone = "+48" + phone
       var response;
-      if(this.state.accountType==0){ 
+      if(this.state.accountType === 0){ 
         response = await createNewAdminAccount(username, password, firstName, lastName, email, phone);
       } else{
 
