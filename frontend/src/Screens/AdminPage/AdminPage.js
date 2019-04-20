@@ -36,7 +36,6 @@ class AdminPage extends Component {
 
     await userSuperAdmin()
     .then((isSuperAdmin) => { 
-      console.log("SA"+isSuperAdmin)
       this.setState({isSuperAdmin: isSuperAdmin}); 
     })
 
