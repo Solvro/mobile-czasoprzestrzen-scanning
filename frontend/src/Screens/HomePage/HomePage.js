@@ -32,31 +32,6 @@ class HomePage extends Component {
     this.getName();
   }
 
-  updateData = async () => {
-    await getItemsList()
-    .then((res) => {
-      this.setState({isLoading : false});
-      this.createTable(res);
-    })
-    this.forceUpdate();
-  }
-
-  handleDialogOpen = (id) => {
-    this.setState({ dialogOpen: true,
-    clickedItemId: id });
-  };
-
-  handleDialogCloseRefuse = () => {
-    this.setState({ dialogOpen: false });
-  };
-
-  handleDialogCloseAgree = () => {
-    this.setState({ dialogOpen: false });
-    removeItemFromList(this.state.clickedItemId);
-    this.setState({ loginInfo: true, messageInfo: "Usunięto "});
-    this.updateData();
-  };
-
   async componentDidMount() {
    
     await getItemTypesList()
@@ -73,6 +48,29 @@ class HomePage extends Component {
       this.createTable(res); 
     })
   }
+
+  updateData = async () => {
+    await getItemsList()
+      .then((res) => this.createTable(res));
+    // this.forceUpdate();
+  }
+
+  handleDialogOpen = (id) => {
+    this.setState({ dialogOpen: true,
+    clickedItemId: id });
+  };
+
+  handleDialogCloseRefuse = () => {
+    this.setState({ dialogOpen: false });
+  };
+
+  handleDialogCloseAgree = async () => {
+    this.setState({ dialogOpen: false });
+    removeItemFromList(this.state.clickedItemId);
+    this.setState({ loginInfo: true, messageInfo: "Usunięto "});
+    await this.updateData();
+    this.forceUpdate();
+  };
 
   createButtonEdit(id) {
     const newTo = { 

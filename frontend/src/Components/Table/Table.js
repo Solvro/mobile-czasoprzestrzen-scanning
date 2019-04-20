@@ -66,7 +66,7 @@ function table (props) {
     }
 
     if(props.row.length === 0){
-      body.push(<div className={classes.blankTable}> Brak rekordów </div>);
+      body.push(<div key={1} className={classes.blankTable}> Brak rekordów </div>);
     }
  
   return (

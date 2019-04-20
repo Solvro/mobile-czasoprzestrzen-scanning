@@ -85,7 +85,8 @@ class AddItem extends Component {
   }
 
   handleSelectChange = event => {
-    this.setState({ itemType: +event.target.value + 1 }, ()=> console.log("Item"+(this.state.itemType)));
+    console.log("tutaj")
+    this.setState({ itemType: +event.target.value + 1 });
   };
 
   tryToAddItem = async e => {

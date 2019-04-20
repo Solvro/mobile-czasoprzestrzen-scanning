@@ -49,7 +49,7 @@ handleDialogOpen = () => {
   handleDialogCloseAgree = () => {
     this.setState({ dialogOpen: false });
     addNewItemType(this.state.typeName);
-    this.props.action()
+    this.props.action();
     this.forceUpdate();
   };
 
@@ -60,7 +60,8 @@ handleDialogOpen = () => {
 
 handleChange = chosen => event => {
   this.setState({ [chosen]: event.target.value });
-  
+  this.props.onChange(event);
+ 
 };
 
 
