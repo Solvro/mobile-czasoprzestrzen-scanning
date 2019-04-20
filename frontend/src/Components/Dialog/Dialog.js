@@ -18,10 +18,10 @@ function AlertDialog (props) {
           </DialogTitle>
           <DialogActions>
             <Button onClick={props.handleCloseRefuse} color="primary">
-              Cancel
+              Anuluj
             </Button>
             <Button onClick={props.handleCloseAgree} color="primary" autoFocus>
-              Remove
+              Potwierdź
             </Button>
           </DialogActions>
         </Dialog>
