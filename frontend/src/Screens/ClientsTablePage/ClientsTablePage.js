@@ -10,6 +10,8 @@ import MessageIcon from '@material-ui/icons/Message';
 import IconButton from '@material-ui/core/IconButton';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
+import Dialog from '../../Components/Dialog/Dialog';
+
 
 class Clients extends Component {
 
@@ -19,7 +21,9 @@ class Clients extends Component {
       clientListTable: '',
       isLoading: true,
       infoMessage: '',
-      errorMsg: ''
+      errorMsg: '',
+      dialogOpen: false,
+      clickedItemId: ''
     }
   }
 
@@ -39,7 +43,7 @@ class Clients extends Component {
       }else 
       businessIcon = <Icon>done</Icon>;
 
-      rows.push([res[i].id, res[i].first_name + " " + res[i].last_name, res[i].email, res[i].phone, businessIcon, this.createMessageButton(res[i].id), this.createRemoveButton(res[i].id)])
+      rows.push([res[i].id, res[i].username, res[i].first_name + " " + res[i].last_name, res[i].email, res[i].phone, businessIcon, this.createMessageButton(res[i].id), this.createRemoveButton(res[i].id)])
     }
     var table = <Table contains = {rows} />;
     this.setState({ clientListTable: table});
@@ -50,8 +54,25 @@ class Clients extends Component {
   }
 
   createRemoveButton(id) {
-    return <IconButton aria-label="Delete" onClick={() => this.tryToDeleteClient(id)}> <DeleteIcon /></IconButton>;
+    return <IconButton aria-label="Delete" onClick={() => this.handleDialogOpen(id)}> <DeleteIcon /></IconButton>;
   }
+
+  handleDialogOpen(id){
+    this.setState({ 
+      dialogOpen: true,
+      clickedItemId: id 
+    });
+  }
+
+
+  handleDialogCloseRefuse = () => {
+    this.setState({ dialogOpen: false });
+  };
+
+  handleDialogCloseAgree = () => {
+    this.setState({ dialogOpen: false });
+    this.tryToDeleteClient(this.state.clickedItemId);
+  };
 
   tryToDeleteClient = async (id) => {
     try{
@@ -83,6 +104,12 @@ class Clients extends Component {
           <SearchContainer placeholder={"Wyszukaj po nazwie ..."}/>
           {!this.state.isLoading ? this.state.clientListTable : null}
       </Layout>
+      <Dialog 
+        dialogOpen={this.state.dialogOpen} 
+        handleCloseRefuse={this.handleDialogCloseRefuse} 
+        handleCloseAgree={this.handleDialogCloseAgree}
+        message={"Czy na pewno chcesz usunąć tego klienta?"}>
+      </Dialog>
       {this.state.infoMessage && 
         <InfoDisplay
           removeInfo={id => { this.setState({ infoMessage: false }) }}
