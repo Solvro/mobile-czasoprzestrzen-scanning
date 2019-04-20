@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import {getSuperAdminList,getAdminList,removeAdmin} from '../../services/adminService';
+import {userSuperAdmin} from '../../services/userService';
 class AdminPage extends Component {
 
   constructor(props) {
@@ -24,13 +25,21 @@ class AdminPage extends Component {
       infoMessage: '',
       data: '',
       isLoading: true,
-      adminTable: ''
+      adminTable: '',
+      isSuperAdmin: false
     };
     this.state.infoMessage=this.props.location.infoMessage
   }
 
 
   async componentDidMount() {
+
+    await userSuperAdmin()
+    .then((isSuperAdmin) => { 
+      console.log("SA"+isSuperAdmin)
+      this.setState({isSuperAdmin: isSuperAdmin}); 
+    })
+
     await getUnacceptedClientsList()
     .then((res) => {
       this.setState({isLoading : false});
@@ -38,20 +47,23 @@ class AdminPage extends Component {
       
     })
 
-    const adminList = await getAdminList();
-    const superAdminList = await getSuperAdminList();
-
-    this.createAdminTable(adminList,superAdminList);
+    if(this.state.isSuperAdmin){
+      const adminList = await getAdminList();
+      const superAdminList = await getSuperAdminList();
+      this.createAdminTable(adminList,superAdminList);
+    }
   }
 
   updateData = async () => {
     await getUnacceptedClientsList()
       .then((res) => this.createTable(res));
     
-    const adminList = await getAdminList();
-    const superAdminList = await getSuperAdminList();
-  
-    this.createAdminTable(adminList,superAdminList);
+    if(this.state.isSuperAdmin){
+      const adminList = await getAdminList();
+      const superAdminList = await getSuperAdminList();
+      this.createAdminTable(adminList,superAdminList);
+    }
+    
     this.forceUpdate();
   }
 
@@ -92,13 +104,17 @@ class AdminPage extends Component {
   }
 
   createButtonAccept(id) {
-    return <IconButton aria-label="Approve" onClick={() => this.approveClient(id)}><ApproveIcon /> </IconButton>;
+
+    return <IconButton aria-label="Approve" disabled={!this.state.isSuperAdmin} onClick={() => this.approveClient(id)}>
+    <ApproveIcon /> </IconButton>;
   }
   createButtonRemove(id) {
-    return <IconButton aria-label="Delete" onClick={() => this.removeClient(id)}> <DeleteIcon /></IconButton>;
+    return <IconButton aria-label="Delete" disabled={!this.state.isSuperAdmin} onClick={() => this.removeClient(id)}> 
+    <DeleteIcon /></IconButton>;
   }
   createButtonRemoveAdmin(id) {
-    return <IconButton aria-label="Delete" onClick={() => this.removeAdmin(id)}> <DeleteIcon /></IconButton>;
+    return <IconButton aria-label="Delete" disabled={!this.state.isSuperAdmin} onClick={() => this.removeAdmin(id)}> 
+    <DeleteIcon /></IconButton>;
   }
 
   createTable = (res) => {
@@ -110,7 +126,7 @@ class AdminPage extends Component {
         business = <Icon>approve</Icon>
       }
       ID = res[i].id
-      rows.push([ID, res[i].first_name + ' ' + res[i].last_name, res[i].email, '999999999',
+      rows.push([ID, res[i].first_name + ' ' + res[i].last_name, res[i].email, res[i].phone,
         business, this.createButtonAccept(ID), this.createButtonRemove(ID)]);
 
     }
@@ -142,14 +158,15 @@ class AdminPage extends Component {
 
       <Toolbar />
       {!this.state.isLoading ? this.state.unacceptClientTable : null}
-      {!this.state.isLoading ? this.state.adminTable : null}
+      {!this.state.isLoading && this.state.isSuperAdmin ? this.state.adminTable : null}
     </div>;
 
     const right = <div className='ButtonGroup'>
 
             <div className='inner'>
             <Button button={"verticalButton"} link={'/changePassword'} text={"Zmień hasło"}></Button>
-            <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"}></Button>
+            {this.state.isSuperAdmin ? <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"} disabled={!this.state.isSuperAdmin}></Button>
+             : <Button button={"verticalButton"} link={'/account'} text={"Stwórz nowe konto admina"} disabled={!this.state.isSuperAdmin}></Button>}
             <Button button={"verticalButton"} link={'/login'} onClick={()=>localStorage.clear()} text={"Wyloguj"}></Button> 
             </div>
 

@@ -55,12 +55,12 @@ function Layout(props) {
     }
     if(props.layoutDivide === "84"){
         styleLeft={
-            'padding-left': "120px",
-            'padding-right': "40px",
+            'paddingLeft': "120px",
+            'paddingRight': "40px",
         };
         styleRight={
-            'padding-left': "40px",
-            'padding-right': "40px",
+            'paddingLeft': "40px",
+            'paddingRight': "40px",
         };
         layout = <Grid container spacing={spacing}>
                             <Grid item xs={8} style={styleLeft}>
