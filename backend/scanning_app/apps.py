@@ -5,4 +5,4 @@ class ScanningAppConfig(AppConfig):
     name = 'scanning_app'
 
     def ready(self):
-        import scanning_app.signals
+        import scanning_app.user.signals

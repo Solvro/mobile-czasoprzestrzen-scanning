@@ -23,20 +23,21 @@ class Address(models.Model):
 
 class BusinessInfo(models.Model):
     nip_validator = RegexValidator(
-        r'^((\d{3}[-]\d{3}[-]\d{2}[-]\d{2})|(\d{3}[-]\d{2}[-]\d{2}[-]\d{3}))$',
+        r'^[0-9]{10}$',
         "Nip doesn't comply"
     )
     regon_validator = RegexValidator(
-        r'^\d{9}$',
+        r'^[0-9]{9}$',
         "Regon doesn't comply"
     )
 
     nip = models.CharField(max_length=13, validators=[nip_validator])
     regon = models.CharField(max_length=9, validators=[regon_validator])
+    name = models.CharField(max_length=64)
 
 
 class TypeOfEquipment(models.Model):
-    type_name = models.CharField(max_length=255)
+    type_name = models.CharField(max_length=255, unique=True)
 
 
 class AppUser(AbstractUser):
@@ -148,8 +149,8 @@ class UnacceptedClient(models.Model):
 class Equipment(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=400)
-    available = models.BooleanField(default=False)
-    max_rent_time = models.DurationField()
+    available = models.BooleanField(default=True)
+    max_rent_time = models.IntegerField()
     type = models.ForeignKey(TypeOfEquipment, on_delete=models.SET_NULL,
                              null=True)
 
@@ -161,8 +162,10 @@ class RentalInfo(models.Model):
     rental_date = models.DateField(auto_now=True)
     expected_return = models.DateField()
     actual_return = models.DateField(null=True)
-    equipment_data = models.ForeignKey(Equipment, on_delete=models.DO_NOTHING)
-    client_data = models.ForeignKey(AppUser, on_delete=models.DO_NOTHING)
+    equipment_data = models.ForeignKey(Equipment, on_delete=models.SET_NULL,
+                                       null=True)
+    client_data = models.ForeignKey(AppUser, on_delete=models.SET_NULL,
+                                    null=True)
 
     def __str__(self):
         return "{}".format(self.rental_date)
