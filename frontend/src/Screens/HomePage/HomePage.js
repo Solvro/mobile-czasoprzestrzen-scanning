@@ -39,7 +39,7 @@ class HomePage extends Component {
     .then((res) => {
       this.setState({isLoading : false});
       this.createTable(res); 
-      console.log(res);
+      
     })
     this.forceUpdate();
   }
@@ -64,7 +64,6 @@ class HomePage extends Component {
 
   //dialog on return
   handleReturnDialogOpen = (id) => {
-    console.log(id);
     this.setState({ returnDialogOpen: true, returnItemID: id});
   };
 
