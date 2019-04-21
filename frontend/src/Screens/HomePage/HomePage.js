@@ -59,11 +59,12 @@ class HomePage extends Component {
     removeItemFromList(this.state.clickedItemId);
     this.setState({ loginInfo: true, messageInfo: "Usunięto "});
     // this.updateData();
-    setTimeout(this.updateData, 1000)
+    setTimeout(this.updateData, 2000)
   };
 
   //dialog on return
   handleReturnDialogOpen = (id) => {
+    console.log(id);
     this.setState({ returnDialogOpen: true, returnItemID: id});
   };
 
@@ -109,7 +110,7 @@ class HomePage extends Component {
 
   createButtonReturn(id) {
     return <IconButton aria-label="Delete" onClick={() => this.handleReturnDialogOpen(id) }> 
-    <Icon> home</Icon> </IconButton>;
+    <Icon> close</Icon> </IconButton>;
   }
 
   createTable = (res) => {
