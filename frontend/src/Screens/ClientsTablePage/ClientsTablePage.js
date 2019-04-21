@@ -34,6 +34,18 @@ class Clients extends Component {
     })    
   }
 
+  async filterTableContentByNameContains(nameFragment){
+    await getClientsList().then((res)=>{
+
+      var filteredRes = Object.keys(res).filter(function(params) {
+        return res[params].username.includes(nameFragment)
+      }).map(function(i){
+        return res[i];
+      })
+      this.createTable(filteredRes)
+    })    
+  }
+
   createTable(res){
     var rows = [];
     var businessIcon;
@@ -96,12 +108,17 @@ class Clients extends Component {
     this.forceUpdate();
   }
 
+  handleChange = (e) => {
+    var res = this.filterTableContentByNameContains(e.target.value)
+    console.log(res)
+  }
+
   render() {
     return (
       <div className="container">
             <Toolbar/>
       <Layout layoutDivide={"282"}>
-          <SearchContainer placeholder={"Wyszukaj po nazwie ..."}/>
+          <SearchContainer placeholder={"Wyszukaj po nazwie ..."} onChange={this.handleChange}/>
           {!this.state.isLoading ? this.state.clientListTable : null}
       </Layout>
       <Dialog 

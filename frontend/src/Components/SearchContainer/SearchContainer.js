@@ -7,7 +7,8 @@ import Layout from '../Layout/Layout';
 function SearchContainer (props) {
 
 const left = <div className='SearchField'> 
-            <SearchField placeholder={props.placeholder} /></div>;
+               <SearchField placeholder={props.placeholder}  onChange={props.onChange}/>
+             </div>;
 
 var container = <div className='SearchContent'>
 <Layout layoutDivide={"66"} leftChildren={left}></Layout>
