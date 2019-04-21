@@ -97,8 +97,14 @@ class HomePage extends Component {
         available = <Icon>done</Icon>
       }
       ID = res[i].id;
-      rows.push([i+1, res[i].name, this.state.typesList[res[i].type - 1],available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
-
+      rows.push([
+        i+1,
+        res[i].name, 
+        res[i].type.type_name, 
+        available, 
+        this.createButtonRemove(ID), 
+        this.createButtonEdit(ID)
+      ]);
     }
     var table = <Table contains={rows} />;
     this.setState({ itemListTable: table });
