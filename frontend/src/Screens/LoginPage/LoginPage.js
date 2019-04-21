@@ -38,7 +38,6 @@ componentWillMount(){
 }
 
 tryAuthorize = async e => {
-
   e.preventDefault();
   const { username, password } = this.state;
   const token = await authorizeUser(username, password);
@@ -66,6 +65,13 @@ validateIsLogged = async () => {
   return isLogged;
 }
 
+handleKeyDown = (e) => {
+  
+  if (e.key === 'Enter') {
+    this.tryAuthorize(e);
+  }
+}
+
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
     const button = <div><Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button><TextButton link={'/forgotpass'} text={"Zapomniałeś hasła?"}></TextButton></div>;    
@@ -78,7 +84,7 @@ validateIsLogged = async () => {
                     errors={[{message: 'Błędny login lub hasło.', id: 100}]}
                     />}
       <Layout layoutDivide={"363"}>
-        <Form header={header} button={button} >
+        <Form header={header} button={button} onKeyDown={this.handleKeyDown} onSubmit={this.preventDefault}>
 
         <InputField placeholder={"Login"} rows={"1"} onChange={this.handleChangeUser}>
         </InputField>
