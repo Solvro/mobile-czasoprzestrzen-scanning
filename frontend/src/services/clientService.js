@@ -15,7 +15,7 @@ export async function getClientsList() {
         const response = await instance.get('client/');
         return response.data;
     } catch (error) {
-        console.log('Error: ${error}');
+        console.log('Error: ' + error);
     }
 }
 
