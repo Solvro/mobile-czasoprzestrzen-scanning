@@ -8,7 +8,7 @@ import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import Dialog from '../../Components/Dialog/Dialog';
 import {getUserName } from '../../services/userService';
 import Icon from '@material-ui/core/Icon';
-import {getItemsList,getItemTypesList,removeItemFromList} from '../../services/itemsService';
+import {getItemsList,getItemTypesList,removeItemFromList, returnItem} from '../../services/itemsService';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import {Link} from 'react-router-dom';
@@ -23,8 +23,10 @@ class HomePage extends Component {
       isLoading: true,
       typesList: [],
       dialogOpen: false,
+      returnDialogOpen: false,
       clickedItemId: 0,
-      messageInfo: ''
+      messageInfo: '',
+      returnItemID: 0
     }
   }
 
@@ -39,10 +41,10 @@ class HomePage extends Component {
       this.createTable(res); 
       console.log(res);
     })
-    console.log("Force up")
     this.forceUpdate();
   }
 
+  //dialog on remove
   handleDialogOpen = (id) => {
     this.setState({ dialogOpen: true,
     clickedItemId: id });
@@ -56,6 +58,22 @@ class HomePage extends Component {
     this.setState({ dialogOpen: false });
     removeItemFromList(this.state.clickedItemId);
     this.setState({ loginInfo: true, messageInfo: "Usunięto "});
+    this.updateData();
+  };
+
+  //dialog on return
+  handleReturnDialogOpen = (id) => {
+    this.setState({ returnDialogOpen: true, returnItemID: id});
+  };
+
+  handleReturnDialogCloseRefuse = () => {
+    this.setState({ returnDialogOpen: false });
+  };
+
+  handleReturnDialogCloseAgree = () => {
+    this.setState({ returnDialogOpen: false });
+    returnItem(this.state.returnItemID);
+    this.setState({ loginInfo: true, messageInfo: "Zwrócono "});
     this.updateData();
   };
 
@@ -88,16 +106,23 @@ class HomePage extends Component {
     <DeleteIcon /></IconButton>;
   }
 
+  createButtonReturn(id) {
+    return <IconButton aria-label="Delete" onClick={() => this.handleReturnDialogOpen(id) }> 
+    <Icon> home</Icon> </IconButton>;
+  }
+
   createTable = (res) => {
     var rows = [];
-    var available = <Icon>clear</Icon>;
+    
     var ID = 0;
     for (var i = 0; i < res.length; i++) {
+      ID = res[i].id;
+      var available = this.createButtonReturn(ID);
       if (res[i].available === true) {
         available = <Icon>done</Icon>
       }
-      ID = res[i].id;
-      rows.push([i+1, res[i].name, this.state.typesList[res[i].type - 1],available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
+      
+      rows.push([i+1, res[i].name, res[i].type.type_name,available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
 
     }
     var table = <Table contains={rows} />;
@@ -127,6 +152,10 @@ class HomePage extends Component {
 
       <Dialog dialogOpen={this.state.dialogOpen} handleCloseRefuse={this.handleDialogCloseRefuse} 
       handleCloseAgree={this.handleDialogCloseAgree} message={"Czy na pewno chcesz usunąć rzecz z magazynu?"}>
+      </Dialog>
+
+      <Dialog dialogOpen={this.state.returnDialogOpen} handleCloseRefuse={this.handleReturnDialogCloseRefuse} 
+      handleCloseAgree={this.handleReturnDialogCloseAgree} message={"Czy na pewno chcesz zwrócić rzecz do magazynu?"}>
       </Dialog>
       
       {this.state.loginInfo && <InfoDisplay
