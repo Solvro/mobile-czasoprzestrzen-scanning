@@ -32,7 +32,7 @@ class Rents extends Component {
 
   handleChange = (event, value) => {
     this.setState({ value });
-    this.reloadTable();
+    setTimeout(this.reloadTable, 0);
   };
 
   reloadTable = async () => {
@@ -47,8 +47,7 @@ class Rents extends Component {
         this.createFinishedTable(res);
       })
     }
-
-    
+    this.forceUpdate();
   }
 
   handleChangeIndex = index => {
