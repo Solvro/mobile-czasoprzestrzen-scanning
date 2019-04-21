@@ -58,7 +58,8 @@ class HomePage extends Component {
     this.setState({ dialogOpen: false });
     removeItemFromList(this.state.clickedItemId);
     this.setState({ loginInfo: true, messageInfo: "Usunięto "});
-    this.updateData();
+    // this.updateData();
+    setTimeout(this.updateData, 1000)
   };
 
   //dialog on return
