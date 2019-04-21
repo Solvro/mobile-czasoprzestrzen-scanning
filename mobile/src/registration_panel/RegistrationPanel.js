@@ -39,6 +39,7 @@ export default class RegistrationPanel extends React.Component {
             email: null,
             phoneNumber: null,
             street: null,
+            companyName: null,
             postalCode: null,
             city: null,
             nip: null,
@@ -230,6 +231,7 @@ export default class RegistrationPanel extends React.Component {
         };
 
         let bussinesData = {
+            'name': this.state.companyName,
             'nip': this.state.nip,
             'regon': this.state.regon,
         };
