@@ -38,7 +38,7 @@ tryReset = async e => {
   const {email} = this.state;
   const response = await resetPassword(email);
         if (response) {            
-            this.props.history.push('/login');
+            this.props.history.push('/forgotpassconfirm');
         } else {
             this.setState({resetError: true, message: "Coś poszło nie tak"})
         }
@@ -58,7 +58,7 @@ validateEmail(email) {
 
   render() {
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <div><Button link={'/home'} text={"Resetuj hasło"} onClick={this.tryReset}></Button></div>;    
+    const button = <div><Button link={'/forgotpassconfirm'} text={"Resetuj hasło"} onClick={this.tryReset}></Button></div>;    
 
     return (
       <div>

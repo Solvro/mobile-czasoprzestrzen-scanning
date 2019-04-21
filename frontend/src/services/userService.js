@@ -82,3 +82,17 @@ export async function resetPassword(email) {
     console.log(`Error: ${error}`);
   }
 }
+
+export async function resetPasswordConfirm(token, password) {
+  const data = {
+    "token": token,
+    "password": password
+  }
+  try {
+      const user = await instance.post(`reset-password/confirm/`, data);
+      return user.status === 200;
+  } catch (error) {
+    console.log(error.status)
+    console.log(`Error: ${error}`);
+  }
+}
