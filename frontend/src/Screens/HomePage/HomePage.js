@@ -40,6 +40,18 @@ class HomePage extends Component {
     })    
   }
 
+  async filterTableContentByTypeNameContains(typeName){
+    await getItemsList().then((res)=>{
+
+      var filteredRes = Object.keys(res).filter(function(params) {
+        return res[params].type.type_name===typeName
+      }).map(function(i){
+        return res[i];
+      })
+      this.createTable(filteredRes)
+    })    
+  }
+
   componentWillMount(){ 
     this.getName();
   }
@@ -133,8 +145,13 @@ class HomePage extends Component {
     }
   }
 
-  handleChange = (e) => {
-    var res = this.filterTableContentByNameContains(e.target.value)
+  handleChange = (fieldToFilterOn, value) => {
+    // alert(fieldToFilterOn + " " + value)
+    //console.log(e.target.value)
+    if(fieldToFilterOn==="name")
+      var res = this.filterTableContentByNameContains(value)
+    else
+      var res =  this.filterTableContentByTypeNameContains(this.state.typesList[value])
   }
 
   handleKeyDown = (e) => {
@@ -148,7 +165,7 @@ class HomePage extends Component {
       <div className="container">
             <Toolbar/>
       <Layout layoutDivide={"282"}>
-          <SearchContainer placeholder={"Wyszukaj po nazwie eee..."} onChange={this.handleChange} rows={"1"} onKeyDown={this.handleKeyDown}/>
+          <SearchContainer placeholder={"Wyszukaj po nazwie eee..."} onChange={this.handleChange.bind(this)} rows={"1"} onKeyDown={this.handleKeyDown} itemTypes={this.state.typesList}/>
           {!this.state.isLoading ? this.state.itemListTable : null}
           <div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div>
       </Layout>
