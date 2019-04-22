@@ -28,6 +28,18 @@ class HomePage extends Component {
     }
   }
 
+  async filterTableContentByNameContains(nameFragment){
+    await getItemsList().then((res)=>{
+
+      var filteredRes = Object.keys(res).filter(function(params) {
+        return res[params].name.includes(nameFragment)
+      }).map(function(i){
+        return res[i];
+      })
+      this.createTable(filteredRes)
+    })    
+  }
+
   componentWillMount(){ 
     this.getName();
   }
@@ -121,14 +133,18 @@ class HomePage extends Component {
     }
   }
 
+  handleChange = (e) => {
+    var res = this.filterTableContentByNameContains(e.target.value)
+  }
+
   render() {
     return (
       <div className="container">
             <Toolbar/>
       <Layout layoutDivide={"282"}>
-                <SearchContainer placeholder={"Wyszukaj po nazwie ..."} />
-                {!this.state.isLoading ? this.state.itemListTable : null}
-                <div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div>
+          <SearchContainer placeholder={"Wyszukaj po nazwie eee..."} onChange={this.handleChange} />
+          {!this.state.isLoading ? this.state.itemListTable : null}
+          <div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div>
       </Layout>
 
       <Dialog dialogOpen={this.state.dialogOpen} handleCloseRefuse={this.handleDialogCloseRefuse} 
