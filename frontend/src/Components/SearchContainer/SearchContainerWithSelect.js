@@ -11,7 +11,8 @@ function SearchContainerWithSelect(props) {
 
 
     const left = <div className='SearchField'> 
-            <SearchField placeholder={props.placeholder} onChange={props.onChange}/></div>;
+                    <SearchField placeholder={props.placeholder} onChange={props.onChange} rows={props.rows} onKeyDown={props.onKeyDown}/>
+                </div>;
 
     const right =  <Select itemTypes={[]} />
         return (

@@ -113,12 +113,18 @@ class Clients extends Component {
     console.log(res)
   }
 
+  handleKeyDown = (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault()
+    }
+  }
+
   render() {
     return (
       <div className="container">
             <Toolbar/>
       <Layout layoutDivide={"282"}>
-          <SearchContainer placeholder={"Wyszukaj po nazwie ..."} onChange={this.handleChange}/>
+          <SearchContainer placeholder={"Wyszukaj po nazwie ..."} onChange={this.handleChange} rows={"1"} onKeyDown={this.handleKeyDown}/>
           {!this.state.isLoading ? this.state.clientListTable : null}
       </Layout>
       <Dialog 

@@ -7,7 +7,7 @@ import Layout from '../Layout/Layout';
 function SearchContainer (props) {
 
 const left = <div className='SearchField'> 
-               <SearchField placeholder={props.placeholder}  onChange={props.onChange}/>
+              <SearchField placeholder={props.placeholder}  onChange={props.onChange} rows={props.rows} onKeyDown={props.onKeyDown}/>
              </div>;
 
 var container = <div className='SearchContent'>

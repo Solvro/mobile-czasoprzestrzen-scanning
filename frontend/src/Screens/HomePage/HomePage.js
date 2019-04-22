@@ -137,12 +137,18 @@ class HomePage extends Component {
     var res = this.filterTableContentByNameContains(e.target.value)
   }
 
+  handleKeyDown = (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault()
+    }
+  }
+
   render() {
     return (
       <div className="container">
             <Toolbar/>
       <Layout layoutDivide={"282"}>
-          <SearchContainer placeholder={"Wyszukaj po nazwie eee..."} onChange={this.handleChange} />
+          <SearchContainer placeholder={"Wyszukaj po nazwie eee..."} onChange={this.handleChange} rows={"1"} onKeyDown={this.handleKeyDown}/>
           {!this.state.isLoading ? this.state.itemListTable : null}
           <div className='AddButtonPosition'><Button text={"Dodaj"} link={"/adds"} /></div>
       </Layout>
