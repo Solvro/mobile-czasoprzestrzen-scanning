@@ -68,21 +68,39 @@ function table (props) {
     if(props.row.length === 0){
       body.push(<div className={classes.blankTable}>Brak rekordów</div>);
     }
- 
-  return (
-      <ReactTableContainer width="100%" height={props.height} customHeader={[TableHead]} className={classes.root}>
-        <Table >
-          <TableHead>
-            <TableRow>
-              {header}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {body}
-          </TableBody>
-        </Table>
+  if(props.height === 'small'){
+    return (
+      <ReactTableContainer width="100%" height='250px' customHeader={[TableHead]} >
+      <Table >
+        <TableHead>
+          <TableRow>
+            {header}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {body}
+        </TableBody>
+      </Table>
       </ReactTableContainer>
-  );
+);
+  }
+  else{
+    return (
+      <ReactTableContainer width="100%" height='700px' customHeader={[TableHead]} >
+      <Table >
+        <TableHead>
+          <TableRow>
+            {header}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {body}
+        </TableBody>
+      </Table>
+      </ReactTableContainer>
+);
+  }
+  
 }
 
 table.propTypes = {
