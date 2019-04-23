@@ -28,8 +28,6 @@ export default class ItemsList extends React.Component {
             event = null;
         }
         await this.setState({ searchedPhrase: event });
-        console.log('Event: ' + event);
-        console.log('Phrase: ' + this.state.searchedPhrase);
         await this.addItems();
     }
 
