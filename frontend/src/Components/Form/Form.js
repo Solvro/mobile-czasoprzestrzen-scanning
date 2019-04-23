@@ -20,7 +20,7 @@ function Form(props) {
 
     return (
       <Paper>
-      <form autoComplete="off" className='FormField'>
+      <form autoComplete="off" className='FormField' onKeyDown={props.onKeyDown} onSubmit={props.onSubmit}>
         {props.header}
         <FormControl className={classes.formControl}>
 
