@@ -14,8 +14,6 @@ export default class EquipmentList extends React.Component {
         this.state = {
             isReady: false,
             items: [],
-            searchedPhrase: null,
-            filteringAttrib: null,
         };
     }
 
