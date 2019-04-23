@@ -25,7 +25,7 @@ function Form(props) {
         <FormControl className={classes.formControl}>
 
           {React.Children.map(props.children, child =>
-            <div class='wrapper'>{child}</div>
+            <div className='wrapper'>{child}</div>
           )}
 
         </FormControl>

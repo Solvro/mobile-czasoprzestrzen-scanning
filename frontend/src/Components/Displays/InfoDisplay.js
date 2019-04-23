@@ -35,7 +35,7 @@ class ErrorDisplay extends React.Component {
         return (
             <div className={classes.errorsContainer}>
                 {info.map(inf => (
-                    <Slide direction={'right'} in={true} mountOnEnter={true} unmountOnExit={true}>
+                    <Slide key={inf.id} direction={'right'} in={true} mountOnEnter={true} unmountOnExit={true}>
                         <SnackbarContent
                             key={inf.id}
                             className={classes.error}
