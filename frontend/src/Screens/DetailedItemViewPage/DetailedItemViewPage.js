@@ -103,7 +103,7 @@ class NewAccountPage extends Component {
             <Button link={'/home'} onClick={this.tryToEditItem} text={"Zatwierdź"}></Button>
             <Button text={"Pobierz QR"} link={"/home"} onClick={this.print} ></Button></div>
 
-        const header = <div class='headText'>Edycja sprzętu</div>;
+        const header = <div className='headText'>Edycja sprzętu</div>;
 
 
         console.log("NAME" + this.state.itemName)

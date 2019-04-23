@@ -71,7 +71,8 @@ class NewAccountPage extends Component {
       var { username, password, firstName, lastName, email, phone } = this.state;
       phone = "+48" + phone
       var response;
-      if(this.state.accountType==0){ 
+      alert(typeof(this.state.accountType))
+      if(this.state.accountType==='0'){ 
         response = await createNewAdminAccount(username, password, firstName, lastName, email, phone);
       } else{
 
@@ -81,8 +82,7 @@ class NewAccountPage extends Component {
       if (response===201 || response===200) {
         this.props.history.push({
           pathname: '/account',
-          infoMessage: 'Pomyślnie utworzono nowe konto ' + (this.state.accountType==="Admin" ? "admina" : "super admina")
-        })
+          infoMessage: 'Pomyślnie utworzono nowe konto ' + (this.state.accountType===0 ? "admina" : "super admina")        })
       } else if(response===400){
         throw new Error("Konto z taką nazwą już istnieje")
       } else if(response===403){
@@ -109,7 +109,7 @@ class NewAccountPage extends Component {
   }
 
   validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if(!re.test(String(email).toLowerCase())){
       throw new Error('Nieprawidłowy adres email')
     }

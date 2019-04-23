@@ -56,33 +56,6 @@ class HomePage extends Component {
     this.getName();
   }
 
-  updateData = async () => {
-    await getItemsList()
-    .then((res) => {
-      this.setState({isLoading : false});
-      this.createTable(res); 
-      console.log(res);
-    })
-    console.log("Force up")
-    this.forceUpdate();
-  }
-
-  handleDialogOpen = (id) => {
-    this.setState({ dialogOpen: true,
-    clickedItemId: id });
-  };
-
-  handleDialogCloseRefuse = () => {
-    this.setState({ dialogOpen: false });
-  };
-
-  handleDialogCloseAgree = () => {
-    this.setState({ dialogOpen: false });
-    removeItemFromList(this.state.clickedItemId);
-    this.setState({ loginInfo: true, messageInfo: "Usunięto "});
-    this.updateData();
-  };
-
   async componentDidMount() {
    
     await getItemTypesList()
@@ -99,6 +72,29 @@ class HomePage extends Component {
       this.createTable(res); 
     })
   }
+
+  updateData = async () => {
+    await getItemsList()
+      .then((res) => this.createTable(res));
+    // this.forceUpdate();
+  }
+
+  handleDialogOpen = (id) => {
+    this.setState({ dialogOpen: true,
+    clickedItemId: id });
+  };
+
+  handleDialogCloseRefuse = () => {
+    this.setState({ dialogOpen: false });
+  };
+
+  handleDialogCloseAgree = async () => {
+    this.setState({ dialogOpen: false });
+    removeItemFromList(this.state.clickedItemId);
+    this.setState({ loginInfo: true, messageInfo: "Usunięto "});
+    await this.updateData();
+    this.forceUpdate();
+  };
 
   createButtonEdit(id) {
     const newTo = { 
@@ -121,6 +117,7 @@ class HomePage extends Component {
         available = <Icon>done</Icon>
       }
       ID = res[i].id;
+<<<<<<< HEAD
       rows.push([
         i+1,
         res[i].name, 
@@ -129,6 +126,10 @@ class HomePage extends Component {
         this.createButtonRemove(ID), 
         this.createButtonEdit(ID)
       ]);
+=======
+      rows.push([i+1, res[i].name, res[i].type.type_name ,available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
+
+>>>>>>> develop
     }
     var table = <Table contains={rows} />;
     this.setState({ itemListTable: table });
