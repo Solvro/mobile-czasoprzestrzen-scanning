@@ -45,6 +45,27 @@ export async function addNewItemToItemList(itemName, itemType, itemDecription, i
   }
 }
 
+export async function addNewItemType(itemType) {
+  const instance = axios.create({
+    baseURL: URL,
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+    }
+  });
+  const data = {
+    "type_name": itemType
+  }
+  try {
+    const addItem = await instance.post(`equipment-type/`, data);
+    console.log(addItem.status);
+    return addItem.status === 201;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
+
 export async function getItemTypesList() {
   const instance = axios.create({
     baseURL: URL,

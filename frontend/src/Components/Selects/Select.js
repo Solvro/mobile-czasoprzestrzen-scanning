@@ -45,7 +45,7 @@ handleChange = chosen => event => {
     const {classes} = this.props;
     
     return (
-      <form autoComplete="off" className='SearchField'>
+      <div className='SearchField'>
         <FormControl className={classes.formControl}>
           <NativeSelect
             className={classes.selectEmpty}
@@ -56,12 +56,12 @@ handleChange = chosen => event => {
             <option value='' disabled>
               Wybierz typ
             </option>
-            {this.props.itemTypes.map((itemType,i) => <option value={i}>{itemType}</option>)}
+            {this.props.itemTypes.map((itemType,i) => <option key={i} value={i}>{itemType}</option>)}
           </NativeSelect>
 
 
         </FormControl>
-      </form>
+      </div>
     );
   }
 }

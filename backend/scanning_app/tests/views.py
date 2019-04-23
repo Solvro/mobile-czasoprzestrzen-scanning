@@ -1010,7 +1010,7 @@ class RentalInfoViewsTests(TestCase):
             description='Playable XD',
             available=True,
             type=self.type,
-            max_rent_time=datetime.timedelta(days=2)
+            max_rent_time=2
         )
 
         self.apiClient = APIClient()
@@ -1036,24 +1036,35 @@ class RentalInfoViewsTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Equipment.objects.get().available, False)
 
-    def test_cant_rent_rented_equipment(self):
-        self.equipment.available = False
-        self.equipment.save()
-        response = self.rent_equipment()
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    # def test_cant_rent_rented_equipment(self):
+    #     self.equipment.available = False
+    #     self.equipment.save()
+    #     response = self.rent_equipment()
+    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_equipments_becomes_unavailable_when_rented(self):
-        self.rent_equipment_and_check_response()
+    # def test_equipments_becomes_unavailable_when_rented(self):
+    #     self.rent_equipment_and_check_response()
 
-    def test_equipment_becomes_available_when_actual_return_date_set(self):
-        self.rent_equipment_and_check_response()
-        response = self.apiClient.patch(
-            reverse('rentalinfo-detail', args=(RentalInfo.objects.get().id,)),
-            {'actual_return': '2019-02-23'},
-            format='json'
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Equipment.objects.get().available, True)
+    def test_after_remove_rental_equip_becomes_available(self):
+        user = create_admin()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        rent = create_rental_info(equip, user)
+        self.assertFalse(equip.available)
+        response = self.apiClient \
+            .delete(reverse('rentalinfo-detail', args=(rent.pk,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        equip_after_delete = Equipment.objects.get(pk=equip.pk)
+        self.assertTrue(equip_after_delete.available)
+
+    def test_wrong_id_to_delete_404(self):
+        user = create_admin()
+        login_as_user(self.apiClient, user)
+        equip = create_unavailable_equipment()
+        rent = create_rental_info(equip, user)
+        response = self.apiClient \
+            .delete(reverse('rentalinfo-detail', args=(rent.pk+1,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class ChangePasswordViewTests(TestCase):
@@ -1107,7 +1118,7 @@ def create_equipment():
         description="Costam",
         available=True,
         type=create_type_of_equipment(),
-        max_rent_time=datetime.timedelta(days=3)
+        max_rent_time=3
     )
 
 
@@ -1117,7 +1128,7 @@ def create_unavailable_equipment():
         description="Costam",
         available=False,
         type=create_type_of_equipment(),
-        max_rent_time=datetime.timedelta(days=3)
+        max_rent_time=3
     )
 
 
@@ -1241,4 +1252,34 @@ class ReturnEquipmentView(TestCase):
         create_rental_info(equip, second_user)
         response = self.apiClient \
             .put(reverse('equipment-return', args=(equip.pk,)), format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class AdminsReturnEquipmentView(TestCase):
+    def setUp(self):
+        self.apiClient = APIClient()
+        login_as_user(self.apiClient, create_admin())
+
+    def test_invalid_equip_id_404_returned(self):
+        response = self.apiClient\
+            .put(reverse('equipment-admins-return', args=(1,)), format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_equip_is_available_400_returned(self):
+        equip = create_equipment()
+        response = self.apiClient \
+            .put(reverse('equipment-admins-return', args=(equip.pk,)),
+                 format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_valid_request_equip_and_rental_info_updated(self):
+        user = create_client()
+        equip = create_unavailable_equipment()
+        rental = create_rental_info(equip, user)
+        response = self.apiClient \
+            .put(reverse('equipment-admins-return', args=(equip.pk,)),
+                 format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(Equipment.objects.get(pk=equip.pk).available)
+        self.assertEqual(RentalInfo.objects.get(pk=rental.pk).actual_return,
+                         datetime.date.today())
