@@ -19,16 +19,18 @@ export default class ItemsList extends React.Component {
 
     async componentWillMount() {
         this.setState({searchedPhrase: null});
-        this.addItems();
+        await this.addItems();
         this.setState({ isReady: true });
     }
 
-    onSearchedPhraseChange = (event) => {
+    onSearchedPhraseChange = async (event) => {
         if (event === '') {
             event = null;
         }
-        this.setState({ searchedPhrase: event });
-        this.addItems();
+        await this.setState({ searchedPhrase: event });
+        console.log('Event: ' + event);
+        console.log('Phrase: ' + this.state.searchedPhrase);
+        await this.addItems();
     }
 
     filterByPhrase = () => {
@@ -49,10 +51,10 @@ export default class ItemsList extends React.Component {
         return filteredItems;
     }
 
-    addItems = () => {
+    addItems = async () => {
         itemsList = []
 
-        let filteredItems = this.filterByPhrase();
+        let filteredItems = await this.filterByPhrase();
 
         for(let i = 0; i < filteredItems.length; i++) {
             itemsList.push(<SingleListItem
