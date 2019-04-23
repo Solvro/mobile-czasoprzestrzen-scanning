@@ -96,3 +96,17 @@ export async function resetPasswordConfirm(token, password) {
     console.log(`Error: ${error}`);
   }
 }
+
+export async function userSuperAdmin() {
+  
+  const data = {
+    "token": localStorage.getItem('token')
+  }
+  try {
+      const verification = await instance.post(`verify/`, data);
+      console.log("VER"+verification.data.type);
+      return verification.data.type === "Sa";
+  } catch (error) {
+      return false;
+  }
+}
