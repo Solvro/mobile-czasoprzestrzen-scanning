@@ -122,18 +122,54 @@ export default class ProfileDetailsView extends React.Component {
     updateAddress = async (label, newValue) => {
         
         let fetchedItems;
-            data = {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + apiConfig.clientId, 
-                },
-                body: JSON.stringify({
-                    'address': {
-                        'street': {}
-                    },
-                })
+
+        var addressItem = {}
+        addressItem [label] = newValue;
+        var item = {}
+        item ['address'] = addressItem
+        var b = JSON.stringify(item);
+        data = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId, 
+            },
+            body: b,
+        }
+
+        await fetch(apiConfig.url + '/api-v1/client/' + this.state.id + '/', data)
+        .then((response) => {this.setState({status: response.status}); return response.json()})
+        .then((response) => {
+            if(this.state.status === 200) {
+                fetchedItems = response;
+            } else {
+                Alert.alert(alertStrings.unexpectedError);
             }
+        })
+        .catch(() => {
+            Alert.alert(alertStrings.noConnectionWithServer);
+        });
+
+        return fetchedItems;
+    }
+
+    updateBusinessData = async (label, newValue) => {
+        
+        let fetchedItems;
+
+        var addressItem = {}
+        addressItem [label] = newValue;
+        var item = {}
+        item ['business_data'] = addressItem
+        var b = JSON.stringify(item);
+        data = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId, 
+            },
+            body: b,
+        }
 
         await fetch(apiConfig.url + '/api-v1/client/' + this.state.id + '/', data)
         .then((response) => {this.setState({status: response.status}); return response.json()})
@@ -261,7 +297,7 @@ export default class ProfileDetailsView extends React.Component {
                                         icon='md-pin'
                                         keyboardType = 'default'
                                         updateRequest = {this.updateAddress}
-                                        label = 'address.street'
+                                        label = 'street'
                                     />
                                     <DataEditField
                                         title={registrationStrings.postalCode}
@@ -269,7 +305,7 @@ export default class ProfileDetailsView extends React.Component {
                                         isValidated={true}
                                         validator={isPostalCode}
                                         warningAlert={alertStrings.invalidPostalCode}
-                                        updateRequest = {this.updateData}
+                                        updateRequest = {this.updateAddress}
                                         label = 'zip_code'
                                     />
                                     <DataEditField
@@ -278,7 +314,7 @@ export default class ProfileDetailsView extends React.Component {
                                         isValidated={false}
                                         icon='md-pin'
                                         keyboardType = 'default'
-                                        updateRequest = {this.updateData}
+                                        updateRequest = {this.updateAddress}
                                         label = 'city'
                                     />
                                     <DataEditField
@@ -289,7 +325,7 @@ export default class ProfileDetailsView extends React.Component {
                                         warningAlert={alertStrings.invalidNIP}
                                         icon='md-business'
                                         keyboardType = 'number-pad'
-                                        updateRequest = {this.updateData}
+                                        updateRequest = {this.updateBusinessData}
                                         label = 'nip'
                                     />
                                     <DataEditField
@@ -300,7 +336,7 @@ export default class ProfileDetailsView extends React.Component {
                                         warningAlert={alertStrings.invalidRegon}
                                         icon='md-business'
                                         keyboardType = 'number-pad'
-                                        updateRequest = {this.updateData}
+                                        updateRequest = {this.updateBusinessData}
                                         label = 'regon'
                                     />
                                 </View>
