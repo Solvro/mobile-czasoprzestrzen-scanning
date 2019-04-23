@@ -1,7 +1,7 @@
 const axios = require('axios');
 const URL = 'http://localhost:8000/api-v1/';
 
-export async function getClientsList() {
+export async function getOngoingRentsList() {
     const instance = axios.create({
         baseURL: URL,
         timeout: 1000,
@@ -12,14 +12,14 @@ export async function getClientsList() {
     });
 
     try {
-        const response = await instance.get('client/');
+        const response = await instance.get('rentalinfo/?status=ongoing');
         return response.data;
     } catch (error) {
         console.log('Error: ' + error);
     }
 }
 
-export async function deleteClient(id) {
+export async function getFinishedRentsList() {
     const instance = axios.create({
         baseURL: URL,
         timeout: 1000,
@@ -30,9 +30,9 @@ export async function deleteClient(id) {
     });
 
     try {
-        const response = await instance.delete('client/' + id);
-        return response.status;
+        const response = await instance.get('rentalinfo/?status=finished');
+        return response.data;
     } catch (error) {
-        return error.response.status;
+        console.log('Error: ' + error);
     }
 }
