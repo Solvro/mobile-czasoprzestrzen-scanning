@@ -153,6 +153,16 @@ export default class ProfileDetailsView extends React.Component {
 
 
     changePassword = async (password, newpassword) => {
+        const handleResponse = res => {
+            if(res.ok) {
+              return res.status
+            } else if (res.status === 401) {
+                return res.status
+            }
+            throw new Error('Network response was not ok.')
+          }
+
+
         data = {
             method: 'POST',
             headers: {
@@ -166,13 +176,13 @@ export default class ProfileDetailsView extends React.Component {
         }
 
         await fetch(apiConfig.url + '/api-v1/change-password/', data)
-        .then((response) => {this.setState({status: response.status}); return response.json()})
-        .then((response) => {
-            if(this.state.status === 200) {
+        .then(handleResponse)
+        .then((status) => {
+            if(status === 200) {
                 Alert.alert(alertStrings.passwordChanged);
-            } else if (this.state.status === 401) {
+            } else if(status === 401) {
                 Alert.alert(alertStrings.incorrectPassword);
-            } else {
+            }  else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
