@@ -71,6 +71,7 @@ export async function changePassword(oldPassword, newPassword) {
   }
 }
 
+
 export async function resetPassword(email) {
   const data = {
     "email": email
@@ -97,8 +98,9 @@ export async function resetPasswordConfirm(token, password) {
   }
 }
 
+
 export async function userSuperAdmin() {
-  
+
   const data = {
     "token": localStorage.getItem('token')
   }
@@ -109,4 +111,8 @@ export async function userSuperAdmin() {
   } catch (error) {
       return false;
   }
+
 }
+
+
+

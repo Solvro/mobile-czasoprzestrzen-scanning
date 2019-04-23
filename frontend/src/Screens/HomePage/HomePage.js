@@ -27,13 +27,23 @@ class HomePage extends Component {
     }
   }
 
-  updateData = async () => {
+  componentWillMount(){ 
+    this.getName();
+  }
+
+  async componentDidMount() {
+   
     await getItemsList()
     .then((res) => {
       this.setState({isLoading : false});
       this.createTable(res); 
     })
-    this.forceUpdate();
+  }
+
+  updateData = async () => {
+    await getItemsList()
+      .then((res) => this.createTable(res));
+    // this.forceUpdate();
   }
 
   handleDialogOpen = (id) => {
@@ -45,22 +55,13 @@ class HomePage extends Component {
     this.setState({ dialogOpen: false });
   };
 
-  handleDialogCloseAgree = () => {
+  handleDialogCloseAgree = async () => {
     this.setState({ dialogOpen: false });
     removeItemFromList(this.state.clickedItemId);
     this.setState({ loginInfo: true, messageInfo: "Usunięto "});
-    this.updateData();
+    await this.updateData();
+    this.forceUpdate();
   };
-
-  async componentDidMount() {
-    if(this.state.isLoading === true)
-      this.getName();
-      await getItemsList()
-      .then((res) => {
-        this.setState({isLoading : false});
-        this.createTable(res); 
-      })
-  }
 
   createButtonEdit(id) {
     const newTo = { 

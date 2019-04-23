@@ -60,7 +60,6 @@ export async function getSuperAdminList() {
 
     try {
         const getSuperAdmin = await instance.get(`super-admin/`);
-        console.log(getSuperAdmin.data)
         return getSuperAdmin.data;
     } catch (error) {
         console.log(`Error: ${error}`);
