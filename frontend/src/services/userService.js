@@ -71,7 +71,6 @@ export async function changePassword(oldPassword, newPassword) {
   }
 }
 
-
 export async function resetPassword(email) {
   const data = {
     "email": email

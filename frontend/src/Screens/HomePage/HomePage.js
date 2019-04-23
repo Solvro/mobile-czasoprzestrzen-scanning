@@ -31,19 +31,14 @@ class HomePage extends Component {
     this.getName();
   }
 
-  async componentDidMount() {
-   
-    await getItemsList()
-    .then((res) => {
-      this.setState({isLoading : false});
-      this.createTable(res); 
-    })
-  }
 
   updateData = async () => {
     await getItemsList()
       .then((res) => this.createTable(res));
     // this.forceUpdate();
+
+    this.forceUpdate();
+
   }
 
   handleDialogOpen = (id) => {
@@ -62,6 +57,16 @@ class HomePage extends Component {
     await this.updateData();
     this.forceUpdate();
   };
+
+  async componentDidMount() {
+    if(this.state.isLoading === true)
+      this.getName();
+      await getItemsList()
+      .then((res) => {
+        this.setState({isLoading : false});
+        this.createTable(res); 
+      })
+  }
 
   createButtonEdit(id) {
     const newTo = { 
