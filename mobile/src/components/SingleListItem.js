@@ -23,7 +23,7 @@ export default class SingleListItem extends React.Component {
             <ListItem>
                 <Body>
                     <Text style={singleListItemStyles.name}>{item.name}</Text>
-                    <Text note style={singleListItemStyles.noteText}>{item.type}</Text>
+                    <Text note style={singleListItemStyles.noteText}>{item.type.type_name}</Text>
                 </Body>
                 <Right>
                     {
@@ -44,7 +44,7 @@ export default class SingleListItem extends React.Component {
             <ListItem>
                 <Body>
                     <Text style={singleListItemStyles.name}>{item.name}</Text>
-                    <Text style={singleListItemStyles.noteText}>{item.type}</Text>
+                    <Text style={singleListItemStyles.noteText}>{item.type.type_name}</Text>
                     <Text style={item.noteText}>{'Oczekiwany zwrot: ' + item.expected_return_date}</Text>
                 </Body>
             </ListItem>
@@ -59,7 +59,7 @@ export default class SingleListItem extends React.Component {
             <ListItem>
                 <Body>
                     <Text style={singleListItemStyles.name}>{item.name}</Text>
-                    <Text style={singleListItemStyles.noteText}>{item.type}</Text>
+                    <Text style={singleListItemStyles.noteText}>{item.type.type_name}</Text>
                     <Text style={singleListItemStyles.noteText}>{'Data wypożyczenia: ' + item.rent_date}</Text>
                     <Text style={singleListItemStyles.noteText}>{'Data zwrotu: ' + item.return_date}</Text>
                 </Body>
