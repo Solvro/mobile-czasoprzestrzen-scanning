@@ -45,11 +45,12 @@ class HomePage extends Component {
     this.setState({ dialogOpen: false });
   };
 
-  handleDialogCloseAgree = () => {
+  handleDialogCloseAgree = async () => {
     this.setState({ dialogOpen: false });
     removeItemFromList(this.state.clickedItemId);
     this.setState({ loginInfo: true, messageInfo: "Usunięto "});
-    this.updateData();
+    await this.updateData();
+    this.forceUpdate();
   };
 
   async componentDidMount() {
