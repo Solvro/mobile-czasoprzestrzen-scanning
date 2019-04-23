@@ -70,3 +70,17 @@ export async function changePassword(oldPassword, newPassword) {
       return error.response.status;
   }
 }
+
+export async function userSuperAdmin() {
+  console.log("VHERE");
+  const data = {
+    "token": localStorage.getItem('token')
+  }
+  try {
+      const verification = await instance.post(`verify/`, data);
+      console.log("VER"+verification.data.type);
+      return verification.data.type === "Sa";
+  } catch (error) {
+      return false;
+  }
+}

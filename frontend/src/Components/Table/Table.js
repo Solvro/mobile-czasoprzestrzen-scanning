@@ -55,18 +55,18 @@ function table (props) {
     let body = [];
     
     for (var i = 0; i < props.header.length ; i++){
-      header.push(<CustomTableCell align='center'> {props.header[i]} </CustomTableCell>);
+      header.push(<CustomTableCell key={1000+i} align='center'> {props.header[i]} </CustomTableCell>);
     }
     for (var j = 0; j < props.row.length ; j++){
       let children = [];
       for (i = 0; i < props.header.length ; i++){
-          children.push(<CustomTableCell align='center'> {props.row[j][i]} </CustomTableCell>);
+          children.push(<CustomTableCell key={1020+i} align='center'> {props.row[j][i]} </CustomTableCell>);
         }
-      body.push(<TableRow key={props.row[j].id} className={classes.row} >{children}</TableRow>);  
+      body.push(<TableRow key={j} className={classes.row} >{children}</TableRow>);  
     }
 
     if(props.row.length === 0){
-      body.push(<div className={classes.blankTable}>Brak rekordów</div>);
+      body.push(<div key={1} className={classes.blankTable}> Brak rekordów </div>);
     }
  
   return (
