@@ -8,7 +8,7 @@ import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import Dialog from '../../Components/Dialog/Dialog';
 import {getUserName } from '../../services/userService';
 import Icon from '@material-ui/core/Icon';
-import {getItemsList,getItemTypesList,removeItemFromList} from '../../services/itemsService';
+import {getItemsList,removeItemFromList} from '../../services/itemsService';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import {Link} from 'react-router-dom';
@@ -21,7 +21,6 @@ class HomePage extends Component {
       loginInfo: false,
       username: "?",
       isLoading: true,
-      typesList: [],
       dialogOpen: false,
       clickedItemId: 0,
       messageInfo: ''
@@ -32,27 +31,14 @@ class HomePage extends Component {
     this.getName();
   }
 
-  async componentDidMount() {
-   
-    await getItemTypesList()
-    .then((res) => {
-      var itemTypes = []
-      for(var i = 0; i < res.length; i++){
-          itemTypes[i] = res[i].type_name
-      }
-      this.setState({typesList : itemTypes});
-    })
-    await getItemsList()
-    .then((res) => {
-      this.setState({isLoading : false});
-      this.createTable(res); 
-    })
-  }
 
   updateData = async () => {
     await getItemsList()
       .then((res) => this.createTable(res));
     // this.forceUpdate();
+
+    this.forceUpdate();
+
   }
 
   handleDialogOpen = (id) => {
@@ -71,6 +57,16 @@ class HomePage extends Component {
     await this.updateData();
     this.forceUpdate();
   };
+
+  async componentDidMount() {
+    if(this.state.isLoading === true)
+      this.getName();
+      await getItemsList()
+      .then((res) => {
+        this.setState({isLoading : false});
+        this.createTable(res); 
+      })
+  }
 
   createButtonEdit(id) {
     const newTo = { 
@@ -93,7 +89,7 @@ class HomePage extends Component {
         available = <Icon>done</Icon>
       }
       ID = res[i].id;
-      rows.push([i+1, res[i].name, res[i].type.type_name ,available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
+      rows.push([i+1, res[i].name, res[i].type.type_name,available,this.createButtonRemove(ID), this.createButtonEdit(ID)]);
 
     }
     var table = <Table contains={rows} />;

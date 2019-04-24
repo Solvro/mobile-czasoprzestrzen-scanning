@@ -17,7 +17,7 @@ import theme from './theme';
 import NewAccountPage from './Screens/NewAccountPage/NewAccountPage';
 import ChangePasswordPage from './Screens/ChangePasswordPage/ChangePasswordPage';
 import DetailedItemView from './Screens/DetailedItemViewPage/DetailedItemViewPage';
-
+import ConfirmPasswordResetPage from './Screens/ConfirmPasswordResetPage/ConfirmPasswordresetPage';
 class App extends React.Component {
 
   constructor(props) {
@@ -40,6 +40,7 @@ class App extends React.Component {
           <Switch>
             <Route path="/login" component={LoginPage}/>
             <Route path="/forgotpass" component={ForgotPasswordPage}/>
+            <Route path="/forgotpassconfirm" component={ConfirmPasswordResetPage}/>
             <PrivateRoute path='/home' component={HomePage} />
             <PrivateRoute path='/rents' component={RentPage} />
             <PrivateRoute path='/clients' component={ClientTablePage} />
