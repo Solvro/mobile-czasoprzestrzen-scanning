@@ -26,7 +26,6 @@ class ControlledOpenSelect extends React.Component {
 
 
 
-
 handleChange = chosen => event => {
   this.setState({ [chosen]: event.target.value });
   this.props.onChange(event);
@@ -56,7 +55,10 @@ handleChange = chosen => event => {
             <option value='' disabled>
               Wybierz typ
             </option>
-            {this.props.itemTypes.map((itemType,i) => <option key={i} value={i}>{itemType}</option>)}
+            {this.props.itemTypes.map(
+              (data) => /*option key={i} value={i}>{itemType}</option>*/
+              <option key={data.id} value={data.id}>{data.type_name}</option>
+              )}
           </NativeSelect>
 
 

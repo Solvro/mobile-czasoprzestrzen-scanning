@@ -8,7 +8,7 @@ function RentsTable (props) {
   const rows = props.rows;
    
   return (
-      <Table header={header} row={rows} height={"700px"}/>
+      <Table header={header} row={rows} />
   );
   
 }
