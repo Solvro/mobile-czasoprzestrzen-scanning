@@ -23,11 +23,11 @@ class Address(models.Model):
 
 class BusinessInfo(models.Model):
     nip_validator = RegexValidator(
-        r'^((\d{3}[-]\d{3}[-]\d{2}[-]\d{2})|(\d{3}[-]\d{2}[-]\d{2}[-]\d{3}))$',
+        r'^[0-9]{10}$',
         "Nip doesn't comply"
     )
     regon_validator = RegexValidator(
-        r'^\d{9}$',
+        r'^[0-9]{9}$',
         "Regon doesn't comply"
     )
 
@@ -150,7 +150,7 @@ class Equipment(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=400)
     available = models.BooleanField(default=True)
-    max_rent_time = models.DurationField()
+    max_rent_time = models.IntegerField()
     type = models.ForeignKey(TypeOfEquipment, on_delete=models.SET_NULL,
                              null=True)
 
