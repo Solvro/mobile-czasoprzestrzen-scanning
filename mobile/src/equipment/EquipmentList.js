@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'native-base';
+import { Container, Content } from 'native-base';
 import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
@@ -52,15 +52,16 @@ export default class EquipmentList extends React.Component {
     render() {
         if(!this.state.isReady) {
             return <Expo.AppLoading />
-        } else {;
+        } else {
             return(
                 <Container style={equipmentListStyles.container}>
                     <ItemsList
                         type='equipment'
                         navigationProps={this.props.navigation}
-                        items={this.state.items} />
+                        items={this.state.items}
+                    />
                 </Container>
-            )
+            );
         }
     }
 }

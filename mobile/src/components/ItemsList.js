@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { TextInput, View } from 'react-native';
-import { Content, List } from 'native-base';
+import { TextInput, View, RefreshControl } from 'react-native';
+import { Container, Content, List } from 'native-base';
 import SingleListItem from './SingleListItem';
 import TypePicker from '../components/TypePicker';
 import inputFieldsStyles from '../styles/InputFieldsStyles';
@@ -17,12 +17,14 @@ export default class ItemsList extends React.Component {
             items: [],
             searchedPhrase: null,
             searchedType: null,
+            refreshing: false,
         }
     }
 
     async componentWillMount() {
         this.setState({ searchedPhrase: null });
         await this.addItems();
+        this.setState({ refreshing: false });
         this.setState({ isReady: true });
     }
 
@@ -89,8 +91,7 @@ export default class ItemsList extends React.Component {
     }
 
     addItems = async () => {
-        let itemsList = []
-
+        let itemsList = [];                                                                                                           
         let filteredItems = await this.filter();
         filteredItems.forEach((item, index) => {
             itemsList.push(<SingleListItem
@@ -103,7 +104,7 @@ export default class ItemsList extends React.Component {
         });
 
         this.setState({ items: itemsList });
-    }
+    } 
 
     render() {
         if (!this.state.isReady) {
@@ -111,7 +112,7 @@ export default class ItemsList extends React.Component {
         } else {
             if (this.props.type === 'equipment') {
                 return (
-                    <Content>
+                    <Container>
                         <View style={inputFieldsStyles.input}>
                             <TextInput style={inputFieldsStyles.inputField}
                                 onChangeText={(text) => this.onSearchedPhraseChange(text)}
@@ -126,10 +127,12 @@ export default class ItemsList extends React.Component {
                         <View style={itemsListStyles.typePickerContainer}>
                             <TypePicker onValueChange={this.onTypePickerValueChange} />
                         </View>
-                        <List>
-                            {this.state.items}
-                        </List>
-                    </Content>
+                        <Content>
+                            <List>
+                                {this.state.items}
+                            </List>
+                        </Content>
+                    </Container>
                 );
             } else {
                 return (
