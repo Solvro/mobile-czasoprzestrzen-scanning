@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { TouchableOpacity } from 'react-native';
-import { ListItem, Body, Right, Text } from 'native-base';
+import { ListItem, Body, Right, Text, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import singleListItemStyles from '../styles/SingleListItemStyles';
@@ -50,10 +50,14 @@ export default class SingleListItem extends React.Component {
         return (
             <ListItem>
                 <Body>
-                    <Text style={singleListItemStyles.name}>{item.name}</Text>
-                    <Text style={singleListItemStyles.noteText}>{item.type.type_name}</Text>
-                    <Text style={item.noteText}>{'Oczekiwany zwrot: ' + item.expected_return_date}</Text>
+                    <Text style={singleListItemStyles.name}>{item.equipment_data.name}</Text>
+                    <Text style={singleListItemStyles.noteText}>{item.equipment_data.type.type_name}</Text>
+                    <Text style={singleListItemStyles.noteText}>{'Data wypożyczenia: ' + item.rental_date}</Text>
+                    <Text style={item.noteText}>{'Oczekiwany zwrot: ' + item.expected_return}</Text>
                 </Body>
+                <Right>
+                    <Button style={{backgroundColor: '#3b82c4'}}><Text>Zwróć</Text></Button>
+                </Right>
             </ListItem>
         )
     }
