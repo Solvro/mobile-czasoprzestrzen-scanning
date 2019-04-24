@@ -19,7 +19,11 @@ const alertStrings = {
     authorizationInfo: 'Jesteś zalogowany jako',
     newPasswordButton: 'Zmień hasło',
     passwordChanged: 'Hasło zostało zmienione',
-    incorrectPassword: 'Wprowadzono nieprawidłowe hasło'
+    incorrectPassword: 'Wprowadzono nieprawidłowe hasło', 
+    warning: 'Uwaga!',
+    deleteAccount: 'Czy na pewno chcesz usunąć swoje konto?',
+    ongoingEquipmentRents: 'Należy zwrócić wszystkie wypożyczone sprzęty przed usunięciem konta!',
+    deletedAccount: 'Twoje konto zostało usunięte.'
 };
 
 module.exports = alertStrings;

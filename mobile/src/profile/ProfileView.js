@@ -24,8 +24,94 @@ export default class ProfileView extends React.Component {
         }
     }
 
-    deleteAccount = () => {
+    handlePressDelete = () => {
+        Alert.alert(
+            alertStrings.warning,
+            alertStrings.deleteAccount,
+            [
+              {
+                text: 'Nie',
+                style: 'cancel',
+              },
+              { 
+                text: 'Tak',
+                onPress: () => this.deleteAccount()
+              },
+            ],
+            {cancelable: false},
+          );
+    }
 
+    getId = async () => {
+        let fetchedItem;
+        data = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId, 
+            },
+            body: JSON.stringify({
+                'token': apiConfig.clientId,
+            })
+        }
+
+        await fetch(apiConfig.url + '/api-v1/verify/', data)
+        .then((response) => {this.setState({status: response.status}); return response.json()})
+        .then((response) => {
+            if(this.state.status === 200) {
+                fetchedItem = response;
+            } else {
+                Alert.alert(alertStrings.unexpectedError);
+            }
+        })
+        .catch(() => {
+            Alert.alert(alertStrings.noConnectionWithServer);
+        });
+
+        return fetchedItem.id;
+    }
+
+    deleteAccount = async () => {
+        var id = await this.getId();
+
+        const handleResponse = res => {
+            if(res.ok) {
+              return res.status
+            } else if (res.status === 400) {
+                return res.status
+            }
+            throw new Error('Network response was not ok.')
+          }
+
+        data = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId, 
+            },
+            body: JSON.stringify({
+                'token': apiConfig.clientId,
+                'id': id,
+            })
+        }
+
+        await fetch(apiConfig.url + '/api-v1/client/'+id+'/', data)
+        .then(handleResponse)
+        .then((status) => {
+            if(status === 204) {
+                Alert.alert(alertStrings.deletedAccount);
+                this.props.navigation.navigate('SignedOut')
+            } else if(status === 400) {
+                Alert.alert(alertStrings.ongoingEquipmentRents);
+            }  else {
+                Alert.alert(alertStrings.noAuthoriatzion);
+            }
+        })
+        .catch((err) => {
+            console.error(err)
+            Alert.alert(alertStrings.noConnectionWithServer);
+        });
+        
     }
 
     async componentWillMount() {
@@ -89,7 +175,7 @@ export default class ProfileView extends React.Component {
                         </View>
                         <View style={buttonStyles.buttonContainer}>
                             <SubmitButton
-                                handlePress={() => {this.deleteAccount}}
+                                handlePress={() => this.handlePressDelete()}
                                 buttonText={buttonStrings.deleteAccountButton}
                                 icon= 'md-trash'/>
                         </View>
