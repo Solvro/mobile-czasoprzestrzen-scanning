@@ -55,34 +55,52 @@ function table (props) {
     let body = [];
     
     for (var i = 0; i < props.header.length ; i++){
-      header.push(<CustomTableCell align='center'> {props.header[i]} </CustomTableCell>);
+      header.push(<CustomTableCell key={1000+i} align='center'> {props.header[i]} </CustomTableCell>);
     }
     for (var j = 0; j < props.row.length ; j++){
       let children = [];
       for (i = 0; i < props.header.length ; i++){
-          children.push(<CustomTableCell align='center'> {props.row[j][i]} </CustomTableCell>);
+          children.push(<CustomTableCell key={1020+i} align='center'> {props.row[j][i]} </CustomTableCell>);
         }
-      body.push(<TableRow key={props.row[j].id} className={classes.row} >{children}</TableRow>);  
+      body.push(<TableRow key={j} className={classes.row} >{children}</TableRow>);  
     }
 
     if(props.row.length === 0){
-      body.push(<div className={classes.blankTable}>Brak rekordów</div>);
+      body.push(<div key={1} className={classes.blankTable}> Brak rekordów </div>);
     }
- 
-  return (
-      <ReactTableContainer width="100%" height={props.height} customHeader={[TableHead]} className={classes.root}>
-        <Table >
-          <TableHead>
-            <TableRow>
-              {header}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {body}
-          </TableBody>
-        </Table>
+  if(props.height === 'small'){
+    return (
+      <ReactTableContainer width="100%" height='250px' customHeader={[TableHead]} >
+      <Table >
+        <TableHead>
+          <TableRow>
+            {header}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {body}
+        </TableBody>
+      </Table>
       </ReactTableContainer>
-  );
+);
+  }
+  else{
+    return (
+      <ReactTableContainer width="100%" height='700px' customHeader={[TableHead]} >
+      <Table >
+        <TableHead>
+          <TableRow>
+            {header}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {body}
+        </TableBody>
+      </Table>
+      </ReactTableContainer>
+);
+  }
+  
 }
 
 table.propTypes = {

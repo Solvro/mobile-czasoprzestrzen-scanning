@@ -28,6 +28,7 @@ function SearchField(props) {
                 placeholder={props.placeholder}
                 fullWidth
                 onChange={props.onChange}
+                onKeyDown={props.onKeyDown}
                 InputProps={props.inputprops}
                 InputLabelProps={{
                 shrink: true}}

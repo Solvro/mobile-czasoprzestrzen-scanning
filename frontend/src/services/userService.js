@@ -70,3 +70,48 @@ export async function changePassword(oldPassword, newPassword) {
       return error.response.status;
   }
 }
+
+export async function resetPassword(email) {
+  const data = {
+    "email": email
+  }
+  try {
+      const user = await instance.post(`reset-password/`, data);
+      return user.status === 200;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}
+
+export async function resetPasswordConfirm(token, password) {
+  const data = {
+    "token": token,
+    "password": password
+  }
+  try {
+      const user = await instance.post(`reset-password/confirm/`, data);
+      return user.status === 200;
+  } catch (error) {
+    console.log(error.status)
+    console.log(`Error: ${error}`);
+  }
+}
+
+
+export async function userSuperAdmin() {
+
+  const data = {
+    "token": localStorage.getItem('token')
+  }
+  try {
+      const verification = await instance.post(`verify/`, data);
+      console.log("VER"+verification.data.type);
+      return verification.data.type === "Sa";
+  } catch (error) {
+      return false;
+  }
+
+}
+
+
+

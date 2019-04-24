@@ -3,15 +3,26 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import {addNewItemType} from "../../services/itemsService";
+import Dialog from '../../Components/Dialog/InputDialog';
 
 const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
   button: {
     display: 'block',
   },
   formControl: {
-    width: '100%',
-    minWidth: 120,
+    width: '90%',
+    minWidth: 50,
   },
+  iconAdd:{
+    marginLeft: '0.3em'
+  }
 });
 
 class ControlledOpenSelect extends React.Component {
@@ -19,17 +30,38 @@ class ControlledOpenSelect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      chosen: ''
+        typeName: '',
+        dialogOpen: false,
+        open: false,
+        chosen: ''
     };
 }
 
 
+handleDialogOpen = () => {
+    this.setState({ dialogOpen: true });
+  };
+
+  handleDialogCloseRefuse = () => {
+    this.setState({ dialogOpen: false });
+  };
+
+  handleDialogCloseAgree = () => {
+    this.setState({ dialogOpen: false });
+    addNewItemType(this.state.typeName);
+    this.props.action();
+    this.forceUpdate();
+  };
+
+  handleChangeType = event => {
+    this.setState({ typeName: event.target.value });
+  }
 
 
 handleChange = chosen => event => {
   this.setState({ [chosen]: event.target.value });
   this.props.onChange(event);
+ 
 };
 
 
@@ -44,8 +76,9 @@ handleChange = chosen => event => {
   render() {
     const {classes} = this.props;
     
+    
     return (
-      <div className='SearchField'>
+        <div>
         <FormControl className={classes.formControl}>
           <NativeSelect
             className={classes.selectEmpty}
@@ -58,9 +91,12 @@ handleChange = chosen => event => {
             </option>
             {this.props.itemTypes.map((itemType,i) => <option key={i} value={i}>{itemType}</option>)}
           </NativeSelect>
-
-
         </FormControl>
+        <IconButton aria-label="Add an alarm" className={classes.iconAdd} onClick={this.handleDialogOpen}>
+          <Icon>add</Icon></IconButton>
+      <Dialog dialogOpen={this.state.dialogOpen} handleCloseRefuse={this.handleDialogCloseRefuse} 
+      handleCloseAgree={() =>  {this.handleDialogCloseAgree()}} handleChangeType={this.handleChangeType}>
+      </Dialog>
       </div>
     );
   }
