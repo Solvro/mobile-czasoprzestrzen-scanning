@@ -37,7 +37,7 @@ export default class EquipmentList extends React.Component {
         .then((response) => {this.setState({status: response.status}); return response.json()})
         .then((response) => {
             if(this.state.status === 200) {
-                fetchedItems = response;
+                fetchedItems = response.slice(Math.max(response.length - 20, 0));
             } else {
                 Alert.alert(alertStrings.noAuthoriatzion);
             }
