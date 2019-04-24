@@ -151,6 +151,7 @@ class Equipment(models.Model):
     description = models.CharField(max_length=400)
     available = models.BooleanField(default=True)
     max_rent_time = models.IntegerField()
+    photo_url = models.CharField(max_length=400, null=True)
     type = models.ForeignKey(TypeOfEquipment, on_delete=models.SET_NULL,
                              null=True)
 

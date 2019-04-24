@@ -194,6 +194,7 @@ class EquipmentSerializerTests(TestCase):
         expected_data = EQUIPMENT_DATA.copy()
         expected_data['id'] = equipment.id
         expected_data['available'] = True
+        expected_data['photo_url'] = None
         expected_data['type'] = None
 
         self.assertDictEqual(ser.data, expected_data)
