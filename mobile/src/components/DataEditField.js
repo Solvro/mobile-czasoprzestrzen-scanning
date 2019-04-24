@@ -39,7 +39,9 @@ export default class DataEditField extends React.Component {
     }
 
     updateData = () => {
-        if(this.props.isValidated 
+        if(!this.state.newData) {
+            this.showWarningAlert(alertStrings.emptyField)
+        } else if(this.props.isValidated 
             && !this.props.validator(this.state.newData)) {
                 this.showWarningAlert(this.props.warningAlert)
         } else { 

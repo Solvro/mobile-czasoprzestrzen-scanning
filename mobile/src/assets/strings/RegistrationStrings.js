@@ -1,6 +1,6 @@
 const registrationStrings = {
     person: 'Osoba fizyczna',
-    company: 'Firma',
+    company: 'Nazwa firmy',
     username: 'Nazwa użytkownika',
     email: 'Adres e-mail',
     password: 'Hasło',

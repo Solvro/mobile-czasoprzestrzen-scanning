@@ -32,6 +32,7 @@ export default class ProfileDetailsView extends React.Component {
             nip: null,
             regon: null,
             id: null,
+            companyName: null,
 
             isBusiness: null,
         } 
@@ -53,6 +54,7 @@ export default class ProfileDetailsView extends React.Component {
         this.setState({regon: response.business_data.regon});
         this.setState({isBusiness: response.is_business});
         this.setState({id: response.id})
+        this.setState({companyName: response.business_data.name})
 
 
         this.setState({isReady: true});
@@ -303,6 +305,7 @@ export default class ProfileDetailsView extends React.Component {
                                         title={registrationStrings.postalCode}
                                         data={this.state.postalCode}
                                         isValidated={true}
+                                        icon='md-pin'
                                         validator={isPostalCode}
                                         warningAlert={alertStrings.invalidPostalCode}
                                         updateRequest = {this.updateAddress}
@@ -316,6 +319,15 @@ export default class ProfileDetailsView extends React.Component {
                                         keyboardType = 'default'
                                         updateRequest = {this.updateAddress}
                                         label = 'city'
+                                    />
+                                     <DataEditField
+                                        title={registrationStrings.company}
+                                        data={this.state.companyName}
+                                        isValidated={false}
+                                        icon='md-business'
+                                        keyboardType = 'default'
+                                        updateRequest = {this.updateBusinessData}
+                                        label = 'name'
                                     />
                                     <DataEditField
                                         title={registrationStrings.nip}
@@ -338,7 +350,7 @@ export default class ProfileDetailsView extends React.Component {
                                         keyboardType = 'number-pad'
                                         updateRequest = {this.updateBusinessData}
                                         label = 'regon'
-                                    />
+                                    />                                 
                                 </View>
                             )}
                         </ScrollView>
