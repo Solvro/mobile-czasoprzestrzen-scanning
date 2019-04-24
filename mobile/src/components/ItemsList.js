@@ -3,8 +3,11 @@ import React from 'react';
 import { TextInput, View } from 'react-native';
 import { Content, List } from 'native-base';
 import SingleListItem from './SingleListItem';
+import TypePicker from '../components/TypePicker';
 import inputFieldsStyles from '../styles/InputFieldsStyles';
 import textStrings from '../assets/strings/TextStrings';
+
+import itemsListStyles from '../styles/ItemsListStyles';
 export default class ItemsList extends React.Component {
 
     constructor(props) {
@@ -12,13 +15,13 @@ export default class ItemsList extends React.Component {
         this.state = {
             isReady: false,
             items: [],
-            searchedPhrase: null, 
+            searchedPhrase: null,
             searchedType: null,
         }
     }
 
     async componentWillMount() {
-        this.setState({searchedPhrase: null});
+        this.setState({ searchedPhrase: null });
         await this.addItems();
         this.setState({ isReady: true });
     }
@@ -31,42 +34,79 @@ export default class ItemsList extends React.Component {
         await this.addItems();
     }
 
-    filterByPhrase = () => {
-        if(this.state.searchedPhrase === null) {
+    onTypePickerValueChange = async (value) => {
+        if (value === -1) {
+            value = null;
+        }
+        await this.setState({ searchedType: value });
+        await this.addItems();
+    }
+
+    filter = async () => {
+        let filteredItems = [];
+
+        if (this.state.searchedPhrase === null && this.state.searchedType === null) {
             return this.props.items;
+        }
+
+        filteredItems = this.filterByPhrase(this.props.items);
+        filteredItems = this.filterByType(filteredItems);
+
+        return filteredItems;
+    }
+
+    filterByPhrase = (items) => {
+        if (this.state.searchedPhrase === null) {
+            return items;
         }
 
         let filteredItems = [];
         let phrase = this.state.searchedPhrase.toLowerCase();
 
-        for(let i = 0; i < this.props.items.length; i++) {
-            let itemName =  this.props.items[i].name.toLowerCase();
+        items.forEach((item) => {
+            let itemName = item.name.toLowerCase();
             if (itemName.includes(phrase)) {
-                filteredItems.push(this.props.items[i]);
+                filteredItems.push(item);
             }
+        });
+
+        return filteredItems;
+    }
+
+    filterByType = (items) => {
+        if (this.state.searchedType === null) {
+            return items;
         }
+
+        let filteredItems = [];
+        items.forEach((item) => {
+            if (item.type.id === this.state.searchedType) {
+                filteredItems.push(item);
+            }
+        });
 
         return filteredItems;
     }
 
     addItems = async () => {
-        itemsList = []
+        let itemsList = []
 
-        let filteredItems = await this.filterByPhrase();
+        let filteredItems = await this.filter();
 
-        for(let i = 0; i < filteredItems.length; i++) {
+        filteredItems.forEach((item, index) => {
             itemsList.push(<SingleListItem
                 type={this.props.type}
-                key={i}
-                item={filteredItems[i]} />);
-        }
+                key={index}
+                item={item}
+            />);
+        });
 
         this.setState({ items: itemsList });
     }
 
     render() {
-        if(!this.state.isReady) {
-            return <Expo.AppLoading/>
+        if (!this.state.isReady) {
+            return <Expo.AppLoading />
         } else {
             return (
                 <Content>
@@ -80,6 +120,9 @@ export default class ItemsList extends React.Component {
                             placeholderTextColor='#a2aabc'
                             underlineColorAndroid='transparent'
                         />
+                    </View>
+                    <View style={itemsListStyles.typePickerContainer}>
+                        <TypePicker onValueChange={this.onTypePickerValueChange} />
                     </View>
                     <List>
                         {this.state.items}
