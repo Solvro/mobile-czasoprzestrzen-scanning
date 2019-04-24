@@ -57,6 +57,7 @@ export default class EquipmentList extends React.Component {
                 <Container style={equipmentListStyles.container}>
                     <ItemsList
                         type='equipment'
+                        navigationProps={this.props.navigation}
                         items={this.state.items} />
                 </Container>
             )

@@ -98,6 +98,8 @@ export default class ItemsList extends React.Component {
                 type={this.props.type}
                 key={index}
                 item={item}
+                id={item.id}
+                navigationProps={this.props.navigationProps}
             />);
         });
 

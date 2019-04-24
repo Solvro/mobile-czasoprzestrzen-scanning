@@ -1,11 +1,16 @@
 import React from 'react';
 
+import { TouchableOpacity } from 'react-native';
 import { ListItem, Body, Right, Text } from 'native-base';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import singleListItemStyles from '../styles/SingleListItemStyles';
 
 export default class SingleListItem extends React.Component {
+
+    static navigationOptions = {
+        tabBarLabel: 'ItemDetails',
+    };
 
     constructor(props) {
         super(props);
@@ -19,17 +24,19 @@ export default class SingleListItem extends React.Component {
      * Adds equipment item when prop type is 'equipment'
      */
     addEquipmentItem = (item) => {
-        return(
-            <ListItem>
+        return (
+            <ListItem
+                onPress={() => this.props.navigationProps.navigate('ItemDetails', { id: this.props.id })}
+            >
                 <Body>
                     <Text style={singleListItemStyles.name}>{item.name}</Text>
                     <Text note style={singleListItemStyles.noteText}>{item.type.type_name}</Text>
                 </Body>
                 <Right>
                     {
-                        item.available ? 
-                        <Icon name='md-checkmark' style={[singleListItemStyles.icon, singleListItemStyles.availableIcon]} /> :
-                        <Icon name='md-close' style={[singleListItemStyles.icon, singleListItemStyles.inaccessibleIcon]} />
+                        item.available ?
+                            <Icon name='md-checkmark' style={[singleListItemStyles.icon, singleListItemStyles.availableIcon]} /> :
+                            <Icon name='md-close' style={[singleListItemStyles.icon, singleListItemStyles.inaccessibleIcon]} />
                     }
                 </Right>
             </ListItem>
@@ -68,7 +75,7 @@ export default class SingleListItem extends React.Component {
     }
 
     addItem = () => {
-        switch(this.props.type) {
+        switch (this.props.type) {
             case 'equipment': return this.addEquipmentItem(this.props.item);
             case 'rented': return this.addRentedItem(this.props.item);
             case 'history': return this.addHistoryItem(this.props.item);
