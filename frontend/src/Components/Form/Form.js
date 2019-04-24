@@ -20,12 +20,12 @@ function Form(props) {
 
     return (
       <Paper>
-      <form autoComplete="off" className='FormField'>
+      <form autoComplete="off" className='FormField' onKeyDown={props.onKeyDown} onSubmit={props.onSubmit}>
         {props.header}
         <FormControl className={classes.formControl}>
 
           {React.Children.map(props.children, child =>
-            <div class='wrapper'>{child}</div>
+            <div className='wrapper'>{child}</div>
           )}
 
         </FormControl>

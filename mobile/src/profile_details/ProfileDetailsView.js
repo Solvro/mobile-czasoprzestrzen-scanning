@@ -46,8 +46,8 @@ export default class ProfileDetailsView extends React.Component {
         this.setState({lastName: response.last_name});
         this.setState({email: response.email});
         this.setState({phoneNumber: response.phone});
-        this.setState({street: response.address});
-        this.setState({nip: response.business_data});
+        this.setState({street: null});
+        this.setState({nip: response.null});
         this.setState({isBusiness: response.is_business});
         this.setState({id: response.id})
 
