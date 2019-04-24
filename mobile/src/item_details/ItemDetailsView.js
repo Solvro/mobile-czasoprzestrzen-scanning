@@ -39,8 +39,6 @@ export default class ItemDetailsView extends React.Component {
         this.setState({ isReady: true });
     }
 
-
-
     getItemDetails = async () => {
         let fetchedItem;
         let itemID = this.props.navigation.getParam('id', -1);

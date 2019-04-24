@@ -92,7 +92,6 @@ export default class ItemsList extends React.Component {
         let itemsList = []
 
         let filteredItems = await this.filter();
-
         filteredItems.forEach((item, index) => {
             itemsList.push(<SingleListItem
                 type={this.props.type}
@@ -110,27 +109,37 @@ export default class ItemsList extends React.Component {
         if (!this.state.isReady) {
             return <Expo.AppLoading />
         } else {
-            return (
-                <Content>
-                    <View style={inputFieldsStyles.input}>
-                        <TextInput style={inputFieldsStyles.inputField}
-                            onChangeText={(text) => this.onSearchedPhraseChange(text)}
-                            keyboardType='default'
-                            returnKeyType='next'
-                            placeholder={textStrings.searchingPlaceholder}
-                            secureTextEntry={false}
-                            placeholderTextColor='#a2aabc'
-                            underlineColorAndroid='transparent'
-                        />
-                    </View>
-                    <View style={itemsListStyles.typePickerContainer}>
-                        <TypePicker onValueChange={this.onTypePickerValueChange} />
-                    </View>
-                    <List>
-                        {this.state.items}
-                    </List>
-                </Content>
-            );
+            if (this.props.type === 'equipment') {
+                return (
+                    <Content>
+                        <View style={inputFieldsStyles.input}>
+                            <TextInput style={inputFieldsStyles.inputField}
+                                onChangeText={(text) => this.onSearchedPhraseChange(text)}
+                                keyboardType='default'
+                                returnKeyType='next'
+                                placeholder={textStrings.searchingPlaceholder}
+                                secureTextEntry={false}
+                                placeholderTextColor='#a2aabc'
+                                underlineColorAndroid='transparent'
+                            />
+                        </View>
+                        <View style={itemsListStyles.typePickerContainer}>
+                            <TypePicker onValueChange={this.onTypePickerValueChange} />
+                        </View>
+                        <List>
+                            {this.state.items}
+                        </List>
+                    </Content>
+                );
+            } else {
+                return (
+                    <Content>
+                        <List>
+                            {this.state.items}
+                        </List>
+                    </Content>
+                );
+            }
         }
     }
 }
