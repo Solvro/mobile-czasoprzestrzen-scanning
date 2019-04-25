@@ -31,6 +31,7 @@ class ClientSerializer(serializers.ModelSerializer):
                 for attr in validated_data['business_data']:
                     setattr(instance.business_data, attr,
                             validated_data['business_data'][attr])
+                    instance.business_data.save()
             del validated_data['business_data']
         return super().update(instance, validated_data)
 

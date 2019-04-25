@@ -36,12 +36,8 @@ class AddItem extends Component {
     })
     await getItemTypesList()
     .then((res) => {
-      this.setState({isLoading : false});
-      var itemTypes = []
-      for(var i = 0; i < res.length; i++){
-          itemTypes[i] = res[i].type_name
-      }
-      this.setState({itemTypesList : itemTypes});
+      
+      this.setState({itemTypesList : res});
     })
   }
   updateData = async () => {
@@ -85,8 +81,7 @@ class AddItem extends Component {
   }
 
   handleSelectChange = event => {
-    console.log("tutaj")
-    this.setState({ itemType: +event.target.value + 1 });
+    this.setState({ itemType: +event.target.value });
   };
 
   tryToAddItem = async e => {

@@ -1,86 +1,64 @@
 import React from 'react';
-import {View, Text, StatusBar, Dimensions, TouchableOpacity} from 'react-native';
-import {BarCodeScanner, Permissions} from 'expo';
+import { Container } from 'native-base';
+import { View, Text, Alert } from 'react-native';
+import ItemsList from '../components/ItemsList';
 
-import textStrings from '../assets/strings/TextStrings';
-import qrScannerStyles from '../styles/QRScannerStyles';
+import equipmentListStyles from '../styles/EquipmentListStyle';
+import apiConfig from '../services/api/config';
+import alertStrings from '../assets/strings/AlertStrings';
+
 export default class ReturnEquipmentView extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            hasCameraPermission: null,
-            lastScannedQr: null,
+            items: [],
+            isReady: false,
         }
     }
 
-    componentDidMount = () => {
-        this.requestCameraPermission();
+    componentWillMount = async () => {
+        await this.addItems();
+        this.setState({isReady: true});
     }
 
-    requestCameraPermission = async () => {
-        const {status} = await Permissions.askAsync(Permissions.CAMERA);
-        if (status === 'granted') {
-            this.setState({
-                hasCameraPermission: true,
-            });
-        } else {
-            this.setState({
-                hasCameraPermission: false,
+    addItems = async () => {
+        let fetchedItems = null;
+        let data = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId,
+            },
+        };
+
+        await fetch(apiConfig.url + '/api-v1/rentalinfo/?status=ongoing', data)
+            .then((response) => {this.setState({status: response.status}); return response.json()})
+            .then((response) => {
+                if(this.state.status === 200) {
+                    fetchedItems = response;
+                } else {
+                    Alert.alert(alertStrings.unexpectedError);
+                }
             })
-        }
-    }
-
-    handleBarCodeRead = result => {
-        if (result.data !== this.state.lastScannedQr) {
-            this.setState({
-                lastScannedQr: result.data,
+            .catch(() => {
+                Alert.alert(alertStrings.noConnectionWithServer);
             });
-        }
-    }
 
-    handleCancelPress = () => {
-        this.setState({
-            lastScannedQr: null
-        });
-    }
-
-    maybeRenderContent = () => {
-        if (!this.state.lastScannedQr) {
-            return;
-        }
-        return (
-            <View style={qrScannerStyles.bottomBar}>
-                <TouchableOpacity style={qrScannerStyles.url} onPress={this.handleCancelPress}>
-                    <Text numberOfLines={1} style={qrScannerStyles.urlText}>
-                        {this.state.lastScannedQr}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        );
+            this.setState({items: fetchedItems});
     }
 
     render() {
-        return (
-            <View>
-                {
-                    this.state.hasCameraPermission === null
-                        ? <Text>textStrings.loading</Text>
-                        : this.state.hasCameraPermission === false
-                            ? <Text>textStrings.noPermission</Text>
-                            : <BarCodeScanner
-                                onBarCodeScanned={this.handleBarCodeRead}
-                                style={{
-                                    height: Dimensions.get('window').height,
-                                    width: Dimensions.get('window').width
-                                }}
-                            />
-                }
-
-                {this.maybeRenderContent()}
-
-                <StatusBar hidden />
-            </View>
-        )
+        if(!this.state.isReady) {
+            return <Expo.AppLoading />
+        } else {
+            return(
+                <Container style={equipmentListStyles.container}>
+                    <ItemsList
+                        type='rented'
+                        items={this.state.items} />
+                </Container>
+            )
+        }
     }
 }

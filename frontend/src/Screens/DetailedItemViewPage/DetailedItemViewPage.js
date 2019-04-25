@@ -31,18 +31,17 @@ class NewAccountPage extends Component {
     async componentDidMount() {
 
         const itemTypes = await getItemTypesList()
-            .then((res) => {
-                const itemTypes = []
-                for (var i = 0; i < res.length; i++) {
-                    itemTypes[i] = res[i].type_name
-                }
-                console.log(itemTypes)
-                return itemTypes;
-            })
-        console.log("ID" + this.itemID);
+            // .then((res) => {
+            //     const itemTypes = []
+            //     for (var i = 0; i < res.length; i++) {
+            //         itemTypes[i] = res[i].type_name
+            //     }
+            //     console.log(itemTypes)
+            //     return itemTypes;
+            // })
+        
         const res = await getItemViewFromId(this.props.location.ID)
 
-        console.log("RES" + res.name);
         this.setState({
             itemName: res.name,
             itemDescription: res.description,
@@ -73,7 +72,7 @@ class NewAccountPage extends Component {
     }
 
     handleSelectChange = event => {
-        this.setState({ itemType: +event.target.value + 1 }, () => console.log("Item" + (this.state.itemType)));
+        this.setState({ itemType: +event.target.value });
     };
 
     tryToEditItem = async e => {
@@ -84,7 +83,7 @@ class NewAccountPage extends Component {
             this.setState({ errorMessage: "Żadne pole nie może być puste" });
         }
         else {
-            console.log("ITEM TYPE" + itemType);
+            
             const editItem = await editItemData(this.itemID, itemName, itemType, itemDescription, itemRentTime);
             if (editItem) {
                 this.props.history.push('/home')
@@ -106,7 +105,6 @@ class NewAccountPage extends Component {
         const header = <div className='headText'>Edycja sprzętu</div>;
 
 
-        console.log("NAME" + this.state.itemName)
         var form = (<Form header={header} button={button}>
 
             <InputField defaultValue={this.state.itemName}

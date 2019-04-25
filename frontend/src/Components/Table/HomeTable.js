@@ -8,7 +8,7 @@ function HomeTable (props) {
 
 
     return (
-        <Table header={header} row={rows} height={"700px"}/>
+        <Table header={header} row={rows} />
     );
     
 }

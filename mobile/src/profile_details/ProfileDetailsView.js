@@ -32,6 +32,7 @@ export default class ProfileDetailsView extends React.Component {
             nip: null,
             regon: null,
             id: null,
+            companyName: null,
 
             isBusiness: null,
         } 
@@ -46,10 +47,14 @@ export default class ProfileDetailsView extends React.Component {
         this.setState({lastName: response.last_name});
         this.setState({email: response.email});
         this.setState({phoneNumber: response.phone});
-        this.setState({street: null});
-        this.setState({nip: response.null});
+        this.setState({street: response.address.street});
+        this.setState({postalCode: response.address.zip_code});
+        this.setState({city: response.address.city});
+        this.setState({nip: response.business_data.nip});
+        this.setState({regon: response.business_data.regon});
         this.setState({isBusiness: response.is_business});
         this.setState({id: response.id})
+        this.setState({companyName: response.business_data.name})
 
 
         this.setState({isReady: true});
@@ -86,7 +91,6 @@ export default class ProfileDetailsView extends React.Component {
 
     updateData = async (label, newValue) => {
         
-        this.setState({email: label})
         let fetchedItems;
 
         var item = {}
@@ -117,8 +121,86 @@ export default class ProfileDetailsView extends React.Component {
         return fetchedItems;
     }
 
+    updateAddress = async (label, newValue) => {
+        
+        let fetchedItems;
+
+        var addressItem = {}
+        addressItem [label] = newValue;
+        var item = {}
+        item ['address'] = addressItem
+        var b = JSON.stringify(item);
+        data = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId, 
+            },
+            body: b,
+        }
+
+        await fetch(apiConfig.url + '/api-v1/client/' + this.state.id + '/', data)
+        .then((response) => {this.setState({status: response.status}); return response.json()})
+        .then((response) => {
+            if(this.state.status === 200) {
+                fetchedItems = response;
+            } else {
+                Alert.alert(alertStrings.unexpectedError);
+            }
+        })
+        .catch(() => {
+            Alert.alert(alertStrings.noConnectionWithServer);
+        });
+
+        return fetchedItems;
+    }
+
+    updateBusinessData = async (label, newValue) => {
+        
+        let fetchedItems;
+
+        var addressItem = {}
+        addressItem [label] = newValue;
+        var item = {}
+        item ['business_data'] = addressItem
+        var b = JSON.stringify(item);
+        data = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId, 
+            },
+            body: b,
+        }
+
+        await fetch(apiConfig.url + '/api-v1/client/' + this.state.id + '/', data)
+        .then((response) => {this.setState({status: response.status}); return response.json()})
+        .then((response) => {
+            if(this.state.status === 200) {
+                fetchedItems = response;
+            } else {
+                Alert.alert(alertStrings.unexpectedError);
+            }
+        })
+        .catch(() => {
+            Alert.alert(alertStrings.noConnectionWithServer);
+        });
+
+        return fetchedItems;
+    }
+
 
     changePassword = async (password, newpassword) => {
+        const handleResponse = res => {
+            if(res.ok) {
+              return res.status
+            } else if (res.status === 401) {
+                return res.status
+            }
+            throw new Error('Network response was not ok.')
+          }
+
+
         data = {
             method: 'POST',
             headers: {
@@ -132,13 +214,13 @@ export default class ProfileDetailsView extends React.Component {
         }
 
         await fetch(apiConfig.url + '/api-v1/change-password/', data)
-        .then((response) => {this.setState({status: response.status}); return response.json()})
-        .then((response) => {
-            if(this.state.status === 200) {
+        .then(handleResponse)
+        .then((status) => {
+            if(status === 200) {
                 Alert.alert(alertStrings.passwordChanged);
-            } else if (this.state.status === 401) {
+            } else if(status === 401) {
                 Alert.alert(alertStrings.incorrectPassword);
-            } else {
+            }  else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
@@ -216,15 +298,18 @@ export default class ProfileDetailsView extends React.Component {
                                         isValidated={false}
                                         icon='md-pin'
                                         keyboardType = 'default'
+                                        updateRequest = {this.updateAddress}
+                                        label = 'street'
                                     />
                                     <DataEditField
                                         title={registrationStrings.postalCode}
                                         data={this.state.postalCode}
                                         isValidated={true}
+                                        icon='md-pin'
                                         validator={isPostalCode}
                                         warningAlert={alertStrings.invalidPostalCode}
-                                        icon='md-pin'
-                                        keyboardType = 'default'
+                                        updateRequest = {this.updateAddress}
+                                        label = 'zip_code'
                                     />
                                     <DataEditField
                                         title={registrationStrings.city}
@@ -232,6 +317,17 @@ export default class ProfileDetailsView extends React.Component {
                                         isValidated={false}
                                         icon='md-pin'
                                         keyboardType = 'default'
+                                        updateRequest = {this.updateAddress}
+                                        label = 'city'
+                                    />
+                                     <DataEditField
+                                        title={registrationStrings.company}
+                                        data={this.state.companyName}
+                                        isValidated={false}
+                                        icon='md-business'
+                                        keyboardType = 'default'
+                                        updateRequest = {this.updateBusinessData}
+                                        label = 'name'
                                     />
                                     <DataEditField
                                         title={registrationStrings.nip}
@@ -241,6 +337,8 @@ export default class ProfileDetailsView extends React.Component {
                                         warningAlert={alertStrings.invalidNIP}
                                         icon='md-business'
                                         keyboardType = 'number-pad'
+                                        updateRequest = {this.updateBusinessData}
+                                        label = 'nip'
                                     />
                                     <DataEditField
                                         title={registrationStrings.regon}
@@ -250,7 +348,9 @@ export default class ProfileDetailsView extends React.Component {
                                         warningAlert={alertStrings.invalidRegon}
                                         icon='md-business'
                                         keyboardType = 'number-pad'
-                                    />
+                                        updateRequest = {this.updateBusinessData}
+                                        label = 'regon'
+                                    />                                 
                                 </View>
                             )}
                         </ScrollView>

@@ -146,3 +146,21 @@ export async function removeItemFromList(id) {
     console.log(`Error: ${error}`);
   }
 }
+
+export async function returnItem(id) {
+  const instance = axios.create({
+    baseURL: URL,
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token'),
+    }
+  });
+
+  try {
+    const getItem = await instance.put('equipment/'+id+'/admin-return/');
+    return getItem.status === 200;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+  }
+}

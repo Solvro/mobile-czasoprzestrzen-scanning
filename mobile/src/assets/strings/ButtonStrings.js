@@ -3,7 +3,7 @@ const buttonStrings = {
     registrationButton: 'Zarejestruj się',
     equipmentListButton: 'Lista sprzętu',
     rentButton: 'Wypożycz',
-    returnButton: 'Zwróć',
+    returnButton: 'Wypożyczenia',
     profileDetailsButton: 'Dane profilowe',
     deleteAccountButton: 'Usuń konto',
     signOutButton: 'Wyloguj',
