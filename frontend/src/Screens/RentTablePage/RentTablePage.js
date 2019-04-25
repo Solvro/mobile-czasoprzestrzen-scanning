@@ -8,9 +8,40 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { withStyles } from "@material-ui/core/styles";
-import "./RentTablePage.css"
+// import "./RentTablePage.css"
+
+
+var styles = {
+  subBarChild1: {
+    float: "left",
+    marginRight: "5px",
+    position: "relative",
+    width: "49%"
+  },
+  subBarChild2: {
+    float: "right",
+    position: "relative",
+    width: "49%",
+    fontSize: "20px",
+    marginBottom: "1em",
+    paddingTop: "1.1em"
+  },
+  subBarParent: {
+    marginTop: "6em",
+    width: "100%"
+  },
+  SearchContent: {
+    marginTop: "0em",
+    fontSize: "20px",
+    marginBottom: "1em",
+    padding: "1em"
+
+  }
+};
+
 
 class Rents extends Component {
+
 
   constructor(props){
     super(props);
@@ -137,13 +168,16 @@ class Rents extends Component {
   
 
   render() {
+
+    const {classes} = this.props;
+   
     return (
       <div className="container">
             <Toolbar/>
       <Layout layoutDivide={"282"}>
-        <div className="subBar-parent">
-          <div className="subBar-child1"><SearchContainer placeholder={"Wyszukaj po nazwie ..."}/></div>
-          <div className="subBar-child2">
+        <div className={classes.subBarParent}>
+          <div className={classes.subBarChild1}><SearchContainer className={classes.SearchContent} placeholder={"Wyszukaj po nazwie ..."}/></div>
+          <div className={classes.subBarChild2}>
             <AppBar position="static" color="primary" >
               <Tabs
                 value={this.state.value}
@@ -167,4 +201,4 @@ class Rents extends Component {
 
 }
 
-export default withStyles({ withTheme: true })(Rents);
+export default withStyles(styles)(Rents);

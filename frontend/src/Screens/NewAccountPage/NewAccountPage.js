@@ -75,7 +75,6 @@ class NewAccountPage extends Component {
       if(this.state.accountType==='0'){ 
         response = await createNewAdminAccount(username, password, firstName, lastName, email, phone);
       } else{
-
         response = await createNewSuperAdminAccount(username, password, firstName, lastName, email, phone);
       }
 

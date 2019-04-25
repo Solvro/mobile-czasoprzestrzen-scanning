@@ -24,32 +24,40 @@ class HomePage extends Component {
       typesList: [],
       dialogOpen: false,
       clickedItemId: 0,
-      messageInfo: ''
+      messageInfo: '',
+      lastNameFilter: '',
+      lastTypeFilter: ''
     }
   }
 
-  async filterTableContentByNameContains(nameFragment){
+  async filterTableContent(){
     await getItemsList().then((res)=>{
+      var filteredRes = res
+      if(this.state.lastTypeFilter!=='-' && this.state.lastTypeFilter!==''){
+        filteredRes = this.filterByTypeNameContains(res, this.state.lastTypeFilter)
+      }
+      if(this.state.lastNameFilter!==''){
+        filteredRes = this.filterByNameContains(filteredRes, this.state.lastNameFilter)
+      }
 
-      var filteredRes = Object.keys(res).filter(function(params) {
-        return res[params].name.includes(nameFragment)
-      }).map(function(i){
-        return res[i];
-      })
       this.createTable(filteredRes)
-    })    
+    })
   }
 
-  async filterTableContentByTypeNameContains(typeName){
-    await getItemsList().then((res)=>{
+  filterByTypeNameContains = (res, lastTypeFilter) => {
+    return Object.keys(res).filter(function(params) {
+      return res[params].type.type_name===lastTypeFilter
+    }).map(function(i){
+      return res[i];
+    })
+  }
 
-      var filteredRes = Object.keys(res).filter(function(params) {
-        return res[params].type.type_name===typeName
-      }).map(function(i){
-        return res[i];
-      })
-      this.createTable(filteredRes)
-    })    
+  filterByNameContains = (res, lastNameFilter) => {
+    return Object.keys(res).filter(function(params) {
+      return res[params].name.includes(lastNameFilter)
+    }).map(function(i){
+      return res[i];
+    })
   }
 
   componentWillMount(){ 
@@ -61,8 +69,9 @@ class HomePage extends Component {
     await getItemTypesList()
     .then((res) => {
       var itemTypes = []
-      for(var i = 0; i < res.length; i++){
-          itemTypes[i] = res[i].type_name
+      itemTypes[0]="-"
+      for(var i = 1; i <= res.length; i++){
+          itemTypes[i] = res[i-1].type_name
       }
       this.setState({typesList : itemTypes});
     })
@@ -142,12 +151,13 @@ class HomePage extends Component {
   }
 
   handleChange = (fieldToFilterOn, value) => {
-    // alert(fieldToFilterOn + " " + value)
-    //console.log(e.target.value)
+  
     if(fieldToFilterOn==="name")
-      var res = this.filterTableContentByNameContains(value)
+      this.setState({lastNameFilter: value})
     else
-      var res =  this.filterTableContentByTypeNameContains(this.state.typesList[value])
+      this.setState({lastTypeFilter: this.state.typesList[value]})
+    
+    this.filterTableContent()
   }
 
   handleKeyDown = (e) => {
