@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'native-base';
+import { Container, Content } from 'native-base';
 import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
@@ -37,7 +37,7 @@ export default class EquipmentList extends React.Component {
         .then((response) => {this.setState({status: response.status}); return response.json()})
         .then((response) => {
             if(this.state.status === 200) {
-                fetchedItems = response;
+                fetchedItems = response.slice(Math.max(response.length - 20, 0));
             } else {
                 Alert.alert(alertStrings.noAuthoriatzion);
             }
@@ -52,14 +52,16 @@ export default class EquipmentList extends React.Component {
     render() {
         if(!this.state.isReady) {
             return <Expo.AppLoading />
-        } else {;
+        } else {
             return(
                 <Container style={equipmentListStyles.container}>
                     <ItemsList
                         type='equipment'
-                        items={this.state.items} />
+                        navigationProps={this.props.navigation}
+                        items={this.state.items}
+                    />
                 </Container>
-            )
+            );
         }
     }
 }
