@@ -80,7 +80,7 @@ export default class HomeScreen extends React.Component {
                         <SubmitButton 
                             handlePress={() => this.props.navigation.navigate('Return')} 
                             buttonText={buttonStrings.returnButton}
-                            icon='md-remove-circle-outline' />
+                            icon='md-time' />
                         </View>
                         <View style={buttonStyles.buttonContainer}>
                             <SubmitButton 

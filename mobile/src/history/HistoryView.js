@@ -1,9 +1,11 @@
 import React from 'react';
 import { Container } from 'native-base';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
+import apiConfig from '../services/api/config';
+import alertStrings from '../assets/strings/AlertStrings';
 
 export default class HistoryView extends React.Component {
 
@@ -15,27 +17,35 @@ export default class HistoryView extends React.Component {
         }
     }
 
-    componentWillMount = () => {
-        this.addItems();
+    componentWillMount = async () => {
+        await this.addItems();
         this.setState({isReady: true});
     }
 
+    addItems = async () => {
+        let fetchedItems = null;
+        let data = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId,
+            },
+        };
 
-    addItems = () => {
-        let itemsList = [];
-
-        for (let i = 0; i < 10; i++) {
-            itemsList.push(
-                {
-                    name: 'An item',
-                    type: 'Type',
-                    rent_date: '01-01-2019',
-                    return_date: '01-01-2019',
+        await fetch(apiConfig.url + '/api-v1/rentalinfo/?status=finished', data)
+            .then((response) => {this.setState({status: response.status}); return response.json()})
+            .then((response) => {
+                if(this.state.status === 200) {
+                    fetchedItems = response;
+                } else {
+                    Alert.alert(alertStrings.unexpectedError);
                 }
-            )
-        }
+            })
+            .catch(() => {
+                Alert.alert(alertStrings.noConnectionWithServer);
+            });
 
-        this.setState({items: itemsList});
+            this.setState({items: fetchedItems});
     }
 
     render() {

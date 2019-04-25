@@ -23,7 +23,12 @@ const itemsListStyles = StyleSheet.create({
         margin: 2,
         padding: 2,
         alignSelf: 'flex-start',
-    }
+    },
+    typePickerContainer: {
+        marginRight: 30,
+        marginLeft: 30,
+        marginBottom: 12,
+    },
 });
 
 module.exports = itemsListStyles;
