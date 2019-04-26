@@ -87,11 +87,11 @@ class HomePage extends Component {
 
   async componentDidMount() {
     await getItemTypesList().then(res => {
-      var itemTypes = []
-      itemTypes[0]="-"
-      for(var i = 1; i <= res.length; i++){
-          itemTypes[i] = res[i-1].type_name
-      }
+      // var itemTypes = []
+      // itemTypes[0]="-"
+      // for(var i = 1; i <= res.length; i++){
+      //     itemTypes[i] = res[i-1].type_name
+      // }
       console.log(res);
       this.setState({ typesList: res });
     });
