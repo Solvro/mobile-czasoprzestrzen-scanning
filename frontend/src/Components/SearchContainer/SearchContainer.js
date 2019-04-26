@@ -26,7 +26,6 @@ if(props.margin === "small"){
         </div>
 }
 
-
 return (container);
 }
 
