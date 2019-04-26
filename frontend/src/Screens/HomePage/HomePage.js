@@ -40,6 +40,7 @@ class HomePage extends Component {
       var filteredRes = res;
       if (
         this.state.lastTypeFilter !== undefined &&
+        this.state.lastTypeFilter !== "0" &&
         this.state.lastTypeFilter !== 0
       ) {
         filteredRes = this.filterByTypeNameContains(
@@ -53,7 +54,6 @@ class HomePage extends Component {
           this.state.lastNameFilter
         );
       }
-
       this.createTable(filteredRes);
     });
   }
@@ -64,7 +64,6 @@ class HomePage extends Component {
         return res[params].type.id === parseInt(lastTypeFilter);
       })
       .map(function(i) {
-        console.log(res[i]);
         return res[i];
       });
   };
@@ -92,7 +91,7 @@ class HomePage extends Component {
       // for(var i = 1; i <= res.length; i++){
       //     itemTypes[i] = res[i-1].type_name
       // }
-      console.log(res);
+      res.unshift({id: "0",type_name:"-"})
       this.setState({ typesList: res });
     });
     if (this.state.isLoading === true) this.getName();
@@ -214,11 +213,10 @@ class HomePage extends Component {
   };
 
   handleChange = (fieldToFilterOn, value) => {
-    if (fieldToFilterOn === "name") this.setState({ lastNameFilter: value });
-    else {
-      console.log(this.state.typesList);
+    if (fieldToFilterOn === "name") 
+      this.setState({ lastNameFilter: value });
+    else 
       this.setState({ lastTypeFilter: value });
-    }
 
     this.filterTableContent();
   };
