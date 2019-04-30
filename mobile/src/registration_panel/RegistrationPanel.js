@@ -3,7 +3,7 @@ import {
     Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, ScrollView,
     Dimensions
 } from 'react-native';
-import { Container, Text, ListItem, Radio, Left, Right, Content } from 'native-base';
+import { Container, Text, ListItem, Radio, Left, Right, Content, Button } from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import SubmitButton from '../components/SubmitButton';
 import TextInputField from '../components/TextInputField';
@@ -46,6 +46,7 @@ export default class RegistrationPanel extends React.Component {
             regon: null,
             isPerson: true,
             numOfViews: 2,
+            isSubmitButtonActive: true, //TODO: change to false when handler will be finished
         }
     }
 
@@ -209,7 +210,7 @@ export default class RegistrationPanel extends React.Component {
                 'business_data': businessData,
             });
         } else {
-            
+
             data = JSON.stringify({
                 'username': username,
                 'password': password1,
@@ -259,6 +260,18 @@ export default class RegistrationPanel extends React.Component {
             ],
             { cancelable: false },
         );
+    }
+
+    handleNextClick = () => {
+
+    }
+
+    handlePrevClick = () => {
+
+    }
+
+    handleScrolling = () => {
+
     }
 
     setStateHandler = (state, text) => {
@@ -326,7 +339,7 @@ export default class RegistrationPanel extends React.Component {
     }
 
     handleCompanyNameChange = (event) => {
-        this.setState({companyName: event});
+        this.setState({ companyName: event });
     }
 
     handleUserStatusChange = (event) => {
@@ -503,8 +516,17 @@ export default class RegistrationPanel extends React.Component {
                                 </View>
                             )}
                         </ScrollView>
+                        <View style={loginRegisterStyles.scrollButtonsContainer}>
+                            <Button style={loginRegisterStyles.scrollButton}>
+                                <Text>Wróć</Text>
+                            </Button>
+                            <Button style={loginRegisterStyles.scrollButton}>
+                                <Text>Dalej</Text>
+                            </Button>
+                        </View>
                         <View style={loginRegisterStyles.registerButtonAndLinkContainer}>
                             <SubmitButton
+                                disabled={this.state.isSubmitButtonActive}
                                 handlePress={this.handlePressRegister}
                                 buttonText={buttonStrings.registrationButton}
                                 icon='md-add-circle-outline' />

@@ -94,7 +94,12 @@ const loginRegisterStyles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 5,
     },
+    scrollButton: {
 
+    },
+    scrollButtonsContainer: {
+
+    },
 });
 
 module.exports = loginRegisterStyles;
