@@ -27,27 +27,28 @@ export default class RegistrationPanel extends React.Component {
         this.imageHeight = new Animated.Value(100);
         this.keyboardHeight = new Animated.Value(30);
 
-        this.width = Dimensions.get('window').width;
+        this.width =
 
-        this.state = {
-            isReady: false,
-            username: null,
-            password1: null,
-            password2: null,
-            firstName: null,
-            lastName: null,
-            email: null,
-            phoneNumber: null,
-            street: null,
-            companyName: null,
-            postalCode: null,
-            city: null,
-            nip: null,
-            regon: null,
-            isPerson: true,
-            numOfViews: 2,
-            isSubmitButtonActive: true, //TODO: change to false when handler will be finished
-        }
+            this.state = {
+                isReady: false,
+                username: null,
+                password1: null,
+                password2: null,
+                firstName: null,
+                lastName: null,
+                email: null,
+                phoneNumber: null,
+                street: null,
+                companyName: null,
+                postalCode: null,
+                city: null,
+                nip: null,
+                regon: null,
+                isPerson: true,
+                numOfViews: 2,
+                currentPageNum: 1,
+                isSubmitButtonActive: true, //TODO: change to false when handler will be finished
+            }
     }
 
     componentWillMount() {
@@ -262,18 +263,6 @@ export default class RegistrationPanel extends React.Component {
         );
     }
 
-    handleNextClick = () => {
-
-    }
-
-    handlePrevClick = () => {
-
-    }
-
-    handleScrolling = () => {
-
-    }
-
     setStateHandler = (state, text) => {
         this.setState({ state, text });
     }
@@ -356,6 +345,30 @@ export default class RegistrationPanel extends React.Component {
         }
     }
 
+    handleScrollToNextView = () => {
+        if (this.state.currentPageNum >= this.state.numOfViews) {
+            return;
+        }
+
+        let pageNum = this.state.currentPageNum + 1;
+        this.setState({ currentPageNum: pageNum });
+
+        let offset = (pageNum - 1) * Dimensions.get('window').width;
+        this.refs._scrollView.scrollTo({ x: offset, y: 0, animated: true });
+    }
+
+    handleScrollToPreviousView = () => {
+        if (this.state.currentPageNum <= 1) {
+            return;
+        }
+
+        let pageNum = this.state.currentPageNum - 1;
+        this.setState({ currentPageNum: pageNum });
+
+        let offset = (pageNum - 1) * Dimensions.get('window').width;
+        this.refs._scrollView.scrollTo({ x: offset, y: 0, animated: true });
+    }
+
     render() {
         return (
             <Container>
@@ -368,19 +381,21 @@ export default class RegistrationPanel extends React.Component {
                             <Animated.Image source={logo} resizeMode='contain'
                                 style={
                                     { height: this.imageHeight }} />
+                        <Text style={loginRegisterStyles.stepInfo}>
+                                Rejestracja ({this.state.currentPageNum}/{this.state.numOfViews})
+                        </Text> 
                         </View>
                         <ScrollView
+                            ref='_scrollView'
                             style={loginRegisterStyles.scrollView}
                             decelerationRate={0}
                             horizontal={true}
+                            scrollEnabled={false}
                             snapToAlignment={"center"}
                             showsHorizontalScrollIndicator={false}
                             pagingEnabled={true}
                         >
                             <View style={loginRegisterStyles.radioButtonContainer}>
-                                <Text style={loginRegisterStyles.stepInfo}>
-                                    Rejestracja (1/{this.state.numOfViews})
-                                </Text>
                                 <ListItem style={loginRegisterStyles.radioButton}
                                     onPress={() => this.handleUserStatusChange()} >
                                     <Left>
@@ -424,9 +439,6 @@ export default class RegistrationPanel extends React.Component {
                                 </View>
                             </View>
                             <View style={loginRegisterStyles.inputFieldsContainer}>
-                                <Text style={loginRegisterStyles.stepInfo}>
-                                    Rejestracja (2/{this.state.numOfViews})
-                                </Text>
                                 <TextInputField
                                     setStateHandler={this.handleEmailChange}
                                     keyboardType='email-address'
@@ -458,9 +470,6 @@ export default class RegistrationPanel extends React.Component {
                             </View>
                             {!this.state.isPerson && (
                                 <View style={loginRegisterStyles.inputFieldsContainer}>
-                                    <Text style={loginRegisterStyles.stepInfo}>
-                                        Rejestracja (3/{this.state.numOfViews})
-                                    </Text>
                                     <TextInputField
                                         setStateHandler={this.handleCompanyNameChange}
                                         keyboardType='default'
@@ -487,9 +496,6 @@ export default class RegistrationPanel extends React.Component {
 
                             {!this.state.isPerson && (
                                 <View>
-                                    <Text style={loginRegisterStyles.stepInfo}>
-                                        Rejestracja (4/{this.state.numOfViews})
-                                        </Text>
                                     <View style={loginRegisterStyles.inputFieldsContainer}>
                                         <TextInputField
                                             setStateHandler={this.handleStreetChange}
@@ -517,10 +523,10 @@ export default class RegistrationPanel extends React.Component {
                             )}
                         </ScrollView>
                         <View style={loginRegisterStyles.scrollButtonsContainer}>
-                            <Button style={loginRegisterStyles.scrollButton}>
+                            <Button style={loginRegisterStyles.scrollButton} onPress={() => this.handleScrollToPreviousView()}>
                                 <Text>Wróć</Text>
                             </Button>
-                            <Button style={loginRegisterStyles.scrollButton}>
+                            <Button style={loginRegisterStyles.scrollButton} onPress={() => this.handleScrollToNextView()}>
                                 <Text>Dalej</Text>
                             </Button>
                         </View>

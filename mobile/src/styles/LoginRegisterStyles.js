@@ -76,7 +76,9 @@ const loginRegisterStyles = StyleSheet.create({
 
     //ScrollView
     scrollView: {
-        maxHeight: 340,
+        maxHeight: 300,
+        // borderWidth: 1,
+        // borderColor: '#000',
     },
 
     inputFieldsContainer: {
@@ -92,13 +94,17 @@ const loginRegisterStyles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'center',
         fontWeight: 'bold',
-        margin: 5,
     },
     scrollButton: {
-
+        marginRight: 5,
+        marginLeft: 5,
+        backgroundColor: '#bdc3c7',
+        
     },
     scrollButtonsContainer: {
-
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginTop: 10,
     },
 });
 
