@@ -98,7 +98,7 @@ const loginRegisterStyles = StyleSheet.create({
     scrollButton: {
         marginRight: 5,
         marginLeft: 5,
-        backgroundColor: '#bdc3c7',
+        backgroundColor: '#3b82c4',
         
     },
     scrollButtonsContainer: {

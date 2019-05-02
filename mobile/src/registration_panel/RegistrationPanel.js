@@ -3,7 +3,7 @@ import {
     Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, ScrollView,
     Dimensions
 } from 'react-native';
-import { Container, Text, ListItem, Radio, Left, Right, Content, Button } from 'native-base';
+import { Container, Text, ListItem, Radio, Left, Right, Content, Button, Icon } from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import SubmitButton from '../components/SubmitButton';
 import TextInputField from '../components/TextInputField';
@@ -47,7 +47,7 @@ export default class RegistrationPanel extends React.Component {
                 isPerson: true,
                 numOfViews: 2,
                 currentPageNum: 1,
-                isSubmitButtonActive: true, //TODO: change to false when handler will be finished
+                isLastPage: false,
             }
     }
 
@@ -353,6 +353,10 @@ export default class RegistrationPanel extends React.Component {
         let pageNum = this.state.currentPageNum + 1;
         this.setState({ currentPageNum: pageNum });
 
+        if (pageNum === this.state.numOfViews) {
+            this.setState({ isLastPage: true });
+        }
+
         let offset = (pageNum - 1) * Dimensions.get('window').width;
         this.refs._scrollView.scrollTo({ x: offset, y: 0, animated: true });
     }
@@ -360,6 +364,10 @@ export default class RegistrationPanel extends React.Component {
     handleScrollToPreviousView = () => {
         if (this.state.currentPageNum <= 1) {
             return;
+        }
+
+        if (this.state.currentPageNum === this.state.numOfViews) {
+            this.setState({ isLastPage: false });
         }
 
         let pageNum = this.state.currentPageNum - 1;
@@ -381,9 +389,9 @@ export default class RegistrationPanel extends React.Component {
                             <Animated.Image source={logo} resizeMode='contain'
                                 style={
                                     { height: this.imageHeight }} />
-                        <Text style={loginRegisterStyles.stepInfo}>
+                            <Text style={loginRegisterStyles.stepInfo}>
                                 Rejestracja ({this.state.currentPageNum}/{this.state.numOfViews})
-                        </Text> 
+                        </Text>
                         </View>
                         <ScrollView
                             ref='_scrollView'
@@ -523,19 +531,25 @@ export default class RegistrationPanel extends React.Component {
                             )}
                         </ScrollView>
                         <View style={loginRegisterStyles.scrollButtonsContainer}>
-                            <Button style={loginRegisterStyles.scrollButton} onPress={() => this.handleScrollToPreviousView()}>
+                            <Button
+                                style={loginRegisterStyles.scrollButton}
+                                onPress={() => this.handleScrollToPreviousView()}>
                                 <Text>Wróć</Text>
                             </Button>
-                            <Button style={loginRegisterStyles.scrollButton} onPress={() => this.handleScrollToNextView()}>
+                            <Button
+                                style={loginRegisterStyles.scrollButton}
+                                onPress={() => this.handleScrollToNextView()}>
                                 <Text>Dalej</Text>
                             </Button>
                         </View>
                         <View style={loginRegisterStyles.registerButtonAndLinkContainer}>
-                            <SubmitButton
-                                disabled={this.state.isSubmitButtonActive}
-                                handlePress={this.handlePressRegister}
-                                buttonText={buttonStrings.registrationButton}
-                                icon='md-add-circle-outline' />
+                            {this.state.isLastPage && (
+                                <SubmitButton
+                                    disabled={false}
+                                    handlePress={this.handlePressRegister}
+                                    buttonText={buttonStrings.registrationButton}
+                                    icon='md-add-circle-outline' />
+                            )}
                             <TouchableOpacity style={loginRegisterStyles.linkContainer}
                                 onPress={() => this.props.navigation.navigate("SignIn")}>
                                 <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>
