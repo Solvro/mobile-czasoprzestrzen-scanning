@@ -72,7 +72,7 @@ export default class RentEquipmentView extends React.Component {
                                 onBarCodeScanned={this.handleBarCodeRead}
                                 style={{
                                     height: Dimensions.get('window').height,
-                                    width: Dimensions.get('window').width
+                                    width: Dimensions.get('window').width / 2
                                 }}
                             />
                 }
