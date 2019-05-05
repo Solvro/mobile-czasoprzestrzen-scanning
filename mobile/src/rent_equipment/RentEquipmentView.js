@@ -98,7 +98,7 @@ export default class RentEquipmentView extends React.Component {
             });
 
         this.setState({lastScannedQr: null});
-        
+
     }
 
     // Tricky but other solutions don't work
@@ -143,7 +143,7 @@ export default class RentEquipmentView extends React.Component {
                         animationType={'fade'}
                         androidMode={'default'}
                         placeHolderText='Wybierz datę zwrotu'
-                        textStyle={{ color: "green" }}
+                        textStyle={{ color: '#0d4579' }}
                         placeHolderTextStyle={{ color: "#d3d3d3" }}
                         onDateChange={(newDate) => this.handleDateChange(newDate)}
                         disabled={false}
