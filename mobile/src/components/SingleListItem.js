@@ -58,7 +58,7 @@ export default class SingleListItem extends React.Component {
                 <Right>
                     <Button
                         style={singleListItemStyles.returnButton}
-                        onPress={() => this.props.onReturnButtonHandler(item.equipment_data.id)}>
+                        onPress={() => this.props.onReturnButtonHandler(item.equipment_data.id, item.equipment_data.name)}>
                         <Text style={singleListItemStyles.returnButtonText}>Zwróć</Text>
                     </Button>
                 </Right>

@@ -48,8 +48,8 @@ export default class ReturnEquipmentView extends React.Component {
             this.setState({items: fetchedItems});
     }
 
-    onReturnButtonPressed = (itemID) => {
-        this.props.navigation.navigate('ReturnQR', {id: itemID});
+    onReturnButtonPressed = (itemID, itemName) => {
+        this.props.navigation.navigate('ReturnQR', {id: itemID, name: itemName});
     }
 
     render() {
