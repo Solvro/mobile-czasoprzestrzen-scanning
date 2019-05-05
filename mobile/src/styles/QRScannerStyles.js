@@ -12,7 +12,7 @@ const qrScannerStyles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: '#fff',
         padding: 15,
         flexDirection: 'row',
       },
@@ -31,6 +31,15 @@ const qrScannerStyles = StyleSheet.create({
       cancelButtonText: {
         color: 'rgba(255,255,255,0.8)',
         fontSize: 18,
+      },
+      datePickerContainer: {
+        borderBottomColor: '#3b82c4',
+        borderBottomWidth: 2,
+        marginRight: 5,
+      },
+      rentButton: {
+        backgroundColor: '#3b82c4',
+        marginLeft: 5,
       },
 });
 
