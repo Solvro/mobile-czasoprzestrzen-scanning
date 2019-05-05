@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, StatusBar, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StatusBar, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 import { DatePicker, Button, Text } from 'native-base';
 import apiConfig from '../services/api/config';
 import textStrings from '../assets/strings/TextStrings';
+import alertStrings from '../assets/strings/AlertStrings';
 import qrScannerStyles from '../styles/QRScannerStyles';
+
 export default class RentEquipmentView extends React.Component {
 
     constructor(props) {
@@ -51,23 +53,79 @@ export default class RentEquipmentView extends React.Component {
 
     handleDateChange = (newDate) => {
         this.setState({ chosenDate: newDate });
-        let options = {year: 'numeric', month: '2-digit', day: '2-digit'};
-        console.log(newDate.toLocaleDateString('iso8601-h24', options));
     }
 
     rentItem = async () => {
-        let dateFormat = this.state.chosenDate.toString().substr(0, 10);
+        let dateISOFormat = this.getDateFormat(this.state.chosenDate);
+        let itemID = this.getItemID(this.state.lastScannedQr);
+
+        if (itemID === -1) {
+            Alert.alert(alertStrings.invalidQR);
+            return;
+        }
+
         let data = {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + apiConfig.clientId,
             },
             body: JSON.stringify({
-                'id': 1,
-                'expected_return': dateFormat,
+                'expected_return': dateISOFormat,
             })
         };
+
+        await fetch(apiConfig.url + '/api-v1/equipment/' + itemID + '/rent/', data)
+            .then((response) => { this.setState({ status: response.status }); })
+            .then(() => {
+                if (this.state.status === 201) {
+                    // Created rent
+                    Alert.alert(alertStrings.rentCreated);
+                } else if (this.state.status === 400) {
+                    // Wrong data or avaiable=false
+                    Alert.alert(alertStrings.rentWrongData);
+                } else if (this.state.status === 404) {
+                    // Equipment with id doesn't exists
+                    Alert.alert(alertStrings.rentNoItem);
+                } else if (this.state.status === 401) {
+                    // Unauthorized
+                    Alert.alert(alertStrings.noAuthoriatzion);
+                    this.props.navigation.navigate('SignedOut');
+                }
+            })
+            .catch(() => {
+                Alert.alert(alertStrings.noConnectionWithServer);
+            });
+
+        this.setState({lastScannedQr: null});
+        
+    }
+
+    // Tricky but other solutions don't work
+    getDateFormat = (date) => {
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+
+        if (day <= 9) {
+            day = '0' + day;
+        }
+
+        if (month <= 9) {
+            month = '0' + month;
+        }
+
+        return year + '-' + month + '-' + day;
+    }
+
+    getItemID = (scannedData) => {
+        let result = scannedData.toString().match(/\d+/i);
+
+        if (result === null) {
+            return -1;
+        } else {
+            return result[0];
+        }
     }
 
     maybeRenderContent = () => {
@@ -91,7 +149,10 @@ export default class RentEquipmentView extends React.Component {
                         disabled={false}
                     />
                 </View>
-                <Button style={qrScannerStyles.rentButton}>
+                <Button
+                    style={qrScannerStyles.rentButton}
+                    onPress={() => this.rentItem()}
+                >
                     <Text>
                         Wypożycz
                     </Text>

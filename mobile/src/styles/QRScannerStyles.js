@@ -36,6 +36,7 @@ const qrScannerStyles = StyleSheet.create({
         borderBottomColor: '#3b82c4',
         borderBottomWidth: 2,
         marginRight: 5,
+        width: 200,
       },
       rentButton: {
         backgroundColor: '#3b82c4',
