@@ -38,7 +38,7 @@ const loginRegisterStyles = StyleSheet.create({
     //RadioButton
 
     radioButtonContainer: {
-        marginBottom: 15,
+        marginBottom: 5,
         width: deviceWidth,
     },
 
@@ -76,7 +76,7 @@ const loginRegisterStyles = StyleSheet.create({
 
     //ScrollView
     scrollView: {
-        maxHeight: 300,
+        maxHeight: 280,
         // borderWidth: 1,
         // borderColor: '#000',
     },
@@ -87,7 +87,7 @@ const loginRegisterStyles = StyleSheet.create({
     },
     
     innerContainer: {
-        marginTop: 20,
+        marginTop: 15,
     },
 
     stepInfo: {
