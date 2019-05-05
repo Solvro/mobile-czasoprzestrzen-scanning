@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, StatusBar, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StatusBar, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 import { Text, Button } from 'native-base';
+import apiConfig from '../services/api/config';
 
-import textStrings from '../assets/strings/TextStrings';
 import qrScannerStyles from '../styles/QRScannerStyles';
 import TextInputField from '../components/TextInputField';
+import alertStrings from '../assets/strings/AlertStrings';
 
 export default class ReturnItemView extends React.Component {
 
@@ -64,14 +65,14 @@ export default class ReturnItemView extends React.Component {
         }
 
         let data = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + apiConfig.clientId,
             },
         };
 
-        await fetch(apiConfig.url + '/api-v1/equipment/' + this.state.itemID + '/admin-return/', data)
+        await fetch(apiConfig.url + '/api-v1/equipment/' + this.state.itemID + '/return/', data)
             .then((response) => { this.setState({ status: response.status }); })
             .then(() => {
                 if (this.state.status === 200) {
@@ -87,6 +88,7 @@ export default class ReturnItemView extends React.Component {
                     // Unauthorized
                     Alert.alert(alertStrings.noAuthoriatzion);
                     this.props.navigation.navigate('SignedOut');
+                    return;
                 }
             })
             .catch(() => {
@@ -111,9 +113,9 @@ export default class ReturnItemView extends React.Component {
     }
 
     maybeRenderContent = () => {
-        if (!this.state.lastScannedQr) {
-            return;
-        }
+        // if (!this.state.lastScannedQr) {
+        //     return;
+        // }
 
         return (
             <View style={qrScannerStyles.bottomBar}>
