@@ -56,7 +56,9 @@ export default class SingleListItem extends React.Component {
                     <Text style={singleListItemStyles.noteText}>{'Oczekiwany zwrot: ' + item.expected_return}</Text>
                 </Body>
                 <Right>
-                    <Button style={singleListItemStyles.returnButton}>
+                    <Button
+                        style={singleListItemStyles.returnButton}
+                        onPress={() => this.props.onReturnButtonHandler(item.equipment_data.id)}>
                         <Text style={singleListItemStyles.returnButtonText}>Zwróć</Text>
                     </Button>
                 </Right>

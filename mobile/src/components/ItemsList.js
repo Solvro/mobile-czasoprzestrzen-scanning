@@ -100,6 +100,7 @@ export default class ItemsList extends React.Component {
                 item={item}
                 id={item.id}
                 navigationProps={this.props.navigationProps}
+                onReturnButtonHandler={() => this.props.onReturnButtonHandler(item.equipment_data.id)}
             />);
         });
 
