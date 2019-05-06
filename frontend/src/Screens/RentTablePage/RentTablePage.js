@@ -1,86 +1,150 @@
-import React, { Component } from 'react';
-import SearchContainer from '../../Components/SearchContainer/SearchContainer';
-import Table from '../../Components/Table/RentsTable';
-import Layout from '../../Components/Layout/Layout';
-import Toolbar from '../../Components/Toolbar/Toolbar';
-import {getFinishedRentsList, getOngoingRentsList} from '../../services/rentService';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import React, { Component } from "react";
+import SearchContainer from "../../Components/SearchContainer/SearchContainer";
+import Table from "../../Components/Table/RentsTable";
+import Layout from "../../Components/Layout/Layout";
+import Toolbar from "../../Components/Toolbar/Toolbar";
+import {
+  getFinishedRentsList,
+  getOngoingRentsList
+} from "../../services/rentService";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
-import "./RentTablePage.css"
+
+var styles = {
+  subBarChild1: {
+    float: "left",
+    marginRight: "5px",
+    position: "relative",
+    width: "49%"
+  },
+  subBarChild2: {
+    float: "right",
+    position: "relative",
+    width: "49%",
+    fontSize: "20px",
+    marginBottom: "1em",
+    paddingTop: "1.1em"
+  },
+  subBarParent: {
+    marginTop: "6em",
+    width: "100%"
+  },
+  SearchContent: {
+    marginTop: "0em",
+    fontSize: "20px",
+    marginBottom: "1em",
+    padding: "1em"
+  }
+};
 
 class Rents extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      rentListTable: '',
+      rentListTable: "",
       isLoading: true,
-      infoMessage: '',
-      errorMsg: '',
-      value: 0
-    }
+      infoMessage: "",
+      errorMsg: "",
+      buttonClicked: 0,
+      lastNameFilter: ""
+    };
   }
 
-  async componentDidMount(){
-    await getOngoingRentsList().then((res)=>{
-      this.setState({isLoading: false});
+  async componentDidMount() {
+    await getOngoingRentsList().then(res => {
+      this.setState({ isLoading: false });
       this.createOngoingTable(res);
-    })    
+    });
   }
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  handleButtonChange = (event, value) => {
+    this.setState({ buttonClicked: value });
     setTimeout(this.reloadTable, 0);
   };
 
-  reloadTable = async () => {
-    if(this.state.value===0){
-      await getOngoingRentsList().then((res)=>{
-        this.setState({isLoading: false});
-        this.createOngoingTable(res);
-      })
-    } else{
-      await getFinishedRentsList().then((res)=>{
-        this.setState({isLoading: false});
-        this.createFinishedTable(res);
-      })
-    }
-    this.forceUpdate();
-  }
-
-  handleChangeIndex = index => {
-    this.setState({ value: index });
+  handleFilterChange = e => {
+    this.setState({ lastNameFilter: e.target.value });
+    // this.reloadTable
+    setTimeout(this.reloadTable, 0);
   };
 
-  createOngoingTable(res){
+  handleKeyDown = e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
+
+  reloadTable = async () => {
+    var filteredRes
+    if (this.state.buttonClicked === 0) {
+      await getOngoingRentsList().then(res => {
+        this.setState({ isLoading: false });
+        filteredRes = this.filterByNameContains(res, this.state.lastNameFilter)
+        this.createOngoingTable(filteredRes);
+      });
+    } else {
+      await getFinishedRentsList().then(res => {
+        this.setState({ isLoading: false });
+        filteredRes = this.filterByNameContains(res, this.state.lastNameFilter)
+        this.createFinishedTable(filteredRes);
+      });
+    }
+    this.forceUpdate();
+  };
+
+  filterByNameContains = (res, lastNameFilter) => {
+    return Object.keys(res).filter(function(params){
+      return res[params].equipment_data!==null
+    }).filter(function(params) {
+      return res[params]
+      .equipment_data
+      .type
+      .type_name
+      .toLowerCase()
+      .includes(lastNameFilter.toLowerCase())
+    }).map(function(i){
+      return res[i];
+    })
+  }
+
+  createOngoingTable(res) {
     var rows = [];
     var equipmentName;
     var username;
     var city;
     var street;
-    
-    for (var i = 0; i<res.length; i++){
-      equipmentName = res[i].equipment_data === null ? '-' : res[i].equipment_data.name 
-      if (res[i].client_data!==null){
+
+    for (var i = 0; i < res.length; i++) {
+      equipmentName =
+        res[i].equipment_data === null ? "-" : res[i].equipment_data.name;
+      if (res[i].client_data !== null) {
         username = res[i].client_data.username;
-        city = res[i].client_data.address.city;
-        street = res[i].client_data.address.street;
+        var address = res[i].client_data.address;
+        if (address !== null) {
+          city = address.city;
+          street = address.street;
+        } else {
+          city = "-";
+          street = "";
+        }
       } else {
-        username = '-';
-        city = '-';
-        street = '';
+        username = "-";
+        city = "-";
+        street = "";
       }
-      
-      rows.push([res[i].id,
+
+      rows.push([
+        res[i].id,
         equipmentName,
         username,
         res[i].rental_date,
         res[i].expected_return,
         res[i].actual_return,
         city + " " + street
-      ])
+      ]);
     }
     var header = [
       "Nr",
@@ -90,37 +154,45 @@ class Rents extends Component {
       "Spodziewana data zwrotu",
       "Gdzie"
     ];
-    var table = <Table header = {header} rows = {rows} />;
-    this.setState({ rentListTable: table});
+    var table = <Table header={header} rows={rows} />;
+    this.setState({ rentListTable: table });
   }
 
-  createFinishedTable(res){
+  createFinishedTable(res) {
     var rows = [];
     var equipmentName;
     var username;
     var city;
     var street;
-    
-    for (var i = 0; i<res.length; i++){
-      equipmentName = res[i].equipment_data === null ? '-' : res[i].equipment_data.name 
-      if (res[i].client_data!==null){
+
+    for (var i = 0; i < res.length; i++) {
+      equipmentName =
+        res[i].equipment_data === null ? "-" : res[i].equipment_data.name;
+      if (res[i].client_data !== null) {
         username = res[i].client_data.username;
-        city = res[i].client_data.address.city;
-        street = res[i].client_data.address.street;
+        var address = res[i].client_data.address;
+        if (address !== null) {
+          city = address.city;
+          street = address.street;
+        } else {
+          city = "-";
+          street = "";
+        }
       } else {
-        username = '-';
-        city = '-';
-        street = '';
+        username = "-";
+        city = "-";
+        street = "";
       }
-      
-      rows.push([res[i].id,
+
+      rows.push([
+        res[i].id,
         equipmentName,
         username,
         res[i].rental_date,
         res[i].expected_return,
         res[i].actual_return,
         city + " " + street
-      ])
+      ]);
     }
     var header = [
       "Nr",
@@ -131,40 +203,44 @@ class Rents extends Component {
       "Data zwrotu",
       "Gdzie"
     ];
-    var table = <Table header = {header} rows = {rows} />;
-    this.setState({ rentListTable: table});
+    var table = <Table header={header} rows={rows} />;
+    this.setState({ rentListTable: table });
   }
-  
 
   render() {
+    const { classes } = this.props;
+
     return (
       <div className="container">
-            <Toolbar/>
-      <Layout layoutDivide={"282"}>
-        <div className="subBar-parent">
-          <div className="subBar-child1"><SearchContainer placeholder={"Wyszukaj po nazwie ..."}/></div>
-          <div className="subBar-child2">
-            <AppBar position="static" color="primary" >
-              <Tabs
-                value={this.state.value}
-                onChange={this.handleChange}
-                indicatorColor="default"
-                variant="fullWidth"
-              >
-                <Tab label="bieżące" />
-                <Tab label="zakończone" />
-              </Tabs>
-            </AppBar>
+        <Toolbar />
+        <Layout layoutDivide={"282"}>
+          <div className={classes.subBarParent}>
+            <div className={classes.subBarChild1}>
+              <SearchContainer
+                className={classes.SearchContent}
+                placeholder={"Wyszukaj po nazwie ..."}
+              />
+            </div>
+            <div className={classes.subBarChild2}>
+              <AppBar position="static" color="primary">
+                <Tabs
+                  value={this.state.buttonClicked}
+                  onChange={this.handleButtonChange}
+                  indicatorColor="secondary"
+                  variant="fullWidth"
+                >
+                  <Tab label="bieżące" />
+                  <Tab label="zakończone" />
+                </Tabs>
+              </AppBar>
+            </div>
           </div>
-        </div>
 
-        {!this.state.isLoading ? this.state.rentListTable : null}
-
-      </Layout>
+          {!this.state.isLoading ? this.state.rentListTable : null}
+        </Layout>
       </div>
     );
   }
-
 }
 
-export default withStyles({ withTheme: true })(Rents);
+export default withStyles(styles)(Rents);
