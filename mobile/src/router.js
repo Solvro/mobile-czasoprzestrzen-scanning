@@ -18,12 +18,14 @@ import RentalInfoView from './rental_info/RentalInfoView';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SingleListItem from './components/SingleListItem';
 import PasswordResetView from './password_reset/PasswordResetView';
+import PasswordResetConfirmView from './password_reset/PasswordResetConfirmView';
 
 export const SignedOutNavigator = createStackNavigator(
     {
         SignIn: LoginPanel,
         SignUp: RegistrationPanel,
         PasswordReset: PasswordResetView,
+        PasswordResetConfirm: PasswordResetConfirmView,
     },
     {
         headerMode: 'none',
