@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from scanning_app.permissions import IsAdminOrSuperAdmin, IsAppUser, \
-    IsThisClientOrAdminOrSuperAdmin
+    IsThisClientOrAdminOrSuperAdmin, IsClientWithGetOrAdminOrSuperAdmin
 from .serializers import EquipmentCreateSerializer, EquipmentSerializer, \
     TypeOfEquipmentSerializer, EquipmentRentSerializer, \
     RentalInfoGetSerializer, RentalInfoSerializer
@@ -18,7 +18,7 @@ from scanning_app.models import Equipment, RentalInfo, TypeOfEquipment, AppUser
 class TypeOfEquipmentViewSet(viewsets.ModelViewSet):
     queryset = TypeOfEquipment.objects.all()
     serializer_class = TypeOfEquipmentSerializer
-    permission_classes = (IsAdminOrSuperAdmin,)
+    permission_classes = (IsClientWithGetOrAdminOrSuperAdmin,)
 
     @swagger_auto_schema(
         operation_description="GET /api-v1/equipment-type/\n"
