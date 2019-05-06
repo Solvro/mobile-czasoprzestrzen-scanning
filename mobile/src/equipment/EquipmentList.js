@@ -49,6 +49,16 @@ export default class EquipmentList extends React.Component {
         return fetchedItems;
     }
 
+    getTypes = async () => {
+        // let data = {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + apiConfig.clientId,
+        //     }
+        // }
+    }
+
     onRefresh = async () => {
         this.setState({ items: [] });
         let response = this.getItems();

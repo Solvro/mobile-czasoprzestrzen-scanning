@@ -18,6 +18,7 @@ export default class ItemsList extends React.Component {
             searchedPhrase: null,
             searchedType: null,
             refreshing: false,
+            types: null,
         }
     }
 
@@ -136,7 +137,9 @@ export default class ItemsList extends React.Component {
                             />
                         </View>
                         <View style={itemsListStyles.typePickerContainer}>
-                            <TypePicker onValueChange={this.onTypePickerValueChange} />
+                            <TypePicker
+                                type={this.props.types}
+                                onValueChange={this.onTypePickerValueChange} />
                         </View>
                         <Content
                             refreshControl={
