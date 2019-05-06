@@ -3,7 +3,7 @@ import {
     Alert, View, Animated, Keyboard, TouchableOpacity, TouchableWithoutFeedback, ScrollView,
     Dimensions
 } from 'react-native';
-import { Container, Text, ListItem, Radio, Left, Right, Content } from 'native-base';
+import { Container, Text, ListItem, Radio, Left, Right, Content, Button, Icon } from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import SubmitButton from '../components/SubmitButton';
 import TextInputField from '../components/TextInputField';
@@ -27,26 +27,28 @@ export default class RegistrationPanel extends React.Component {
         this.imageHeight = new Animated.Value(100);
         this.keyboardHeight = new Animated.Value(30);
 
-        this.width = Dimensions.get('window').width;
+        this.width =
 
-        this.state = {
-            isReady: false,
-            username: null,
-            password1: null,
-            password2: null,
-            firstName: null,
-            lastName: null,
-            email: null,
-            phoneNumber: null,
-            street: null,
-            companyName: null,
-            postalCode: null,
-            city: null,
-            nip: null,
-            regon: null,
-            isPerson: true,
-            numOfViews: 2,
-        }
+            this.state = {
+                isReady: false,
+                username: null,
+                password1: null,
+                password2: null,
+                firstName: null,
+                lastName: null,
+                email: null,
+                phoneNumber: null,
+                street: null,
+                companyName: null,
+                postalCode: null,
+                city: null,
+                nip: null,
+                regon: null,
+                isPerson: true,
+                numOfViews: 2,
+                currentPageNum: 1,
+                isLastPage: false,
+            }
     }
 
     componentWillMount() {
@@ -209,7 +211,7 @@ export default class RegistrationPanel extends React.Component {
                 'business_data': businessData,
             });
         } else {
-            
+
             data = JSON.stringify({
                 'username': username,
                 'password': password1,
@@ -326,7 +328,7 @@ export default class RegistrationPanel extends React.Component {
     }
 
     handleCompanyNameChange = (event) => {
-        this.setState({companyName: event});
+        this.setState({ companyName: event });
     }
 
     handleUserStatusChange = (event) => {
@@ -343,6 +345,38 @@ export default class RegistrationPanel extends React.Component {
         }
     }
 
+    handleScrollToNextView = () => {
+        if (this.state.currentPageNum >= this.state.numOfViews) {
+            return;
+        }
+
+        let pageNum = this.state.currentPageNum + 1;
+        this.setState({ currentPageNum: pageNum });
+
+        if (pageNum === this.state.numOfViews) {
+            this.setState({ isLastPage: true });
+        }
+
+        let offset = (pageNum - 1) * Dimensions.get('window').width;
+        this.refs._scrollView.scrollTo({ x: offset, y: 0, animated: true });
+    }
+
+    handleScrollToPreviousView = () => {
+        if (this.state.currentPageNum <= 1) {
+            return;
+        }
+
+        if (this.state.currentPageNum === this.state.numOfViews) {
+            this.setState({ isLastPage: false });
+        }
+
+        let pageNum = this.state.currentPageNum - 1;
+        this.setState({ currentPageNum: pageNum });
+
+        let offset = (pageNum - 1) * Dimensions.get('window').width;
+        this.refs._scrollView.scrollTo({ x: offset, y: 0, animated: true });
+    }
+
     render() {
         return (
             <Container>
@@ -355,19 +389,21 @@ export default class RegistrationPanel extends React.Component {
                             <Animated.Image source={logo} resizeMode='contain'
                                 style={
                                     { height: this.imageHeight }} />
+                            <Text style={loginRegisterStyles.stepInfo}>
+                                Rejestracja ({this.state.currentPageNum}/{this.state.numOfViews})
+                        </Text>
                         </View>
                         <ScrollView
+                            ref='_scrollView'
                             style={loginRegisterStyles.scrollView}
                             decelerationRate={0}
                             horizontal={true}
+                            scrollEnabled={false}
                             snapToAlignment={"center"}
                             showsHorizontalScrollIndicator={false}
                             pagingEnabled={true}
                         >
                             <View style={loginRegisterStyles.radioButtonContainer}>
-                                <Text style={loginRegisterStyles.stepInfo}>
-                                    Rejestracja (1/{this.state.numOfViews})
-                                </Text>
                                 <ListItem style={loginRegisterStyles.radioButton}
                                     onPress={() => this.handleUserStatusChange()} >
                                     <Left>
@@ -411,9 +447,6 @@ export default class RegistrationPanel extends React.Component {
                                 </View>
                             </View>
                             <View style={loginRegisterStyles.inputFieldsContainer}>
-                                <Text style={loginRegisterStyles.stepInfo}>
-                                    Rejestracja (2/{this.state.numOfViews})
-                                </Text>
                                 <TextInputField
                                     setStateHandler={this.handleEmailChange}
                                     keyboardType='email-address'
@@ -445,9 +478,6 @@ export default class RegistrationPanel extends React.Component {
                             </View>
                             {!this.state.isPerson && (
                                 <View style={loginRegisterStyles.inputFieldsContainer}>
-                                    <Text style={loginRegisterStyles.stepInfo}>
-                                        Rejestracja (3/{this.state.numOfViews})
-                                    </Text>
                                     <TextInputField
                                         setStateHandler={this.handleCompanyNameChange}
                                         keyboardType='default'
@@ -474,9 +504,6 @@ export default class RegistrationPanel extends React.Component {
 
                             {!this.state.isPerson && (
                                 <View>
-                                    <Text style={loginRegisterStyles.stepInfo}>
-                                        Rejestracja (4/{this.state.numOfViews})
-                                        </Text>
                                     <View style={loginRegisterStyles.inputFieldsContainer}>
                                         <TextInputField
                                             setStateHandler={this.handleStreetChange}
@@ -503,11 +530,26 @@ export default class RegistrationPanel extends React.Component {
                                 </View>
                             )}
                         </ScrollView>
+                        <View style={loginRegisterStyles.scrollButtonsContainer}>
+                            <Button
+                                style={loginRegisterStyles.scrollButton}
+                                onPress={() => this.handleScrollToPreviousView()}>
+                                <Text>Wróć</Text>
+                            </Button>
+                            <Button
+                                style={loginRegisterStyles.scrollButton}
+                                onPress={() => this.handleScrollToNextView()}>
+                                <Text>Dalej</Text>
+                            </Button>
+                        </View>
                         <View style={loginRegisterStyles.registerButtonAndLinkContainer}>
-                            <SubmitButton
-                                handlePress={this.handlePressRegister}
-                                buttonText={buttonStrings.registrationButton}
-                                icon='md-add-circle-outline' />
+                            {this.state.isLastPage && (
+                                <SubmitButton
+                                    disabled={false}
+                                    handlePress={this.handlePressRegister}
+                                    buttonText={buttonStrings.registrationButton}
+                                    icon='md-add-circle-outline' />
+                            )}
                             <TouchableOpacity style={loginRegisterStyles.linkContainer}
                                 onPress={() => this.props.navigation.navigate("SignIn")}>
                                 <Text style={loginRegisterStyles.linkText}>Masz już konto? Zaloguj się!</Text>

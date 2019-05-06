@@ -48,6 +48,14 @@ export default class ReturnEquipmentView extends React.Component {
             this.setState({items: fetchedItems});
     }
 
+    onReturnButtonPressed = (itemID, itemName) => {
+        this.props.navigation.navigate('ReturnQR', {id: itemID, name: itemName});
+    }
+
+    onRefresh = async () => {
+        await this.addItems();
+    }
+
     render() {
         if(!this.state.isReady) {
             return <Expo.AppLoading />
@@ -55,7 +63,9 @@ export default class ReturnEquipmentView extends React.Component {
             return(
                 <Container style={equipmentListStyles.container}>
                     <ItemsList
+                        onReturnButtonHandler={this.onReturnButtonPressed}
                         type='rented'
+                        onRefresh={this.onRefresh}
                         items={this.state.items} />
                 </Container>
             )

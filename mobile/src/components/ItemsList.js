@@ -18,6 +18,7 @@ export default class ItemsList extends React.Component {
             searchedPhrase: null,
             searchedType: null,
             refreshing: false,
+            types: null,
         }
     }
 
@@ -91,7 +92,7 @@ export default class ItemsList extends React.Component {
     }
 
     addItems = async () => {
-        let itemsList = [];                                                                                                           
+        let itemsList = [];
         let filteredItems = await this.filter();
         filteredItems.forEach((item, index) => {
             itemsList.push(<SingleListItem
@@ -100,11 +101,22 @@ export default class ItemsList extends React.Component {
                 item={item}
                 id={item.id}
                 navigationProps={this.props.navigationProps}
+                onReturnButtonHandler={() => this.props.onReturnButtonHandler(item.equipment_data.id, item.equipment_data.name)}
             />);
         });
 
         this.setState({ items: itemsList });
-    } 
+    }
+
+    onRefresh = async () => {
+        this.setState({
+            refreshing: true,
+            items: []
+        });
+        await this.props.onRefresh();
+        await this.addItems();
+        this.setState({ refreshing: false });
+    }
 
     render() {
         if (!this.state.isReady) {
@@ -125,9 +137,16 @@ export default class ItemsList extends React.Component {
                             />
                         </View>
                         <View style={itemsListStyles.typePickerContainer}>
-                            <TypePicker onValueChange={this.onTypePickerValueChange} />
+                            <TypePicker
+                                type={this.props.types}
+                                onValueChange={this.onTypePickerValueChange} />
                         </View>
-                        <Content>
+                        <Content
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={() => this.onRefresh()} />
+                            }>
                             <List>
                                 {this.state.items}
                             </List>
@@ -136,7 +155,12 @@ export default class ItemsList extends React.Component {
                 );
             } else {
                 return (
-                    <Content>
+                    <Content
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={() => this.onRefresh()} />
+                        }>
                         <List>
                             {this.state.items}
                         </List>

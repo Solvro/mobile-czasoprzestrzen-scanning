@@ -383,7 +383,7 @@ def create_admin(email="test_admin@email.com", username="admin"):
     )
 
 
-def create_super_admin(email="test_root@email.com",username="root"):
+def create_super_admin(email="test_root@email.com", username="root"):
     return AppUser.objects.create_user(
         username=username,
         password="pass",
@@ -1063,7 +1063,7 @@ class RentalInfoViewsTests(TestCase):
         equip = create_unavailable_equipment()
         rent = create_rental_info(equip, user)
         response = self.apiClient \
-            .delete(reverse('rentalinfo-detail', args=(rent.pk+1,)), format='json')
+            .delete(reverse('rentalinfo-detail', args=(rent.pk + 1,)), format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -1261,7 +1261,7 @@ class AdminsReturnEquipmentView(TestCase):
         login_as_user(self.apiClient, create_admin())
 
     def test_invalid_equip_id_404_returned(self):
-        response = self.apiClient\
+        response = self.apiClient \
             .put(reverse('equipment-admins-return', args=(1,)), format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -1283,3 +1283,29 @@ class AdminsReturnEquipmentView(TestCase):
         self.assertTrue(Equipment.objects.get(pk=equip.pk).available)
         self.assertEqual(RentalInfo.objects.get(pk=rental.pk).actual_return,
                          datetime.date.today())
+
+
+class EquipType(TestCase):
+
+    def setUp(self):
+        self.apiClient = APIClient()
+        login_as_user(self.apiClient, create_client())
+        self.type = create_type_of_equipment()
+
+    def test_client_can_get_types(self):
+        response = self.apiClient.get(reverse('typeofequipment-list'), format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_client_can_not_post_type(self):
+        response = self.apiClient.post(reverse('typeofequipment-list'), data={'type_name': 'speaker'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_admin_can_get_type(self):
+        login_as_user(self.apiClient, create_admin())
+        response = self.apiClient.get(reverse('typeofequipment-list'), format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_admin_can_post_type(self):
+        login_as_user(self.apiClient, create_admin())
+        response = self.apiClient.post(reverse('typeofequipment-list'), data={'type_name': 'speaker'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

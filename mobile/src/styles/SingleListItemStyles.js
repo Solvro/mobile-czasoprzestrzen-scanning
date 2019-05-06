@@ -23,6 +23,12 @@ const singleItemListStyles = StyleSheet.create({
         margin: 2,
         padding: 2,
         alignSelf: 'flex-start',
+    },
+    returnButtonText: {
+        fontSize: 11,
+    },
+    returnButton: {
+        backgroundColor: '#3b82c4',
     }
 });
 
