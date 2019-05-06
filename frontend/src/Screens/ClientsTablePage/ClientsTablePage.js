@@ -6,11 +6,11 @@ import Toolbar from '../../Components/Toolbar/Toolbar';
 import {getClientsList, deleteClient} from '../../services/clientService';
 import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
-import MessageIcon from '@material-ui/icons/Message';
 import IconButton from '@material-ui/core/IconButton';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import Dialog from '../../Components/Dialog/Dialog';
+//import MessageIcon from '@material-ui/icons/Message';
 
 
 class Clients extends Component {
@@ -34,6 +34,21 @@ class Clients extends Component {
     })    
   }
 
+  async filterTableContentByNameContains(nameFragment){
+    await getClientsList().then((res)=>{
+
+      var filteredRes = Object.keys(res).filter(function(params) {
+        return res[params]
+          .username
+          .toLowerCase()
+          .includes(nameFragment.toLowerCase())
+      }).map(function(i){
+        return res[i];
+      })
+      this.createTable(filteredRes)
+    })    
+  }
+
   createTable(res){
     var rows = [];
     var businessIcon;
@@ -43,15 +58,23 @@ class Clients extends Component {
       }else 
       businessIcon = <Icon>done</Icon>;
 
-      rows.push([res[i].id, res[i].username, res[i].first_name + " " + res[i].last_name, res[i].email, res[i].phone, businessIcon, this.createMessageButton(res[i].id), this.createRemoveButton(res[i].id)])
+      rows.push([
+        res[i].id,
+        res[i].username,
+        res[i].first_name + " " + res[i].last_name, 
+        res[i].email, res[i].phone,
+        businessIcon, 
+  //      this.createMessageButton(res[i].id), 
+        this.createRemoveButton(res[i].id)
+      ])
     }
     var table = <Table contains = {rows} />;
     this.setState({ clientListTable: table});
   }
 
-  createMessageButton(id) {
-    return <IconButton aria-label="Message" onClick={() => alert("tutaj trzeb zrobić formularz z wiadomoscia")}> <MessageIcon /></IconButton>;
-  }
+  // createMessageButton(id) {
+  //   return <IconButton aria-label="Message" onClick={() => alert("tutaj trzeb zrobić formularz z wiadomoscia")}> <MessageIcon /></IconButton>;
+  // }
 
   createRemoveButton(id) {
     return <IconButton aria-label="Delete" onClick={() => this.handleDialogOpen(id)}> <DeleteIcon /></IconButton>;
@@ -96,12 +119,23 @@ class Clients extends Component {
     this.forceUpdate();
   }
 
+  handleChange = (e) => {
+    var res = this.filterTableContentByNameContains(e.target.value)
+    console.log(res)
+  }
+
+  handleKeyDown = (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault()
+    }
+  }
+
   render() {
     return (
       <div className="container">
             <Toolbar/>
       <Layout layoutDivide={"282"}>
-          <SearchContainer placeholder={"Wyszukaj po nazwie ..."}/>
+          <SearchContainer placeholder={"Wyszukaj po nazwie ..."} onChange={this.handleChange} rows={"1"} onKeyDown={this.handleKeyDown}/>
           {!this.state.isLoading ? this.state.clientListTable : null}
       </Layout>
       <Dialog 
