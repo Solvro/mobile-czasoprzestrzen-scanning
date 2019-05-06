@@ -99,7 +99,12 @@ class Rents extends Component {
     return Object.keys(res).filter(function(params){
       return res[params].equipment_data!==null
     }).filter(function(params) {
-      return res[params].equipment_data.type.type_name.includes(lastNameFilter)
+      return res[params]
+      .equipment_data
+      .type
+      .type_name
+      .toLowerCase()
+      .includes(lastNameFilter.toLowerCase())
     }).map(function(i){
       return res[i];
     })

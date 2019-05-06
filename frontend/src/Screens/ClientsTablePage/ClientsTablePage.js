@@ -38,7 +38,10 @@ class Clients extends Component {
     await getClientsList().then((res)=>{
 
       var filteredRes = Object.keys(res).filter(function(params) {
-        return res[params].username.includes(nameFragment)
+        return res[params]
+          .username
+          .toLowerCase()
+          .includes(nameFragment.toLowerCase())
       }).map(function(i){
         return res[i];
       })
