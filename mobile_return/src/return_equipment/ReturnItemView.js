@@ -72,7 +72,7 @@ export default class ReturnItemView extends React.Component {
             },
         };
 
-        await fetch(apiConfig.url + '/api-v1/equipment/' + this.state.itemID + '/return/', data)
+        await fetch(apiConfig.url + '/api-v1/equipment/' + this.state.itemID + '/admin-return/', data)
             .then((response) => { this.setState({ status: response.status }); })
             .then(() => {
                 if (this.state.status === 200) {
@@ -95,7 +95,10 @@ export default class ReturnItemView extends React.Component {
                 Alert.alert(alertStrings.noConnectionWithServer);
             });
 
-        this.setState({ lastScannedQr: null });
+        this.setState({ 
+            lastScannedQr: null,
+            itemID: null,
+        });
     }
 
     getItemID = (scannedData) => {
@@ -113,10 +116,6 @@ export default class ReturnItemView extends React.Component {
     }
 
     maybeRenderContent = () => {
-        // if (!this.state.lastScannedQr) {
-        //     return;
-        // }
-
         return (
             <View style={qrScannerStyles.bottomBar}>
                 <Text style={qrScannerStyles.infoText}>
