@@ -20,6 +20,7 @@
     "react-native-input-prompt": "1.0.0",
     "react-native-picker-select": "^5.2.5",
     "react-native-popup-dialog": "^0.18.2",
+    "react-native-qrcode": "^0.2.7",
     "react-native-vector-icons": "^6.3.0",
     "react-navigation": "^3.1.4",
     "rn-viewpager": "^1.2.9",

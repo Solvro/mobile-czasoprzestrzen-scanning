@@ -21,7 +21,7 @@ export default class SubmitButton extends React.Component {
 
     render () {
         return(
-            <TouchableOpacity onPress={this.props.handlePress}>
+            <TouchableOpacity onPress={this.props.handlePress} disabled={this.props.disabled}>
                 <View style={buttonStyles.actionButton}>
                     <Icon name={this.props.icon} style={buttonStyles.icons}/>
                     <View style={buttonStyles.textContainer}>
