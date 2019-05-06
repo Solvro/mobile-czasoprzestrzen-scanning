@@ -17,6 +17,7 @@ import ItemDetailsView from './item_details/ItemDetailsView';
 import RentalInfoView from './rental_info/RentalInfoView';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SingleListItem from './components/SingleListItem';
+import ReturnQRView from './return_equipment/ReturnQRView';
 
 export const SignedOutNavigator = createStackNavigator(
     {
@@ -68,6 +69,7 @@ export const MainNavigator = createStackNavigator(
         Return: ReturnEquipmentView,
         ProfileDetails: ProfileDetailsView,
         ItemDetails: ItemDetailsView,
+        ReturnQR: ReturnQRView,
     }, 
 
     {

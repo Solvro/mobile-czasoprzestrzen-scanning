@@ -49,6 +49,25 @@ export default class EquipmentList extends React.Component {
         return fetchedItems;
     }
 
+    getTypes = async () => {
+        // let data = {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + apiConfig.clientId,
+        //     }
+        // }
+    }
+
+    onRefresh = async () => {
+        this.setState({ items: [] });
+        let response = this.getItems();
+
+        if (response) {
+            this.setState({items: response});
+        }
+    }
+
     render() {
         if(!this.state.isReady) {
             return <Expo.AppLoading />
@@ -59,6 +78,7 @@ export default class EquipmentList extends React.Component {
                         type='equipment'
                         navigationProps={this.props.navigation}
                         items={this.state.items}
+                        onRefresh={this.onRefresh}
                     />
                 </Container>
             );
