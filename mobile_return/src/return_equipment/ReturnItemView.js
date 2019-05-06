@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, StatusBar, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
-import { DatePicker, Button, Text } from 'native-base';
+import { Text, Button } from 'native-base';
 import apiConfig from '../services/api/config';
-import textStrings from '../assets/strings/TextStrings';
-import alertStrings from '../assets/strings/AlertStrings';
-import qrScannerStyles from '../styles/QRScannerStyles';
 
-export default class RentEquipmentView extends React.Component {
+import qrScannerStyles from '../styles/QRScannerStyles';
+import TextInputField from '../components/TextInputField';
+import alertStrings from '../assets/strings/AlertStrings';
+
+export default class ReturnItemView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -39,8 +40,10 @@ export default class RentEquipmentView extends React.Component {
 
     handleBarCodeRead = result => {
         if (result.data !== this.state.lastScannedQr) {
+            let id = this.getItemID(result.data);
             this.setState({
                 lastScannedQr: result.data,
+                itemID: id,
             });
         }
     }
@@ -55,67 +58,47 @@ export default class RentEquipmentView extends React.Component {
         this.setState({ chosenDate: newDate });
     }
 
-    rentItem = async () => {
-        let dateISOFormat = this.getDateFormat(this.state.chosenDate);
-        let itemID = this.getItemID(this.state.lastScannedQr);
-
-        if (itemID === -1) {
+    returnItem = async () => {
+        if (this.state.itemID === -1) {
             Alert.alert(alertStrings.invalidQR);
             return;
         }
 
         let data = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + apiConfig.clientId,
             },
-            body: JSON.stringify({
-                'expected_return': dateISOFormat,
-            })
         };
 
-        await fetch(apiConfig.url + '/api-v1/equipment/' + itemID + '/rent/', data)
+        await fetch(apiConfig.url + '/api-v1/equipment/' + this.state.itemID + '/admin-return/', data)
             .then((response) => { this.setState({ status: response.status }); })
             .then(() => {
-                if (this.state.status === 201) {
-                    // Created rent
-                    Alert.alert(alertStrings.rentCreated);
+                if (this.state.status === 200) {
+                    // Equipment returned
+                    Alert.alert(alertStrings.correctReturn);
                 } else if (this.state.status === 400) {
-                    // Wrong data or avaiable=false
-                    Alert.alert(alertStrings.rentWrongData);
+                    // Equipment avaiable
+                    Alert.alert(alertStrings.equipmentAvaiable);
                 } else if (this.state.status === 404) {
                     // Equipment with id doesn't exists
-                    Alert.alert(alertStrings.rentNoItem);
-                } else if (this.state.status === 401) {
+                    Alert.alert(alertStrings.noItem);
+                } else if (this.state.status === 401 || this.state.status === 403) {
                     // Unauthorized
                     Alert.alert(alertStrings.noAuthoriatzion);
                     this.props.navigation.navigate('SignedOut');
+                    return;
                 }
             })
             .catch(() => {
                 Alert.alert(alertStrings.noConnectionWithServer);
             });
 
-        this.setState({lastScannedQr: null});
-
-    }
-
-    // Tricky but other solutions don't work
-    getDateFormat = (date) => {
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-
-        if (day <= 9) {
-            day = '0' + day;
-        }
-
-        if (month <= 9) {
-            month = '0' + month;
-        }
-
-        return year + '-' + month + '-' + day;
+        this.setState({ 
+            lastScannedQr: null,
+            itemID: null,
+        });
     }
 
     getItemID = (scannedData) => {
@@ -128,33 +111,34 @@ export default class RentEquipmentView extends React.Component {
         }
     }
 
+    handleIDChange = (event) => {
+        this.setState({ itemID: event })
+    }
+
     maybeRenderContent = () => {
-        if (!this.state.lastScannedQr) {
-            return;
-        }
         return (
             <View style={qrScannerStyles.bottomBar}>
-                <View style={qrScannerStyles.datePickerContainer}>
-                    <DatePicker
-                        defaultDate={new Date()}
-                        locale={'pl'}
-                        timeZoneOffsetInMinutes={undefined}
-                        modalTransparent={false}
-                        animationType={'fade'}
-                        androidMode={'default'}
-                        placeHolderText='Wybierz datę zwrotu'
-                        textStyle={{ color: '#0d4579' }}
-                        placeHolderTextStyle={{ color: "#d3d3d3" }}
-                        onDateChange={(newDate) => this.handleDateChange(newDate)}
-                        disabled={false}
+                <Text style={qrScannerStyles.infoText}>
+                    ID:
+                </Text>
+                <View style={qrScannerStyles.idInput}>
+                    <TextInputField
+                        state={'username'}
+                        setStateHandler={this.handleIDChange}
+                        keyboardType='phone-pad'
+                        returnKeyType='next'
+                        placeholder={'ID'}
+                        secureTextEntry={false}
+                        value={this.state.itemID}
                     />
                 </View>
+
                 <Button
-                    style={qrScannerStyles.rentButton}
-                    onPress={() => this.rentItem()}
+                    style={qrScannerStyles.returnButton}
+                    onPress={() => this.returnItem()}
                 >
                     <Text>
-                        Wypożycz
+                        Zwróć
                     </Text>
                 </Button>
             </View>
@@ -188,4 +172,5 @@ export default class RentEquipmentView extends React.Component {
             )
         }
     }
+
 }

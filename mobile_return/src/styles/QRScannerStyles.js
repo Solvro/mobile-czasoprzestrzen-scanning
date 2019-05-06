@@ -32,16 +32,18 @@ const qrScannerStyles = StyleSheet.create({
         color: 'rgba(255,255,255,0.8)',
         fontSize: 18,
       },
-      datePickerContainer: {
-        borderBottomColor: '#3b82c4',
-        borderBottomWidth: 2,
-        marginRight: 5,
-        width: 200,
-      },
-      rentButton: {
+      returnButton: {
         backgroundColor: '#3b82c4',
         marginLeft: 5,
       },
+      idInput: {
+        width: 150,
+        marginLeft: 0,
+      },
+      infoText: {
+        padding: 5,
+        fontSize: 22,
+      }
 });
 
 module.exports = qrScannerStyles;
