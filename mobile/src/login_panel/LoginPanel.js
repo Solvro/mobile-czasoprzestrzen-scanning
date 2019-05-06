@@ -154,6 +154,10 @@ export default class LoginPanel extends React.Component {
                                 onPress={() => this.props.navigation.navigate("SignUp")}>
                                 <Text style={loginRegisterStyles.linkText}>Nie masz jeszcze konta? Zarejestruj się!</Text>
                             </TouchableOpacity>
+                            <TouchableOpacity style={loginRegisterStyles.linkContainer} 
+                                onPress={() => this.props.navigation.navigate("PasswordReset")}>
+                                <Text style={loginRegisterStyles.linkText}>Zapomniałem hasła</Text>
+                            </TouchableOpacity>
                       </View>
                     </Animated.View>
                 </TouchableWithoutFeedback>
