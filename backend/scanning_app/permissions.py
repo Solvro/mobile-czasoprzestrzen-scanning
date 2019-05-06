@@ -37,3 +37,12 @@ class IsThisAdminOrSuperAdmin(permissions.BasePermission):
         if token_user.is_admin():
             return bool(token_user == obj)
         return token_user.is_super_admin()
+
+
+class IsClientWithGetOrAdminOrSuperAdmin(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if type(request.user) is AppUser:
+            if request.method == 'GET' and request.user.is_client():
+                return True
+            return IsAdminOrSuperAdmin().has_permission(request, view)
+        return False

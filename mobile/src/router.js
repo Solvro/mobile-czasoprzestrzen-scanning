@@ -19,6 +19,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import SingleListItem from './components/SingleListItem';
 import PasswordResetView from './password_reset/PasswordResetView';
 import PasswordResetConfirmView from './password_reset/PasswordResetConfirmView';
+import ReturnQRView from './return_equipment/ReturnQRView';
+
 
 export const SignedOutNavigator = createStackNavigator(
     {
@@ -72,6 +74,7 @@ export const MainNavigator = createStackNavigator(
         Return: ReturnEquipmentView,
         ProfileDetails: ProfileDetailsView,
         ItemDetails: ItemDetailsView,
+        ReturnQR: ReturnQRView,
     }, 
 
     {

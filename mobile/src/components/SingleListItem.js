@@ -26,7 +26,7 @@ export default class SingleListItem extends React.Component {
     addEquipmentItem = (item) => {
         return (
             <ListItem
-                onPress={() => this.props.navigationProps.navigate  ('ItemDetails', { id: this.props.id })}
+                onPress={() => this.props.navigationProps.navigate('ItemDetails', { id: this.props.id })}
             >
                 <Body>
                     <Text style={singleListItemStyles.name}>{item.name}</Text>
@@ -53,10 +53,14 @@ export default class SingleListItem extends React.Component {
                     <Text style={singleListItemStyles.name}>{item.equipment_data.name}</Text>
                     <Text style={singleListItemStyles.noteText}>{item.equipment_data.type.type_name}</Text>
                     <Text style={singleListItemStyles.noteText}>{'Data wypożyczenia: ' + item.rental_date}</Text>
-                    <Text style={item.noteText}>{'Oczekiwany zwrot: ' + item.expected_return}</Text>
+                    <Text style={singleListItemStyles.noteText}>{'Oczekiwany zwrot: ' + item.expected_return}</Text>
                 </Body>
                 <Right>
-                    <Button style={{backgroundColor: '#3b82c4'}}><Text>Zwróć</Text></Button>
+                    <Button
+                        style={singleListItemStyles.returnButton}
+                        onPress={() => this.props.onReturnButtonHandler(item.equipment_data.id, item.equipment_data.name)}>
+                        <Text style={singleListItemStyles.returnButtonText}>Zwróć</Text>
+                    </Button>
                 </Right>
             </ListItem>
         )

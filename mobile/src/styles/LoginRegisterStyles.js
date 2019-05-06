@@ -37,7 +37,7 @@ const loginRegisterStyles = StyleSheet.create({
 
     //RadioButton
     radioButtonContainer: {
-        marginBottom: 15,
+        marginBottom: 5,
         width: deviceWidth,
     },
 
@@ -75,7 +75,9 @@ const loginRegisterStyles = StyleSheet.create({
 
     //ScrollView
     scrollView: {
-        maxHeight: 340,
+        maxHeight: 280,
+        // borderWidth: 1,
+        // borderColor: '#000',
     },
 
     inputFieldsContainer: {
@@ -84,16 +86,14 @@ const loginRegisterStyles = StyleSheet.create({
     },
     
     innerContainer: {
-        marginTop: 20,
+        marginTop: 15,
     },
 
     stepInfo: {
         fontSize: 20,
         alignSelf: 'center',
         fontWeight: 'bold',
-        margin: 5,
     },
-
     //Password reset
     resetHeader: {
         marginTop: 25,
@@ -108,8 +108,18 @@ const loginRegisterStyles = StyleSheet.create({
     },
     infoText: {
         fontSize: 18,
-    }
-
+    },
+    scrollButton: {
+        marginRight: 5,
+        marginLeft: 5,
+        backgroundColor: '#3b82c4',
+        
+    },
+    scrollButtonsContainer: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginTop: 10,
+    },
 });
 
 module.exports = loginRegisterStyles;
