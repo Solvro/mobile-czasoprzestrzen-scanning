@@ -26,36 +26,7 @@ export default class TypePicker extends React.Component {
     }
 
     fetchTypes = async () => {
-        // TODO: temporary solution 
-        // let data = {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': 'Bearer ' + apiConfig.clientId,
-        //     }
-        // };
-
-        // await fetch(apiConfig.url + '/api-v1/equipment-type/', data)
-        //     .then((response) => { this.setState({ status: response.status }); return response.json() })
-        //     .then((response) => {
-        //         if(this.state.status === 200) {
-        //             types = response;
-        //         } else {
-        //             Alert.alert(alertStrings.noAuthoriatzion);
-        //         }
-        //     })
-
-        // Temporary solution
-        let fetchedTypes = [];
-
-        for (let i = 0; i < 10; i++) {
-            fetchedTypes.push({
-                id: i,
-                type_name: 'type',
-            });
-        }
-
-        this.setState({ types: fetchedTypes });
+        this.setState({ types: this.props.types });
     }
 
     addTypes = async () => {
