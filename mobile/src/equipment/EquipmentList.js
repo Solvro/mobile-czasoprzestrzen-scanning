@@ -49,6 +49,15 @@ export default class EquipmentList extends React.Component {
         return fetchedItems;
     }
 
+    onRefresh = async () => {
+        this.setState({ items: [] });
+        let response = this.getItems();
+
+        if (response) {
+            this.setState({items: response});
+        }
+    }
+
     render() {
         if(!this.state.isReady) {
             return <Expo.AppLoading />
@@ -59,6 +68,7 @@ export default class EquipmentList extends React.Component {
                         type='equipment'
                         navigationProps={this.props.navigation}
                         items={this.state.items}
+                        onRefresh={this.onRefresh}
                     />
                 </Container>
             );

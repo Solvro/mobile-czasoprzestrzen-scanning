@@ -91,7 +91,7 @@ export default class ItemsList extends React.Component {
     }
 
     addItems = async () => {
-        let itemsList = [];                                                                                                           
+        let itemsList = [];
         let filteredItems = await this.filter();
         filteredItems.forEach((item, index) => {
             itemsList.push(<SingleListItem
@@ -105,7 +105,17 @@ export default class ItemsList extends React.Component {
         });
 
         this.setState({ items: itemsList });
-    } 
+    }
+
+    onRefresh = async () => {
+        this.setState({
+            refreshing: true,
+            items: []
+        });
+        await this.props.onRefresh();
+        await this.addItems();
+        this.setState({ refreshing: false });
+    }
 
     render() {
         if (!this.state.isReady) {
@@ -128,7 +138,12 @@ export default class ItemsList extends React.Component {
                         <View style={itemsListStyles.typePickerContainer}>
                             <TypePicker onValueChange={this.onTypePickerValueChange} />
                         </View>
-                        <Content>
+                        <Content
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={() => this.onRefresh()} />
+                            }>
                             <List>
                                 {this.state.items}
                             </List>
@@ -137,7 +152,12 @@ export default class ItemsList extends React.Component {
                 );
             } else {
                 return (
-                    <Content>
+                    <Content
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={() => this.onRefresh()} />
+                        }>
                         <List>
                             {this.state.items}
                         </List>
