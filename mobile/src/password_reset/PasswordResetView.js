@@ -70,8 +70,8 @@ export default class PasswordResetView extends React.Component {
                         Zresetuj hasło
                     </Text>
                     <Text style={loginRegisterStyles.infoText}>
-                        Aby zresetować sowje hasło, wpisz poniżej e-maila powiązanego z Twoim kontem, a następnie postępuj zgodnie
-                        z instrukcjami zwartymi w e-mailu.
+                        Aby zresetować swoje hasło, wpisz poniżej adres e-mail powiązany z Twoim kontem, a następnie postępuj zgodnie
+                        z instrukcjami zwartymi w otrzymanej wiadomości.
                     </Text>
                 </View>
                 <TextInputField
