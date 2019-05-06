@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'native-base';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
@@ -23,7 +23,7 @@ export default class RentalInfoView extends React.Component {
 
     addItems = () => {
         let itemsList = [];
-
+        
         for (let i = 0; i < 10; i++) {
             itemsList.push(
                 {

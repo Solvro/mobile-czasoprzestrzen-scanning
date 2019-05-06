@@ -48,6 +48,10 @@ export default class HistoryView extends React.Component {
             this.setState({items: fetchedItems});
     }
 
+    onRefresh = async () => {
+        await this.addItems();
+    }
+
     render() {
         if(!this.state.isReady) {
             return <Expo.AppLoading />
@@ -56,6 +60,7 @@ export default class HistoryView extends React.Component {
                 <Container style={equipmentListStyles.container}>
                     <ItemsList
                         type='history'
+                        onRefresh={this.onRefresh}
                         items={this.state.items} />
                 </Container>
             )
