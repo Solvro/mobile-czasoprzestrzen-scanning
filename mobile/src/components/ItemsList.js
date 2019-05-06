@@ -138,7 +138,7 @@ export default class ItemsList extends React.Component {
                         </View>
                         <View style={itemsListStyles.typePickerContainer}>
                             <TypePicker
-                                type={this.props.types}
+                                types={this.props.types}
                                 onValueChange={this.onTypePickerValueChange} />
                         </View>
                         <Content
