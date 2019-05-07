@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Content, Alert } from 'native-base';
+import { Container, Content, Alert, View, Text } from 'native-base';
 import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
@@ -8,19 +8,22 @@ import alertStrings from '../assets/strings/AlertStrings';
 import apiConfig from '../services/api/config';
 
 export default class EquipmentList extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
             isReady: false,
             items: [],
+            types: [],
         };
     }
 
     async componentWillMount() {
         let response = await this.getItems();
-        this.setState({items: response});
-        this.setState({isReady: true});
+        this.setState({ items: response });
+        response = await this.getTypes();
+        this.setState({ types: response });
+        this.setState({ isReady: true });
     }
 
     getItems = async () => {
@@ -29,7 +32,7 @@ export default class EquipmentList extends React.Component {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + apiConfig.clientId, 
+                'Authorization': 'Bearer ' + apiConfig.clientId,
             }
         }
 
@@ -37,7 +40,7 @@ export default class EquipmentList extends React.Component {
         .then((response) => {this.setState({status: response.status}); return response.json()})
         .then((response) => {
             if(this.state.status === 200) {
-                fetchedItems = response.slice(Math.max(response.length - 20, 0));
+                fetchedItems = response;
             } else if (this.state.status === 401) {
                 Alert.alert(alertStrings.expiredToken);
             } else {
@@ -47,18 +50,33 @@ export default class EquipmentList extends React.Component {
         .catch(() => {
             Alert.alert(alertStrings.noConnectionWithServer);
         });
-
         return fetchedItems;
     }
 
     getTypes = async () => {
-        // let data = {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': 'Bearer ' + apiConfig.clientId,
-        //     }
-        // }
+        let fetchedTypes = [];
+        let data = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + apiConfig.clientId,
+            }
+        }
+
+        await fetch(apiConfig.url + '/api-v1/equipment-type/', data)
+            .then((response) => { this.setState({ status: response.status }); return response.json() })
+            .then((response) => {
+                if (this.state.status === 200) {
+                    fetchedTypes = response;
+                } else {
+                    Alert.alert(alertStrings.noAuthoriatzion);
+                }
+            })
+            .catch(() => {
+                Alert.alert(alertStrings.noConnectionWithServer);
+            });
+
+        return fetchedTypes;
     }
 
     onRefresh = async () => {
@@ -66,27 +84,31 @@ export default class EquipmentList extends React.Component {
         let response = this.getItems();
 
         if (response) {
-            this.setState({items: response});
+            this.setState({ items: response });
         }
     }
 
     render() {
-        if(!this.state.isReady) {
+        if (!this.state.isReady) {
             return <Expo.AppLoading />
         } else {
-            return(
+            return (
                 <Container style={equipmentListStyles.container}>
                  {(!this.state.items || this.state.items.length===0) && (
                     <View style={equipmentListStyles.noDataTextContainer}>
                         <Text style={equipmentListStyles.noDataText}>Brak rekordów</Text>
                     </View>
                 )}
+                { (this.state.items && this.state.items.length>0) && (
                     <ItemsList
-                        type='equipment'
-                        navigationProps={this.props.navigation}
-                        items={this.state.items}
-                        onRefresh={this.onRefresh}
-                    />
+                    type='equipment'
+                    types={this.state.types}
+                    navigationProps={this.props.navigation}
+                    items={this.state.items}
+                    onRefresh={this.onRefresh}
+                />
+                )}
+                    
                 </Container>
             );
         }

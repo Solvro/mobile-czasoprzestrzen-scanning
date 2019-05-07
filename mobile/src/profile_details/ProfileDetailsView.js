@@ -40,24 +40,28 @@ export default class ProfileDetailsView extends React.Component {
 
     async componentWillMount() {
         let response = await this.getData();
-        this.setState({data: response});
+        this.setState({ data: response });
 
-        this.setState({username: response.username});
-        this.setState({firstName: response.first_name});
-        this.setState({lastName: response.last_name});
-        this.setState({email: response.email});
-        this.setState({phoneNumber: response.phone});
-        this.setState({street: response.address.street});
-        this.setState({postalCode: response.address.zip_code});
-        this.setState({city: response.address.city});
-        this.setState({nip: response.business_data.nip});
-        this.setState({regon: response.business_data.regon});
-        this.setState({isBusiness: response.is_business});
-        this.setState({id: response.id})
-        this.setState({companyName: response.business_data.name})
+        this.setState({ username: response.username });
+        this.setState({ firstName: response.first_name });
+        this.setState({ lastName: response.last_name });
+        this.setState({ email: response.email });
+        this.setState({ phoneNumber: response.phone });
 
+        await this.setState({ isBusiness: response.is_business });
+        // Bussines data part
+        if (this.state.isBusiness) {
 
-        this.setState({isReady: true});
+            this.setState({ street: response.address.street });
+            this.setState({ postalCode: response.address.zip_code });
+            this.setState({ city: response.address.city });
+            this.setState({ nip: response.business_data.nip });
+            this.setState({ regon: response.business_data.regon });
+            this.setState({ companyName: response.business_data.name })
+        }
+
+        this.setState({ id: response.id })
+        this.setState({ isReady: true });
     }
 
     getData = async () => {

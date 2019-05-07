@@ -36,7 +36,6 @@ const loginRegisterStyles = StyleSheet.create({
 
 
     //RadioButton
-
     radioButtonContainer: {
         marginBottom: 5,
         width: deviceWidth,
@@ -66,7 +65,7 @@ const loginRegisterStyles = StyleSheet.create({
     
     //Link to another screen
     linkContainer: {
-        marginTop: 30,
+        marginTop: 20,
         alignItems: 'center',
     },
 
@@ -94,6 +93,21 @@ const loginRegisterStyles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'center',
         fontWeight: 'bold',
+    },
+    //Password reset
+    resetHeader: {
+        marginTop: 25,
+        marginLeft: 30,
+        marginRight: 30,
+        marginBottom: 40,
+    },
+    resetTitle: {
+        alignSelf: 'center',
+        marginBottom: 5,
+        marginTop: 10,
+    },
+    infoText: {
+        fontSize: 18,
     },
     scrollButton: {
         marginRight: 5,

@@ -90,12 +90,6 @@ export default class HomeScreen extends React.Component {
                             buttonText={buttonStrings.equipmentListButton}
                             icon='md-list' />
                         </View>
-                        <View style={buttonStyles.buttonContainer}>
-                            <SubmitButton 
-                            handlePress={() => this.props.navigation.navigate('ItemDetails')} 
-                            buttonText='Przedmiot'
-                            icon='md-cube' />
-                        </View>
                   </Animated.View>
               </TouchableWithoutFeedback>
           </Container>

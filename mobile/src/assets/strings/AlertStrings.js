@@ -25,7 +25,12 @@ const alertStrings = {
     ongoingEquipmentRents: 'Należy zwrócić wszystkie wypożyczone sprzęty przed usunięciem konta!',
     deletedAccount: 'Twoje konto zostało usunięte.',
     duplicateUsername: 'Wprowadzona nazwa użytkownika jest już zajęta.',
-    expiredToken: 'Sesja wygasła. Zaloguj się ponownie'
+    expiredToken: 'Sesja wygasła. Zaloguj się ponownie',
+    invalidToken: 'Niepoprawny token',
+    invalidQR: 'Niepoprawny kod QR',
+    rentCreated: 'Wypożyczenia poprawne',
+    rentWrongData: 'Niepoprawne dane lub sprzęt został już wypożyczony',
+    rentNoItem: 'Brak przedmiotu w bazie',
 };
 
 module.exports = alertStrings;
