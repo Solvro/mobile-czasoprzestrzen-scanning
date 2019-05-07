@@ -14,6 +14,10 @@ export async function getItemsList() {
 
   try {
     const getItem = await instance.get(`equipment/`);
+    if(getItem.status === 401){
+      await localStorage.removeItem('token');
+      this.props.history.push('/login');
+    }
     return getItem.data;
   } catch (error) {
     console.log(`Error: ${error}`);
