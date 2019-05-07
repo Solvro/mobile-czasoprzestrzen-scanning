@@ -57,7 +57,7 @@ class NewAccountPage extends Component {
   }
 
   handleAccountType = event => {
-    this.setState({accountType: event.target.value});
+      this.setState({accountType: event.target.value});
   }
 
   validate = async e => {
@@ -71,8 +71,7 @@ class NewAccountPage extends Component {
       var { username, password, firstName, lastName, email, phone } = this.state;
       phone = "+48" + phone
       var response;
-      alert(typeof(this.state.accountType))
-      if(this.state.accountType==='0'){ 
+      if(this.state.accountType===1){ 
         response = await createNewAdminAccount(username, password, firstName, lastName, email, phone);
       } else{
         response = await createNewSuperAdminAccount(username, password, firstName, lastName, email, phone);
@@ -122,7 +121,7 @@ class NewAccountPage extends Component {
 
   render() {
     const button = <Button link={'/account'} onClick={this.validate} text={"Zatwierdź"}></Button>;
-    const header = <div class='headText'>Utwórz konto</div>;
+    const header = <div className='headText'>Utwórz konto</div>;
 
     return(
       <div className="container">
@@ -149,7 +148,7 @@ class NewAccountPage extends Component {
                       onChange = {this.handleChangePassword}>
           </InputField>
 
-          <TypeSelect value={""} onChange={this.handleAccountType} itemTypes={["Admin", "Super admin"]}></TypeSelect>
+          <TypeSelect value={""} onChange={this.handleAccountType} itemTypes={[{id: 1, type_name: "Admin"},{id: 2, type_name: "Super admin"} ]}></TypeSelect>
 
 
           <InputField placeholder = {"Wprowadź imię"}

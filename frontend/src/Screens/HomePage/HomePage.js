@@ -104,13 +104,11 @@ class HomePage extends Component {
   updateDimensions() {
     var addBtn = ''
     if(window.innerWidth < 1400) {
-      console.log("WINDOW "+ window.innerWidth);
       addBtn = <div className="AddButtonPosition">
       <Button text={""} link={"/adds"} button={"smallAddButton"} />
     </div>
     
     } else {
-      console.log("BIGGER")
       addBtn = <div className="AddButtonPosition">
       <Button text={"Dodaj"} link={"/adds"} />
     </div>
