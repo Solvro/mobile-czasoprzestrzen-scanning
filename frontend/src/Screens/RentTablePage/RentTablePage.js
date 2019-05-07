@@ -141,8 +141,7 @@ class Rents extends Component {
         username,
         res[i].rental_date,
         res[i].expected_return,
-        res[i].actual_return,
-        city + " " + street
+        res[i].actual_return
       ]);
     }
     var header = [
@@ -150,8 +149,7 @@ class Rents extends Component {
       "Nazwa",
       "Wypożyczający",
       "Data Wypożyczenia",
-      "Spodziewana data zwrotu",
-      "Gdzie"
+      "Spodziewana data zwrotu"
     ];
     var table = <Table header={header} rows={rows} />;
     this.setState({ rentListTable: table });
