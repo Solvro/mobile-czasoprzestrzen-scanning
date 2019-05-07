@@ -9,6 +9,7 @@ function ClientTable (props) {
    
   return (
     <div className='SmallTableMargin'>
+    <div style={{marginBottom: '0.5em'}}>Administratorzy</div>
       <Table header={header} row={rows} height='small'/>
     </div>
   );

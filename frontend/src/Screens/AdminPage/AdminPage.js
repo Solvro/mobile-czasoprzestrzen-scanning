@@ -130,7 +130,7 @@ class AdminPage extends Component {
         business, this.createButtonAccept(ID), this.createButtonRemove(ID)]);
 
     }
-    var table = <Table contains={rows} />;
+    var table = <div><div>Admini</div><Table contains={rows} /></div>;
     this.setState({ unacceptClientTable: table });
   }
 
@@ -148,7 +148,7 @@ class AdminPage extends Component {
         <Icon>done</Icon>,]);
         ID++;
     });
-    const table = <AdminTable contains={rows} />;
+    const table = <div><AdminTable contains={rows} /></div>;
     this.setState({ adminTable: table });
   }
 
@@ -157,7 +157,9 @@ class AdminPage extends Component {
     const left = <div className='Table'>
 
       <Toolbar />
+      
       {!this.state.isLoading ? this.state.unacceptClientTable : null}
+      
       {!this.state.isLoading && this.state.isSuperAdmin ? this.state.adminTable : null}
     </div>;
 
