@@ -100,11 +100,10 @@ class Rents extends Component {
       return res[params].equipment_data!==null
     }).filter(function(params) {
       return res[params]
-      .equipment_data
-      .type
-      .type_name
-      .toLowerCase()
-      .includes(lastNameFilter.toLowerCase())
+        .equipment_data
+        .name
+        .toLowerCase()
+        .includes(lastNameFilter.toLowerCase())
     }).map(function(i){
       return res[i];
     })
@@ -217,6 +216,8 @@ class Rents extends Component {
           <div className={classes.subBarParent}>
             <div className={classes.subBarChild1}>
               <SearchContainer
+                onChange={this.handleFilterChange} 
+                onKeyDown={this.handleKeyDown}
                 className={classes.SearchContent}
                 placeholder={"Wyszukaj po nazwie ..."}
               />
