@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Content } from 'native-base';
+import { Container, Content, Alert } from 'native-base';
 import ItemsList from '../components/ItemsList';
 
 import equipmentListStyles from '../styles/EquipmentListStyle';
@@ -38,8 +38,10 @@ export default class EquipmentList extends React.Component {
         .then((response) => {
             if(this.state.status === 200) {
                 fetchedItems = response.slice(Math.max(response.length - 20, 0));
+            } else if (this.state.status === 401) {
+                Alert.alert(alertStrings.expiredToken);
             } else {
-                Alert.alert(alertStrings.noAuthoriatzion);
+                Alert.alert(alertStrings.unexpectedError);
             }
         })
         .catch(() => {
@@ -74,6 +76,11 @@ export default class EquipmentList extends React.Component {
         } else {
             return(
                 <Container style={equipmentListStyles.container}>
+                 {(!this.state.items || this.state.items.length===0) && (
+                    <View style={equipmentListStyles.noDataTextContainer}>
+                        <Text style={equipmentListStyles.noDataText}>Brak rekordów</Text>
+                    </View>
+                )}
                     <ItemsList
                         type='equipment'
                         navigationProps={this.props.navigation}

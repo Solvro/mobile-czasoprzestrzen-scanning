@@ -56,6 +56,9 @@ export default class ItemDetailsView extends React.Component {
             .then((response) => {
                 if (this.state.status === 200) {
                     fetchedItem = response;
+                } else if(this.state.status === 401) {
+                    Alert.alert(alertStrings.expiredToken);
+
                 } else {
                     Alert.alert(alertStrings.unexpectedError);
                 }

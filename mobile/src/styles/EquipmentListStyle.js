@@ -104,6 +104,15 @@ const equipmentListStyles = StyleSheet.create({
         marginBottom: 0,
     },
 
+    noDataTextContainer: {
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    
+    noDataText: {
+       fontSize: 20,
+    }
+
 });
 
 module.exports = equipmentListStyles;
