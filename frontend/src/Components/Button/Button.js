@@ -19,6 +19,12 @@ const styles = theme => ({
     height: '5em',
     margin: '0 1em'
   },
+  smallAddButton: {
+    width: '6em',
+    height: '6em',
+    borderRadius: '50%',
+    margin: '0 1em'
+  },
   verticalButton: {
     width: '20em',
     height: '7.5em',
@@ -48,7 +54,15 @@ function Button(props) {
       </Fab>
     }
 
-  } else {
+  } else if(props.button === "smallAddButton"){
+    button = <Fab color="primary" aria-label="Add" variant="extended"
+      className={classes.smallAddButton} onClick={props.onClick} >
+      {props.text}
+      {props.icon}
+    </Fab>
+    
+  } 
+  else {
     button = <Fab color="primary" aria-label="Add" variant="extended"
       className={classes.sizeButton} onClick={props.onClick} >
       {props.text}

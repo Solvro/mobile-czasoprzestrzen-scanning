@@ -1,14 +1,20 @@
 
+
 .AddButtonPosition {
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 250px;
-    height: 200px;
+    width: 120px;
+    height: 100px;
+    
 }
 
-.buttonSize{
-    width: 15em;
-    height: 5em;
-    background-color: brown;
-}
+@media screen and (min-width: 1400px) {
+    .AddButtonPosition {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 250px;
+        height: 110px;  
+    }
+  }
