@@ -39,10 +39,12 @@ export default class HistoryView extends React.Component {
                     fetchedItems = response.slice(Math.max(response.length - 20, 0));
                 } else {
                     Alert.alert(alertStrings.unexpectedError);
+                    this.props.navigation.navigate('SignIn');
                 }
             })
             .catch(() => {
                 Alert.alert(alertStrings.noConnectionWithServer);
+                this.props.navigation.navigate('SignIn');
             });
 
             this.setState({items: fetchedItems});

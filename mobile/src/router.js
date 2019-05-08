@@ -37,8 +37,8 @@ export const SignedOutNavigator = createStackNavigator(
 export const BottomTabNavigator = createBottomTabNavigator(
     {
         Home: HomeScreen,
-        Profile: ProfileView,
-        History: HistoryView,
+        Profil: ProfileView,
+        Historia: HistoryView,
     },
     {
         defaultNavigationOptions: ({ navigation }) => ({
@@ -47,9 +47,9 @@ export const BottomTabNavigator = createBottomTabNavigator(
                 let iconName;
                 if (routeName === 'Home') {
                     iconName = 'md-home';
-                } else if (routeName === 'Profile') {
+                } else if (routeName === 'Profil') {
                     iconName = 'md-person';
-                } else if (routeName === 'History') {
+                } else if (routeName === 'Historia') {
                     iconName = 'md-time';
                 }
 
