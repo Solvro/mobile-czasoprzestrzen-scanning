@@ -115,6 +115,11 @@ const loginRegisterStyles = StyleSheet.create({
         backgroundColor: '#3b82c4',
         
     },
+    scrollButtonDisabled: {
+        marginRight: 5,
+        marginLeft: 5,
+        backgroundColor: '#dcdcdc',
+    },
     scrollButtonsContainer: {
         flexDirection: 'row',
         alignSelf: 'center',
