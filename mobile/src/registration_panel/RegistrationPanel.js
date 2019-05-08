@@ -178,7 +178,9 @@ export default class RegistrationPanel extends React.Component {
             .then(() => {
                 if (this.state.status === 201) {
                     this.showRegisterAlert();
-                    this.props.navigation.navigate("SignIn");
+                    this.props.navigation.navigate("Sign");
+                } else if(this.state.status ===400) {
+                    Alert.alert(alertStrings.duplicateUsername);
                 } else {
                     Alert.alert(alertStrings.unexpectedError);
                 }

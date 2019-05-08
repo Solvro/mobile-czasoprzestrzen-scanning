@@ -24,6 +24,8 @@ const alertStrings = {
     deleteAccount: 'Czy na pewno chcesz usunąć swoje konto?',
     ongoingEquipmentRents: 'Należy zwrócić wszystkie wypożyczone sprzęty przed usunięciem konta!',
     deletedAccount: 'Twoje konto zostało usunięte.',
+    duplicateUsername: 'Wprowadzona nazwa użytkownika jest już zajęta.',
+    expiredToken: 'Sesja wygasła. Zaloguj się ponownie',
     invalidToken: 'Niepoprawny token',
     invalidQR: 'Niepoprawny kod QR',
     rentCreated: 'Wypożyczenia poprawne',

@@ -82,6 +82,8 @@ export default class ProfileDetailsView extends React.Component {
         .then((response) => {
             if(this.state.status === 200) {
                 fetchedItems = response;
+            } else if(this.state.status === 401) {
+                Alert.alert(alertStrings.expiredToken);
             } else {
                 Alert.alert(alertStrings.unexpectedError);
             }
@@ -114,7 +116,11 @@ export default class ProfileDetailsView extends React.Component {
         .then((response) => {
             if(this.state.status === 200) {
                 fetchedItems = response;
-            } else {
+            } else if (this.state.status === 400) {
+                Alert.alert(alertStrings.duplicateUsername);
+            } else if (this.state.status === 401) {
+                Alert.alert(alertStrings.expiredToken);
+            }    else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
@@ -148,7 +154,11 @@ export default class ProfileDetailsView extends React.Component {
         .then((response) => {
             if(this.state.status === 200) {
                 fetchedItems = response;
-            } else {
+            }  else if (this.state.status === 400) {
+                Alert.alert(alertStrings.duplicateUsername);
+            } else if (this.state.status === 401) {
+                Alert.alert(alertStrings.expiredToken);
+            }  else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
@@ -182,6 +192,10 @@ export default class ProfileDetailsView extends React.Component {
         .then((response) => {
             if(this.state.status === 200) {
                 fetchedItems = response;
+            }  else if (this.state.status === 400) {
+                Alert.alert(alertStrings.duplicateUsername);
+            } else if (this.state.status === 401) {
+                Alert.alert(alertStrings.expiredToken);
             } else {
                 Alert.alert(alertStrings.unexpectedError);
             }

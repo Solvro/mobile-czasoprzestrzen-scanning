@@ -47,8 +47,10 @@ export default class HomeScreen extends React.Component {
                 if (this.state.status === 200) {
                     apiConfig.clientUsername = response.username;
                     this.setState({isAuthorized: true});
+                } else if (this.state.status) {
+                    Alert.alert(alertStrings.expiredToken);
                 } else {
-                    Alert.alert(alertStrings.noAuthoriatzion);
+                    Alert.alert(alertStrings.unexpectedError);
                 }
             })
             .catch(() => {
@@ -87,12 +89,6 @@ export default class HomeScreen extends React.Component {
                             handlePress={() => this.props.navigation.navigate('Equipment')} 
                             buttonText={buttonStrings.equipmentListButton}
                             icon='md-list' />
-                        </View>
-                        <View style={buttonStyles.buttonContainer}>
-                            <SubmitButton 
-                            handlePress={() => this.props.navigation.navigate('ItemDetails')} 
-                            buttonText='Przedmiot'
-                            icon='md-cube' />
                         </View>
                   </Animated.View>
               </TouchableWithoutFeedback>
