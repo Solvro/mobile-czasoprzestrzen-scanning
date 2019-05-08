@@ -38,6 +38,7 @@ class AddItem extends Component {
     .then((res) => {
       
       this.setState({itemTypesList : res});
+      console.log(res);
     })
   }
   updateData = async () => {
