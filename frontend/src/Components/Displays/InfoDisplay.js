@@ -19,8 +19,8 @@ const errorDisplayStyles = theme => createStyles({
     },
     errorsContainer: {
         position: 'fixed',
-        left: theme.spacing.unit * 2,
-        bottom: theme.spacing.unit * 2,
+        left: theme.spacing.unit,
+        bottom: theme.spacing.unit,
         display: 'flex',
         flexDirection: 'column-reverse',
         '& > div': {

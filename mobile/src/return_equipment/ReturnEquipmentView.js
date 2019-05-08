@@ -62,6 +62,11 @@ export default class ReturnEquipmentView extends React.Component {
         } else {
             return(
                 <Container style={equipmentListStyles.container}>
+                    {(!this.state.items || this.state.items.length===0) && (
+                        <View style={equipmentListStyles.noDataTextContainer}>
+                            <Text style={equipmentListStyles.noDataText}>Brak rekordów</Text>
+                        </View>
+                    )}
                     <ItemsList
                         onReturnButtonHandler={this.onReturnButtonPressed}
                         type='rented'

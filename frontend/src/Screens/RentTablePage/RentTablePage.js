@@ -113,26 +113,15 @@ class Rents extends Component {
     var rows = [];
     var equipmentName;
     var username;
-    var city;
-    var street;
 
     for (var i = 0; i < res.length; i++) {
       equipmentName =
         res[i].equipment_data === null ? "-" : res[i].equipment_data.name;
       if (res[i].client_data !== null) {
         username = res[i].client_data.username;
-        var address = res[i].client_data.address;
-        if (address !== null) {
-          city = address.city;
-          street = address.street;
-        } else {
-          city = "-";
-          street = "";
-        }
+        
       } else {
         username = "-";
-        city = "-";
-        street = "";
       }
 
       rows.push([
@@ -159,26 +148,15 @@ class Rents extends Component {
     var rows = [];
     var equipmentName;
     var username;
-    var city;
-    var street;
 
     for (var i = 0; i < res.length; i++) {
       equipmentName =
         res[i].equipment_data === null ? "-" : res[i].equipment_data.name;
       if (res[i].client_data !== null) {
         username = res[i].client_data.username;
-        var address = res[i].client_data.address;
-        if (address !== null) {
-          city = address.city;
-          street = address.street;
-        } else {
-          city = "-";
-          street = "";
-        }
+       
       } else {
         username = "-";
-        city = "-";
-        street = "";
       }
 
       rows.push([
@@ -187,8 +165,7 @@ class Rents extends Component {
         username,
         res[i].rental_date,
         res[i].expected_return,
-        res[i].actual_return,
-        city + " " + street
+        res[i].actual_return
       ]);
     }
     var header = [
@@ -197,8 +174,7 @@ class Rents extends Component {
       "Wypożyczający",
       "Data Wypożyczenia",
       "Spodziewana data zwrotu",
-      "Data zwrotu",
-      "Gdzie"
+      "Data zwrotu"
     ];
     var table = <Table header={header} rows={rows} />;
     this.setState({ rentListTable: table });
