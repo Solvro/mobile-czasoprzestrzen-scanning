@@ -46,7 +46,8 @@ class NewAccountPage extends Component {
             itemName: res.name,
             itemDescription: res.description,
             itemRentTime: res.max_rent_time,
-            itemType: res.type,
+            itemType: res.type.id,
+            // item: res.type,
             itemTypesList: itemTypes
         });
 
@@ -72,6 +73,7 @@ class NewAccountPage extends Component {
     }
 
     handleSelectChange = event => {
+        console.log(event.target.value);
         this.setState({ itemType: +event.target.value });
     };
 
@@ -83,8 +85,7 @@ class NewAccountPage extends Component {
             this.setState({ errorMessage: "Żadne pole nie może być puste" });
         }
         else {
-            
-            const editItem = await editItemData(this.itemID, itemName, itemType, itemDescription, itemRentTime);
+           const editItem = await editItemData(this.itemID, itemName, itemType, itemDescription, itemRentTime);
             if (editItem) {
                 this.props.history.push('/home')
             } else {

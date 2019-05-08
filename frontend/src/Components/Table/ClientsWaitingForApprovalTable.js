@@ -9,6 +9,7 @@ function ClientTable (props) {
    
   return (
     <div className='BigTableMargin'>
+    <div style={{marginBottom: '0.5em'}}>Klienci do zaakceptowania</div>
       <Table header={header} row={rows} height='small'/>
     </div>
   );

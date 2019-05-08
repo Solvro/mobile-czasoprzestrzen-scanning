@@ -17,6 +17,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +32,8 @@ class HomePage extends Component {
       messageInfo: "",
       lastNameFilter: "",
       lastTypeFilter: 0,
-      returnItemID: 0
+      returnItemID: 0,
+      addButton: ""
     };
   }
 
@@ -85,12 +87,8 @@ class HomePage extends Component {
   }
 
   async componentDidMount() {
+    this.updateDimensions();
     await getItemTypesList().then(res => {
-      // var itemTypes = []
-      // itemTypes[0]="-"
-      // for(var i = 1; i <= res.length; i++){
-      //     itemTypes[i] = res[i-1].type_name
-      // }
       res.unshift({id: "0",type_name:"-"})
       this.setState({ typesList: res });
     });
@@ -99,6 +97,23 @@ class HomePage extends Component {
       this.setState({ isLoading: false });
       this.createTable(res);
     });
+    
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+  }
+
+  updateDimensions() {
+    var addBtn = ''
+    if(window.innerWidth < 1400) {
+      addBtn = <div className="AddButtonPosition">
+      <Button text={""} link={"/adds"} button={"smallAddButton"} />
+    </div>
+    
+    } else {
+      addBtn = <div className="AddButtonPosition">
+      <Button text={"Dodaj"} link={"/adds"} />
+    </div>
+    }
+    this.setState({addButton: addBtn});
   }
 
   updateData = async () => {
@@ -243,9 +258,7 @@ class HomePage extends Component {
           ) : null}
 
           {!this.state.isLoading ? this.state.itemListTable : null}
-          <div className="AddButtonPosition">
-            <Button text={"Dodaj"} link={"/adds"} />
-          </div>
+          {this.state.addButton}
         </Layout>
 
         <Dialog
