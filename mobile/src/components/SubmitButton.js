@@ -1,11 +1,11 @@
 import React from 'react';
 
-import {View, TouchableOpacity} from 'react-native';
-import {Text} from 'native-base';
-import {LinearGradient} from 'expo';
+import { View, TouchableOpacity } from 'react-native';
+import { Text, Button } from 'native-base';
+import { LinearGradient } from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import buttonStyles from '../styles/ButtonStyles.js';   
+import buttonStyles from '../styles/ButtonStyles.js';
 
 
 /**
@@ -15,20 +15,29 @@ import buttonStyles from '../styles/ButtonStyles.js';
  * icon - icon name
  */
 export default class SubmitButton extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
     }
 
-    render () {
-        return(
-            <TouchableOpacity onPress={this.props.handlePress} disabled={this.props.disabled}>
-                <View style={buttonStyles.actionButton}>
-                    <Icon name={this.props.icon} style={buttonStyles.icons}/>
-                    <View style={buttonStyles.textContainer}>
-                        <Text style={buttonStyles.buttonText}>{this.props.buttonText}</Text>
-                    </View >
-                </View>  
-            </TouchableOpacity>
+    render() {
+        return (
+            // <TouchableOpacity onPress={this.props.handlePress} disabled={this.props.disabled}>
+            //     <View style={buttonStyles.actionButton}>
+            //         <Icon name={this.props.icon} style={buttonStyles.icons}/>
+            //         <View style={buttonStyles.textContainer}>
+            //             <Text style={buttonStyles.buttonText}>{this.props.buttonText}</Text>
+            //         </View >
+            //     </View>  
+            // </TouchableOpacity>
+            <Button iconLeft
+                style={buttonStyles.actionButton}
+                onPress={this.props.handlePress}
+                disabled={this.props.disabled}>
+                <Icon name={this.props.icon} style={buttonStyles.icons} />
+                <View style={buttonStyles.textContainer}>
+                    <Text style={buttonStyles.buttonText}>{this.props.buttonText}</Text>
+                </View>
+            </Button>
         );
     }
 }
