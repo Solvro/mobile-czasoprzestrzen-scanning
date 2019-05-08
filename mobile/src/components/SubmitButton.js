@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { View, TouchableOpacity } from 'react-native';
+import { View} from 'react-native';
 import { Text, Button } from 'native-base';
-import { LinearGradient } from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import buttonStyles from '../styles/ButtonStyles.js';
