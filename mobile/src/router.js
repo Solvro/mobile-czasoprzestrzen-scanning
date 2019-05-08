@@ -36,7 +36,7 @@ export const SignedOutNavigator = createStackNavigator(
 
 export const BottomTabNavigator = createBottomTabNavigator(
     {
-        Home: HomeScreen,
+        Start: HomeScreen,
         Profil: ProfileView,
         Historia: HistoryView,
     },
@@ -45,7 +45,7 @@ export const BottomTabNavigator = createBottomTabNavigator(
             tabBarIcon: ({ tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
-                if (routeName === 'Home') {
+                if (routeName === 'Start') {
                     iconName = 'md-home';
                 } else if (routeName === 'Profil') {
                     iconName = 'md-person';

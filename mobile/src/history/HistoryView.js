@@ -37,6 +37,7 @@ export default class HistoryView extends React.Component {
             .then((response) => {
                 if(this.state.status === 200) {
                     fetchedItems = response.slice(Math.max(response.length - 20, 0));
+                    console.log(fetchedItems);
                 } else {
                     Alert.alert(alertStrings.unexpectedError);
                     this.props.navigation.navigate('SignIn');
