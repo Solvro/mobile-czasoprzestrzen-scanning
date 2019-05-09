@@ -514,14 +514,14 @@ export default class RegistrationPanel extends React.Component {
                                     />
                                     <TextInputField
                                         setStateHandler={this.handleNipChange}
-                                        keyboardType='phone-pad'
+                                        keyboardType='numeric'
                                         returnKeyType='next'
                                         placeholder={'NIP'}
                                         secureTextEntry={false}
                                     />
                                     <TextInputField
                                         setStateHandler={this.handleRegonChange}
-                                        keyboardType='phone-pad'
+                                        keyboardType='numeric'
                                         returnKeyType='next'
                                         placeholder={'REGON'}
                                         secureTextEntry={false}
@@ -541,7 +541,7 @@ export default class RegistrationPanel extends React.Component {
                                         />
                                         <TextInputField
                                             setStateHandler={this.handlePostalCodeChange}
-                                            keyboardType='phone-pad'
+                                            keyboardType='numeric'
                                             returnKeyType='next'
                                             placeholder={'Kod pocztowy'}
                                             secureTextEntry={false}
