@@ -35,13 +35,23 @@ const qrScannerStyles = StyleSheet.create({
       datePickerContainer: {
         borderBottomColor: '#3b82c4',
         borderBottomWidth: 2,
-        marginRight: 5,
-        width: 200,
+        padding: 0,
+        marginRight: 7,
+        width: 250,
+        flexDirection: 'row',
       },
       rentButton: {
         backgroundColor: '#3b82c4',
-        marginLeft: 5,
+        marginLeft: 7,
       },
+      idInput: {
+        width: 100,
+        marginLeft: 0,
+      },
+      infoText: {
+        paddingTop: 5,
+        fontSize: 22,
+      }
 });
 
 module.exports = qrScannerStyles;

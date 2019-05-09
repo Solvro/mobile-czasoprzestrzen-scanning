@@ -30,7 +30,7 @@ const buttonStyles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center', 
         width: 230,
-        paddingRight: 10,
+        paddingRight: 20,
     },
 
     buttonText: {

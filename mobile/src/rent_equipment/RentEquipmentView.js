@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StatusBar, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 import { DatePicker, Button, Text } from 'native-base';
+import TextInputField from '../components/TextInputField';
+
 import apiConfig from '../services/api/config';
 import textStrings from '../assets/strings/TextStrings';
 import alertStrings from '../assets/strings/AlertStrings';
@@ -97,7 +99,7 @@ export default class RentEquipmentView extends React.Component {
                 Alert.alert(alertStrings.noConnectionWithServer);
             });
 
-        this.setState({lastScannedQr: null});
+        this.setState({ lastScannedQr: null });
 
     }
 
