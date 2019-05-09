@@ -95,6 +95,7 @@ export default class RentEquipmentView extends React.Component {
             })
             .catch(() => {
                 Alert.alert(alertStrings.noConnectionWithServer);
+                this.props.navigation.navigate('SignedOut')
             });
 
         this.setState({lastScannedQr: null});

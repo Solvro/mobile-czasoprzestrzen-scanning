@@ -84,12 +84,16 @@ export default class ProfileDetailsView extends React.Component {
                 fetchedItems = response;
             } else if(this.state.status === 401) {
                 Alert.alert(alertStrings.expiredToken);
+                this.props.navigation.navigate('SignedOut')
+
             } else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
         .catch(() => {
             Alert.alert(alertStrings.noConnectionWithServer);
+            this.props.navigation.navigate('SignedOut')
+
         });
 
         return fetchedItems;
@@ -120,12 +124,14 @@ export default class ProfileDetailsView extends React.Component {
                 Alert.alert(alertStrings.duplicateUsername);
             } else if (this.state.status === 401) {
                 Alert.alert(alertStrings.expiredToken);
+                this.props.navigation.navigate('SignedOut')
             }    else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
         .catch(() => {
             Alert.alert(alertStrings.noConnectionWithServer);
+            this.props.navigation.navigate('SignedOut')
         });
 
         return fetchedItems;
@@ -158,12 +164,14 @@ export default class ProfileDetailsView extends React.Component {
                 Alert.alert(alertStrings.duplicateUsername);
             } else if (this.state.status === 401) {
                 Alert.alert(alertStrings.expiredToken);
+                this.props.navigation.navigate('SignedOut')
             }  else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
         .catch(() => {
             Alert.alert(alertStrings.noConnectionWithServer);
+            this.props.navigation.navigate('SignedOut')
         });
 
         return fetchedItems;
@@ -196,12 +204,14 @@ export default class ProfileDetailsView extends React.Component {
                 Alert.alert(alertStrings.duplicateUsername);
             } else if (this.state.status === 401) {
                 Alert.alert(alertStrings.expiredToken);
+                this.props.navigation.navigate('SignedOut')
             } else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
         .catch(() => {
             Alert.alert(alertStrings.noConnectionWithServer);
+            this.props.navigation.navigate('SignedOut')
         });
 
         return fetchedItems;
@@ -244,6 +254,7 @@ export default class ProfileDetailsView extends React.Component {
         })
         .catch(() => {
             Alert.alert(alertStrings.noConnectionWithServer);
+            this.props.navigation.navigate('SignedOut')
         });
     }
 
