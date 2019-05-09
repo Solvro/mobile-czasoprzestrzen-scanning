@@ -1,7 +1,9 @@
+import URL from './serverURL';
 const axios = require('axios');
 
+
 const instance = axios.create({
-  baseURL: 'http://localhost:8000/api-v1/',
+  baseURL: URL,
   timeout: 1000,
   headers: {
     'Content-Type': 'application/json'

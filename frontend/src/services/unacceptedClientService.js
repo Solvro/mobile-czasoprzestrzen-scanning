@@ -1,5 +1,7 @@
+import URL1 from './serverURL';
+
 const axios = require('axios');
-const URL = 'http://localhost:8000/api-v1/unaccepted-client/';
+const URL = URL1+'unaccepted-client/';
 
 export async function getUnacceptedClientsList() {
   const instance = axios.create({
