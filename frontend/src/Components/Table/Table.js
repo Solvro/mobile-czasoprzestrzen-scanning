@@ -16,6 +16,7 @@ const CustomTableCell = withStyles(theme => ({
     body: {
       fontSize: 14,
     },
+    
   }))(TableCell);
 
 const styles = theme => ({
@@ -86,7 +87,7 @@ function table (props) {
   }
   else{
     return (
-      <ReactTableContainer width="100%" height='700px' customHeader={[TableHead]} >
+      <ReactTableContainer width="100%" style={{marginBottom:"70px"}} height='auto' customHeader={[TableHead]} >
       <Table >
         <TableHead>
           <TableRow>
