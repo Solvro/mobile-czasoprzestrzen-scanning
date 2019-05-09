@@ -18,7 +18,7 @@ const blueTheme = createMuiTheme({
     },
   });
 
-export const spacing = 24;
+export const spacing = 0;
 
 
 export default blueTheme;
