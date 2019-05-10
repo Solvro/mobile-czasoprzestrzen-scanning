@@ -8,7 +8,7 @@ const buttonStrings = {
     deleteAccountButton: 'Usuń konto',
     signOutButton: 'Wyloguj',
     newPasswordButton: 'Zmień hasło',
-    resetPasswordButton: 'Zresetuj'
+    resetPasswordButton: 'Wyślij',
 };
 
 module.exports = buttonStrings;

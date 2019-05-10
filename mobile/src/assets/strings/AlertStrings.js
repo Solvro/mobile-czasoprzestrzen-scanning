@@ -31,6 +31,7 @@ const alertStrings = {
     rentCreated: 'Wypożyczenia poprawne',
     rentWrongData: 'Niepoprawne dane lub sprzęt został już wypożyczony',
     rentNoItem: 'Brak przedmiotu w bazie',
+    invalidUserOrPassword: 'Niepoprawne nazwa użytkownika lub hasło',
 };
 
 module.exports = alertStrings;
