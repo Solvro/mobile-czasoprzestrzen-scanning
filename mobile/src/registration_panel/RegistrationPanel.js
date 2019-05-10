@@ -48,11 +48,12 @@ export default class RegistrationPanel extends React.Component {
                 numOfViews: 2,
                 currentPageNum: 1,
                 isLastPage: false,
+                nextButtonDisabled: false,
+                prevButtonDisabled: false,
             }
     }
 
     componentWillMount() {
-
         this.keyboardWDidShowSub = Keyboard.addListener(
             "keyboardDidShow",
             this.keyboardDidShow
@@ -61,6 +62,7 @@ export default class RegistrationPanel extends React.Component {
             "keyboardDidHide",
             this.keyboardDidHide
         );
+        this.setScrollButtonsDisabledStatus();
     }
 
     componentWillUnmount() {
@@ -178,7 +180,7 @@ export default class RegistrationPanel extends React.Component {
             .then(() => {
                 if (this.state.status === 201) {
                     this.showRegisterAlert();
-                    this.props.navigation.navigate("Sign");
+                    this.props.navigation.navigate("SignIn");
                 } else if(this.state.status ===400) {
                     Alert.alert(alertStrings.duplicateUsername);
                 } else {
@@ -347,23 +349,44 @@ export default class RegistrationPanel extends React.Component {
         }
     }
 
-    handleScrollToNextView = () => {
+    setScrollButtonsDisabledStatus = (pageNum) => {
+        if (this.state.currentPageNum <= 1) {
+            this.setState({
+                prevButtonDisabled: true,
+                nextButtonDisabled: false
+            });
+        } else if (this.state.currentPageNum >= this.state.numOfViews) {
+            this.setState({
+                prevButtonDisabled: false,
+                nextButtonDisabled: true,
+            });
+        } else {
+            this.setState({
+                prevButtonDisabled: false,
+                nextButtonDisabled: false
+            });
+        }
+    }
+
+    handleScrollToNextView = async () => {
         if (this.state.currentPageNum >= this.state.numOfViews) {
             return;
         }
 
         let pageNum = this.state.currentPageNum + 1;
-        this.setState({ currentPageNum: pageNum });
+        await this.setState({ currentPageNum: pageNum });
 
         if (pageNum === this.state.numOfViews) {
             this.setState({ isLastPage: true });
         }
 
+        this.setScrollButtonsDisabledStatus();
+
         let offset = (pageNum - 1) * Dimensions.get('window').width;
         this.refs._scrollView.scrollTo({ x: offset, y: 0, animated: true });
     }
 
-    handleScrollToPreviousView = () => {
+    handleScrollToPreviousView = async () => {
         if (this.state.currentPageNum <= 1) {
             return;
         }
@@ -373,7 +396,9 @@ export default class RegistrationPanel extends React.Component {
         }
 
         let pageNum = this.state.currentPageNum - 1;
-        this.setState({ currentPageNum: pageNum });
+        await this.setState({ currentPageNum: pageNum });
+
+        this.setScrollButtonsDisabledStatus();
 
         let offset = (pageNum - 1) * Dimensions.get('window').width;
         this.refs._scrollView.scrollTo({ x: offset, y: 0, animated: true });
@@ -489,14 +514,14 @@ export default class RegistrationPanel extends React.Component {
                                     />
                                     <TextInputField
                                         setStateHandler={this.handleNipChange}
-                                        keyboardType='phone-pad'
+                                        keyboardType='numeric'
                                         returnKeyType='next'
                                         placeholder={'NIP'}
                                         secureTextEntry={false}
                                     />
                                     <TextInputField
                                         setStateHandler={this.handleRegonChange}
-                                        keyboardType='phone-pad'
+                                        keyboardType='numeric'
                                         returnKeyType='next'
                                         placeholder={'REGON'}
                                         secureTextEntry={false}
@@ -516,7 +541,7 @@ export default class RegistrationPanel extends React.Component {
                                         />
                                         <TextInputField
                                             setStateHandler={this.handlePostalCodeChange}
-                                            keyboardType='phone-pad'
+                                            keyboardType='numeric'
                                             returnKeyType='next'
                                             placeholder={'Kod pocztowy'}
                                             secureTextEntry={false}
@@ -534,12 +559,14 @@ export default class RegistrationPanel extends React.Component {
                         </ScrollView>
                         <View style={loginRegisterStyles.scrollButtonsContainer}>
                             <Button
-                                style={loginRegisterStyles.scrollButton}
+                                style={!this.state.prevButtonDisabled ? loginRegisterStyles.scrollButton : loginRegisterStyles.scrollButtonDisabled}
+                                disabled={this.state.prevButtonDisabled}
                                 onPress={() => this.handleScrollToPreviousView()}>
                                 <Text>Wróć</Text>
                             </Button>
                             <Button
-                                style={loginRegisterStyles.scrollButton}
+                                style={!this.state.nextButtonDisabled ? loginRegisterStyles.scrollButton : loginRegisterStyles.scrollButtonDisabled}
+                                disabled={this.state.nextButtonDisabled}
                                 onPress={() => this.handleScrollToNextView()}>
                                 <Text>Dalej</Text>
                             </Button>

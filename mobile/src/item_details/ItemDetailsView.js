@@ -58,6 +58,7 @@ export default class ItemDetailsView extends React.Component {
                     fetchedItem = response;
                 } else if(this.state.status === 401) {
                     Alert.alert(alertStrings.expiredToken);
+                    this.props.navigation.navigate('SignedOut')
 
                 } else {
                     Alert.alert(alertStrings.unexpectedError);
@@ -65,6 +66,7 @@ export default class ItemDetailsView extends React.Component {
             })
             .catch(() => {
                 Alert.alert(alertStrings.noConnectionWithServer);
+                this.props.navigation.navigate('SignedOut')
             });
 
         return fetchedItem;

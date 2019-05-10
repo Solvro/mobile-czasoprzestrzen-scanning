@@ -43,6 +43,7 @@ export default class ReturnEquipmentView extends React.Component {
             })
             .catch(() => {
                 Alert.alert(alertStrings.noConnectionWithServer);
+                this.props.navigation.navigate('SignedOut')
             });
 
             this.setState({items: fetchedItems});
