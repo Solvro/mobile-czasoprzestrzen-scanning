@@ -47,14 +47,16 @@ export default class HomeScreen extends React.Component {
                 if (this.state.status === 200) {
                     apiConfig.clientUsername = response.username;
                     this.setState({isAuthorized: true});
-                } else if (this.state.status) {
+                } else if (this.state.status === 401) {
                     Alert.alert(alertStrings.expiredToken);
+                    this.props.navigation.navigate('SignedOut')
                 } else {
                     Alert.alert(alertStrings.unexpectedError);
                 }
             })
             .catch(() => {
                 Alert.alert(alertStrings.noConnectionWithServer);
+                this.props.navigation.navigate('SignedOut')
             });
     }
 
