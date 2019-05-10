@@ -1,4 +1,5 @@
-import URL from './serverURL';
+const URL = 'http://51.38.135.139:8000/api-v1/';
+
 const axios = require('axios');
 // const URL = 'http://localhost:8000/api-v1/';
 

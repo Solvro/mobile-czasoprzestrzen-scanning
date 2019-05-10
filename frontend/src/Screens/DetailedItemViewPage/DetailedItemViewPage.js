@@ -141,8 +141,8 @@ class NewAccountPage extends Component {
     print = () => {
        const canvas = document.querySelector('.HpQrcode > canvas');
        let pdf = new jsPDF('p', 'mm', 'a4');
-       pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 15, 40, 50, 50);
-       pdf.save("QR");
+       pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 15, 40, 30, 30);
+       pdf.save("QR"+this.itemID+this.state.itemName);
    };
     
 

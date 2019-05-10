@@ -1,4 +1,5 @@
-import URL1 from './serverURL';
+const URL1 = 'http://51.38.135.139:8000/api-v1/';
+
 
 const axios = require('axios');
 const URL = URL1+'unaccepted-client/';
