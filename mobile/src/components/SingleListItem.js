@@ -70,11 +70,23 @@ export default class SingleListItem extends React.Component {
      * Adds history item when prop type is 'history
      */
     addHistoryItem = (item) => {
+        let itemInfo = {};
+        let removedItemStyle = null;
+
+        if (item.equipment_data !== null) {
+            itemInfo['name'] = item.equipment_data.name;
+            itemInfo['type_name'] = item.equipment_data.type.type_name;
+        } else {
+            itemInfo['name'] = 'Przedmiot usunięty z bazy';
+            itemInfo['type_name'] = '---';
+            removedItemStyle = singleListItemStyles.removedItem;
+        }
+
         return (
             <ListItem>
                 <Body>
-                    <Text style={singleListItemStyles.name}>{item.equipment_data.name}</Text>
-                    <Text style={singleListItemStyles.noteText}>{item.equipment_data.type.type_name}</Text>
+                    <Text style={[singleListItemStyles.name, removedItemStyle]}>{itemInfo.name}</Text>
+                    <Text style={singleListItemStyles.noteText}>{itemInfo.type_name}</Text>
                     <Text style={singleListItemStyles.noteText}>{'Data wypożyczenia: ' + item.rental_date}</Text>
                     <Text style={singleListItemStyles.noteText}>{'Data zwrotu: ' + item.actual_return}</Text>
                 </Body>

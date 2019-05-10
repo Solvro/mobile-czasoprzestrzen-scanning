@@ -36,20 +36,20 @@ export const SignedOutNavigator = createStackNavigator(
 
 export const BottomTabNavigator = createBottomTabNavigator(
     {
-        Home: HomeScreen,
-        Profile: ProfileView,
-        History: HistoryView,
+        Start: HomeScreen,
+        Profil: ProfileView,
+        Historia: HistoryView,
     },
     {
         defaultNavigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ tintColor }) => {
                 const { routeName } = navigation.state;
                 let iconName;
-                if (routeName === 'Home') {
+                if (routeName === 'Start') {
                     iconName = 'md-home';
-                } else if (routeName === 'Profile') {
+                } else if (routeName === 'Profil') {
                     iconName = 'md-person';
-                } else if (routeName === 'History') {
+                } else if (routeName === 'Historia') {
                     iconName = 'md-time';
                 }
 
