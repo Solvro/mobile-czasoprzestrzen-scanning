@@ -18,6 +18,7 @@ export default class RentEquipmentView extends React.Component {
             hasCameraPermission: null,
             lastScannedQr: null,
             chosenDate: new Date(),
+            itemID: null,
         }
     }
 
@@ -165,7 +166,7 @@ export default class RentEquipmentView extends React.Component {
                         modalTransparent={false}
                         animationType={'fade'}
                         androidMode={'default'}
-                        placeHolderText='Wybierz datę zwrotu'
+                        placeHolderText='Data zwrotu'
                         textStyle={{ color: '#0d4579' }}
                         placeHolderTextStyle={{ color: "#d3d3d3" }}
                         onDateChange={(newDate) => this.handleDateChange(newDate)}
