@@ -10,18 +10,18 @@ const buttonStyles = StyleSheet.create({
         marginLeft: 50,
         padding: 10,
         overflow: 'hidden',
-        borderRadius: 10,
         flexDirection: 'row',
+        alignSelf: 'center',
         width: 250,
+        height: 50,
     },
 
     buttonContainer: {  
         alignItems: 'center', 
-        shadowColor: '#0d4579',
-        shadowOffset: {width: 5, height: 5},
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
-        elevation: 3,
+        // shadowColor: '#0d4579',
+        // shadowOpacity: 0.5,
+        // shadowRadius: 10,
+        // elevation: 3,
         zIndex: 999,
         padding: 20,
     },
@@ -29,16 +29,19 @@ const buttonStyles = StyleSheet.create({
     textContainer: {
         justifyContent: 'center', 
         alignItems: 'center', 
-        width: 190,
+        width: 230,
+        paddingRight: 20,
     },
 
     buttonText: {
         color: '#fff',
-        fontSize: 27,
+        fontSize: 25,
+        alignSelf: 'center',
     },
 
     icons: {
-        fontSize: 27,
+        width: 20,
+        fontSize: 23,
         color: '#d9e1e8',
     },
 

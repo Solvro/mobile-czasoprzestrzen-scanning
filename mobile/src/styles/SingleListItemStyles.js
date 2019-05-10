@@ -29,6 +29,9 @@ const singleItemListStyles = StyleSheet.create({
     },
     returnButton: {
         backgroundColor: '#3b82c4',
+    },
+    removedItem: {
+        fontStyle :'italic',
     }
 });
 
