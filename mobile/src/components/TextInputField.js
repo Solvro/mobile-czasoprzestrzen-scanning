@@ -21,6 +21,7 @@ export default class TextInputField extends React.Component {
                     secureTextEntry = {this.props.secureTextEntry}
                     placeholderTextColor = '#a2aabc'
                     underlineColorAndroid = 'transparent'
+                    value={this.props.value}
                 />
             </View>
         );

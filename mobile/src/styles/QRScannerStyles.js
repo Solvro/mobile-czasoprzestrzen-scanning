@@ -14,9 +14,9 @@ const qrScannerStyles = StyleSheet.create({
         right: 0,
         backgroundColor: '#fff',
         padding: 0,
-        paddingTop: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
         flexDirection: 'row',
-        alignItems: 'flex-start'
       },
       url: {
         flex: 1,
@@ -39,10 +39,9 @@ const qrScannerStyles = StyleSheet.create({
         borderBottomWidth: 2,
         padding: 0,
         marginRight: 7,
-        width: 180,
+        width: 120,
         height: 40,
-        maxHeight: 50,
-        // flexDirection: 'row',
+        //maxHeight: 50,
       },
       rentButton: {
         backgroundColor: '#3b82c4',
