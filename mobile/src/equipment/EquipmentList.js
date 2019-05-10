@@ -43,12 +43,14 @@ export default class EquipmentList extends React.Component {
                 fetchedItems = response;
             } else if (this.state.status === 401) {
                 Alert.alert(alertStrings.expiredToken);
+                this.props.navigation.navigate('SignedOut')
             } else {
                 Alert.alert(alertStrings.unexpectedError);
             }
         })
         .catch(() => {
             Alert.alert(alertStrings.noConnectionWithServer);
+            this.props.navigation.navigate('SignedOut')
         });
         return fetchedItems;
     }
@@ -68,12 +70,16 @@ export default class EquipmentList extends React.Component {
             .then((response) => {
                 if (this.state.status === 200) {
                     fetchedTypes = response;
-                } else {
-                    Alert.alert(alertStrings.noAuthoriatzion);
+                } else if (this.state.status === 401) {
+                    Alert.alert(alertStrings.expiredToken);
+                    this.props.navigation.navigate('SignedOut')
+                } else  {
+                    Alert.alert(alertStrings.unexpectedError);
                 }
             })
             .catch(() => {
                 Alert.alert(alertStrings.noConnectionWithServer);
+                this.props.navigation.navigate('SignedOut')
             });
 
         return fetchedTypes;
