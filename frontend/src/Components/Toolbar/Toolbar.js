@@ -10,6 +10,8 @@ import MenuList from '@material-ui/core/MenuList';
 import DButton from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '@material-ui/core/styles';
+import {userSuperAdmin} from '../../services/userService';
+
 const styles = theme => ({
     buttonToolbar: {
         cursor: 'pointer',
@@ -29,7 +31,37 @@ const styles = theme => ({
 
         state = {
             open: false,
+            isSuperAdmin: false,
+            menuList: ''
           };
+
+          async componentDidMount() {
+            await userSuperAdmin()
+            .then((isSuperAdmin) => { 
+              this.setState({isSuperAdmin: isSuperAdmin}); 
+            })
+            this.createMenuList();
+          }
+
+          createMenuList(){
+            let menuA = []
+            menuA.push(<Link className="linkInMenu" to='/account'>
+            <MenuItem>Inne</MenuItem></Link>)
+
+            if (this.state.isSuperAdmin === true){
+              menuA.push(<Link className="linkInMenu" to='/createNewAccount'>
+              <MenuItem>Stwórz nowego administratora</MenuItem></Link>)
+            }
+            menuA.push(<Link className="linkInMenu" to='/changePassword'>
+            <MenuItem>Zmień hasło</MenuItem>
+            </Link>)
+            menuA.push(<Link className="linkInMenu" to='/login'>
+            <MenuItem onClick={()=>localStorage.clear()} >Wyloguj</MenuItem>
+            </Link>)
+            let menu = []
+            menu.push(<MenuList>{menuA}</MenuList>);
+            this.setState({menuList : menu});
+          }
         
           handleToggle = () => {
             this.setState(state => ({ open: !state.open }));
@@ -106,20 +138,7 @@ const styles = theme => ({
               >
                 <Paper>
                 <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList>
-                    <Link className="linkInMenu" to='/account'>
-                        <MenuItem>Inne</MenuItem>
-                      </Link>
-                      <Link className="linkInMenu" to='/createNewAccount'>
-                        <MenuItem>Stwórz nowego administratora</MenuItem>
-                      </Link>
-                      <Link  className="linkInMenu" to='/changePassword'>
-                        <MenuItem>Zmień hasło</MenuItem>
-                      </Link>
-                      <Link className="linkInMenu" to='/login'>
-                        <MenuItem onClick={()=>localStorage.clear()} >Wyloguj</MenuItem>
-                      </Link>
-                    </MenuList>
+                    {this.state.menuList}
                     </ClickAwayListener>
                 </Paper>
               </Grow>
