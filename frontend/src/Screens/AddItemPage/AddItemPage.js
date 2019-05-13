@@ -137,7 +137,7 @@ handleChangeType = event => {
           <div>
           <Select value={this.state.item} onChange={this.handleSelectChange} itemTypes={this.state.itemTypesList}>
           </Select> 
-          {this.state.isSuperAdmin ? <TextButton fullWidth onClick={this.handleDialogOpen} >Dodaj nowy typ</TextButton> : null }
+          {this.state.isSuperAdmin ? <TextButton fullWidth onClick={this.handleDialogOpen} >Dodaj nowy typ + </TextButton> : null }
           </div>
 
           <InputField placeholder={"Opis"} rows={"4"} label={"Opis"} onChange={this.handleItemDecription}>
