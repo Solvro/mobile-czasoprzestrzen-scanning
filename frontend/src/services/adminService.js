@@ -1,7 +1,7 @@
-// import URL from './serverURL';
+import {URL} from './serverURL';
 
 const axios = require('axios');
-const URL = 'http://51.38.135.139:8000/api-v1/';
+// const URL = 'http://51.38.135.139:8000/api-v1/';
 
 export async function createNewAdminAccount(username, password, firstName, lastName, email, phone) {
   

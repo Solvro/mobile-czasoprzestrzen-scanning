@@ -1,4 +1,4 @@
-const URL = 'http://51.38.135.139:8000/api-v1/';
+import {URL} from './serverURL';
 
 const axios = require('axios');
 
@@ -108,7 +108,6 @@ export async function userSuperAdmin() {
   }
   try {
       const verification = await instance.post(`verify/`, data);
-      console.log("VER"+verification.data.type);
       return verification.data.type === "Sa";
   } catch (error) {
       return false;
