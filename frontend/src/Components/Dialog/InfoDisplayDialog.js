@@ -9,7 +9,6 @@ function AlertDialog (props) {
       <div>
         
           <Dialog
-            onEscapeKeyDown={alert("la")}
             open={props.dialogOpen}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
@@ -20,7 +19,7 @@ function AlertDialog (props) {
               <p>
                   {props.bussinessData.id}}
               </p>
-              <Button onClick={alert("aaa")}> exit</Button>
+              <Button onClick={props.handleClose}> exit</Button>
           </Dialog>
       </div>
     );

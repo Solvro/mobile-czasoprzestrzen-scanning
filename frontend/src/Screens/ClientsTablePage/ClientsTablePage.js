@@ -100,6 +100,11 @@ class Clients extends Component {
       clickedBussinessInfo: bussinessData 
     });
   }
+  handleBussinesInfoDialogClose = () => {
+    this.setState({ 
+      bussinesInfoDialogOpen: false
+    });
+  }
 
   handleDialogOpen(id){
     this.setState({ 
@@ -169,6 +174,7 @@ class Clients extends Component {
       <BussinesInfoDialog
         dialogOpen={this.state.bussinesInfoDialogOpen}
         message={"szczegoly"}
+        handleClose = {this.handleBussinesInfoDialogClose}
         bussinessData={this.state.clickedBussinessInfo}>
       </BussinesInfoDialog>
 
