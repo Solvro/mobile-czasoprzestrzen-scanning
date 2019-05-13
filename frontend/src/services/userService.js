@@ -54,7 +54,7 @@ export async function getUserName(token) {
 export async function changePassword(oldPassword, newPassword) {
 
   const instance = axios.create({
-      baseURL: 'http://localhost:8000/api-v1/',
+      baseURL: URL,
       timeout: 1000,
       headers: {
         'Content-Type': 'application/json',

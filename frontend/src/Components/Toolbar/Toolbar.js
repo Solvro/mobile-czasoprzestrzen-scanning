@@ -45,17 +45,17 @@ const styles = theme => ({
 
           createMenuList(){
             let menuA = []
-            menuA.push(<Link className="linkInMenu" to='/account'>
+            menuA.push(<Link key={1} className="linkInMenu" to='/account'>
             <MenuItem>Inne</MenuItem></Link>)
 
             if (this.state.isSuperAdmin === true){
-              menuA.push(<Link className="linkInMenu" to='/createNewAccount'>
+              menuA.push(<Link key={2} className="linkInMenu" to='/createNewAccount'>
               <MenuItem>Stwórz nowego administratora</MenuItem></Link>)
             }
-            menuA.push(<Link className="linkInMenu" to='/changePassword'>
+            menuA.push(<Link key={3} className="linkInMenu" to='/changePassword'>
             <MenuItem>Zmień hasło</MenuItem>
             </Link>)
-            menuA.push(<Link className="linkInMenu" to='/login'>
+            menuA.push(<Link key={4} className="linkInMenu" to='/login'>
             <MenuItem onClick={()=>localStorage.clear()} >Wyloguj</MenuItem>
             </Link>)
             let menu = []
