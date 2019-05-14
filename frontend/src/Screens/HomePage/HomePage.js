@@ -82,9 +82,9 @@ class HomePage extends Component {
       });
   };
 
-  componentWillMount() {
-    this.getName();
-  }
+  // componentWillMount() {
+  //   this.getName();
+  // }
 
   async componentDidMount() {
     this.updateDimensions();

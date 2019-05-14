@@ -1,6 +1,9 @@
 
+import {URL} from './serverURL';
+
+
 const axios = require('axios');
-const URL = 'http://localhost:8000/api-v1/';
+// const URL = 'http://localhost:8000/api-v1/';
 
 
 
