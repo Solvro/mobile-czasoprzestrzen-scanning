@@ -33,13 +33,11 @@ class Clients extends Component {
         isLoading: false,
         clientsList: res
       });
-      alert(this.state.clientsList)
       this.createTable(this.state.clientsList);
     })    
   }
 
   filterTableContentByNameContains(nameFragment){
-    alert(this.state.clientsList)
       var res = this.state.clientsList
       var filteredRes = Object.keys(res).filter(function(params) {
         return res[params]
