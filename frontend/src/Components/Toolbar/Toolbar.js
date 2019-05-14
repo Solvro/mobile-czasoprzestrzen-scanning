@@ -90,7 +90,7 @@ const styles = theme => ({
         </div>
         <nav className='DesktopOnly'>
             <ul className='NavigationItems'>
-            <li className='linkInMenu'>
+            <li key={0} className='linkInMenu'>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
@@ -99,7 +99,7 @@ const styles = theme => ({
                 </DButton>
                 
             </li>
-            <li className='linkInMenu'>
+            <li key={1} className='linkInMenu'>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
@@ -108,7 +108,7 @@ const styles = theme => ({
                 </DButton>
                 
             </li>
-            <li className='linkInMenu'>
+            <li key={2} className='linkInMenu'>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
@@ -117,7 +117,7 @@ const styles = theme => ({
                 </DButton>
                 
             </li>
-            <li className='linkInMenu' >
+            <li key={3} className='linkInMenu' >
                                 
                 <DButton
                     buttonRef={node => {
