@@ -27,11 +27,11 @@ function Layout(props) {
     }
     if(props.layoutDivide === "282"){
         layout = <Grid container >
-                            <Grid item xs={1}></Grid>
-                            <Grid item xs={10}>
+                            <Grid item xs={2}></Grid>
+                            <Grid item xs={8}>
                                 {props.children}
                             </Grid>
-                            <Grid item xs={1}></Grid>
+                            <Grid item xs={2}></Grid>
                         </Grid>
     }
     if(props.layoutDivide === "66"){
