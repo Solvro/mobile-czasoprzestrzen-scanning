@@ -25,7 +25,7 @@ var styles = {
     width: "49%",
     fontSize: "20px",
     marginBottom: "1em",
-    paddingTop: "1.1em"
+    // paddingTop: "1.1em"
   },
   subBarParent: {
     marginTop: "6em",
