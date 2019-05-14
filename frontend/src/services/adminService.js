@@ -1,11 +1,12 @@
-const axios = require('axios');
-const URL = 'http://localhost:8000/api-v1/';
+import {URL} from './serverURL';
 
+const axios = require('axios');
+// const URL = 'http://51.38.135.139:8000/api-v1/';
 
 export async function createNewAdminAccount(username, password, firstName, lastName, email, phone) {
   
     const instance = axios.create({
-        baseURL: 'http://localhost:8000/api-v1/',
+        baseURL: URL,
         timeout: 1000,
         headers: {
           'Content-Type': 'application/json',
