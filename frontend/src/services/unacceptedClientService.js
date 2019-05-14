@@ -1,9 +1,12 @@
+import {URL} from './serverURL';
+
+
 const axios = require('axios');
-const URL = 'http://localhost:8000/api-v1/unaccepted-client/';
+const URLClient = URL+'unaccepted-client/';
 
 export async function getUnacceptedClientsList() {
   const instance = axios.create({
-    baseURL: URL,
+    baseURL: URLClient,
     timeout: 1000,
     headers: {
       'Content-Type': 'application/json',
@@ -20,7 +23,7 @@ export async function getUnacceptedClientsList() {
 
 export async function approveUnacceptedClient(id) {
   const instance = axios.create({
-    baseURL: URL,
+    baseURL: URLClient,
     timeout: 1000,
     headers: {
       'Content-Type': 'application/json',
@@ -37,7 +40,7 @@ export async function approveUnacceptedClient(id) {
 
 export async function removeUnacceptedClient(id) {
   const instance = axios.create({
-    baseURL: URL,
+    baseURL: URLClient,
     timeout: 1000,
     headers: {
       'Content-Type': 'application/json',

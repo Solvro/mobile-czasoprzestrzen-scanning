@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Layout from '../../Components/Layout/Layout';
-import Button from '../../Components/Button/Button';
 import Table from '../../Components/Table/ClientsWaitingForApprovalTable';
 import AdminTable from '../../Components/Table/AllAdminTable'
 import './AdminPage.css';
@@ -153,32 +152,13 @@ class AdminPage extends Component {
   }
 
   render() {
-
-    const left = <div className='Table'>
-
-      <Toolbar />
-      
-      {!this.state.isLoading ? this.state.unacceptClientTable : null}
-      
-      {!this.state.isLoading && this.state.isSuperAdmin ? this.state.adminTable : null}
-    </div>;
-
-    const right = <div className='ButtonGroup'>
-
-            <div className='inner'>
-            <Button button={"verticalButton"} link={'/changePassword'} text={"Zmień hasło"}></Button>
-            {this.state.isSuperAdmin ? <Button button={"verticalButton"} link={'/createNewAccount'} text={"Stwórz nowe konto admina"} disabled={!this.state.isSuperAdmin}></Button>
-             : <Button button={"verticalButton"} link={'/account'} text={"Stwórz nowe konto admina"} disabled={!this.state.isSuperAdmin}></Button>}
-            <Button button={"verticalButton"} link={'/login'} onClick={()=>localStorage.clear()} text={"Wyloguj"}></Button> 
-            </div>
-
-          </div>;
-
-
     return (
       <div>
-        <Layout layoutDivide={"84"} leftChildren={left} rightChildren={right}>
-
+        <Toolbar/>
+        <Layout layoutDivide={"282"}>
+        {!this.state.isLoading ? this.state.unacceptClientTable : null}
+      
+      {!this.state.isLoading && this.state.isSuperAdmin ? this.state.adminTable : null} 
         </Layout>
         {this.state.loginError &&
           <ErrorDisplay
