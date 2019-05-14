@@ -11,12 +11,12 @@ const left = <div className='SearchField'>
              </div>;
 
 var container = <div className='SearchContent'>
-    {<Layout layoutDivide={"66"} leftChildren={left}></Layout>} 
+<Layout layoutDivide={"66"} leftChildren={left}></Layout>
 </div>;
 
 if(props.className){
     container = <div>
-    {left}
+    <Layout layoutDivide={"66"} leftChildren={left}></Layout>
     </div>;
 }
 
