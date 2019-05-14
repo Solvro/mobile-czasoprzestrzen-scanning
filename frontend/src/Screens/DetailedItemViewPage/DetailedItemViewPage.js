@@ -31,14 +31,7 @@ class NewAccountPage extends Component {
     async componentDidMount() {
 
         const itemTypes = await getItemTypesList()
-            // .then((res) => {
-            //     const itemTypes = []
-            //     for (var i = 0; i < res.length; i++) {
-            //         itemTypes[i] = res[i].type_name
-            //     }
-            //     console.log(itemTypes)
-            //     return itemTypes;
-            // })
+
         
         const res = await getItemViewFromId(this.props.location.ID)
 
@@ -97,11 +90,14 @@ class NewAccountPage extends Component {
     }
 
     createForm = (res) => {
-
+        const newTo = {
+            pathname: "/detailedItem",
+            ID: this.itemID
+          };
         const qrMessage = "rent:"+this.itemID;
         const button = <div><Button link={'/home'} text={"Anuluj"}></Button>
             <Button link={'/home'} onClick={this.tryToEditItem} text={"Zatwierdź"}></Button>
-            <Button text={"Pobierz QR"} link={"/home"} onClick={this.print} ></Button></div>
+            <Button text={"Pobierz QR"} link={newTo} onClick={this.print} ></Button></div>
 
         const header = <div className='headText'>Edycja sprzętu</div>;
 
@@ -141,8 +137,8 @@ class NewAccountPage extends Component {
     print = () => {
        const canvas = document.querySelector('.HpQrcode > canvas');
        let pdf = new jsPDF('p', 'mm', 'a4');
-       pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 15, 40, 50, 50);
-       pdf.save("QR");
+       pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 15, 40, 30, 30);
+       pdf.save("QR"+this.itemID+this.state.itemName);
    };
     
 

@@ -139,12 +139,17 @@ export default class ProfileView extends React.Component {
         .then((response) => {
             if(this.state.status === 200) {
                 fetchedData = response;
+            } else if(this.state.status === 401) {
+                Alert.alert(alertStrings.expiredToken);
+                this.props.navigation.navigate('SignedOut')
+
             } else {
-                Alert.alert(alertStrings.noAuthoriatzion);
-            }
+                Alert.alert(alertStrings.unexpectedError);
+            } 
         })
         .catch(() => {
             Alert.alert(alertStrings.noConnectionWithServer);
+            this.props.navigation.navigate('SignedOut')
         });
 
         return fetchedData;

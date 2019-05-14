@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, StatusBar, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
-import { DatePicker, Button, Text } from 'native-base';
+import { DatePicker, Button, Text, Left } from 'native-base';
+import TextInputField from '../components/TextInputField';
+
 import apiConfig from '../services/api/config';
 import textStrings from '../assets/strings/TextStrings';
 import alertStrings from '../assets/strings/AlertStrings';
@@ -16,6 +18,7 @@ export default class RentEquipmentView extends React.Component {
             hasCameraPermission: null,
             lastScannedQr: null,
             chosenDate: new Date(),
+            itemID: null,
         }
     }
 
@@ -39,8 +42,10 @@ export default class RentEquipmentView extends React.Component {
 
     handleBarCodeRead = result => {
         if (result.data !== this.state.lastScannedQr) {
+            let id = this.getItemID(result.data);
             this.setState({
                 lastScannedQr: result.data,
+                itemID: id,
             });
         }
     }
@@ -55,9 +60,13 @@ export default class RentEquipmentView extends React.Component {
         this.setState({ chosenDate: newDate });
     }
 
+    handleIDChange = (event) => {
+        this.setState({ itemID: event});
+    }
+
     rentItem = async () => {
         let dateISOFormat = this.getDateFormat(this.state.chosenDate);
-        let itemID = this.getItemID(this.state.lastScannedQr);
+        const { itemID } = this.state;
 
         if (itemID === -1) {
             Alert.alert(alertStrings.invalidQR);
@@ -95,9 +104,13 @@ export default class RentEquipmentView extends React.Component {
             })
             .catch(() => {
                 Alert.alert(alertStrings.noConnectionWithServer);
+                this.props.navigation.navigate('SignedOut')
             });
 
-        this.setState({lastScannedQr: null});
+        this.setState({ 
+            lastScannedQr: null,
+            itemID: null,
+        });
 
     }
 
@@ -129,11 +142,22 @@ export default class RentEquipmentView extends React.Component {
     }
 
     maybeRenderContent = () => {
-        if (!this.state.lastScannedQr) {
-            return;
-        }
+        // if (!this.state.lastScannedQr) {
+        //     return;
+        // }
         return (
             <View style={qrScannerStyles.bottomBar}>
+                <View style={qrScannerStyles.idInputContainer}>
+                    <TextInputField
+                        state={'username'}
+                        setStateHandler={this.handleIDChange}
+                        keyboardType='phone-pad'
+                        returnKeyType='next'
+                        placeholder={'ID'}
+                        secureTextEntry={false}
+                        value={this.state.itemID}
+                    />
+                </View>
                 <View style={qrScannerStyles.datePickerContainer}>
                     <DatePicker
                         defaultDate={new Date()}
@@ -142,7 +166,7 @@ export default class RentEquipmentView extends React.Component {
                         modalTransparent={false}
                         animationType={'fade'}
                         androidMode={'default'}
-                        placeHolderText='Wybierz datę zwrotu'
+                        placeHolderText='Data zwrotu'
                         textStyle={{ color: '#0d4579' }}
                         placeHolderTextStyle={{ color: "#d3d3d3" }}
                         onDateChange={(newDate) => this.handleDateChange(newDate)}

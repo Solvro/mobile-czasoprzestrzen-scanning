@@ -4,8 +4,9 @@ import {Container, Text} from 'native-base';
 import DismissKeyboard from 'dismissKeyboard';
 import SubmitButton from '../components/SubmitButton';
 
-import loginRegisterStyles from '../styles/LoginRegisterStyles.js';
-import buttonStrings from '../assets/strings/ButtonStrings.js';
+import loginRegisterStyles from '../styles/LoginRegisterStyles';
+import buttonStrings from '../assets/strings/ButtonStrings';
+import alertStrings from '../assets/strings/AlertStrings';
 import apiConfig from '../services/api/config';
 
 import logo from '../assets/logo.jpg';
@@ -96,11 +97,11 @@ export default class LoginPanel extends React.Component {
                     apiConfig.clientId = response.access;
                     this.props.navigation.navigate('SignedIn');
                 } else {
-                    Alert.alert('Invalid username or password!');
+                    Alert.alert(alertStrings.invalidUserOrPassword);
                 }
             })
             .catch(() => {
-                Alert.alert('No connection with server!');
+                Alert.alert(alertStrings.noConnectionWithServer);
             });
 
     }

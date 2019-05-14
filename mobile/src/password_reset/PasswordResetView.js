@@ -86,6 +86,10 @@ export default class PasswordResetView extends React.Component {
                         buttonText={buttonStrings.resetPasswordButton}
                         icon='md-refresh' />
                     <TouchableOpacity style={loginRegisterStyles.linkContainer}
+                        onPress={() => this.props.navigation.navigate('PasswordResetConfirm')}>
+                        <Text style={loginRegisterStyles.linkText}>Przejdź do panelu resetowania hasła</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={loginRegisterStyles.linkContainer}
                         onPress={() => this.props.navigation.navigate('SignIn')}>
                         <Text style={loginRegisterStyles.linkText}>Powrót do logowania</Text>
                     </TouchableOpacity>

@@ -51,6 +51,13 @@
     color: #163550;
 }
 
+.linkInMenu a {
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+
 @media (min-width: 500px) {
     .NavigationItem {
         padding: 0 1em;
@@ -75,6 +82,20 @@
     .NavigationItem a.active {
         background-color: #163550;
         border-bottom: 4px solid #163550;
+        color: white;
+    }
+
+    .linkInMenu a {
+        color: white;
+        height: 100%;
+        border-bottom: 4px solid transparent;
+    }
+    .linkInMenu:hover{
+        background-color: white;
+    }
+    .linkInMenu a:hover,
+    .linkInMenu a:active,
+    .linkInMenu a.active {
         color: white;
     }
 }
