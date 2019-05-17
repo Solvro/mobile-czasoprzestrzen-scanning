@@ -22,6 +22,7 @@ const errorDisplayStyles = theme => createStyles({
         left: theme.spacing.unit * 2,
         bottom: theme.spacing.unit * 2,
         display: 'flex',
+        zIndex: 2,
         flexDirection: 'column-reverse',
         '& > div': {
             marginTop: theme.spacing.unit * 2,
