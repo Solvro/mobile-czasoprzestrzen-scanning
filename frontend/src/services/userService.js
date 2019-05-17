@@ -2,7 +2,6 @@ import {URL} from './serverURL';
 
 const axios = require('axios');
 
-
 const instance = axios.create({
   baseURL: URL,
   timeout: 1000,
