@@ -165,7 +165,7 @@ class HomePage extends Component {
     return (
       <Link to={newTo}>
         <IconButton aria-label="Approve" onClick={() => console.log(id)}>
-          <Icon>arrow_forward</Icon>{" "}
+          <Icon>edit</Icon>{" "}
         </IconButton>
       </Link>
     );

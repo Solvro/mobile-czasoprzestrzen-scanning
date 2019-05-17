@@ -10,7 +10,6 @@ import MenuList from '@material-ui/core/MenuList';
 import DButton from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '@material-ui/core/styles';
-import {userSuperAdmin} from '../../services/userService';
 
 const styles = theme => ({
     buttonToolbar: {
@@ -31,27 +30,17 @@ const styles = theme => ({
 
         state = {
             open: false,
-            isSuperAdmin: false,
             menuList: ''
           };
 
           async componentDidMount() {
-            await userSuperAdmin()
-            .then((isSuperAdmin) => { 
-              this.setState({isSuperAdmin: isSuperAdmin}); 
-            })
             this.createMenuList();
           }
 
-          createMenuList(){
+          createMenuList = () => {
             let menuA = []
             menuA.push(<Link key={1} className="linkInMenu" to='/account'>
-            <MenuItem>Inne</MenuItem></Link>)
-
-            if (this.state.isSuperAdmin === true){
-              menuA.push(<Link key={2} className="linkInMenu" to='/createNewAccount'>
-              <MenuItem>Stwórz nowego administratora</MenuItem></Link>)
-            }
+            <MenuItem>Zarządzaj kontami</MenuItem></Link>)
             menuA.push(<Link key={3} className="linkInMenu" to='/changePassword'>
             <MenuItem>Zmień hasło</MenuItem>
             </Link>)
@@ -127,7 +116,7 @@ const styles = theme => ({
                     aria-owns={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
                     onClick={this.handleToggle}>
-                    Zaawansowane
+                    Ustawienia
                 </DButton>
           <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
             {({ TransitionProps, placement }) => (
