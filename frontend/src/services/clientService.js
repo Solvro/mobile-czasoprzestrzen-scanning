@@ -1,17 +1,7 @@
-import {URL} from './serverURL';
-
-const axios = require('axios');
-
+import {instance} from './axiosConfig'; 
 
 export async function getClientsList() {
-    const instance = axios.create({
-        baseURL: URL,
-        timeout: 1000,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-    });
+
 
     try {
         const response = await instance.get('client/');
@@ -22,14 +12,7 @@ export async function getClientsList() {
 }
 
 export async function deleteClient(id) {
-    const instance = axios.create({
-        baseURL: URL,
-        timeout: 1000,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-    });
+
 
     try {
         const response = await instance.delete('client/' + id);

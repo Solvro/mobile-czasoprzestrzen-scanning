@@ -209,7 +209,7 @@ class HomePage extends Component {
       }
       ID = res[i].id;
       rows.push([
-        i + 1,
+        ID,
         res[i].name,
         res[i].type.type_name,
         available,
