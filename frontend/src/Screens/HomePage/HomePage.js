@@ -18,6 +18,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 
+
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -33,20 +35,21 @@ class HomePage extends Component {
       lastNameFilter: "",
       lastTypeFilter: 0,
       returnItemID: 0,
-      addButton: ""
+      addButton: "",
+      itemsList: ""
     };
   }
 
-  async filterTableContent() {
-    await getItemsList().then(res => {
-      var filteredRes = res;
+  filterTableContent() {
+    
+      var filteredRes = this.state.itemsList;
       if (
         this.state.lastTypeFilter !== undefined &&
         this.state.lastTypeFilter !== "0" &&
         this.state.lastTypeFilter !== 0
       ) {
         filteredRes = this.filterByTypeNameContains(
-          res,
+          filteredRes,
           this.state.lastTypeFilter
         );
       }
@@ -57,7 +60,6 @@ class HomePage extends Component {
         );
       }
       this.createTable(filteredRes);
-    });
   }
 
   filterByTypeNameContains = (res, lastTypeFilter) => {
@@ -94,7 +96,10 @@ class HomePage extends Component {
     });
     if (this.state.isLoading === true) this.getName();
     await getItemsList().then(res => {
-      this.setState({ isLoading: false });
+      this.setState({ 
+        isLoading: false,
+        itemsList: res
+      });
       this.createTable(res);
     });
     
@@ -118,7 +123,10 @@ class HomePage extends Component {
 
   updateData = async () => {
     await getItemsList().then(res => {
-      this.setState({ isLoading: false });
+      this.setState({ 
+        isLoading: false,
+        itemsList: res
+      });
       this.createTable(res);
     });
     this.forceUpdate();
@@ -229,11 +237,9 @@ class HomePage extends Component {
 
   handleChange = (fieldToFilterOn, value) => {
     if (fieldToFilterOn === "name") 
-      this.setState({ lastNameFilter: value });
+      this.setState({ lastNameFilter: value }, () => this.filterTableContent());
     else 
-      this.setState({ lastTypeFilter: value });
-
-    this.filterTableContent();
+      this.setState({ lastTypeFilter: value }, () => this.filterTableContent());
   };
 
   handleKeyDown = e => {
