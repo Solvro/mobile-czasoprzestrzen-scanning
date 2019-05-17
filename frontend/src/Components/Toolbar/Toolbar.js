@@ -124,15 +124,16 @@ const styles = theme => ({
                 </DButton>
           <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
             {({ TransitionProps, placement }) => (
-              <Grow
+              <Grow key={11}
                 {...TransitionProps}
                 id="menu-list-grow"
                 style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
               >
                 <Paper>
-                <ClickAwayListener onClickAway={this.handleClose}>
+                  <div>
+                <ClickAwayListener key={12} onClickAway={this.handleClose}>
                     {this.state.menuList}
-                    </ClickAwayListener>
+                    </ClickAwayListener></div>
                 </Paper>
               </Grow>
             )}
