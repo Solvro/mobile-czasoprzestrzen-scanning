@@ -80,30 +80,34 @@ const styles = theme => ({
         <nav className='DesktopOnly'>
             <ul className='NavigationItems'>
             <li key={0} className='linkInMenu'>
+            <Link to="/home" style={{textDecoration:'none',border: 'none'}}>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true">
-                   <Link to="/home" style={{textDecoration:'none',border: 'none'}}>Sprzęt</Link> 
-                </DButton>
+                   Sprzęt 
+                </DButton></Link>
                 
             </li>
             <li key={1} className='linkInMenu'>
+            <Link to="/rents" style={{textDecoration:'none',border: 'none'}}>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true">
-                   <Link to="/rents" style={{textDecoration:'none',border: 'none'}}>Wypożyczenia</Link> 
-                </DButton>
+                   Wypożyczenia 
+                </DButton></Link>
                 
             </li>
             <li key={2} className='linkInMenu'>
+            <Link to="/clients" style={{textDecoration:'none',border: 'none'}}>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true">
-                   <Link to="/clients" style={{textDecoration:'none',border: 'none'}}>Klienci</Link> 
+                   Klienci
                 </DButton>
+                </Link> 
                 
             </li>
             <li key={3} className='linkInMenu' >
