@@ -55,19 +55,14 @@ class Clients extends Component {
 
   createTable(res){
     var rows = [];
-    //var businessIcon;
     for (var i = 0; i<res.length; i++){
-      // if (res[i].business_data == null) {
-      //   businessIcon = <Icon>clear</Icon>
-      // }else 
-      // businessIcon = <Icon>done</Icon>;
 
       rows.push([
         res[i].id,
         res[i].username,
         res[i].first_name + " " + res[i].last_name, 
         res[i].email, res[i].phone,
-        this.createBussinessButton(res[i].business_data),   //businessIcon, 
+        this.createBussinessButton(res[i].business_data),
   //      this.createMessageButton(res[i].id), 
         this.createRemoveButton(res[i].id)
       ])
