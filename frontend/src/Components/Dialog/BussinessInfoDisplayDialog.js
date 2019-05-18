@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {Button} from '@material-ui/core';
 
 function AlertDialog (props) {
-
+    
     return (
       <div>
         

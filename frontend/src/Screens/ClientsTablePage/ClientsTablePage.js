@@ -75,7 +75,7 @@ class Clients extends Component {
   //   return <IconButton aria-label="Message" onClick={() => alert("tutaj trzeb zrobić formularz z wiadomoscia")}> <MessageIcon /></IconButton>;
   // }
 
-  createBussinessButton(business_data ) {
+  createBussinessButton(business_data) {
 
     if (business_data == null) 
       return <Icon color="disabled">clear</Icon>
@@ -168,12 +168,13 @@ class Clients extends Component {
         message={"Czy na pewno chcesz usunąć tego klienta?"}>
       </Dialog>
 
+      {this.state.clickedBussinessInfo &&
       <BussinesInfoDialog
         dialogOpen={this.state.bussinesInfoDialogOpen}
         message={"Szczegoly firmy"}
         handleClose = {this.handleBussinesInfoDialogClose}
         bussinessData={this.state.clickedBussinessInfo}>
-      </BussinesInfoDialog>
+      </BussinesInfoDialog>}
 
       {this.state.infoMessage && 
         <InfoDisplay
