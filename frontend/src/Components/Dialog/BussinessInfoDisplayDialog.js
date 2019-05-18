@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {Button} from '@material-ui/core';
 
 function AlertDialog (props) {
-    
+
     return (
       <div>
         
@@ -13,10 +13,10 @@ function AlertDialog (props) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-              <DialogTitle id="alert-dialog-title">
+              <DialogTitle id="alert-dialog-title"  style={{backgroundColor: "#ebf3f9"}}>
                   {props.message}
               </DialogTitle>
-              <div style={{padding: "20px", backgroundColor: "white"}}>
+              <div style={{padding: "20px"}}>
                 <p> Nazwa: {props.bussinessData.name==null ? "brak" : props.bussinessData.name} </p>
                 <p> NIP: {props.bussinessData.nip==null ? "brak" : props.bussinessData.nip} </p>
                 <p> Regon: {props.bussinessData.regon==null ? "brak" : props.bussinessData.regon} </p>
