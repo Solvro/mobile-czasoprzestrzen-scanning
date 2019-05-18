@@ -12,7 +12,8 @@ import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import Dialog from '../../Components/Dialog/Dialog';
 //import MessageIcon from '@material-ui/icons/Message';
 
-import BussinesInfoDialog from '../../Components/Dialog/InfoDisplayDialog';
+import BussinesInfoDialog from '../../Components/Dialog/BussinessInfoDisplayDialog';
+import { Tooltip } from '@material-ui/core';
 
 class Clients extends Component {
 
@@ -66,7 +67,7 @@ class Clients extends Component {
         res[i].username,
         res[i].first_name + " " + res[i].last_name, 
         res[i].email, res[i].phone,
-        this.createBussinessButton(res[i].id, res[i].business_data),   //businessIcon, 
+        this.createBussinessButton(res[i].business_data),   //businessIcon, 
   //      this.createMessageButton(res[i].id), 
         this.createRemoveButton(res[i].id)
       ])
@@ -79,15 +80,16 @@ class Clients extends Component {
   //   return <IconButton aria-label="Message" onClick={() => alert("tutaj trzeb zrobić formularz z wiadomoscia")}> <MessageIcon /></IconButton>;
   // }
 
-  createBussinessButton(id, business_data ) {
-    var businessIcon;
+  createBussinessButton(business_data ) {
 
-    if (business_data == null) {
-      businessIcon = <Icon>clear</Icon>
-    }else 
-    businessIcon = <Icon>done</Icon>;
-
-    return <IconButton aria-label="IconButton" onClick={() => this.handleBussinesInfoDialogOpen(business_data)}> {businessIcon} </IconButton>;
+    if (business_data == null) 
+      return <Icon color="disabled">clear</Icon>
+    else 
+      return <IconButton aria-label="IconButton" onClick={() => this.handleBussinesInfoDialogOpen(business_data)}>
+        <Tooltip title="Sprawdź szczegóły firmy">
+          <Icon color="primary">done</Icon>
+        </Tooltip>
+       </IconButton>;
   }
 
   createRemoveButton(id) {
@@ -173,7 +175,7 @@ class Clients extends Component {
 
       <BussinesInfoDialog
         dialogOpen={this.state.bussinesInfoDialogOpen}
-        message={"szczegoly"}
+        message={"Szczegoly firmy"}
         handleClose = {this.handleBussinesInfoDialogClose}
         bussinessData={this.state.clickedBussinessInfo}>
       </BussinesInfoDialog>

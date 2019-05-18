@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Button } from '@material-ui/core';
+import {Button} from '@material-ui/core';
 
 function AlertDialog (props) {
 
@@ -16,10 +16,13 @@ function AlertDialog (props) {
               <DialogTitle id="alert-dialog-title">
                   {props.message}
               </DialogTitle>
-              <p>
-                  {props.bussinessData.id}}
-              </p>
-              <Button onClick={props.handleClose}> exit</Button>
+              <div style={{padding: "20px", backgroundColor: "white"}}>
+                <p> Nazwa: {props.bussinessData.name==null ? "brak" : props.bussinessData.name} </p>
+                <p> NIP: {props.bussinessData.nip==null ? "brak" : props.bussinessData.nip} </p>
+                <p> Regon: {props.bussinessData.regon==null ? "brak" : props.bussinessData.regon} </p>
+                
+                <Button onClick={props.handleClose} color="primary"> zamknij </Button>
+              </div>
           </Dialog>
       </div>
     );
