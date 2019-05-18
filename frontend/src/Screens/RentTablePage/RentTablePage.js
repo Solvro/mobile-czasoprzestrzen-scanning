@@ -25,7 +25,7 @@ var styles = {
     width: "49%",
     fontSize: "20px",
     marginBottom: "1em",
-    paddingTop: "1.1em"
+    // paddingTop: "1.1em"
   },
   subBarParent: {
     marginTop: "6em",
@@ -48,13 +48,24 @@ class Rents extends Component {
       infoMessage: "",
       errorMsg: "",
       buttonClicked: 0,
-      lastNameFilter: ""
+      lastNameFilter: "",
+      ongoingRentsList: "",
+      finishedRentsList: ""
     };
   }
 
   async componentDidMount() {
+    await getFinishedRentsList().then(res => {
+      this.setState({ 
+        isLoading: false,
+        finishedRentsList: res
+       });
+    });
     await getOngoingRentsList().then(res => {
-      this.setState({ isLoading: false });
+      this.setState({  
+        isLoading: false,
+        ongoingRentsList: res  
+      });
       this.createOngoingTable(res);
     });
   }
@@ -66,7 +77,6 @@ class Rents extends Component {
 
   handleFilterChange = e => {
     this.setState({ lastNameFilter: e.target.value });
-    // this.reloadTable
     setTimeout(this.reloadTable, 0);
   };
 
@@ -80,17 +90,11 @@ class Rents extends Component {
   reloadTable = async () => {
     var filteredRes
     if (this.state.buttonClicked === 0) {
-      await getOngoingRentsList().then(res => {
-        this.setState({ isLoading: false });
-        filteredRes = this.filterByNameContains(res, this.state.lastNameFilter)
-        this.createOngoingTable(filteredRes);
-      });
+      filteredRes = this.filterByNameContains(this.state.ongoingRentsList, this.state.lastNameFilter)
+      this.createOngoingTable(filteredRes);
     } else {
-      await getFinishedRentsList().then(res => {
-        this.setState({ isLoading: false });
-        filteredRes = this.filterByNameContains(res, this.state.lastNameFilter)
-        this.createFinishedTable(filteredRes);
-      });
+      filteredRes = this.filterByNameContains(this.state.finishedRentsList, this.state.lastNameFilter)
+      this.createFinishedTable(filteredRes);
     }
     this.forceUpdate();
   };

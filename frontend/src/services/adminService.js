@@ -1,17 +1,6 @@
-const axios = require('axios');
-const URL = 'http://localhost:8000/api-v1/';
-
+import {instance} from './axiosConfig'; 
 
 export async function createNewAdminAccount(username, password, firstName, lastName, email, phone) {
-  
-    const instance = axios.create({
-        baseURL: 'http://localhost:8000/api-v1/',
-        timeout: 1000,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization':'Bearer ' + localStorage.getItem('token')
-        }
-    });
   
     const data1 = {
         "password": password,
@@ -23,6 +12,7 @@ export async function createNewAdminAccount(username, password, firstName, lastN
     }
     try {
         const response = await instance.post(`admin/`, data1);
+        console.log(response.status);
         return response.status;
     } catch (error) {
         return error.response.status;
@@ -31,14 +21,6 @@ export async function createNewAdminAccount(username, password, firstName, lastN
 
 
 export async function getAdminList() {
-    const instance = axios.create({
-        baseURL: URL,
-        timeout: 1000,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        }
-    });
 
     try {
         const getAdmin = await instance.get(`admin/`);
@@ -49,14 +31,6 @@ export async function getAdminList() {
 }
 
 export async function getSuperAdminList() {
-    const instance = axios.create({
-        baseURL: URL,
-        timeout: 1000,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        }
-    });
 
     try {
         const getSuperAdmin = await instance.get(`super-admin/`);
@@ -67,14 +41,6 @@ export async function getSuperAdminList() {
 }
 
 export async function removeAdmin(id) {
-    const instance = axios.create({
-        baseURL: URL,
-        timeout: 1000,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        }
-    });
 
     try {
         const verification = await instance.delete('admin/' + id + '/');

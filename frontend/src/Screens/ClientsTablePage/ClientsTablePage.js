@@ -25,22 +25,28 @@ class Clients extends Component {
       infoMessage: '',
       errorMsg: '',
       dialogOpen: false,
+<<<<<<< HEAD
       bussinesInfoDialogOpen: false,
       clickedItemId: '',
       clickedBussinessInfo: ''
+=======
+      clientsList: ''
+>>>>>>> develop
     }
   }
 
   async componentDidMount(){
     await getClientsList().then((res)=>{
-      this.setState({isLoading: false});
-      this.createTable(res);
+      this.setState({
+        isLoading: false,
+        clientsList: res
+      });
+      this.createTable(this.state.clientsList);
     })    
   }
 
-  async filterTableContentByNameContains(nameFragment){
-    await getClientsList().then((res)=>{
-
+  filterTableContentByNameContains(nameFragment){
+      var res = this.state.clientsList
       var filteredRes = Object.keys(res).filter(function(params) {
         return res[params]
           .username
@@ -50,7 +56,7 @@ class Clients extends Component {
         return res[i];
       })
       this.createTable(filteredRes)
-    })    
+    
   }
 
   createTable(res){

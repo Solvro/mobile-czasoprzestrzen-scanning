@@ -1,23 +1,10 @@
-const axios = require('axios');
-const URL = 'http://localhost:8000/api-v1/';
 
+import {instance} from './axiosConfig'; 
 
 export async function getItemsList() {
-  const instance = axios.create({
-    baseURL: URL,
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
-    }
-  });
 
   try {
     const getItem = await instance.get(`equipment/`);
-    if(getItem.status === 401){
-      await localStorage.removeItem('token');
-      this.props.history.push('/login');
-    }
     return getItem.data;
   } catch (error) {
     console.log(`Error: ${error}`);
@@ -25,14 +12,7 @@ export async function getItemsList() {
 }
 
 export async function addNewItemToItemList(itemName, itemType, itemDecription, itemRentTime) {
-  const instance = axios.create({
-    baseURL: URL,
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
-    }
-  });
+
   const data = {
     "name": itemName,
     "description": itemDecription,
@@ -50,14 +30,7 @@ export async function addNewItemToItemList(itemName, itemType, itemDecription, i
 }
 
 export async function addNewItemType(itemType) {
-  const instance = axios.create({
-    baseURL: URL,
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
-    }
-  });
+
   const data = {
     "type_name": itemType
   }
@@ -71,17 +44,9 @@ export async function addNewItemType(itemType) {
 }
 
 export async function getItemTypesList() {
-  const instance = axios.create({
-    baseURL: URL,
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
-    }
-  });
 
   try {
-    const getItem = await instance.get(`equipment-type/`);
+    const getItem = await instance.get(`equipment-type/`)
     return getItem.data;
   } catch (error) {
     console.log(`Error: ${error}`);
@@ -90,35 +55,27 @@ export async function getItemTypesList() {
 
 
 export async function getItemViewFromId(id) {
-  const instance = axios.create({
-    baseURL: URL,
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
-    }
-  });
 
-  try {
-    const getItem = await instance.get(`equipment/` + id + '/');
-    return getItem.data;
-  } catch (error) {
-    console.log(`Error: ${error}`);
-  }
+  const getItem = await instance.get(`equipment/` + id + '/')
+  .catch(function (error) {
+    if (error.response.status === 401) {
+      localStorage.removeItem('token');
+      window.location = '/login';
+    }else if(error.response.status === 404){
+      window.location = '/home';
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }    
+});
+return getItem.data;
 }
 
 export async function editItemData(id,itemName,itemType,itemDescription,itemRentTime) {
-  const instance = axios.create({
-    baseURL: URL,
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
-    }
-  });
 
   const data = {
-    "name": itemName,
+  "name": itemName,
   "description": itemDescription,
   "available": true,
   "max_rent_time": itemRentTime,
@@ -134,14 +91,6 @@ export async function editItemData(id,itemName,itemType,itemDescription,itemRent
 }
 
 export async function removeItemFromList(id) {
-  const instance = axios.create({
-    baseURL: URL,
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
-    }
-  });
 
   try {
     const getItem = await instance.delete(`equipment/` + id + '/');
@@ -152,14 +101,6 @@ export async function removeItemFromList(id) {
 }
 
 export async function returnItem(id) {
-  const instance = axios.create({
-    baseURL: URL,
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('token'),
-    }
-  });
 
   try {
     const getItem = await instance.put('equipment/'+id+'/admin-return/');

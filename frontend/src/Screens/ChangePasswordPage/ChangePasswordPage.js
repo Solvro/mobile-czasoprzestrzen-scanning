@@ -56,7 +56,7 @@ handleChangeRepetitionOfNewPassword = event => {
 
   render() {
     const button = <Button link={'/account'} onClick={this.validate} text={"Zatwierdź"}></Button>;
-    const header = <div class='headText'>Zmień hasło</div>;
+    const header = <div className='headText'>Zmień hasło</div>;
 
     return(
       <div className="container">
