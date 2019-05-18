@@ -25,13 +25,7 @@ class Clients extends Component {
       infoMessage: '',
       errorMsg: '',
       dialogOpen: false,
-<<<<<<< HEAD
-      bussinesInfoDialogOpen: false,
-      clickedItemId: '',
-      clickedBussinessInfo: ''
-=======
       clientsList: ''
->>>>>>> develop
     }
   }
 
