@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import Dialog from '../../Components/Dialog/Dialog';
+import Tooltip from "../../Components/Tooltip/Tooltip";
 //import MessageIcon from '@material-ui/icons/Message';
 
 
@@ -79,7 +80,13 @@ class Clients extends Component {
   // }
 
   createRemoveButton(id) {
-    return <IconButton aria-label="Delete" onClick={() => this.handleDialogOpen(id)}> <DeleteIcon /></IconButton>;
+    return (
+      <Tooltip title="Kliknij, aby usunąć przedmiot">
+        <IconButton aria-label="Delete" onClick={() => this.handleDialogOpen(id)}> 
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    )
   }
 
   handleDialogOpen(id){
