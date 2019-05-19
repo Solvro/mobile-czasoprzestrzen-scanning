@@ -11,6 +11,9 @@ const styles = theme => ({
     width: '100%',
     minWidth: 120,
   },
+  paper: {
+    marginBottom: 100
+  }
 });
 
 function Form(props) {
@@ -19,7 +22,7 @@ function Form(props) {
 
 
     return (
-      <Paper>
+      <Paper className={classes.paper}>
       <form autoComplete="off" className='FormField' onKeyDown={props.onKeyDown} onSubmit={props.onSubmit}>
         {props.header}
         <FormControl className={classes.formControl}>
