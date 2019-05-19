@@ -78,9 +78,10 @@ class NewAccountPage extends Component {
       }
 
       if (response===201 || response===200) {
+        console.log(typeof(this.state.accountType))
         this.props.history.push({
           pathname: '/account',
-          infoMessage: 'Pomyślnie utworzono nowe konto ' + (this.state.accountType===0 ? "admina" : "super admina")        })
+          infoMessage: 'Pomyślnie utworzono nowe konto ' + (this.state.accountType==="1" ? "admina" : "super admina")        })
       } else if(response===400){
         throw new Error("Konto z taką nazwą już istnieje")
       } else if(response===403){
