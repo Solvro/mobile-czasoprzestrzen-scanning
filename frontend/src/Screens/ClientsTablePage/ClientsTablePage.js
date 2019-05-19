@@ -74,7 +74,7 @@ class Clients extends Component {
   // createMessageButton(id) {
   //   return <IconButton aria-label="Message" onClick={() => alert("tutaj trzeb zrobić formularz z wiadomoscia")}> <MessageIcon /></IconButton>;
   // }
-
+ 
   createBussinessButton(business_data) {
 
     if (business_data == null) 
