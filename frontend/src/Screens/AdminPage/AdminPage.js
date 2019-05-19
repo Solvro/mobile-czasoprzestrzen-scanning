@@ -13,6 +13,8 @@ import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import {getSuperAdminList,getAdminList,removeAdmin} from '../../services/adminService';
 import {userSuperAdmin} from '../../services/userService';
+import Tooltip from "../../Components/Tooltip/Tooltip"
+
 class AdminPage extends Component {
 
   constructor(props) {
@@ -103,16 +105,31 @@ class AdminPage extends Component {
 
   createButtonAccept(id) {
 
-    return <IconButton aria-label="Approve" disabled={!this.state.isSuperAdmin} onClick={() => this.approveClient(id)}>
-    <ApproveIcon /> </IconButton>;
+    return (
+      <Tooltip title="Kliknij, aby zaakceptować"> 
+        <IconButton aria-label="Approve" disabled={!this.state.isSuperAdmin} onClick={() => this.approveClient(id)}> 
+          <ApproveIcon /> 
+        </IconButton>
+      </Tooltip>
+    );
   }
   createButtonRemove(id) {
-    return <IconButton aria-label="Delete" disabled={!this.state.isSuperAdmin} onClick={() => this.removeClient(id)}> 
-    <DeleteIcon /></IconButton>;
+    return (
+      <Tooltip title="Kliknij, aby odrzucić"> 
+        <IconButton aria-label="Delete" disabled={!this.state.isSuperAdmin} onClick={() => this.removeClient(id)}> 
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    );
   }
   createButtonRemoveAdmin(id) {
-    return <IconButton aria-label="Delete" disabled={!this.state.isSuperAdmin} onClick={() => this.removeAdmin(id)}> 
-    <DeleteIcon /></IconButton>;
+    return (
+      <Tooltip title="Kliknij, aby usunąć konto tego administratora">
+        <IconButton aria-label="Delete" disabled={!this.state.isSuperAdmin} onClick={() => this.removeAdmin(id)}> 
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    );
   }
 
   createTable = (res) => {
@@ -139,12 +156,12 @@ class AdminPage extends Component {
     adminList.forEach((admin) => {
       // console.log(admin.name+" "+admin.id)
       rows.push([ID, admin.first_name + ' ' + admin.last_name,admin.username, admin.email, admin.phone,
-        <Icon>close</Icon>, this.createButtonRemoveAdmin(admin.id)]);
+        <Tooltip title="Admin"><Icon>close</Icon></Tooltip>, this.createButtonRemoveAdmin(admin.id)]);
         ID++;
     });
     superAdminList.forEach((admin) => {
       rows.push([ID, admin.first_name + ' ' + admin.last_name,admin.username, admin.email, admin.phone,
-        <Icon>done</Icon>,]);
+      <Tooltip title="Super-admin"><Icon>done</Icon></Tooltip>,]);
         ID++;
     });
     const table = <div><AdminTable contains={rows} /></div>;
