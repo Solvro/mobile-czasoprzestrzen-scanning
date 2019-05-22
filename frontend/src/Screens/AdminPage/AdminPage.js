@@ -138,14 +138,19 @@ class AdminPage extends Component {
     var ID = 1;
     adminList.forEach((admin) => {
       // console.log(admin.name+" "+admin.id)
-      rows.push([ID, admin.first_name + ' ' + admin.last_name,admin.username, admin.email, admin.phone,
+      if(admin.username !== "admin"){
+        rows.push([ID, admin.first_name + ' ' + admin.last_name,admin.username, admin.email, admin.phone,
         <Icon>close</Icon>, this.createButtonRemoveAdmin(admin.id)]);
         ID++;
+      }
+      
     });
     superAdminList.forEach((admin) => {
+      if(admin.username !== "root"){
       rows.push([ID, admin.first_name + ' ' + admin.last_name,admin.username, admin.email, admin.phone,
         <Icon>done</Icon>,]);
         ID++;
+      }
     });
     const table = <div><AdminTable contains={rows} /></div>;
     this.setState({ adminTable: table });

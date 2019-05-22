@@ -32,7 +32,7 @@ class AddItem extends Component {
       isMobile: false
     }
   }
-  updateDimensions() {
+  updateDimensions = () => {
     if(window.innerWidth < 700)
       this.setState({isMobile: true});
     else
@@ -41,7 +41,7 @@ class AddItem extends Component {
     
   async componentDidMount() {
     this.updateDimensions()
-    window.addEventListener("resize", this.updateDimensions.bind(this));
+    window.addEventListener("resize", this.updateDimensions);
     await userSuperAdmin()
     .then((isSuperAdmin) => { 
       this.setState({isSuperAdmin: isSuperAdmin}); 

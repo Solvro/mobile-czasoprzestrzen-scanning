@@ -84,10 +84,6 @@ class HomePage extends Component {
       });
   };
 
-  // componentWillMount() {
-  //   this.getName();
-  // }
-
   async componentDidMount() {
     await getItemTypesList().then(res => {
       res.unshift({id: "0",type_name:"-"})
@@ -102,13 +98,13 @@ class HomePage extends Component {
       this.createTable(res);
     });
     this.updateDimensions()
-    window.addEventListener("resize", this.updateDimensions.bind(this));
+    window.addEventListener("resize", this.updateDimensions);
   }
   componentWillUnmount(){
     window.removeEventListener("resize", this.updateDimensions);
   }
 
-  updateDimensions() {
+  updateDimensions = () => {
     var addBtn = ''
     if(window.innerWidth < 1400) {
       addBtn = <div className="AddButtonPosition">

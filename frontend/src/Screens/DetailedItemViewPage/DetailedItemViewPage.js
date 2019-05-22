@@ -29,7 +29,7 @@ class NewAccountPage extends Component {
         }
     }
 
-    updateDimensions() {
+    updateDimensions = () => {
         if (window.innerWidth < 700)
             this.setState({ isMobile: true });
         else
@@ -42,7 +42,7 @@ class NewAccountPage extends Component {
 
     async componentDidMount() {
         this.updateDimensions()
-        window.addEventListener("resize", this.updateDimensions.bind(this));
+        window.addEventListener("resize", this.updateDimensions);
         const itemTypes = await getItemTypesList()
 
 

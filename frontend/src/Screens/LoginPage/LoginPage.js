@@ -28,7 +28,7 @@ class LoginPage extends React.Component {
     isMobile: false
 }
 
-updateDimensions() {
+updateDimensions = () => {
   if(window.innerWidth < 700)
     this.setState({isMobile: true});
   else
@@ -37,7 +37,7 @@ updateDimensions() {
 
 componentDidMount() {
   this.updateDimensions()
-  window.addEventListener("resize", this.updateDimensions.bind(this));
+  window.addEventListener("resize", this.updateDimensions);
 }
 componentWillUnmount(){
   window.removeEventListener("resize", this.updateDimensions);
