@@ -40,7 +40,7 @@ class AddItem extends Component {
   }
     
   async componentDidMount() {
-    updateDimensions()
+    this.updateDimensions()
     window.addEventListener("resize", this.updateDimensions.bind(this));
     await userSuperAdmin()
     .then((isSuperAdmin) => { 
@@ -53,7 +53,7 @@ class AddItem extends Component {
     })
   }
   componentWillUnmount(){
-    window.removeEventListener("resize", this.updateDimensions.bind(this));
+    window.removeEventListener("resize", this.updateDimensions);
   }
 
   updateData = async () => {

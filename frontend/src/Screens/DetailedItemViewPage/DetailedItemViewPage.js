@@ -37,7 +37,7 @@ class NewAccountPage extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener("resize", this.updateDimensions.bind(this));
+        window.removeEventListener("resize", this.updateDimensions);
     }
 
     async componentDidMount() {
