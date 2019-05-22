@@ -25,14 +25,27 @@ class NewAccountPage extends Component {
             formError: false,
             errorMessage: '',
             item: '1',
+            isMobile: false
         }
     }
 
-    async componentDidMount() {
+    updateDimensions() {
+        if (window.innerWidth < 700)
+            this.setState({ isMobile: true });
+        else
+            this.setState({ isMobile: false });
+    }
 
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions.bind(this));
+    }
+
+    async componentDidMount() {
+        this.updateDimensions()
+        window.addEventListener("resize", this.updateDimensions.bind(this));
         const itemTypes = await getItemTypesList()
 
-        
+
         const res = await getItemViewFromId(this.props.location.ID)
 
         this.setState({
@@ -78,7 +91,7 @@ class NewAccountPage extends Component {
             this.setState({ errorMessage: "Żadne pole nie może być puste" });
         }
         else {
-           const editItem = await editItemData(this.itemID, itemName, itemType, itemDescription, itemRentTime);
+            const editItem = await editItemData(this.itemID, itemName, itemType, itemDescription, itemRentTime);
             if (editItem) {
                 this.props.history.push('/home')
             } else {
@@ -93,11 +106,11 @@ class NewAccountPage extends Component {
         const newTo = {
             pathname: "/detailedItem",
             ID: this.itemID
-          };
-        const qrMessage = "rent:"+this.itemID;
-        const button = <div><Button link={'/home'} text={"Anuluj"}></Button>
-            <Button link={'/home'} onClick={this.tryToEditItem} text={"Zatwierdź"}></Button>
-            <Button text={"Pobierz QR"} link={newTo} onClick={this.print} ></Button></div>
+        };
+        const qrMessage = "rent:" + this.itemID;
+        const button = <div><Button link={'/home'} text={"Anuluj"} mobile={this.state.isMobile}></Button>
+            <Button link={'/home'} onClick={this.tryToEditItem} text={"Zatwierdź"} mobile={this.state.isMobile}></Button>
+            <Button text={"Pobierz QR"} link={newTo} onClick={this.print} mobile={this.state.isMobile} ></Button></div>
 
         const header = <div className='headText'>Edycja sprzętu</div>;
 
@@ -124,8 +137,8 @@ class NewAccountPage extends Component {
             </InputField>
 
             <Layout layoutDivide={'444'}>
-                <div className="HpQrcode" style={{ padding: '2em' }}>
-                <QRCode value={qrMessage} renderAs={'canvas'} level={'H'} size={120} /></div>
+                <div className="HpQrcode" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                    <QRCode value={qrMessage} renderAs={'canvas'} level={'H'} size={120} /></div>
             </Layout>
 
 
@@ -135,19 +148,21 @@ class NewAccountPage extends Component {
     }
 
     print = () => {
-       const canvas = document.querySelector('.HpQrcode > canvas');
-       let pdf = new jsPDF('p', 'mm', 'a4');
-       pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 15, 40, 30, 30);
-       pdf.save("QR"+this.itemID+this.state.itemName);
-   };
-    
+        const canvas = document.querySelector('.HpQrcode > canvas');
+        let pdf = new jsPDF('p', 'mm', 'a4');
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 15, 40, 30, 30);
+        pdf.save("QR" + this.itemID + this.state.itemName);
+    };
+
 
     render() {
+        const { isMobile } = this.state;
+        const layoutMode = isMobile ? "1101" : "363";
         return (
             <div className="container">
                 <Toolbar />
-                <Layout layoutDivide={"363"}>
-                    {!this.state.isLoading ? this.state.form : null} 
+                <Layout layoutDivide={layoutMode}>
+                    {!this.state.isLoading ? this.state.form : null}
                 </Layout>
 
                 {this.state.formError &&

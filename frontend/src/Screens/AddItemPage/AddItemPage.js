@@ -29,10 +29,19 @@ class AddItem extends Component {
       isSuperAdmin: false,
       typeName: '',
       dialogOpen: false,
+      isMobile: false
     }
   }
-  
+  updateDimensions() {
+    if(window.innerWidth < 700)
+      this.setState({isMobile: true});
+    else
+      this.setState({isMobile: false});
+  }
+    
   async componentDidMount() {
+    updateDimensions()
+    window.addEventListener("resize", this.updateDimensions.bind(this));
     await userSuperAdmin()
     .then((isSuperAdmin) => { 
       this.setState({isSuperAdmin: isSuperAdmin}); 
@@ -41,9 +50,12 @@ class AddItem extends Component {
     .then((res) => {
       
       this.setState({itemTypesList : res});
-      console.log(res);
     })
   }
+  componentWillUnmount(){
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
+  }
+
   updateData = async () => {
     await getItemTypesList()
     .then((res) => {
@@ -53,6 +65,7 @@ class AddItem extends Component {
     })
     
     this.forceUpdate();
+    
   }
 
   handleItemName = event => {
@@ -121,14 +134,15 @@ handleChangeType = event => {
 
 
   render() {
-
-    const button = <Button link={'/home'} text={"Dodaj"} onClick={this.tryToAddItem}></Button>;
+    const { isMobile } = this.state;
+    const button = <Button link={'/home'} text={"Dodaj"} onClick={this.tryToAddItem} mobile={isMobile}></Button>;
     const header = <div className='headText'>Dodaj nową rzecz do magazynu</div>;
+    const layoutMode = isMobile ? "1101" : "363";
 
     return (
       <div className="container">
             <Toolbar/>
-      <Layout layoutDivide={"363"}>
+      <Layout layoutDivide={layoutMode}>
         <Form header={header} button={button}>
 
           <InputField placeholder={"Nazwa"} rows={"1"} label={"Nazwa urządzenia"} onChange={this.handleItemName}>

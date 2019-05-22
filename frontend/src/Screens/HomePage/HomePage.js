@@ -89,7 +89,6 @@ class HomePage extends Component {
   // }
 
   async componentDidMount() {
-    this.updateDimensions();
     await getItemTypesList().then(res => {
       res.unshift({id: "0",type_name:"-"})
       this.setState({ typesList: res });
@@ -104,6 +103,9 @@ class HomePage extends Component {
     });
     
     window.addEventListener("resize", this.updateDimensions.bind(this));
+  }
+  componentWillUnmount(){
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
   }
 
   updateDimensions() {
