@@ -13,6 +13,8 @@ import Dialog from '../../Components/Dialog/Dialog';
 import Tooltip from "../../Components/Tooltip/Tooltip";
 //import MessageIcon from '@material-ui/icons/Message';
 
+import BussinesInfoDialog from '../../Components/Dialog/BussinessInfoDisplayDialog';
+import { Tooltip } from '@material-ui/core';
 
 class Clients extends Component {
 
@@ -54,19 +56,14 @@ class Clients extends Component {
 
   createTable(res){
     var rows = [];
-    var businessIcon;
     for (var i = 0; i<res.length; i++){
-      if (res[i].business_data == null) {
-        businessIcon = <Icon>clear</Icon>
-      }else 
-      businessIcon = <Icon>done</Icon>;
 
       rows.push([
         res[i].id,
         res[i].username,
         res[i].first_name + " " + res[i].last_name, 
         res[i].email, res[i].phone,
-        businessIcon, 
+        this.createBussinessButton(res[i].business_data),
   //      this.createMessageButton(res[i].id), 
         this.createRemoveButton(res[i].id)
       ])
@@ -78,6 +75,18 @@ class Clients extends Component {
   // createMessageButton(id) {
   //   return <IconButton aria-label="Message" onClick={() => alert("tutaj trzeb zrobić formularz z wiadomoscia")}> <MessageIcon /></IconButton>;
   // }
+ 
+  createBussinessButton(business_data) {
+
+    if (business_data == null) 
+      return <Icon color="disabled">clear</Icon>
+    else 
+      return <IconButton aria-label="IconButton" onClick={() => this.handleBussinesInfoDialogOpen(business_data)}>
+        <Tooltip title="Sprawdź szczegóły firmy">
+          <Icon color="primary">done</Icon>
+        </Tooltip>
+       </IconButton>;
+  }
 
   createRemoveButton(id) {
     return (
@@ -87,6 +96,18 @@ class Clients extends Component {
         </IconButton>
       </Tooltip>
     )
+  }
+
+  handleBussinesInfoDialogOpen(bussinessData){
+    this.setState({ 
+      bussinesInfoDialogOpen: true,
+      clickedBussinessInfo: bussinessData 
+    });
+  }
+  handleBussinesInfoDialogClose = () => {
+    this.setState({ 
+      bussinesInfoDialogOpen: false
+    });
   }
 
   handleDialogOpen(id){
@@ -153,6 +174,15 @@ class Clients extends Component {
         handleCloseAgree={this.handleDialogCloseAgree}
         message={"Czy na pewno chcesz usunąć tego klienta?"}>
       </Dialog>
+
+      {this.state.clickedBussinessInfo &&
+      <BussinesInfoDialog
+        dialogOpen={this.state.bussinesInfoDialogOpen}
+        message={"Szczegoly firmy"}
+        handleClose = {this.handleBussinesInfoDialogClose}
+        bussinessData={this.state.clickedBussinessInfo}>
+      </BussinesInfoDialog>}
+
       {this.state.infoMessage && 
         <InfoDisplay
           removeInfo={id => { this.setState({ infoMessage: false }) }}

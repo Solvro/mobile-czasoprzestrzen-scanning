@@ -15,6 +15,7 @@ import {getSuperAdminList,getAdminList,removeAdmin} from '../../services/adminSe
 import {userSuperAdmin} from '../../services/userService';
 import Tooltip from "../../Components/Tooltip/Tooltip"
 
+
 class AdminPage extends Component {
 
   constructor(props) {
@@ -27,7 +28,8 @@ class AdminPage extends Component {
       data: '',
       isLoading: true,
       adminTable: '',
-      isSuperAdmin: false
+      isSuperAdmin: false,
+      clickedBussinessInfo: ''
     };
     this.state.infoMessage=this.props.location.infoMessage
   }
@@ -131,19 +133,40 @@ class AdminPage extends Component {
       </Tooltip>
     );
   }
+  createBussinessButton(is_business) {
+
+    if (is_business) 
+      return <Icon color="disabled">clear</Icon>
+    else 
+      return <IconButton aria-label="IconButton" onClick={() => this.handleBussinesInfoDialogOpen(is_business)}>
+        <Tooltip title="Sprawdź szczegóły firmy">
+          <Icon color="primary">done</Icon>
+        </Tooltip>
+       </IconButton>;
+  }
+  handleBussinesInfoDialogOpen(bussinessData){
+    this.setState({ 
+      bussinesInfoDialogOpen: true,
+      clickedBussinessInfo: bussinessData 
+    });
+  }
 
   createTable = (res) => {
     var rows = [];
-    var business;
     var ID = 0;
     for (var i = 0; i < res.length; i++) {
-      if (res[i].is_business === false) {
-        business = <Icon>clear</Icon>
-      } else
-      business = <Icon>done</Icon>;
+      console.log(res[i])
+      
       ID = res[i].id
-      rows.push([ID, res[i].first_name + ' ' + res[i].last_name, res[i].email, res[i].phone,
-        business, this.createButtonAccept(ID), this.createButtonRemove(ID)]);
+      rows.push([
+        ID, 
+        res[i].first_name + ' ' + res[i].last_name, 
+        res[i].email, 
+        res[i].phone,
+        this.createBussinessButton(res[i].is_business),
+        this.createButtonAccept(ID),
+        this.createButtonRemove(ID)
+      ]);
 
     }
     var table = <div><div>Admini</div><Table contains={rows} /></div>;

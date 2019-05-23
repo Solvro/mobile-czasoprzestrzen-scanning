@@ -8,7 +8,7 @@ function Layout(props) {
     var styleLeft;
     var styleRight;
     if(props.layoutDivide === "363"){
-        layout = <Grid container spacing={spacing}>
+        layout = <Grid container >
                             <Grid item xs={3}></Grid>
                             <Grid item xs={6}>
                                 {props.children}
@@ -17,7 +17,7 @@ function Layout(props) {
                         </Grid>
     }
     if(props.layoutDivide === "444"){
-        layout = <Grid container spacing={spacing}>
+        layout = <Grid container >
                             <Grid item xs={4}></Grid>
                             <Grid item xs={4}>
                                 {props.children}
@@ -26,7 +26,7 @@ function Layout(props) {
                         </Grid>
     }
     if(props.layoutDivide === "282"){
-        layout = <Grid container spacing={spacing}>
+        layout = <Grid container >
                             <Grid item xs={2}></Grid>
                             <Grid item xs={8}>
                                 {props.children}
