@@ -13,6 +13,8 @@ import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import InfoDisplay from '../../Components/Displays/InfoDisplay';
 import {getSuperAdminList,getAdminList,removeAdmin} from '../../services/adminService';
 import {userSuperAdmin} from '../../services/userService';
+
+import { Tooltip } from '@material-ui/core';
 class AdminPage extends Component {
 
   constructor(props) {
@@ -25,7 +27,8 @@ class AdminPage extends Component {
       data: '',
       isLoading: true,
       adminTable: '',
-      isSuperAdmin: false
+      isSuperAdmin: false,
+      clickedBussinessInfo: ''
     };
     this.state.infoMessage=this.props.location.infoMessage
   }
@@ -114,19 +117,39 @@ class AdminPage extends Component {
     return <IconButton aria-label="Delete" disabled={!this.state.isSuperAdmin} onClick={() => this.removeAdmin(id)}> 
     <DeleteIcon /></IconButton>;
   }
+  createBussinessButton(business_data) {
+
+    if (business_data == null) 
+      return <Icon color="disabled">clear</Icon>
+    else 
+      return <IconButton aria-label="IconButton" onClick={() => this.handleBussinesInfoDialogOpen(business_data)}>
+        <Tooltip title="Sprawdź szczegóły firmy">
+          <Icon color="primary">done</Icon>
+        </Tooltip>
+       </IconButton>;
+  }
+  handleBussinesInfoDialogOpen(bussinessData){
+    this.setState({ 
+      bussinesInfoDialogOpen: true,
+      clickedBussinessInfo: bussinessData 
+    });
+  }
 
   createTable = (res) => {
     var rows = [];
-    var business;
     var ID = 0;
     for (var i = 0; i < res.length; i++) {
-      if (res[i].is_business === false) {
-        business = <Icon>clear</Icon>
-      } else
-      business = <Icon>done</Icon>;
+      
       ID = res[i].id
-      rows.push([ID, res[i].first_name + ' ' + res[i].last_name, res[i].email, res[i].phone,
-        business, this.createButtonAccept(ID), this.createButtonRemove(ID)]);
+      rows.push([
+        ID, 
+        res[i].first_name + ' ' + res[i].last_name, 
+        res[i].email, 
+        res[i].phone,
+        this.createBussinessButton(res[i].business_data),
+        this.createButtonAccept(ID),
+        this.createButtonRemove(ID)
+      ]);
 
     }
     var table = <div><div>Admini</div><Table contains={rows} /></div>;
