@@ -12,9 +12,7 @@ import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import Dialog from '../../Components/Dialog/Dialog';
 import Tooltip from "../../Components/Tooltip/Tooltip";
 //import MessageIcon from '@material-ui/icons/Message';
-
 import BussinesInfoDialog from '../../Components/Dialog/BussinessInfoDisplayDialog';
-import { Tooltip } from '@material-ui/core';
 
 class Clients extends Component {
 
