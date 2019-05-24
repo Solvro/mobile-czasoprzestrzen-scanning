@@ -17,6 +17,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
+import Tooltip from "../../Components/Tooltip/Tooltip"
 
 
 
@@ -112,9 +113,11 @@ class HomePage extends Component {
     </div>
     
     } else {
-      addBtn = <div className="AddButtonPosition">
-      <Button text={"Dodaj"} link={"/adds"} />
-    </div>
+      addBtn = <Tooltip title="Kliknij, aby dodać nowy przedmiot">
+        <div className="AddButtonPosition">
+          <Button text={"Dodaj"} link={"/adds"} />
+        </div>
+      </Tooltip>
     }
     this.setState({addButton: addBtn});
   }
@@ -169,18 +172,22 @@ class HomePage extends Component {
       ID: id
     };
     return (
-      <Link to={newTo}>
-        <IconButton aria-label="Approve" onClick={() => console.log(id)}>
-          <Icon>arrow_forward</Icon>{" "}
-        </IconButton>
-      </Link>
+      <Tooltip title="Kliknij, aby rozpocząć edycję przedmiotu">
+        <Link to={newTo}>
+          <IconButton aria-label="Approve" onClick={() => console.log(id)}>
+            <Icon>arrow_forward</Icon>{" "}
+          </IconButton>
+        </Link>
+      </Tooltip>
     );
   }
   createButtonRemove(id) {
     return (
-      <IconButton aria-label="Delete" onClick={() => this.handleDialogOpen(id)}>
-        <DeleteIcon />
-      </IconButton>
+      <Tooltip title="Kliknij, aby usunąć przedmiot">
+        <IconButton aria-label="Delete" onClick={() => this.handleDialogOpen(id)}>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
     );
   }
 
@@ -190,7 +197,7 @@ class HomePage extends Component {
         aria-label="Delete"
         onClick={() => this.handleReturnDialogOpen(id)}
       >
-        <Icon> close</Icon>{" "}
+        <Tooltip title="Przedmiot niedostępny. Kliknij, aby zwrócić"><Icon>close</Icon></Tooltip>{" "}
       </IconButton>
     );
   }
@@ -203,7 +210,7 @@ class HomePage extends Component {
       ID = res[i].id;
       var available = this.createButtonReturn(ID);
       if (res[i].available === true) {
-        available = <Icon>done</Icon>;
+        available = <Tooltip title="Przedmiot dostępny"><Icon>done</Icon></Tooltip>;
       }
       ID = res[i].id;
       rows.push([

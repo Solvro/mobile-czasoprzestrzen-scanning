@@ -9,7 +9,8 @@ import Layout from '../../Components/Layout/Layout';
 import logo from '../../assests/czasoprzestrzen_logo.png';
 import { resetPasswordConfirm } from '../../services/userService';
 import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
-
+import TextButton from '../../Components/Button/TextButton';
+import '../../App.css';
 
 const styles = theme => ({
     formControl: {
@@ -67,12 +68,17 @@ class LoginPage extends React.Component {
 
     render() {
         const header = <img src={logo} className='LogoStart' alt="Logo" />;
-        const button = <div><Button link={'/home'} text={"Resetuj hasło"} onClick={this.tryReset}></Button></div>;
+        const button = <div><Button link={'/home'} text={"Resetuj hasło"} onClick={this.tryReset}></Button>
+        <TextButton link={'/login'} text={"Powrót do logowania"}></TextButton></div>;
 
         return (
             <div>
                 <Layout layoutDivide={"363"}>
                     <Form header={header} button={button} >
+
+                    <div className="resetPasswordInsctructions">
+                    Wprowadź nowe hasło oraz podaj token, który otrzymałeś w wiadomości e-mail.
+                    </div>
 
                         <InputField placeholder={"Token"} rows={"1"} onChange={this.handleChangeToken}>
                         </InputField>

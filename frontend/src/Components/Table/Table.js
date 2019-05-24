@@ -9,6 +9,9 @@ import TableRow from '@material-ui/core/TableRow';
 import ReactTableContainer from "react-table-container";
 
 const CustomTableCell = withStyles(theme => ({
+    root: {
+      padding: 10
+    },
     head: {
       backgroundColor: theme.palette.primary.main,
       color: theme.palette.common.white,
@@ -16,6 +19,7 @@ const CustomTableCell = withStyles(theme => ({
     body: {
       fontSize: 14,
     },
+    
   }))(TableCell);
 
 const styles = theme => ({
@@ -86,7 +90,7 @@ function table (props) {
   }
   else{
     return (
-      <ReactTableContainer width="100%" height='700px' customHeader={[TableHead]} >
+      <ReactTableContainer width="100%" style={{marginBottom:"70px"}} height='auto' customHeader={[TableHead]} >
       <Table >
         <TableHead>
           <TableRow>

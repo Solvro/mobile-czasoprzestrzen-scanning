@@ -10,7 +10,6 @@ import MenuList from '@material-ui/core/MenuList';
 import DButton from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { withStyles } from '@material-ui/core/styles';
-import {userSuperAdmin} from '../../services/userService';
 
 const styles = theme => ({
     buttonToolbar: {
@@ -31,27 +30,17 @@ const styles = theme => ({
 
         state = {
             open: false,
-            isSuperAdmin: false,
             menuList: ''
           };
 
           async componentDidMount() {
-            await userSuperAdmin()
-            .then((isSuperAdmin) => { 
-              this.setState({isSuperAdmin: isSuperAdmin}); 
-            })
             this.createMenuList();
           }
 
-          createMenuList(){
+          createMenuList = () => {
             let menuA = []
             menuA.push(<Link key={1} className="linkInMenu" to='/account'>
-            <MenuItem>Inne</MenuItem></Link>)
-
-            if (this.state.isSuperAdmin === true){
-              menuA.push(<Link key={2} className="linkInMenu" to='/createNewAccount'>
-              <MenuItem>Stwórz nowego administratora</MenuItem></Link>)
-            }
+            <MenuItem>Zarządzaj kontami</MenuItem></Link>)
             menuA.push(<Link key={3} className="linkInMenu" to='/changePassword'>
             <MenuItem>Zmień hasło</MenuItem>
             </Link>)
@@ -91,30 +80,34 @@ const styles = theme => ({
         <nav className='DesktopOnly'>
             <ul className='NavigationItems'>
             <li key={0} className='linkInMenu'>
+            <Link to="/home" style={{textDecoration:'none',border: 'none'}}>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true">
-                   <Link to="/home" style={{textDecoration:'none',border: 'none'}}>Sprzęt</Link> 
-                </DButton>
+                   Sprzęt 
+                </DButton></Link>
                 
             </li>
             <li key={1} className='linkInMenu'>
+            <Link to="/rents" style={{textDecoration:'none',border: 'none'}}>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true">
-                   <Link to="/rents" style={{textDecoration:'none',border: 'none'}}>Wypożyczenia</Link> 
-                </DButton>
+                   Wypożyczenia 
+                </DButton></Link>
                 
             </li>
             <li key={2} className='linkInMenu'>
+            <Link to="/clients" style={{textDecoration:'none',border: 'none'}}>
                 <DButton
                     className={classes.buttonToolbar}
                     aria-owns={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true">
-                   <Link to="/clients" style={{textDecoration:'none',border: 'none'}}>Klienci</Link> 
+                   Klienci
                 </DButton>
+                </Link> 
                 
             </li>
             <li key={3} className='linkInMenu' >
@@ -127,19 +120,20 @@ const styles = theme => ({
                     aria-owns={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
                     onClick={this.handleToggle}>
-                    Zaawansowane
+                    Ustawienia
                 </DButton>
           <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
             {({ TransitionProps, placement }) => (
-              <Grow
+              <Grow key={11}
                 {...TransitionProps}
                 id="menu-list-grow"
                 style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
               >
                 <Paper>
-                <ClickAwayListener onClickAway={this.handleClose}>
+                  <div>
+                <ClickAwayListener key={12} onClickAway={this.handleClose}>
                     {this.state.menuList}
-                    </ClickAwayListener>
+                    </ClickAwayListener></div>
                 </Paper>
               </Grow>
             )}
