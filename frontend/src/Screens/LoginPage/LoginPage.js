@@ -10,7 +10,6 @@ import ErrorDisplay from '../../Components/Displays/ErrorDisplay';
 import logo from '../../assests/czasoprzestrzen_logo.png';
 import { authorizeUser, verifyUser } from '../../services/userService';
 import TextButton from '../../Components/Button/TextButton';
-
 import "./LoginPanel.css"
 
 const styles = theme => ({
@@ -25,8 +24,25 @@ class LoginPage extends React.Component {
   state = {
     username: '',
     password: '',
-    loginError: false
+    loginError: false,
+    isMobile: false
 }
+
+updateDimensions = () => {
+  if(window.innerWidth < 700)
+    this.setState({isMobile: true});
+  else
+    this.setState({isMobile: false});
+}
+
+componentDidMount() {
+  this.updateDimensions()
+  window.addEventListener("resize", this.updateDimensions);
+}
+componentWillUnmount(){
+  window.removeEventListener("resize", this.updateDimensions);
+}
+
 
 
 componentWillMount(){
@@ -72,9 +88,11 @@ handleKeyDown = (e) => {
 }
 
   render() {
+    const { isMobile } = this.state;
     const header = <img src={logo} className='LogoStart' alt="Logo" />;
-    const button = <div><Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize}></Button><TextButton link={'/forgotpass'} text={"Zapomniałeś hasła?"}></TextButton></div>;    
-
+    const button = <div><Button link={'/home'} text={"Zaloguj"} onClick={this.tryAuthorize} mobile={isMobile}></Button><TextButton link={'/forgotpass'} text={"Zapomniałeś hasła?"}></TextButton></div>;    
+    const layoutMode = isMobile ? "1101" : "363";
+    
     return (
       <div>
         {this.state.loginError &&
@@ -82,7 +100,7 @@ handleKeyDown = (e) => {
                     removeError={id => {this.setState({loginError: false})}}
                     errors={[{message: 'Błędny login lub hasło.', id: 100}]}
                     />}
-      <Layout layoutDivide={"363"}>
+      <Layout layoutDivide={layoutMode}>
         <Form header={header} button={button} onKeyDown={this.handleKeyDown} onSubmit={this.preventDefault}>
 
         <InputField placeholder={"Login"} rows={"1"} onChange={this.handleChangeUser}>
