@@ -17,7 +17,7 @@ const styles = theme => ({
   sizeButton: {
     width: '15em',
     height: '5em',
-    margin: '0 1em'
+    margin: '1em 1em'
   },
   smallAddButton: {
     width: '6em',
@@ -62,6 +62,13 @@ function Button(props) {
     </Fab>
     
   } 
+  else if(props.mobile){
+    button = <Fab color="primary" aria-label="Add" variant="extended"
+      onClick={props.onClick} >
+      {props.text}
+      {props.icon}
+    </Fab>
+  }
   else {
     button = <Fab color="primary" aria-label="Add" variant="extended"
       className={classes.sizeButton} onClick={props.onClick} >

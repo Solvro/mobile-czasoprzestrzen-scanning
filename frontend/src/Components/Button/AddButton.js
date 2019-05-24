@@ -6,7 +6,7 @@ import './Button.css';
 
 function AddButton(props) {
     return (  
-      <Button link={props.link} onClick={props.onClick} text={props.text} icon={<AddIcon />} button={props.button}></Button>
+      <Button link={props.link} onClick={props.onClick} text={props.text} mobile={props.mobile} icon={<AddIcon />} button={props.button}></Button>
     );
 }
 

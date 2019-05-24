@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './Toolbar.css';
-import logo from '../../assests/czasoprzestrzen_logoW.png';
+import logo from '../../assests/czasoprzestrzen_logoWhite.png';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
