@@ -88,7 +88,7 @@ class Clients extends Component {
 
   createRemoveButton(id) {
     return (
-      <Tooltip title="Kliknij, aby usunąć przedmiot">
+      <Tooltip title="Kliknij, aby usunąć konto użytkownika">
         <IconButton aria-label="Delete" onClick={() => this.handleDialogOpen(id)}> 
           <DeleteIcon />
         </IconButton>
@@ -131,8 +131,10 @@ class Clients extends Component {
 
       if(response===204)
         this.setState({infoMessage: 'Pomyslnie usunięto klienta numer ' + id })
-      else if ( response === 403)
+      else if (response === 403)
         throw new Error("Nie masz uprawnień do wykonania tej akcji");
+      else if (response === 400)
+        throw new Error("Ten klient ma bieżące wypożyczenia, należy je najpierw zakończyć")
       else
         throw new Error("Coś poszło nie tak");
     }catch(error){
