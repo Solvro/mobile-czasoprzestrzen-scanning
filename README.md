@@ -1,9 +1,13 @@
 # Scanning application
-
+![Screenshot 2024-07-15 at 18.06.22.png](./assets%2FScreenshot%202024-07-15%20at%2018.06.22.png)
+## About application
 Scanning application is system designed and devloped for Czasoprzestzeń to improve managemant of warehouse with musical equipment. The main functionality of this system is using QRCodes to identify every item in magazine.
 
-(You can find detailed READme for every component of system in folders with source codes.)
-
+## Screenshots
+![Screenshot 2024-07-15 at 18.04.09.png](assets%2FScreenshot%202024-07-15%20at%2018.04.09.png)
+![Screenshot 2024-07-15 at 22.18.34.png](assets%2FScreenshot%202024-07-15%20at%2022.18.34.png)
+![Screenshot 2024-07-15 at 22.19.30.png](assets%2FScreenshot%202024-07-15%20at%2022.19.30.png)
+![Screenshot 2024-07-15 at 22.19.37.png](assets%2FScreenshot%202024-07-15%20at%2022.19.37.png)
 ## Frontend part
 
 ### Technology stack
@@ -28,3 +32,12 @@ Mobile application id intended for clients. They can use it to rent or return eq
 - MariaDB
 
 Backend is implemented in **Django** framework for Python. It uses REST API to communicate with other parts of system.
+
+## Authors
+Jakub Gogola, Basia Banaszak, Wiktoria Salamon
+## License
+Application uses MIT license
+
+## Contribution
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
